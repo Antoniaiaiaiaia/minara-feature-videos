@@ -1,6 +1,16 @@
 # Minara feature videos
 
-Source projects behind Minara product-launch videos and DMind Benchmark films. HTML, CSS, GSAP, HyperFrames, and Remotion compositions sit alongside storyboards, reusable motion examples, assets, and versioned exports.
+- Source projects behind [Minara](https://minara.ai) product-launch videos and [DMind](https://dmind.ai) Benchmark films.
+- Compositions use [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML), [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS), [GSAP](https://gsap.com/), [HyperFrames](https://github.com/heygen-com/hyperframes), and [Remotion](https://www.remotion.dev/).
+- [Storyboards](harness-1min-scenes/storyboard.html) document the scene structure and production plan.
+- [Reusable motion examples](app-2.0-video/examples/) demonstrate individual animation techniques.
+- [Assets](app-2.0-video/assets/) and [versioned exports](harness-1min-scenes/codex/output2/) accompany the source compositions.
+
+## Production approach
+
+None of these videos was generated as one continuous take. Every film was built scene by scene through multiple rounds of generation, revision, and refinement. The selected clips were then assembled in video editing software to create the final video.
+
+Versioned files document those iterations. This repository contains the working scenes and exports; the final video editor project files may not be included.
 
 ## Projects
 
@@ -17,6 +27,19 @@ Source projects behind Minara product-launch videos and DMind Benchmark films. H
 | [Strategy Studio 2](minara-strategy-studio-2/) | Strategy Studio feature-video source and exports |
 
 Read each project's README for its entry point and preview instructions. These are independent production snapshots, not a single application. Dependencies are installed per project; there is no shared build. Large media files are included, so the initial clone may take a few minutes.
+
+## Published videos
+
+| Film | Publication | Date (UTC) |
+|---|---|---|
+| Harness | [X post](https://x.com/minara/status/2097413018510618899) | 2026-09-08 |
+| App 2.0 | [X post](https://x.com/minara/status/2088306742669291626) | 2026-08-14 |
+| DMind Benchmark, light version | [X post](https://x.com/dmind_ai/status/2074875685727014981) | 2026-07-08 |
+| DMind Benchmark KDD, earlier dark version | Offline screening | Not recorded |
+| Cross-sectional factors, English | [X post](https://x.com/minara/status/2070514393025306837) | 2026-06-26 |
+| Strategy Studio 2 | [X post](https://x.com/minara/status/2077780543673180304) | 2026-07-16 |
+
+No public link or date was supplied for the Japanese, Chinese, or Korean variants. Publication dates are shown in UTC.
 
 ## Archive scope
 
