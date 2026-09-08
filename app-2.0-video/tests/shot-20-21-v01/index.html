@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Shot 20–21 — Pause and Switch Strategy</title>
+  <style>
+    @font-face{font-family:Geist;src:url('./assets/fonts/Geist-Regular.woff2') format('woff2');font-weight:400}
+    @font-face{font-family:Geist;src:url('./assets/fonts/Geist-SemiBold.woff2') format('woff2');font-weight:600}
+    *{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#cfd3d6;font-family:Geist,Arial,sans-serif}body{display:grid;place-items:center}
+    #viewport{position:relative;width:min(100vw,177.7778vh);aspect-ratio:16/9;overflow:hidden;background:#cfd3d6}
+    #shot{position:absolute;inset:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;background:#cfd3d6;color:#15171a}
+    .camera{position:absolute;inset:0;transform:translate(-1360px,112px) scale(1.55);transform-origin:0 0}
+    .day-layer{position:absolute;inset:-100%;background:linear-gradient(145deg,#e5e7e8 0%,#c8cdd0 58%,#b9c1c5 100%)}
+    .sky-glow{position:absolute;left:80px;top:120px;width:820px;height:720px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.52),rgba(255,255,255,0) 68%);filter:blur(12px);opacity:.72;transform:translate(1920px,1080px)}
+    .phone-stage{position:absolute;z-index:12;left:1260px;top:26px;width:430px;height:932px;transform:scale(1.1);transform-origin:0 0}.phone{position:relative;width:430px;height:932px;padding:10px;border-radius:58px;background:#121417;box-shadow:0 45px 100px rgba(6,10,18,.24);overflow:hidden}
+    .screen{position:relative;width:100%;height:100%;overflow:hidden;border-radius:49px;background:#f7f8f8;color:#15171a}.status{position:relative;height:40px;padding:13px 23px 0;display:flex;font-size:12px;font-weight:600}.status span:last-child{margin-left:auto}.island{position:absolute;left:50%;top:9px;width:108px;height:27px;transform:translateX(-50%);border-radius:99px;background:#121417}
+    .header{height:70px;padding:7px 18px 11px;display:flex;align-items:center}.avatar{width:46px;height:46px;border-radius:50%;object-fit:cover;background:#fff;box-shadow:0 5px 14px rgba(16,24,28,.1)}.identity{margin-left:12px}.identity h1{margin:0;font-size:22px;line-height:1.05;letter-spacing:-.035em}.identity p{margin:5px 0 0;color:#777d80;font-size:13px}
+    .control{position:relative;margin-left:auto;width:84px;height:32px;border:0;border-radius:16px;background:#ddf8ed;color:#087d53;font:600 12px Geist,Arial;overflow:hidden}.control-state{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:7px}.state-paused,.state-switch{opacity:0}.dot{width:7px;height:7px;border-radius:50%;background:#1ab173}.pause-icon{width:8px;height:9px;border-left:3px solid currentColor;border-right:3px solid currentColor}.switch-icon{font-size:15px;line-height:1}
+    .content{padding:5px 18px 84px}.hero{height:205px;padding:18px;border-radius:25px;background:#14171a;color:#fff;box-shadow:0 14px 35px rgba(16,23,25,.14)}.eyebrow{display:flex;color:#9ca3a5;font-size:12px;font-weight:600;letter-spacing:.04em}.eyebrow span:last-child{margin-left:auto;color:#4be0a8;letter-spacing:0}.pnl{margin-top:6px;color:#47dda4;font-size:44px;font-weight:600;line-height:1;letter-spacing:-.05em}.pnl-sub{margin-top:7px;color:#b7bdbe;font-size:13px}.chart{width:100%;height:83px;margin-top:8px}.chart .area{fill:rgba(71,221,164,.09);stroke:none}.chart .pnl-line{fill:none;stroke:#47dda4;stroke-width:4.5;stroke-linecap:round;stroke-linejoin:round}
+    .agent-card{position:relative;height:82px;margin-top:12px;padding:14px 15px;border-radius:20px;background:#fff;display:flex;align-items:center;box-shadow:0 7px 20px rgba(29,55,49,.06);overflow:hidden}.agent-icon{position:relative;width:42px;height:42px;border-radius:14px;background:#e0f8ee}.agent-icon:before{content:"";position:absolute;inset:11px;border-radius:50%;background:#1ab173;box-shadow:0 0 0 6px rgba(26,177,115,.12)}.agent-copy{position:relative;width:225px;height:42px;margin-left:12px}.agent-copy-state{position:absolute;inset:0}.agent-copy b{display:block;font-size:16px}.agent-copy span{display:block;margin-top:4px;color:#798083;font-size:12px}.agent-new{opacity:0}.signal-count{margin-left:auto;text-align:right;color:#118b61;font-size:13px;font-weight:600}.signal-count small{display:block;margin-top:4px;color:#8a9092;font-size:11px;font-weight:400}
+    .section-head{height:48px;display:flex;align-items:flex-end;padding:0 2px 9px}.section-head h2{margin:0;font-size:19px;letter-spacing:-.02em}.section-head span{margin-left:auto;color:#7e8487;font-size:12px}.trade{height:60px;padding:0 13px;border-radius:17px;background:#fff;display:grid;grid-template-columns:40px 1fr auto;align-items:center;box-shadow:0 5px 16px rgba(29,55,49,.045)}.coin{width:34px;height:34px;border-radius:11px;background:#edf1f0;display:grid;place-items:center;color:#596063;font-size:11px;font-weight:600}.trade-copy b{display:block;font-size:14px}.trade-copy small{display:block;margin-top:3px;color:#8b9193;font-size:11px}.value{color:#0ca66d;text-align:right;font-size:16px;font-weight:600}
+    .strategy-panel{position:absolute;z-index:18;left:0;right:0;top:110px;height:802px;padding:20px 18px 0;background:#f7f8f8;box-shadow:0 -20px 45px rgba(15,22,24,.12)}.panel-head{height:56px;display:flex;align-items:flex-start}.panel-head h2{margin:0;font-size:25px;letter-spacing:-.035em}.panel-head p{margin:5px 0 0;color:#81878a;font-size:12px}.paused-badge{margin-left:auto;padding:7px 10px;border-radius:12px;background:#eceeef;color:#656b6e;font-size:11px;font-weight:600}
+    .strategy-window{height:590px;overflow:hidden;padding-top:5px}.strategy-track{display:grid;gap:10px;will-change:transform}.strategy-card{height:154px;padding:16px;border-radius:23px;background:#fff;box-shadow:0 8px 24px rgba(28,42,38,.07);display:grid;grid-template-columns:1fr 80px;grid-template-rows:auto 1fr auto;column-gap:12px}.strategy-card.current{opacity:.58}.strategy-label{font-size:11px;color:#8b9193;text-transform:uppercase;letter-spacing:.06em}.strategy-card h3{grid-column:1/2;margin:4px 0 0;font-size:19px;line-height:1.08;letter-spacing:-.025em}.strategy-card .return{grid-column:2;grid-row:1/3;text-align:right;color:#16a56e;font-size:25px;font-weight:600}.strategy-card .return small{display:block;margin-top:3px;color:#8a9092;font-size:10px;font-weight:400}.strategy-meta{grid-column:1/2;display:flex;gap:6px;align-self:end}.strategy-meta span{padding:5px 8px;border-radius:9px;background:#f0f3f2;color:#62696b;font-size:10px}.run{grid-column:2;grid-row:3;width:72px;height:31px;align-self:end;border:0;border-radius:12px;background:#15171a;color:#fff;font:600 12px Geist}.strategy-card.target{box-shadow:inset 0 0 0 2px rgba(26,177,115,0),0 10px 28px rgba(28,42,38,.08)}
+    .cursor{position:absolute;z-index:30;left:333px;top:56px;width:34px;height:34px;border-radius:50%;background:rgba(83,89,92,.34);box-shadow:0 4px 12px rgba(33,39,42,.14),inset 0 0 0 1px rgba(255,255,255,.34);opacity:0;transform-origin:50% 50%;backdrop-filter:blur(2px)}.tap{position:absolute;z-index:29;left:332px;top:55px;width:36px;height:36px;border:2px solid rgba(83,89,92,.34);border-radius:50%;opacity:0}
+  </style>
+</head>
+<body>
+  <div id="viewport" data-composition-id="minara-shot-20-21" data-width="1920" data-height="1080" data-start="0" data-duration="2.2666666666666666" data-fps="60" data-root="true">
+    <main id="shot"><div class="camera">
+      <div class="day-layer"><div class="sky-glow"></div></div>
+      <div class="phone-stage"><article class="phone"><div class="screen">
+        <div class="status"><span>9:41</span><i class="island"></i><span>5G&#160;&#160;100%</span></div>
+        <header class="header"><img class="avatar" src="assets/brand/Minara-Avatar.png" alt="Minara"><div class="identity"><h1>Autopilot</h1><p>Minara is managing your strategy</p></div><button class="control"><span class="control-state state-running"><i class="dot"></i>Running</span><span class="control-state state-paused"><i class="pause-icon"></i>Paused</span><span class="control-state state-switch"><i class="switch-icon">↕</i>Switch</span></button></header>
+        <section class="content">
+          <div class="hero"><div class="eyebrow"><span>NET P&amp;L</span><span class="live-label">LIVE</span></div><div class="pnl">+$8742.20</div><div class="pnl-sub">+$284.60 today · 14 executions</div><svg class="chart" viewBox="0 0 358 83" preserveAspectRatio="none"><path class="area" d="M0 75 C26 69 37 71 60 64 S96 68 119 51 S151 56 176 42 S214 49 238 31 S278 39 302 22 S337 20 358 8 L358 83 L0 83 Z"/><path class="pnl-line" d="M0 75 C26 69 37 71 60 64 S96 68 119 51 S151 56 176 42 S214 49 238 31 S278 39 302 22 S337 20 358 8"/></svg></div>
+          <div class="agent-card"><span class="agent-icon"></span><div class="agent-copy"><div class="agent-copy-state agent-old"><b>Analyzing all markets</b><span>Risk, entries and exits monitored</span></div><div class="agent-copy-state agent-new"><b>Adaptive Momentum running</b><span>New strategy is live</span></div></div><div class="signal-count">128 signals<small>Updated now</small></div></div>
+          <div class="section-head"><h2>Recent trades</h2><span>View all</span></div>
+          <div class="trade"><span class="coin">BTC</span><span class="trade-copy"><b>BTC Long</b><small>Filled · 0.18 BTC</small></span><b class="value">+$184.60</b></div>
+        </section>
+        <section class="strategy-panel">
+          <div class="panel-head"><div><h2>Switch strategy</h2><p>Choose what Minara runs next</p></div><span class="paused-badge">AUTOPILOT PAUSED</span></div>
+          <div class="strategy-window"><div class="strategy-track">
+            <article class="strategy-card current"><div><span class="strategy-label">Current strategy</span><h3>Global Macro Pulse</h3></div><strong class="return">+18.4%<small>30D return</small></strong><div class="strategy-meta"><span>Medium risk</span><span>24 assets</span></div><button class="run">Active</button></article>
+            <article class="strategy-card"><div><span class="strategy-label">Minara verified</span><h3>Market Neutral Yield</h3></div><strong class="return">+12.9%<small>30D return</small></strong><div class="strategy-meta"><span>Low risk</span><span>8 assets</span></div><button class="run">Run</button></article>
+            <article class="strategy-card target"><div><span class="strategy-label">Recommended</span><h3>Adaptive Momentum</h3></div><strong class="return">+24.7%<small>30D return</small></strong><div class="strategy-meta"><span>Balanced</span><span>16 assets</span></div><button class="run target-run">Run</button></article>
+            <article class="strategy-card"><div><span class="strategy-label">Minara verified</span><h3>Digital Asset Core</h3></div><strong class="return">+21.2%<small>30D return</small></strong><div class="strategy-meta"><span>High growth</span><span>12 assets</span></div><button class="run">Run</button></article>
+          </div></div>
+        </section>
+        <i class="tap"></i><i class="cursor"></i>
+      </div></article></div>
+    </div></main>
+  </div>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <script>
+    const shot=document.querySelector('#shot');const fit=()=>{const v=document.querySelector('#viewport');shot.style.transform=`scale(${v.clientWidth/1920})`};addEventListener('resize',fit);fit();
+    const tl=gsap.timeline({paused:true});
+    const running='.state-running',paused='.state-paused',switching='.state-switch';
+    gsap.set('.strategy-panel',{y:820});gsap.set('.strategy-track',{y:60});gsap.set('.tap',{scale:.2});
+    tl.to('.cursor',{opacity:1,duration:.08},.06)
+      .to('.cursor',{scale:.76,duration:.07,yoyo:true,repeat:1,ease:'power2.inOut'},.18)
+      .to('.tap',{opacity:.75,scale:1.15,duration:.18,ease:'power2.out'},.18)
+      .to('.tap',{opacity:0,scale:1.6,duration:.12},.34)
+      .to(running,{opacity:0,duration:.09},.24).to(paused,{opacity:1,duration:.09},.29)
+      .to('.control',{background:'#eceeef',color:'#5f6669',duration:.14},.24)
+      .to('.dot',{background:'#9ca2a5',duration:.12},.24)
+      .to('.pnl-line',{stroke:'#889092',duration:.16},.25).to('.area',{fill:'rgba(136,144,146,.07)',duration:.16},.25)
+      .to('.live-label',{color:'#9ca3a5',duration:.12},.25)
+      .to('.agent-icon',{filter:'grayscale(1)',opacity:.62,duration:.12},.25)
+      .to('.agent-old',{opacity:.35,duration:.08},.25).to('.agent-old',{opacity:1,duration:.08},.34)
+      .to('.cursor',{scale:.76,duration:.07,yoyo:true,repeat:1},.5)
+      .to('.tap',{opacity:.72,scale:1.1,duration:.16},.5).to('.tap',{opacity:0,scale:1.55,duration:.12},.63)
+      .to(paused,{opacity:0,duration:.08},.55).to(switching,{opacity:1,duration:.08},.61)
+      .to('.strategy-panel',{y:0,duration:.28,ease:'power3.out'},.62)
+      .to('.strategy-track',{y:-222,duration:.72,ease:'power2.inOut'},.72)
+      .to('.cursor',{x:-17,y:348,duration:.72,ease:'power2.inOut'},.78)
+      .to('.target',{boxShadow:'inset 0 0 0 2px rgba(26,177,115,.65),0 12px 30px rgba(28,42,38,.12)',duration:.16},1.43)
+      .to('.cursor',{scale:.76,duration:.07,yoyo:true,repeat:1},1.58)
+      .to('.target-run',{background:'#1ab173',duration:.1},1.58)
+      .to('.strategy-panel',{y:820,duration:.25,ease:'power3.in'},1.72)
+      .to(switching,{opacity:0,duration:.08},1.78).to(running,{opacity:1,duration:.1},1.87)
+      .to('.control',{background:'#ddf8ed',color:'#087d53',duration:.14},1.82)
+      .to('.pnl-line',{stroke:'#47dda4',duration:.14},1.82).to('.area',{fill:'rgba(71,221,164,.09)',duration:.14},1.82)
+      .to('.live-label',{color:'#4be0a8',duration:.12},1.82)
+      .to('.agent-icon',{filter:'grayscale(0)',opacity:1,duration:.12},1.82).to('.dot',{background:'#1ab173',duration:.12},1.82)
+      .to('.agent-old',{opacity:0,duration:.08},1.82).to('.agent-new',{opacity:1,duration:.1},1.88)
+      .to('.cursor',{opacity:0,duration:.12},1.88);
+    tl.duration(2.2666666666666666);window.__timelines=window.__timelines||{};window.__timelines['minara-shot-20-21']=tl;const previewTime=Number(new URLSearchParams(location.search).get('t'));if(Number.isFinite(previewTime))tl.time(previewTime);
+  </script>
+</body>
+</html>

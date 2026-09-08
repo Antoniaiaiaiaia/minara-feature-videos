@@ -1,0 +1,241 @@
+<!doctype html><html><head><meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#F9F9F9}
+#root,[data-composition-id="root"]{position:relative;width:1920px;height:1080px;overflow:hidden;
+  background:#F9F9F9;font-family:'Geist',system-ui,-apple-system,sans-serif;color:#141416}
+
+/* ---- beat 1: asset rings ---- */
+.ringwrap{position:absolute;inset:0;width:1920px;height:1080px}
+.badge{position:absolute;left:0;top:0;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  opacity:0;box-shadow:0 16px 40px -16px rgba(0,0,0,.4)}
+.badge.sym{color:#fff;font-weight:800;white-space:nowrap;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.badge.logo{background:#fff}
+.badge.logo img{object-fit:contain}
+.badge.icon{color:#fff}
+.badge.icon svg{width:56%;height:56%;display:block}
+.ring-eq{width:150px;height:150px}
+.ring-eq img{width:58%;height:58%}
+.ring-com{width:170px;height:170px;font-size:50px}
+.ring-idx{width:190px;height:190px;font-size:58px}
+.ring-cry{width:200px;height:200px}
+.ring-cry img{width:56%;height:56%}
+
+/* ---- beat 2: converge + deploy ---- */
+.deploy{position:absolute;left:960px;top:540px;width:640px;height:230px;border-radius:115px;
+  transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(120deg,#EB53FF,#FF538E 48%,#FF9A32);
+  box-shadow:0 34px 70px -20px rgba(255,83,142,.55);
+  color:#fff;font-size:94px;font-weight:800;letter-spacing:-.01em;z-index:6;opacity:0}
+
+/* ---- beat 3: fee comparison ---- */
+.lt{position:absolute;left:960px;top:540px;transform:translate(-50%,-50%) scale(0);opacity:0;
+  font-size:240px;font-weight:300;color:#141416;line-height:1;z-index:5}
+.panel{position:absolute;top:210px;width:760px;height:660px;opacity:0}
+/* gap = panel edge to center(960px) where "<" sits. base gap was 75px each side:
+   left gap +50% -> 112.5px (left:125 -> 87.5), right gap +100% -> 150px (left:1035 -> 1110) */
+#leftPanel{left:87.5px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+#rightPanel{left:1110px;overflow:hidden;
+  -webkit-mask-image:linear-gradient(to bottom,transparent,#000 8%,#000 92%,transparent);
+  mask-image:linear-gradient(to bottom,transparent,#000 8%,#000 92%,transparent)}
+#rightScroller{display:flex;flex-direction:column;gap:30px}
+.lbl{font-size:30px;font-weight:700;color:#8a8a8a;letter-spacing:.05em;text-transform:uppercase}
+.feeBig{font-variant-numeric:tabular-nums;font-size:158px;font-weight:800;color:#07B56A;
+  line-height:1;margin:22px 0;opacity:0;transform:scale(.6)}
+.subLbl{font-size:32px;font-weight:600;color:#8a8a8a}
+.row{height:148px;background:#fff;border:1px solid #ECECEC;border-radius:24px;
+  box-shadow:0 30px 60px -30px rgba(0,0,0,.18);padding:0 40px;
+  display:flex;align-items:center;justify-content:space-between;opacity:0}
+.rowLeft{display:flex;align-items:center;gap:26px}
+.logoCircle{width:72px;height:72px;border-radius:50%;background:#fff;border:1px solid #ECECEC;
+  display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.logoCircle img{width:42px;height:42px;object-fit:contain}
+.rowName{font-size:36px;font-weight:700;color:#141416}
+.rowFee{font-variant-numeric:tabular-nums;font-size:48px;font-weight:800;color:#F75D5F}
+</style></head>
+<body>
+<div id="root" data-composition-id="root" data-width="1920" data-height="1080" data-start="0" data-duration="9.87">
+  <!-- rings are meant to converge into and behind #deploy / #lt, and to overlap each other during pop-in -->
+  <div class="ringwrap" id="ringEq" data-layout-allow-overlap data-layout-allow-occlusion></div>
+  <div class="ringwrap" id="ringCom" data-layout-allow-overlap data-layout-allow-occlusion></div>
+  <div class="ringwrap" id="ringIdx" data-layout-allow-overlap data-layout-allow-occlusion></div>
+  <div class="ringwrap" id="ringCry" data-layout-allow-overlap data-layout-allow-occlusion></div>
+  <div class="deploy" id="deploy">Deploy</div>
+  <div class="lt" id="lt">&lt;</div>
+  <div class="panel" id="leftPanel">
+    <div class="lbl">Minara</div>
+    <div class="feeBig" id="feeBig">0.1000%</div>
+    <div class="subLbl">Fees</div>
+  </div>
+  <div class="panel" id="rightPanel">
+    <!-- taller than the panel viewport by design: finite deterministic scroll reveals every row -->
+    <div id="rightScroller" data-layout-allow-overflow></div>
+  </div>
+</div>
+<script src="lib/gsap.min.js"></script><script src="lib/CustomEase.min.js"></script>
+<script>
+gsap.registerPlugin(CustomEase);
+const SNAP=CustomEase.create("snap","M0,0 C0.95,0.03 0,0.98 1,1");
+
+const cx=960,cy=540;
+function ringPos(i,n,r){const a=(-90+(i+.5)*(360/n))*Math.PI/180;return[cx+Math.cos(a)*r,cy+Math.sin(a)*r];}
+
+/* ---------------- beat 1 data: four concentric rings ---------------- */
+const EQ_BASE=[ // innermost — real equity logos
+  {logo:'us_NVDA.png',label:'NVDA'},{logo:'us_AAPL.png',label:'AAPL'},{logo:'us_MSFT.png',label:'MSFT'},
+  {logo:'us_GOOGL.png',label:'GOOGL'},{logo:'us_TSLA.png',label:'TSLA'},{logo:'us_META.png',label:'META'},
+  {logo:'samsung.svg',label:'Samsung'},{logo:'toyota.svg',label:'Toyota'}
+];
+const EQ=[...EQ_BASE,...EQ_BASE]; // double up so the ring is dense, not sparse
+const COM_BASE=[ // commodities — no real company logo exists, so drawn SVG icons instead of ticker text
+  {icon:'gold',label:'Gold',c:'#E8B10A'},{icon:'oil',label:'Oil',c:'#3B3B3B'},
+  {icon:'silver',label:'Silver',c:'#9CA3AF',tc:'#141416'},
+  {icon:'gas',label:'NatGas',c:'#2f7ff0'},{icon:'copper',label:'Copper',c:'#B45309'}
+];
+const COM=[...COM_BASE,...COM_BASE];
+// flat vector icons (currentColor fill) — one per commodity, no ticker text
+const ICONS={
+  gold:'<svg viewBox="0 0 64 64"><polygon points="15,45 21,21 43,21 49,45" fill="currentColor"/><polygon points="15,45 21,21 26,21 20,45" fill="#000" fill-opacity=".18"/></svg>',
+  oil:'<svg viewBox="0 0 64 64"><path d="M32 7C21 24 13 33 13 43C13 54 21.5 61 32 61C42.5 61 51 54 51 43C51 33 43 24 32 7Z" fill="currentColor"/></svg>',
+  silver:'<svg viewBox="0 0 64 64"><ellipse cx="32" cy="41" rx="21" ry="8" fill="currentColor" fill-opacity=".55"/><ellipse cx="32" cy="31" rx="21" ry="8" fill="currentColor"/></svg>',
+  gas:'<svg viewBox="0 0 64 64"><path d="M32 5C21 18 15 28 15 39C15 51 22.5 60 32 60C41.5 60 49 51 49 39C49 32 45 26 39 21C40 29 35 31 32.5 27C30 23 32 15 32 5Z" fill="currentColor"/></svg>',
+  copper:'<svg viewBox="0 0 64 64"><rect x="11" y="25" width="42" height="19" rx="7" fill="currentColor"/><rect x="11" y="25" width="9" height="19" rx="4" fill="#000" fill-opacity=".18"/></svg>'
+};
+const IDX_BASE=[ // indices — symbol badges
+  {s:'S',c:'#2f7ff0'},{s:'N',c:'#5b63e6'},{s:'DJ',c:'#141416'},{s:'KS',c:'#0033A0'},{s:'NK',c:'#BC002D'}
+];
+const IDX=[...IDX_BASE,...IDX_BASE];
+const CRY_BASE=[ // outermost — real crypto logos, bleeds past frame
+  {logo:'bitcoin.svg',label:'BTC'},{logo:'ethereum.svg',label:'ETH'},{logo:'solana.svg',label:'SOL'},
+  {logo:'binance.svg',label:'BNB'},{logo:'xrp.svg',label:'XRP'},{logo:'cardano.svg',label:'ADA'},
+  {logo:'dogecoin.svg',label:'DOGE'},{logo:'polkadot.svg',label:'DOT'}
+];
+const CRY=[...CRY_BASE,...CRY_BASE];
+
+function buildLogoRing(wrapId,items,cls,r){
+  const wrap=document.getElementById(wrapId);const out=[];
+  items.forEach((d,i)=>{
+    const[x,y]=ringPos(i,items.length,r);
+    const el=document.createElement('div');
+    el.className='badge logo '+cls;el.style.left=x+'px';el.style.top=y+'px';
+    const img=document.createElement('img');img.src='assets/logos/'+d.logo;img.alt=d.label;
+    el.appendChild(img);wrap.appendChild(el);out.push(el);
+  });
+  return out;
+}
+function buildSymbolRing(wrapId,items,cls,r){
+  const wrap=document.getElementById(wrapId);const out=[];
+  items.forEach((d,i)=>{
+    const[x,y]=ringPos(i,items.length,r);
+    const el=document.createElement('div');
+    el.className='badge sym '+cls;el.style.left=x+'px';el.style.top=y+'px';
+    el.style.background=d.c;if(d.tc)el.style.color=d.tc;el.textContent=d.s;
+    wrap.appendChild(el);out.push(el);
+  });
+  return out;
+}
+function buildIconRing(wrapId,items,cls,r){
+  const wrap=document.getElementById(wrapId);const out=[];
+  items.forEach((d,i)=>{
+    const[x,y]=ringPos(i,items.length,r);
+    const el=document.createElement('div');
+    el.className='badge icon '+cls;el.style.left=x+'px';el.style.top=y+'px';
+    el.style.background=d.c;if(d.tc)el.style.color=d.tc;el.innerHTML=ICONS[d.icon];
+    wrap.appendChild(el);out.push(el);
+  });
+  return out;
+}
+// radii sit close together on purpose: each ring's band overlaps the next ring's band
+// (badge half-width > radius delta) so logos visually stack/layer instead of avoiding each other
+const eqBadges=buildLogoRing('ringEq',EQ,'ring-eq',340);
+const comBadges=buildIconRing('ringCom',COM,'ring-com',420);
+const idxBadges=buildSymbolRing('ringIdx',IDX,'ring-idx',520);
+const cryBadges=buildLogoRing('ringCry',CRY,'ring-cry',650);
+const allBadges=[...eqBadges,...comBadges,...idxBadges,...cryBadges];
+gsap.set(allBadges,{xPercent:-50,yPercent:-50});
+
+/* ---------------- beat 3 data: brokerage fee column ---------------- */
+const ROWS=[
+  {name:'Binance',fee:'0.100%',logo:'binance.svg'},
+  {name:'OKX',fee:'0.080%',logo:'okx.svg'},
+  {name:'Coinbase',fee:'0.600%',logo:'coinbase.svg'},
+  {name:'Kraken',fee:'0.250%',logo:'kraken.png'},
+  {name:'Robinhood',fee:'0.150%',logo:'robinhood.svg'},
+  {name:'Charles Schwab',fee:'0.250%',logo:'schwab.png'},
+  {name:'Fidelity',fee:'0.350%',logo:'fidelity.png'},
+  {name:'Interactive Brokers',fee:'0.200%',logo:'interactivebrokers.png'},
+  {name:'E*TRADE',fee:'0.300%',logo:'etrade.png'}
+];
+const scroller=document.getElementById('rightScroller');
+const rowEls=ROWS.map(r=>{
+  const row=document.createElement('div');row.className='row';
+  const left=document.createElement('div');left.className='rowLeft';
+  const circ=document.createElement('div');circ.className='logoCircle';
+  const img=document.createElement('img');img.src='assets/logos/'+r.logo;img.alt=r.name;
+  circ.appendChild(img);left.appendChild(circ);
+  const nm=document.createElement('span');nm.className='rowName';nm.textContent=r.name;
+  left.appendChild(nm);
+  const fee=document.createElement('span');fee.className='rowFee';fee.textContent=r.fee;
+  row.appendChild(left);row.appendChild(fee);
+  scroller.appendChild(row);
+  return row;
+});
+const ROW_H=148,ROW_GAP=30,VIEWPORT_H=660;
+const scrollDist=(ROWS.length*ROW_H+(ROWS.length-1)*ROW_GAP)-VIEWPORT_H;
+gsap.set(rowEls,{opacity:0,y:24,scale:.92});
+gsap.set('#deploy',{scale:0});
+
+/* ---------------- timeline ---------------- */
+const tl=gsap.timeline({paused:true});
+
+// BEAT 1 (0-4s): rings pop outward, one ring after another
+// stagger shrunk vs item count so each (now-doubled) ring still finishes popping in before the next starts
+const STAG_EQ=.02, STAG_COM=.035, STAG_IDX=.035, STAG_CRY=.02;
+tl.fromTo(eqBadges, {opacity:0,scale:.3,y:20},{opacity:1,scale:1,y:0,duration:.55,ease:'back.out(1.7)',stagger:STAG_EQ},0.0);
+tl.fromTo(comBadges,{opacity:0,scale:.3,y:20},{opacity:1,scale:1,y:0,duration:.55,ease:'back.out(1.7)',stagger:STAG_COM},1.0);
+tl.fromTo(idxBadges,{opacity:0,scale:.3,y:20},{opacity:1,scale:1,y:0,duration:.55,ease:'back.out(1.7)',stagger:STAG_IDX},2.0);
+tl.fromTo(cryBadges,{opacity:0,scale:.3,y:20},{opacity:1,scale:1,y:0,duration:.55,ease:'back.out(1.7)',stagger:STAG_CRY},3.0);
+
+// each ring, once fully formed, slowly rotates (alternating direction) until convergence at 4.0s.
+// rotate the ring container (badges orbit); counter-rotate each badge by the same amount so
+// logos/text stay upright. Finite tween, ease:'none', no repeat — per spec §0.4.
+const CONVERGE_AT=4.0, ROT_SPEED=8; // deg/sec — slow, constant across all rings
+function addRingSpin(wrapId,badges,formEnd,dir){ // dir: +1 clockwise, -1 counter-clockwise
+  const dur=Math.max(.05,CONVERGE_AT-formEnd);
+  const angle=dir*ROT_SPEED*dur;
+  tl.to('#'+wrapId,{rotation:angle,ease:'none',duration:dur},formEnd);
+  tl.to(badges,{rotation:-angle,ease:'none',duration:dur},formEnd);
+}
+addRingSpin('ringEq',eqBadges,0.0+STAG_EQ*(EQ.length-1)+.55,1);   // ring1 equities — clockwise
+addRingSpin('ringCom',comBadges,1.0+STAG_COM*(COM.length-1)+.55,-1); // ring2 commodities — counter-clockwise
+addRingSpin('ringIdx',idxBadges,2.0+STAG_IDX*(IDX.length-1)+.55,1);  // ring3 indices — clockwise
+addRingSpin('ringCry',cryBadges,3.0+STAG_CRY*(CRY.length-1)+.55,-1); // ring4 crypto — counter-clockwise
+
+// BEAT 2 (4.0-5.75s): all rings converge to center while Deploy pops in among them
+tl.to(allBadges,{left:960,top:540,xPercent:-50,yPercent:-50,scale:.22,opacity:0,duration:.55,ease:SNAP,stagger:.02},4.0);
+tl.to('#deploy',{opacity:1,scale:1,duration:.5,ease:'back.out(1.6)'},4.4);
+tl.to('#deploy',{scale:.72,opacity:0,y:-40,duration:.45,ease:'power2.in'},5.3);
+
+// BEAT 3 (5.5-11s): fee comparison — Minara fee smoothly dropping (left) < brokerage column (right)
+tl.fromTo('#leftPanel', {opacity:0,x:-90},{opacity:1,x:0,duration:.6,ease:SNAP},5.5);
+tl.fromTo('#rightPanel',{opacity:0,x:90}, {opacity:1,x:0,duration:.6,ease:SNAP},5.5);
+tl.fromTo('#feeBig',{opacity:0,scale:.6,y:20},{opacity:1,scale:1,y:0,duration:.45,ease:'back.out(1.6)'},5.6);
+tl.fromTo('#lt',{opacity:0,scale:0},{opacity:1,scale:1,duration:.5,ease:'back.out(1.7)'},6.1);
+tl.fromTo(rowEls,{opacity:0,y:24,scale:.92},{opacity:1,y:0,scale:1,duration:.45,ease:'back.out(1.6)',stagger:.08},5.9);
+tl.to('#rightScroller',{y:-scrollDist,duration:2.6,ease:SNAP},7.2);
+
+// Minara fee: smooth, strictly non-increasing decrease (no jitter) -> settles at exactly 0.02%
+const feeEl=document.getElementById('feeBig');
+const feeProxy={v:0.10};
+function fmtFee(){feeEl.textContent=feeProxy.v.toFixed(4)+'%';}
+const feeStart=5.65,feeEnd=10.0;
+// single monotonic tween: power2.out is non-decreasing in progress, so v (start->0.02, start>0.02)
+// is guaranteed non-increasing at every sampled t — no random jitter, no re-rise.
+tl.to(feeProxy,{v:0.02,duration:feeEnd-feeStart,ease:'power2.out',onUpdate:fmtFee},feeStart);
+tl.call(()=>{feeEl.textContent='0.02%';},null,feeEnd+.3);
+
+window.__timelines=window.__timelines||{};
+/* fit to reference-narration timeline (subtitle video) */var __T=9.87;(function(){var c=tl.duration();tl.timeScale(1);if(c>__T+0.01){var f=__T/c;tl.getChildren(false,true,true).forEach(function(ch){ch.startTime(ch.startTime()*f);if(ch.duration)ch.duration(Math.max(0.001,ch.duration()*f));});}else if(c<__T-0.01){tl.to({_p:0},{_p:1,duration:__T-c});}})();
+window.__timelines["root"]=tl;
+</script></body></html>

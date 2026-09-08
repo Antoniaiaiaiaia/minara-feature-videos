@@ -16,4 +16,4 @@ The `_render/sceneN/index.html` files preserve isolated HyperFrames render input
 
 The original production notes identify some leaderboard and agent scores as illustrative placeholders. Treat these as video production sources, not verified benchmark results. Existing scene durations, numbers, and approved English captions are preserved.
 
-Private production records (`context.md`, `change-log.md`) and macOS metadata are excluded. The original source folder was not modified. DMind marks, fonts, and third-party dependencies retain their respective rights; see the repository asset notice.
+Private production records (`context.md`, `change-log.md`), disposable screenshot outputs (`_shots/`), and macOS metadata are excluded. The original source folder was not modified. DMind marks, fonts, and third-party dependencies retain their respective rights; see the repository asset notice.

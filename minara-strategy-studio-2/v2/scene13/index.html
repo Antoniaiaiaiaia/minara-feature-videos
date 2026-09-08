@@ -1,0 +1,249 @@
+<!doctype html><html><head><meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#F9F9F9}
+#root,[data-composition-id="root"]{position:relative;width:1920px;height:1080px;overflow:hidden;
+  background:#F9F9F9;font-family:'Geist',system-ui,-apple-system,sans-serif;color:#141416}
+
+/* ambient glow, bleeds behind/around the hero tile through the grid gaps */
+.glow{position:absolute;left:-80px;top:-60px;width:900px;height:900px;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(235,83,255,.12),rgba(255,154,50,.05) 55%,transparent 75%);opacity:0}
+
+/* === rigorous bento grid: 12 cols x 3 rows, fixed pixel track, equal 28px gaps === */
+.bento{position:absolute;left:90px;top:100px;width:1740px;height:880px;
+  display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:repeat(3,1fr);gap:28px}
+
+.tile{position:relative;background:#fff;border:1px solid #ECECEC;border-radius:28px;
+  box-shadow:0 40px 90px -40px rgba(0,0,0,.24);display:flex;flex-direction:column;
+  overflow:hidden;opacity:0}
+
+/* grid placement -- every edge snaps to the same 12-col/3-row track, no free positioning */
+#t-hero{grid-column:1/5;grid-row:1/3;padding:48px}
+#t-aum{grid-column:5/8;grid-row:1/2;padding:38px 40px}
+#t-apy{grid-column:8/11;grid-row:1/2;padding:38px 40px}
+#t-donut{grid-column:11/13;grid-row:1/4;padding:40px 26px}
+#t-run{grid-column:5/8;grid-row:2/3;padding:38px 40px}
+#t-dd{grid-column:8/11;grid-row:2/3;padding:38px 40px}
+#t-spark{grid-column:1/6;grid-row:3/4;padding:36px 40px}
+#t-active{grid-column:6/9;grid-row:3/4;padding:38px 40px}
+#t-verified{grid-column:9/11;grid-row:3/4;padding:34px 26px}
+
+/* --- hero --- */
+.heroBadge{position:absolute;top:40px;right:40px;display:flex;align-items:center;gap:10px}
+.heroBadge i{width:11px;height:11px;border-radius:50%;background:#07B56A;flex:none}
+.heroBadge span{font-size:20px;font-weight:600;color:#8a8a8a;letter-spacing:.05em;text-transform:uppercase}
+.heroBody{margin-top:auto;margin-bottom:auto}
+.logoWrap{width:116px;height:116px;border-radius:50%;overflow:hidden;background:#fff;
+  border:6px solid #fff;box-shadow:0 20px 46px -18px rgba(0,0,0,.32);margin-bottom:30px}
+.logoWrap img{width:100%;height:100%;object-fit:cover}
+.heroBody h1{font-size:66px;font-weight:800;letter-spacing:-.01em;margin-bottom:16px}
+.heroBody p{font-size:30px;font-weight:300;color:#8a8a8a;line-height:1.3}
+.heroBody p b{background:linear-gradient(120deg,#EB53FF,#FF538E 48%,#FF9A32);
+  -webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800}
+
+/* --- metric tiles (AUM / APY / Runtime / Drawdown) : uniform rhythm --- */
+.mTop{display:flex;align-items:center;gap:12px}
+.mDot{width:13px;height:13px;border-radius:50%;flex:none}
+.mLabel{font-size:23px;font-weight:600;color:#9a9a9a;letter-spacing:.03em;text-transform:uppercase}
+.mVal{font-variant-numeric:tabular-nums;font-weight:800;line-height:1;font-size:80px;margin-top:auto}
+.mCap{font-size:19px;font-weight:600;color:#b0b0b0;margin-top:14px}
+
+/* --- strategy mix (tall sidebar) --- */
+.donutLabel{font-size:22px;font-weight:600;color:#9a9a9a;letter-spacing:.03em;text-transform:uppercase;text-align:center}
+.donutMid{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px}
+.donutWrap{position:relative;width:150px;height:150px;flex:none}
+.donutRing{width:150px;height:150px;border-radius:50%;
+  background:conic-gradient(#07B56A 0% 61%, #B7B7BF 61% 85%, #E9E9E9 85% 100%)}
+.donutHole{position:absolute;inset:26px;background:#fff;border-radius:50%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center}
+.donutHole b{font-size:38px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1}
+.donutHole span{font-size:14px;font-weight:600;color:#9a9a9a;letter-spacing:.05em;margin-top:5px}
+.donutLegend{display:flex;flex-direction:column;gap:14px;width:100%}
+.donutLegend .row{display:flex;align-items:center;gap:10px;font-size:21px;font-weight:600;color:#141416}
+.donutLegend .row i{width:11px;height:11px;border-radius:50%;flex:none}
+.donutLegend .row b{margin-left:auto;color:#9a9a9a;font-weight:600;font-variant-numeric:tabular-nums}
+.donutFoot{display:flex;align-items:center;justify-content:center;gap:9px;margin-top:auto}
+.donutFoot i{width:9px;height:9px;border-radius:50%;background:#07B56A;flex:none}
+.donutFoot span{font-size:17px;font-weight:600;color:#a6a6a6}
+
+/* --- live equity sparkline --- */
+.sparkTop{display:flex;align-items:baseline;justify-content:space-between}
+.sparkChart{flex:1;margin-top:18px}
+.sparkChart svg{width:100%;height:100%;display:block}
+.sparkDelta{font-size:30px;font-weight:800;color:#07B56A;font-variant-numeric:tabular-nums}
+
+/* --- active strategies --- */
+.activeVal{font-variant-numeric:tabular-nums;font-weight:800;line-height:1;font-size:92px;margin-top:auto}
+
+/* --- on-chain verified --- */
+.verifiedMid{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center}
+.checkBadge{width:66px;height:66px;border-radius:50%;background:#07B56A;display:flex;align-items:center;justify-content:center;flex:none}
+.checkBadge svg{width:32px;height:32px}
+.verifiedMid h3{font-size:25px;font-weight:700}
+.verifiedMid p{font-size:17px;font-weight:600;color:#9a9a9a;line-height:1.35}
+</style></head>
+<body>
+<div id="root" data-composition-id="root" data-width="1920" data-height="1080" data-start="0" data-duration="5">
+
+  <div class="glow" id="glow"></div>
+
+  <div class="bento">
+
+    <div class="tile" id="t-hero">
+      <div class="heroBadge"><i id="heroLive"></i><span>Live monitoring</span></div>
+      <div class="heroBody">
+        <div class="logoWrap" id="logoWrap"><img src="assets/avatar.png" alt=""></div>
+        <h1>Minara</h1>
+        <p>Minara is watching…</p>
+      </div>
+    </div>
+
+    <div class="tile" id="t-aum">
+      <div class="mTop"><span class="mDot" style="background:#C9C9CF"></span><span class="mLabel">Total AUM</span></div>
+      <div class="mVal" id="v-aum">$0.0M</div>
+      <div class="mCap">across all deployed strategies</div>
+    </div>
+
+    <div class="tile" id="t-apy">
+      <div class="mTop"><span class="mDot" style="background:#07B56A"></span><span class="mLabel">Avg APY</span></div>
+      <div class="mVal" id="v-apy" style="color:#07B56A">0.0%</div>
+      <div class="mCap">annualized, net of fees</div>
+    </div>
+
+    <div class="tile" id="t-donut">
+      <div class="donutLabel">Strategy Mix</div>
+      <div class="donutMid">
+        <div class="donutWrap">
+          <div class="donutRing"></div>
+          <div class="donutHole"><b id="v-live">0%</b><span>LIVE</span></div>
+        </div>
+        <div class="donutLegend">
+          <div class="row"><i style="background:#07B56A"></i>Live<b>61%</b></div>
+          <div class="row"><i style="background:#B7B7BF"></i>Paper<b>24%</b></div>
+          <div class="row"><i style="background:#E9E9E9"></i>Archived<b>15%</b></div>
+        </div>
+      </div>
+      <div class="donutFoot" id="donutFoot"><i></i><span>Updated in real time</span></div>
+    </div>
+
+    <div class="tile" id="t-run">
+      <div class="mTop"><span class="mDot" style="background:#C9C9CF"></span><span class="mLabel">Avg Runtime</span></div>
+      <div class="mVal" id="v-run">0d</div>
+      <div class="mCap">average strategy age</div>
+    </div>
+
+    <div class="tile" id="t-dd">
+      <div class="mTop"><span class="mDot" style="background:#F75D5F"></span><span class="mLabel">Avg Drawdown</span></div>
+      <div class="mVal" id="v-dd" style="color:#F75D5F">-0.0%</div>
+      <div class="mCap">peak-to-trough, all strategies</div>
+    </div>
+
+    <div class="tile" id="t-spark">
+      <div class="sparkTop">
+        <span class="mLabel">Live Equity</span>
+        <span class="sparkDelta" id="v-delta">+0.0%</span>
+      </div>
+      <div class="sparkChart">
+        <svg viewBox="0 0 628 150" preserveAspectRatio="none">
+          <path id="spark-fill" fill="rgba(7,181,106,.12)" stroke="none"/>
+          <path id="spark-line" fill="none" stroke="#07B56A" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="tile" id="t-active">
+      <div class="mTop"><span class="mDot" id="liveDot" style="background:#07B56A"></span><span class="mLabel">Active Strategies</span></div>
+      <div class="activeVal" id="v-active">0</div>
+    </div>
+
+    <div class="tile" id="t-verified">
+      <div class="verifiedMid">
+        <div class="checkBadge" id="checkBadge">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5L10 17L19 7" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3>On-chain Verified</h3>
+        <p>Every return audited</p>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+<script src="lib/gsap.min.js"></script><script src="lib/CustomEase.min.js"></script>
+<script>
+gsap.registerPlugin(CustomEase);
+const SNAP=CustomEase.create("snap","M0,0 C0.95,0.03 0,0.98 1,1");
+const tl=gsap.timeline({paused:true});
+
+// mulberry32 fixed-seed RNG (spec sec.5) -- deterministic equity curve for the sparkline
+function mk(s){return()=>{s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function equityPath(seed,w,h,n){const r=mk(seed);let v=0.12,p=[];for(let i=0;i<n;i++){const drift=0.006+(i/n)*0.012;v+=drift+(r()-0.46)*0.03;v=Math.max(0.05,v);p.push([i/(n-1)*w,h-v*h]);}return p;}
+
+// sparkline path -- viewBox 628x150, preserveAspectRatio=none stretches to the tile's actual chart area
+const sPts=equityPath(11,628,120,28).map(p=>[p[0],p[1]+15]);
+const lineD='M '+sPts.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join(' L ');
+const fillD=lineD+' L '+sPts[sPts.length-1][0].toFixed(1)+',150 L '+sPts[0][0].toFixed(1)+',150 Z';
+document.getElementById('spark-line').setAttribute('d',lineD);
+document.getElementById('spark-fill').setAttribute('d',fillD);
+const sparkLine=document.getElementById('spark-line');
+const sparkLen=sparkLine.getTotalLength();
+gsap.set(sparkLine,{strokeDasharray:sparkLen,strokeDashoffset:sparkLen});
+gsap.set('#spark-fill',{opacity:0});
+
+const tiles=['#t-hero','#t-aum','#t-apy','#t-donut','#t-run','#t-dd','#t-spark','#t-active','#t-verified'];
+gsap.set('#glow',{opacity:0,scale:.9});
+gsap.set(tiles,{opacity:0,scale:.93,y:26});
+gsap.set('#logoWrap',{opacity:0,scale:0});
+gsap.set('#checkBadge',{opacity:0,scale:0});
+gsap.set('#heroLive',{opacity:0});
+
+// proxy objects -- count-ups drive onUpdate, never tween textContent directly (avoids NaN on seek)
+const cAum={v:0}, cApy={v:0}, cRun={v:0}, cDd={v:0}, cLive={v:0}, cActive={v:0}, cDelta={v:0};
+const elAum=document.getElementById('v-aum'), elApy=document.getElementById('v-apy'),
+      elRun=document.getElementById('v-run'), elDd=document.getElementById('v-dd'),
+      elLive=document.getElementById('v-live'), elActive=document.getElementById('v-active'),
+      elDelta=document.getElementById('v-delta');
+
+tl.to('#glow',{opacity:.8,scale:1,duration:.6,ease:SNAP},0);
+
+// 0.0 -- 4.55 : bento tiles generate SLOWLY (one every ~0.5s) — spread across the whole scene per Antonia
+tl.to('#t-hero',{opacity:1,scale:1,y:0,duration:.55,ease:'back.out(1.5)'},0);
+tl.to('#logoWrap',{opacity:1,scale:1,duration:.5,ease:'back.out(1.7)'},.22);
+tl.to('#heroLive',{opacity:1,duration:.3,ease:SNAP},.5);
+
+tl.to('#t-aum',{opacity:1,scale:1,y:0,duration:.55,ease:'back.out(1.6)'},.5);
+tl.to(cAum,{v:48.2,duration:.7,ease:'power1.out',onUpdate:()=>{elAum.textContent='$'+cAum.v.toFixed(1)+'M';}},.64);
+
+tl.to('#t-apy',{opacity:1,scale:1,y:0,duration:.55,ease:'back.out(1.6)'},1.0);
+tl.to(cApy,{v:62.4,duration:.7,ease:'power1.out',onUpdate:()=>{elApy.textContent=cApy.v.toFixed(1)+'%';}},1.14);
+
+tl.to('#t-donut',{opacity:1,scale:1,y:0,duration:.55,ease:'back.out(1.5)'},1.5);
+tl.to(cLive,{v:61,duration:.7,ease:'power1.out',onUpdate:()=>{elLive.textContent=Math.round(cLive.v)+'%';}},1.64);
+
+tl.to('#t-run',{opacity:1,scale:1,y:0,duration:.55,ease:'back.out(1.6)'},2.0);
+tl.to(cRun,{v:214,duration:.7,ease:'power1.out',onUpdate:()=>{elRun.textContent=Math.round(cRun.v)+'d';}},2.14);
+
+tl.to('#t-dd',{opacity:1,scale:1,y:0,duration:.55,ease:'back.out(1.6)'},2.5);
+tl.to(cDd,{v:14.7,duration:.7,ease:'power1.out',onUpdate:()=>{elDd.textContent='-'+cDd.v.toFixed(1)+'%';}},2.64);
+
+tl.to('#t-spark',{opacity:1,scale:1,y:0,duration:.55,ease:'back.out(1.5)'},3.0);
+tl.to(sparkLine,{strokeDashoffset:0,duration:.8,ease:'power1.inOut'},3.16);
+tl.to('#spark-fill',{opacity:1,duration:.3,ease:'power1.out'},3.8);
+tl.to(cDelta,{v:38.6,duration:.7,ease:'power1.out',onUpdate:()=>{elDelta.textContent='+'+cDelta.v.toFixed(1)+'%';}},3.16);
+
+tl.to('#t-active',{opacity:1,scale:1,y:0,duration:.55,ease:'back.out(1.7)'},3.5);
+tl.to(cActive,{v:182,duration:.7,ease:'power1.out',onUpdate:()=>{elActive.textContent=Math.round(cActive.v);}},3.64);
+
+tl.to('#t-verified',{opacity:1,scale:1,y:0,duration:.55,ease:'back.out(1.6)'},4.0);
+tl.to('#checkBadge',{opacity:1,scale:1,duration:.5,ease:'back.out(1.8)'},4.18);
+
+// 4.4 -- 5.0 : brief live pulse to settle
+tl.to('#glow',{scale:1.04,opacity:.95,duration:.35,ease:'sine.inOut',yoyo:true,repeat:1},4.3);
+tl.to('#liveDot',{opacity:.3,duration:.3,ease:'sine.inOut',yoyo:true,repeat:1},4.4);
+tl.to('#heroLive',{opacity:.3,duration:.3,ease:'sine.inOut',yoyo:true,repeat:1},4.4);
+
+window.__timelines=window.__timelines||{};
+/* fit to reference-narration timeline (subtitle video) */var __T=5;(function(){var c=tl.duration();tl.timeScale(1);if(c>__T+0.01){var f=__T/c;tl.getChildren(false,true,true).forEach(function(ch){ch.startTime(ch.startTime()*f);if(ch.duration)ch.duration(Math.max(0.001,ch.duration()*f));});}else if(c<__T-0.01){tl.to({_p:0},{_p:1,duration:__T-c});}})();
+window.__timelines["root"]=tl;
+</script></body></html>

@@ -1,0 +1,310 @@
+<!doctype html><html><head><meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap');
+:root{--grad:linear-gradient(120deg,#EB53FF,#FF538E 48%,#FF9A32)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#F9F9F9}
+#root,[data-composition-id="root"]{position:relative;width:1920px;height:1080px;overflow:hidden;
+  background:#F9F9F9;font-family:'Geist',system-ui,-apple-system,sans-serif;color:#141416}
+
+/* ---- scattered wave cards ---- */
+.scard{position:absolute;background:rgba(255,255,255,.66);border:1px solid rgba(255,255,255,.7);border-radius:26px;
+  -webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);
+  box-shadow:0 30px 70px -42px rgba(0,0,0,.22);padding:30px 34px;opacity:0;z-index:10}
+.schip{display:inline-block;font-size:21px;font-weight:700;color:#555;background:#F3F3F5;border-radius:999px;padding:7px 18px}
+.thead{display:flex;align-items:center;justify-content:space-between}
+.ic{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums;color:#555}
+.sym{font-size:100px;font-weight:800;line-height:.9;margin:14px 0 6px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.fname{font-size:30px;font-weight:700}
+.tags{display:flex;gap:8px;margin-top:12px}
+.tg2{font-size:16px;font-weight:600;border-radius:8px;padding:5px 12px}
+.liq{background:#E8F1FF;color:#2f7ff0}.cry{background:#FFF0E2;color:#E7830f}.stk{background:#E9F7FF;color:#2aa3d6}
+.srow{display:flex;align-items:center;justify-content:space-between}
+.sname{font-size:28px;font-weight:700}
+.tg{font-size:18px;font-weight:600;border-radius:10px;padding:5px 14px}
+.neu{background:#F1F1F1;color:#555}.grn{background:#E7F8EF;color:#07B56A}
+.curve{width:100%;height:60px;margin:16px 0 4px}
+.mrow{display:flex;align-items:baseline;gap:18px;margin-top:4px}
+.pct{font-size:42px;font-weight:800;color:#07B56A;font-variant-numeric:tabular-nums}
+.mini{font-size:20px;font-weight:600;color:#8a8a8a;font-variant-numeric:tabular-nums}
+.lab{font-size:20px;color:#9a9a9a;font-weight:600}
+.ivrow{display:flex;align-items:center;gap:16px;margin-top:14px}
+.tok{width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;color:#fff}
+.amt{font-size:40px;font-weight:800;font-variant-numeric:tabular-nums}
+.t4head{display:flex;align-items:baseline;justify-content:space-between}
+.alloc{display:flex;gap:6px;height:36px;margin:14px 0 12px}
+.alloc s{border-radius:8px}
+.legend{display:flex;gap:20px;flex-wrap:wrap}
+.legend span{font-size:17px;font-weight:600;color:#555;font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:7px}
+.legend i{width:11px;height:11px;border-radius:50%}
+.ph{margin-top:30px;font-size:30px;color:#9a9a9a;font-weight:500;line-height:1.35}
+.send{position:absolute;right:32px;bottom:28px;width:62px;height:62px;border-radius:50%;background:#141416;
+  color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px}
+#c-code{font-family:'Geist Mono',monospace}
+#c-code .cline{font-size:22px;line-height:1.8;white-space:pre}
+.kw{color:#8b3bd6}.fn{color:#2f7ff0}.num{color:#0b8a45}.cm{color:#9aa0a6}.str{color:#c0392b}
+.riskgrid{display:flex;gap:30px;margin-top:20px}
+.riskitem{flex:1}
+.riskval{font-size:38px;font-weight:800;font-variant-numeric:tabular-nums}
+.risklab{font-size:17px;color:#9a9a9a;font-weight:600;margin-top:4px}
+.wrow{display:flex;align-items:center;justify-content:space-between;margin-top:16px}
+.wtok{display:flex;align-items:center;gap:14px}
+.wtok .tok{width:42px;height:42px;font-size:20px}
+.wname{font-size:23px;font-weight:700}
+.wprice{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}
+.wchg{font-size:17px;font-weight:600;font-variant-numeric:tabular-nums}
+.up{color:#07B56A}.down{color:#F75D5F}
+.livewrap{display:flex;align-items:center;gap:12px}
+.livedot{width:13px;height:13px;border-radius:50%;background:#07B56A}
+.livechip{font-size:17px;font-weight:700;color:#07B56A;background:#E7F8EF;border-radius:999px;padding:6px 16px}
+.livepnl{font-size:58px;font-weight:800;color:#07B56A;font-variant-numeric:tabular-nums;margin-top:12px}
+.livesub{font-size:19px;color:#8a8a8a;font-weight:600;margin-top:4px}
+
+/* ---- placement: fill whole frame incl. center, deliberate overlaps, crop edges (§8) ---- */
+#c-factor{left:-70px;top:110px;width:560px;z-index:11}
+#c-momentum{left:430px;top:-40px;width:500px;z-index:14}
+#c-describe{left:1180px;top:40px;width:480px;z-index:12}
+#c-code{left:1560px;top:360px;width:480px;z-index:15}
+#c-backtest{left:70px;top:560px;width:520px;z-index:13}
+#c-balance{left:560px;top:430px;width:380px;z-index:16}
+#c-holdings{left:1170px;top:600px;width:360px;z-index:15}
+#c-alloc{left:-60px;top:840px;width:560px;z-index:12}
+#c-risk{left:820px;top:700px;width:480px;z-index:14}
+#c-watchlist{left:1490px;top:770px;width:420px;z-index:13}
+#c-livepnl{left:770px;top:180px;width:420px;z-index:17}
+
+/* ---- unified dashboard ---- */
+.ui{position:absolute;left:210px;top:120px;width:1500px;height:860px;background:#fff;border:1px solid #ECECEC;
+  border-radius:34px;box-shadow:0 60px 130px -50px rgba(0,0,0,.3);opacity:0;transform-origin:50% 50%;overflow:hidden;z-index:1}
+.tb{height:80px;border-bottom:1px solid #F1F1F1;display:flex;align-items:center;gap:12px;padding:0 34px}
+.tb i{width:16px;height:16px;border-radius:50%}
+.tb .title{margin-left:14px;font-size:24px;font-weight:700;color:#141416}
+.tb .spacer{flex:1}
+.tb .pill{font-size:19px;font-weight:600;color:#555;border:1px solid #EAEAEA;border-radius:999px;padding:8px 18px}
+.bento{position:absolute;left:52px;top:120px;width:1396px;height:680px;
+  display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:repeat(2,1fr);gap:22px}
+.tile{background:#fff;border:1px solid #ECECEC;border-radius:22px;box-shadow:0 20px 50px -34px rgba(0,0,0,.2);
+  opacity:0;padding:26px 30px;position:relative;overflow:hidden;display:flex;flex-direction:column}
+.t1{grid-column:1/6;grid-row:1/3}
+.t2{grid-column:6/10;grid-row:1/2;justify-content:space-between}
+.t3{grid-column:10/13;grid-row:1/2;justify-content:space-between}
+.t4{grid-column:6/13;grid-row:2/3;justify-content:space-between}
+/* ---- fill blocks: eliminate empty voids in bento tiles ---- */
+.factor-list{flex:1;display:flex;flex-direction:column;margin-top:22px;min-height:0}
+.frows{flex:1;display:flex;flex-direction:column;justify-content:space-between;min-height:0}
+.frow{display:flex;align-items:center;gap:16px}
+.fname2{font-size:18px;font-weight:600;color:#8a8a8a;width:220px;flex-shrink:0}
+.fbar{flex:1;height:12px;background:#F1F1F1;border-radius:6px;overflow:hidden}
+.fbar i{display:block;height:100%;border-radius:6px;background:#D9D9DE}
+.fval{font-size:18px;font-weight:700;color:#8a8a8a;width:64px;text-align:right;font-variant-numeric:tabular-nums}
+.frow.hl .fname2,.frow.hl .fval{color:#141416}
+.frow.hl .fbar i{background:var(--grad)}
+.positions{border-top:1px solid #F1F1F1;padding-top:18px}
+.poswrap{display:flex;justify-content:space-between;align-items:center}
+.pitem{display:flex;align-items:center;gap:10px}
+
+/* ---- spotlight + giant CTA ---- */
+.dim{position:absolute;inset:0;background:rgba(249,249,245,.55);opacity:0;z-index:30}
+.giant-cta{position:absolute;left:960px;top:540px;width:600px;height:180px;border-radius:999px;background:var(--grad);
+  display:flex;align-items:center;justify-content:center;gap:24px;
+  box-shadow:0 34px 80px -18px rgba(255,83,142,.6);opacity:0;z-index:40}
+.giant-cta span{font-size:74px;font-weight:800;color:#fff;letter-spacing:-.01em}
+.giant-cta svg{width:52px;height:52px}
+</style></head>
+<body>
+<div id="root" data-composition-id="root" data-width="1920" data-height="1080" data-start="0" data-duration="4.53">
+
+  <!-- wave A — "alpha" -->
+  <div class="scard" id="c-factor">
+    <div class="thead"><span class="schip">☆ AI Factor</span><span class="ic">IC 0.086</span></div>
+    <div class="sym">α</div><div class="fname">Zero-Volume Days</div>
+    <div class="tags"><span class="tg2 liq">Liquidity</span><span class="tg2 cry">Crypto</span><span class="tg2 stk">Stock</span></div>
+  </div>
+  <div class="scard" id="c-momentum">
+    <span class="schip">📈 Strategy</span>
+    <div class="srow" style="margin-top:20px"><span class="sname">Momentum L/S</span><span class="tg neu">Tradfi 30</span></div>
+    <svg class="curve" viewBox="0 0 500 52" preserveAspectRatio="none"><polyline fill="none" stroke="#07B56A" stroke-width="4" points="0,46 80,42 160,36 240,26 320,30 400,16 500,6"/></svg>
+    <div class="mrow"><span class="pct">+128%</span><span class="mini">Sharpe 2.03</span><span class="mini">DD 20.1%</span></div>
+  </div>
+  <div class="scard" id="c-describe">
+    <span class="schip">📝 Describe</span>
+    <div class="ph">Describe your trading idea<br>in plain language.</div>
+    <div class="send">↑</div>
+  </div>
+  <div class="scard" id="c-code">
+    <span class="schip">&lt;/&gt; AI Coding</span>
+    <div style="margin-top:22px">
+      <div class="cline"><span class="cm">// momentum signal</span></div>
+      <div class="cline"><span class="kw">function</span> <span class="fn">signal</span>(bar) {</div>
+      <div class="cline">&nbsp;&nbsp;<span class="kw">const</span> rsi = <span class="fn">RSI</span>(bar.close, <span class="num">14</span>);</div>
+      <div class="cline">&nbsp;&nbsp;<span class="kw">if</span> (rsi &lt; <span class="num">30</span>) <span class="kw">return</span> <span class="str">LONG</span>;</div>
+      <div class="cline">}</div>
+    </div>
+  </div>
+  <div class="scard" id="c-backtest">
+    <span class="schip">📊 Backtest</span>
+    <div class="srow" style="margin-top:20px"><span class="sname">Coin 30 Momentum</span><span class="tg neu">Coin 30</span></div>
+    <svg class="curve" viewBox="0 0 480 64" preserveAspectRatio="none"><polyline fill="none" stroke="#07B56A" stroke-width="5" points="0,56 70,50 140,44 210,30 280,34 350,18 480,6"/></svg>
+    <div class="mrow"><span class="pct">+92%</span><span class="mini">Win 71%</span></div>
+  </div>
+
+  <!-- wave B — "edge" -->
+  <div class="scard" id="c-balance">
+    <div class="thead"><span class="lab">Balance</span><span class="tg grn">Deposit</span></div>
+    <div class="ivrow"><span class="tok" style="background:#07B56A">$</span><span class="amt">$12,480</span></div>
+  </div>
+  <div class="scard" id="c-holdings">
+    <span class="lab">Holdings</span>
+    <div class="ivrow"><span class="tok" style="background:#627EEA">Ξ</span><span class="amt">3.20 ETH</span></div>
+  </div>
+  <div class="scard" id="c-alloc">
+    <div class="t4head"><span class="lab">Allocation</span><span class="lab" style="font-size:15px">5 assets · signal-weighted</span></div>
+    <div class="alloc"><s style="flex:34;background:#EB53FF"></s><s style="flex:26;background:#FF9A32"></s><s style="flex:18;background:#07B56A"></s><s style="flex:14;background:#627EEA"></s><s style="flex:8;background:#E2E2E6"></s></div>
+    <div class="legend"><span><i style="background:#EB53FF"></i>NVDA 34%</span><span><i style="background:#FF9A32"></i>TSLA 26%</span><span><i style="background:#07B56A"></i>BTC 18%</span><span><i style="background:#627EEA"></i>ETH 14%</span><span><i style="background:#C9C9CF"></i>SOL 8%</span></div>
+  </div>
+  <div class="scard" id="c-risk">
+    <span class="schip">⚠ Risk</span>
+    <div class="riskgrid">
+      <div class="riskitem"><div class="riskval">2.03</div><div class="risklab">Sharpe</div></div>
+      <div class="riskitem"><div class="riskval">20.1%</div><div class="risklab">Max DD</div></div>
+      <div class="riskitem"><div class="riskval">18.4%</div><div class="risklab">Volatility</div></div>
+    </div>
+  </div>
+  <div class="scard" id="c-watchlist">
+    <span class="schip">★ Watchlist</span>
+    <div class="wrow"><div class="wtok"><span class="tok" style="background:#F7931A">₿</span><span class="wname">BTC</span></div><div><span class="wprice">$67,240</span> <span class="wchg up">+2.4%</span></div></div>
+    <div class="wrow"><div class="wtok"><span class="tok" style="background:#627EEA">Ξ</span><span class="wname">ETH</span></div><div><span class="wprice">$3,180</span> <span class="wchg up">+1.1%</span></div></div>
+    <div class="wrow"><div class="wtok"><span class="tok" style="background:#14F195;color:#141416">◎</span><span class="wname">SOL</span></div><div><span class="wprice">$168</span> <span class="wchg down">-0.8%</span></div></div>
+  </div>
+  <div class="scard" id="c-livepnl">
+    <div class="livewrap"><span class="livedot"></span><span class="livechip">LIVE</span></div>
+    <div class="livepnl">+$12,480</div>
+    <div class="livesub">Today's P&amp;L · 5 strategies</div>
+  </div>
+
+  <!-- unified dashboard -->
+  <div class="ui" id="ui">
+    <div class="tb"><i style="background:#FF5F57"></i><i style="background:#FEBC2E"></i><i style="background:#28C840"></i>
+      <span class="title">Strategy Studio</span><span class="spacer"></span><span class="pill">Tradfi 30 ▾</span></div>
+    <div class="bento" id="bento">
+      <div class="tile t1">
+        <div class="thead"><span class="schip">☆ AI Factor</span><span class="ic">IC 0.086</span></div>
+        <div class="sym">α</div><div class="fname">Zero-Volume Days</div>
+        <div class="tags"><span class="tg2 liq">Liquidity</span><span class="tg2 cry">Crypto</span><span class="tg2 stk">Stock</span></div>
+        <div class="factor-list">
+          <div class="lab" style="font-size:16px">Factor IC — Liquidity family</div>
+          <div class="frows">
+            <div class="frow hl"><span class="fname2">Zero-Volume Days</span><div class="fbar"><i style="width:86%"></i></div><span class="fval">0.086</span></div>
+            <div class="frow"><span class="fname2">Overnight Skew</span><div class="fbar"><i style="width:61%"></i></div><span class="fval">0.061</span></div>
+            <div class="frow"><span class="fname2">Volume Spike Decay</span><div class="fbar"><i style="width:54%"></i></div><span class="fval">0.054</span></div>
+            <div class="frow"><span class="fname2">Order Book Imbalance</span><div class="fbar"><i style="width:48%"></i></div><span class="fval">0.048</span></div>
+            <div class="frow"><span class="fname2">Earnings Drift</span><div class="fbar"><i style="width:39%"></i></div><span class="fval">0.039</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="tile t2">
+        <div class="srow" style="margin-top:0"><span class="sname" style="font-size:26px">Momentum L/S</span><span class="tg neu" style="font-size:16px">Tradfi 30</span></div>
+        <svg class="curve" style="height:96px;margin:0" viewBox="0 0 391 96" preserveAspectRatio="none"><polyline fill="none" stroke="#07B56A" stroke-width="4" points="0,84 55,78 110,68 165,58 220,64 275,40 330,28 391,10"/></svg>
+        <div class="mrow" style="margin-top:0"><span class="pct" style="font-size:36px">+128%</span><span class="mini">Sharpe 2.03</span><span class="mini">DD 20.1%</span></div>
+        <div class="riskgrid" style="margin-top:0">
+          <div class="riskitem"><div class="riskval" style="font-size:26px">14.2%</div><div class="risklab">Volatility</div></div>
+          <div class="riskitem"><div class="riskval" style="font-size:26px">482</div><div class="risklab">Trades</div></div>
+          <div class="riskitem"><div class="riskval" style="font-size:26px">64%</div><div class="risklab">Win rate</div></div>
+        </div>
+      </div>
+      <div class="tile t3">
+        <div class="thead"><span class="lab">Balance</span><span class="tg grn">Deposit</span></div>
+        <div class="ivrow"><span class="tok" style="background:#07B56A">$</span><span class="amt">$12,480</span></div>
+        <div style="font-size:19px;font-weight:600;color:#07B56A">+$1,240 · +11.0% this week</div>
+        <svg class="curve" style="height:64px;margin:0" viewBox="0 0 272 64" preserveAspectRatio="none">
+          <polygon fill="rgba(7,181,106,.10)" points="0,50 34,46 68,48 102,36 136,40 170,26 204,30 238,16 272,10 272,64 0,64"/>
+          <polyline fill="none" stroke="#07B56A" stroke-width="3" points="0,50 34,46 68,48 102,36 136,40 170,26 204,30 238,16 272,10"/>
+        </svg>
+      </div>
+      <div class="tile t4">
+        <div>
+          <div class="t4head"><span class="lab">Allocation</span><span class="lab" style="font-size:16px">5 assets · signal-weighted</span></div>
+          <div class="alloc"><s style="flex:34;background:#EB53FF"></s><s style="flex:26;background:#FF9A32"></s><s style="flex:18;background:#07B56A"></s><s style="flex:14;background:#627EEA"></s><s style="flex:8;background:#E2E2E6"></s></div>
+          <div class="legend"><span><i style="background:#EB53FF"></i>NVDA 34%</span><span><i style="background:#FF9A32"></i>TSLA 26%</span><span><i style="background:#07B56A"></i>BTC 18%</span><span><i style="background:#627EEA"></i>ETH 14%</span><span><i style="background:#C9C9CF"></i>SOL 8%</span></div>
+        </div>
+        <div class="positions">
+          <div class="lab" style="font-size:15px;margin-bottom:14px">Positions</div>
+          <div class="poswrap">
+            <div class="pitem"><span class="tok" style="width:34px;height:34px;font-size:16px;background:#76B900">N</span><div><div class="wname" style="font-size:18px">NVDA</div><div class="wchg up" style="font-size:14px">+2.4%</div></div></div>
+            <div class="pitem"><span class="tok" style="width:34px;height:34px;font-size:16px;background:#111">T</span><div><div class="wname" style="font-size:18px">TSLA</div><div class="wchg up" style="font-size:14px">+1.8%</div></div></div>
+            <div class="pitem"><span class="tok" style="width:34px;height:34px;font-size:16px;background:#F7931A">₿</span><div><div class="wname" style="font-size:18px">BTC</div><div class="wchg up" style="font-size:14px">+2.4%</div></div></div>
+            <div class="pitem"><span class="tok" style="width:34px;height:34px;font-size:16px;background:#627EEA">Ξ</span><div><div class="wname" style="font-size:18px">ETH</div><div class="wchg up" style="font-size:14px">+1.1%</div></div></div>
+            <div class="pitem"><span class="tok" style="width:34px;height:34px;font-size:16px;background:#14F195;color:#141416">◎</span><div><div class="wname" style="font-size:18px">SOL</div><div class="wchg down" style="font-size:14px">-0.8%</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dim" id="dim"></div>
+  <div class="giant-cta" id="cta"><span>Allocate</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+  </div>
+</div>
+<script src="lib/gsap.min.js"></script><script src="lib/CustomEase.min.js"></script>
+<script>
+gsap.registerPlugin(CustomEase);
+const SNAP=CustomEase.create("snap","M0,0 C0.95,0.03 0,0.98 1,1");
+const root=document.getElementById('root');
+function stageCenter(el){let x=0,y=0,n=el;while(n&&n!==root){x+=n.offsetLeft;y+=n.offsetTop;n=n.offsetParent;}return {x:x+el.offsetWidth/2,y:y+el.offsetHeight/2};}
+function $(id){return document.getElementById(id);}
+
+// wave A — "alpha" (5 cards); no rotation, just scale+offset entrance
+const waveA=[
+  {el:$('c-factor'),fx:-50,fy:34},
+  {el:$('c-momentum'),fx:40,fy:-42},
+  {el:$('c-describe'),fx:44,fy:-30},
+  {el:$('c-code'),fx:50,fy:36},
+  {el:$('c-backtest'),fx:-46,fy:38}
+];
+// wave B — "edge" (6 cards)
+const waveB=[
+  {el:$('c-balance'),fx:-30,fy:44},
+  {el:$('c-holdings'),fx:38,fy:40},
+  {el:$('c-alloc'),fx:-48,fy:32},
+  {el:$('c-risk'),fx:34,fy:-40},
+  {el:$('c-watchlist'),fx:44,fy:-30},
+  {el:$('c-livepnl'),fx:-32,fy:42}
+];
+const allCards=[...waveA,...waveB];
+const tiles=[...document.querySelectorAll('.tile')];
+
+// initial states
+allCards.forEach(c=>gsap.set(c.el,{opacity:0,scale:.62,rotation:0,x:c.fx,y:c.fy}));
+gsap.set('#ui',{opacity:0,scale:.22});
+gsap.set(tiles,{opacity:0,scale:.85,y:22});
+gsap.set('#cta',{opacity:0,xPercent:-50,yPercent:-50,scale:0});
+
+const conv=allCards.map(c=>{const p=stageCenter(c.el);return {el:c.el,dx:960-p.x,dy:540-p.y};});
+
+const tl=gsap.timeline({paused:true});
+
+// 0.0-1.2s — "alpha": wave A pops in
+waveA.forEach((c,i)=>tl.to(c.el,{opacity:1,scale:1,x:0,y:0,duration:.5,ease:'back.out(1.6)'},0.05+i*0.15));
+
+// 1.2-2.4s — "edge": wave B pops in
+waveB.forEach((c,i)=>tl.to(c.el,{opacity:1,scale:1,x:0,y:0,duration:.5,ease:'back.out(1.6)'},1.25+i*0.15));
+
+// 2.55-3.25s — "and capital meet": all 11 cards converge to center, shrink, fade
+conv.forEach((c,i)=>tl.to(c.el,{x:c.dx,y:c.dy,rotation:0,scale:.18,opacity:0,duration:.5,ease:SNAP},2.55+i*0.02));
+
+// unified dashboard shell grows from that same center point (~2.8s)
+tl.to('#ui',{opacity:1,scale:1,duration:.55,ease:SNAP},2.80);
+// dashboard elements generate progressively from 3.0s to 5.0s (one tile every 0.5s)
+tiles.forEach((t,i)=>tl.to(t,{opacity:1,scale:1,y:0,duration:.5,ease:'back.out(1.5)'},3.0+i*0.5));
+
+// only AFTER the dashboard is fully built (>5s): spotlight dims it, giant Allocate CTA pops center
+tl.to('#dim',{opacity:1,duration:.4,ease:SNAP},5.0);
+tl.to('#cta',{opacity:1,scale:1,duration:.6,ease:'back.out(1.7)'},5.2);
+
+// hold to 6s
+
+window.__timelines=window.__timelines||{};
+/* fit to reference-narration timeline (subtitle video) */var __T=4.53;(function(){var c=tl.duration();tl.timeScale(1);if(c>__T+0.01){var f=__T/c;tl.getChildren(false,true,true).forEach(function(ch){ch.startTime(ch.startTime()*f);if(ch.duration)ch.duration(Math.max(0.001,ch.duration()*f));});}else if(c<__T-0.01){tl.to({_p:0},{_p:1,duration:__T-c});}})();
+window.__timelines["root"]=tl;
+</script></body></html>

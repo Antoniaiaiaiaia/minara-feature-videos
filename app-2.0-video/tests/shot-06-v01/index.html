@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1920,height=1080">
+  <title>Minara App 2.0 — Shot 06</title>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face{font-family:Geist;src:url('assets/fonts/Geist-Regular.woff2') format('woff2');font-weight:400}
+    @font-face{font-family:Geist;src:url('assets/fonts/Geist-SemiBold.woff2') format('woff2');font-weight:600}
+    *{box-sizing:border-box}html,body{width:1920px;height:1080px;margin:0;overflow:hidden;background:#f7f7f7;font-family:Geist,sans-serif;color:#111}
+    #shot-06,#shot-06-clip{position:relative;width:1920px;height:1080px;overflow:hidden}
+    .scene-fill{position:absolute;inset:0;background:#f7f7f7}
+    .halo{position:absolute;left:50%;top:50%;width:1180px;height:900px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.96),rgba(255,255,255,.48) 48%,rgba(247,247,247,0) 72%)}
+    #sphere-world{position:absolute;left:50%;top:50%;width:980px;height:900px;margin:-450px 0 0 -490px;transform-origin:50% 50%;will-change:transform,opacity,filter}
+    #rings,#asset-layer{position:absolute;inset:0}
+    .axis{position:absolute;left:50%;top:95px;width:1px;height:710px;background:linear-gradient(transparent,rgba(20,20,22,.14) 12%,rgba(20,20,22,.14) 88%,transparent)}
+    .ring{position:absolute;left:50%;border:1.25px solid rgba(20,20,22,.13);border-radius:50%;transform:translateX(-50%)}
+    .r1{top:159px;width:410px;height:86px}.r2{top:258px;width:700px;height:136px}.r3{top:375px;width:850px;height:154px}.r4{top:510px;width:730px;height:138px}.r5{top:642px;width:440px;height:92px}
+    .asset{position:absolute;left:50%;top:50%;overflow:hidden;border:2px solid #fff;border-radius:50%;background:#fff;box-shadow:0 20px 54px rgba(18,18,20,.15);will-change:transform,opacity,filter}
+    .asset img{display:block;width:100%;height:100%;border-radius:50%;object-fit:cover}
+    #hero-copy{position:absolute;z-index:1000;left:50%;top:50%;display:flex;gap:.18em;transform:translate(-50%,-50%);white-space:nowrap;font-size:264px;line-height:.9;font-weight:600;letter-spacing:-.07em}
+    .hero-word{display:inline-block;opacity:0;will-change:transform,opacity,filter}
+  </style>
+</head>
+<body>
+<main id="shot-06" data-composition-id="minara-shot-06" data-width="1920" data-height="1080" data-start="0" data-duration="4.133" data-fps="60" data-root="true">
+  <section id="shot-06-clip" class="clip" data-start="0" data-duration="4.133">
+    <div class="scene-fill"></div><div class="halo"></div>
+    <div id="sphere-world">
+      <div id="rings"><span class="axis"></span><span class="ring r1"></span><span class="ring r2"></span><span class="ring r3"></span><span class="ring r4"></span><span class="ring r5"></span></div>
+      <div id="asset-layer">
+        <span class="asset" data-lat="-1.03" data-phase="0.20" data-size="64"><img src="assets/tradingview/apple.png" alt="Apple"></span>
+        <span class="asset" data-lat="-1.03" data-phase="2.29" data-size="76"><img src="assets/tradingview/nvidia.png" alt="NVIDIA"></span>
+        <span class="asset" data-lat="-1.03" data-phase="4.39" data-size="58"><img src="assets/tradingview/amazon.png" alt="Amazon"></span>
+        <span class="asset" data-lat="-0.72" data-phase="0.00" data-size="86"><img src="assets/tradingview/microsoft.png" alt="Microsoft"></span>
+        <span class="asset" data-lat="-0.72" data-phase="1.26" data-size="62"><img src="assets/tradingview/meta-platforms.png" alt="Meta"></span>
+        <span class="asset" data-lat="-0.72" data-phase="2.51" data-size="78"><img src="assets/tradingview/tesla.png" alt="Tesla"></span>
+        <span class="asset" data-lat="-0.72" data-phase="3.77" data-size="60"><img src="assets/tradingview/advanced-micro-devices.png" alt="AMD"></span>
+        <span class="asset" data-lat="-0.72" data-phase="5.03" data-size="72"><img src="assets/tradingview/broadcom.png" alt="Broadcom"></span>
+        <span class="asset" data-lat="-0.38" data-phase="0.15" data-size="88"><img src="assets/tradingview/alphabet.png" alt="Alphabet"></span>
+        <span class="asset" data-lat="-0.38" data-phase="1.20" data-size="64"><img src="assets/tradingview/jpmorgan-chase.png" alt="JPMorgan Chase"></span>
+        <span class="asset" data-lat="-0.38" data-phase="2.24" data-size="80"><img src="assets/tradingview/walmart.png" alt="Walmart"></span>
+        <span class="asset" data-lat="-0.38" data-phase="3.29" data-size="58"><img src="assets/tradingview/exxon.png" alt="Exxon"></span>
+        <span class="asset" data-lat="-0.38" data-phase="4.34" data-size="74"><img src="assets/tradingview/berkshire-hathaway.png" alt="Berkshire Hathaway"></span>
+        <span class="asset" data-lat="-0.38" data-phase="5.38" data-size="66"><img src="assets/tradingview/oracle.png" alt="Oracle"></span>
+        <span class="asset" data-lat="0" data-phase="0.52" data-size="92"><img src="assets/tradingview/nasdaq.png" alt="Nasdaq Futures"></span>
+        <span class="asset" data-lat="0" data-phase="1.57" data-size="68"><img src="assets/tradingview/gold.png" alt="Gold Futures"></span>
+        <span class="asset" data-lat="0" data-phase="2.62" data-size="84"><img src="assets/tradingview/crude-oil.png" alt="Crude Oil Futures"></span>
+        <span class="asset" data-lat="0" data-phase="3.66" data-size="62"><img src="assets/tradingview/natural-gas.png" alt="Natural Gas Futures"></span>
+        <span class="asset" data-lat="0" data-phase="4.71" data-size="78"><img src="assets/tradingview/corn.png" alt="Corn Futures"></span>
+        <span class="asset" data-lat="0" data-phase="5.76" data-size="66"><img src="assets/tradingview/wheat.png" alt="Wheat Futures"></span>
+        <span class="asset" data-lat="0.38" data-phase="0.40" data-size="82"><img src="assets/tradingview/adobe.png" alt="Adobe"></span>
+        <span class="asset" data-lat="0.38" data-phase="1.66" data-size="60"><img src="assets/tradingview/salesforce.png" alt="Salesforce"></span>
+        <span class="asset" data-lat="0.38" data-phase="2.91" data-size="76"><img src="assets/tradingview/intel.png" alt="Intel"></span>
+        <span class="asset" data-lat="0.38" data-phase="4.17" data-size="58"><img src="assets/tradingview/micron-technology.png" alt="Micron"></span>
+        <span class="asset" data-lat="0.38" data-phase="5.43" data-size="72"><img src="assets/tradingview/airbnb.png" alt="Airbnb"></span>
+        <span class="asset" data-lat="0.75" data-phase="0.60" data-size="68"><img src="assets/tradingview/robinhood.png" alt="Robinhood"></span>
+        <span class="asset" data-lat="0.75" data-phase="2.69" data-size="84"><img src="assets/tradingview/boeing.png" alt="Boeing"></span>
+        <span class="asset" data-lat="0.75" data-phase="4.79" data-size="60"><img src="assets/tradingview/caterpillar.png" alt="Caterpillar"></span>
+        <span class="asset" data-lat="1.04" data-phase="1.30" data-size="64"><img src="assets/tradingview/mastercard.png" alt="Mastercard"></span>
+        <span class="asset" data-lat="1.04" data-phase="4.44" data-size="78"><img src="assets/tradingview/visa.png" alt="Visa"></span>
+      </div>
+    </div>
+    <div id="hero-copy"><span class="hero-word">In</span><span class="hero-word">one</span><span class="hero-word">App</span></div>
+  </section>
+  <script>
+    (function(){
+      var spin={value:0};
+      var assets=Array.from(document.querySelectorAll('.asset'));
+      var radius=350,perspective=920;
+      assets.forEach(function(el){var s=Number(el.dataset.size);el.style.width=s+'px';el.style.height=s+'px';el.style.margin=(-s/2)+'px 0 0 '+(-s/2)+'px'});
+      function updateSphere(){
+        assets.forEach(function(el){
+          var lat=Number(el.dataset.lat),latitudeSpeed=.62+(1-Math.min(Math.abs(lat)/1.08,1))*1.08;
+          var angle=Number(el.dataset.phase)+spin.value*latitudeSpeed;
+          var x3=Math.cos(lat)*Math.sin(angle)*radius;
+          var y3=Math.sin(lat)*radius;
+          var z3=Math.cos(lat)*Math.cos(angle)*radius;
+          var projection=perspective/(perspective-z3*.72);
+          var depth=(z3+radius)/(radius*2);
+          gsap.set(el,{x:x3*projection,y:y3*projection,scale:(.56+depth*.64)*projection,opacity:.34+depth*.66,filter:'blur('+((1-depth)*1.7)+'px)',rotation:(depth-.5)*7});
+          el.style.zIndex=String(10+Math.round(depth*100));
+        });
+      }
+      updateSphere();
+      var tl=gsap.timeline({paused:true});
+      tl.fromTo('#sphere-world',{scale:1.64,opacity:0,filter:'blur(14px)'},{scale:2,opacity:1,filter:'blur(0px)',duration:.48,ease:'power3.out'},0)
+        .fromTo('.asset img',{scale:.35,opacity:0,filter:'blur(12px)'},{scale:1,opacity:1,filter:'blur(0px)',duration:.42,stagger:.025,ease:'back.out(1.7)'},.08)
+        .to(spin,{value:Math.PI*2,duration:4.133,ease:'none',onUpdate:updateSphere},0)
+        .to('#sphere-world',{scale:5.55,rotation:2,filter:'blur(.35px)',duration:1.08,ease:'power3.inOut'},2.333)
+        .to('#rings',{opacity:.22,duration:.55,ease:'power2.out'},2.55)
+        .fromTo('.hero-word',{y:34,scale:.9,opacity:0,filter:'blur(20px)'},{y:0,scale:1,opacity:1,filter:'blur(0px)',duration:.54,stagger:.14,ease:'power3.out'},2.68);
+      window.__timelines=window.__timelines||{};window.__timelines['minara-shot-06']=tl;
+    })();
+  </script>
+</main>
+</body>
+</html>

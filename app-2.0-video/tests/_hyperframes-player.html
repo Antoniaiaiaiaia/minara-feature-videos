@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>HyperFrames Test Player</title>
+  <style>
+    *{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#111;font-family:Geist,system-ui,-apple-system,sans-serif;color:#fff}
+    .controls{height:52px;padding:0 18px;display:flex;align-items:center;gap:10px;background:#171717;border-bottom:1px solid #292929}
+    button{height:32px;padding:0 12px;border:0;border-radius:7px;background:#292929;color:#fff;font:600 13px Geist,system-ui;cursor:pointer}button:hover{background:#373737}
+    #stat{min-width:190px;color:#c9c9c9;font-size:12px;font-variant-numeric:tabular-nums}
+    #seek{flex:1;accent-color:#1ab173;cursor:pointer}
+    .stage-frame{position:absolute;inset:52px 0 0;overflow:hidden;background:#090909}
+    .scaler{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:50% 50%}
+    iframe{display:block;width:1920px;height:1080px;border:0;background:#000}
+  </style>
+</head>
+<body>
+  <div class="controls">
+    <button id="play">▶ Play</button><button id="pause">⏸ Pause</button><button id="reset">↺ Reset</button>
+    <span id="stat">Loading…</span>
+    <button id="prev">◀ Frame</button><input type="range" id="seek" min="0" max="1000" value="0"><button id="next">Frame ▶</button>
+  </div>
+  <div class="stage-frame"><div class="scaler"><iframe id="fr" title="HyperFrames composition"></iframe></div></div>
+  <script>
+    const params=new URLSearchParams(location.search),fr=document.querySelector('#fr'),scaler=document.querySelector('.scaler'),seek=document.querySelector('#seek'),stat=document.querySelector('#stat');
+    const compositionId=params.get('id')||'root',FPS=Number(params.get('fps'))||30;let duration=Number(params.get('duration'))||1,dragging=false;
+    const timeline=()=>{try{const map=fr.contentWindow.__timelines||{};return map[compositionId]||Object.values(map)[0]||null}catch{return null}};
+    const format=t=>{const frame=Math.round(t*FPS);return `${String(Math.floor(t/60)).padStart(2,'0')}:${String(Math.floor(t%60)).padStart(2,'0')}:${String(frame%FPS).padStart(2,'0')} · ${t.toFixed(2)}s · f${frame}`};
+    const fit=()=>{const box=document.querySelector('.stage-frame').getBoundingClientRect(),scale=Math.min(box.width/1920,box.height/1080);scaler.style.transform=`translate(-50%,-50%) scale(${scale})`};
+    const sync=()=>{const tl=timeline();if(tl){if(!dragging)seek.value=Math.round(tl.time()/duration*1000);stat.textContent=format(tl.time())}requestAnimationFrame(sync)};
+    const waitForTimeline=()=>{const tl=timeline();if(!tl){requestAnimationFrame(waitForTimeline);return}duration=tl.duration()||duration;tl.pause(0).play();sync()};
+    document.querySelector('#play').onclick=()=>{const tl=timeline();if(tl){if(tl.time()>=duration-.01)tl.time(0);tl.play()}};
+    document.querySelector('#pause').onclick=()=>timeline()?.pause();
+    document.querySelector('#reset').onclick=()=>{timeline()?.pause(0);seek.value=0};
+    const step=direction=>{const tl=timeline();if(!tl)return;tl.pause();const t=Math.min(duration,Math.max(0,tl.time()+direction/FPS));tl.time(t);seek.value=Math.round(t/duration*1000)};
+    document.querySelector('#prev').onclick=()=>step(-1);document.querySelector('#next').onclick=()=>step(1);
+    seek.oninput=()=>{const tl=timeline();if(tl)tl.pause().time(Number(seek.value)/1000*duration)};
+    seek.onpointerdown=()=>dragging=true;addEventListener('pointerup',()=>dragging=false);addEventListener('resize',fit);
+    fr.onload=waitForTimeline;fr.src=(params.get('src')||'shot-19-v01/index.html')+`?v=${Date.now()}`;fit();
+  </script>
+</body>
+</html>

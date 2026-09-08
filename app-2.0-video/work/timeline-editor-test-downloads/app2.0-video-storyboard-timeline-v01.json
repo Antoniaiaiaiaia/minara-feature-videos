@@ -1,0 +1,267 @@
+{
+  "source": "app2.0 video script.srt",
+  "duration": 73.3,
+  "scenes": [
+    {
+      "id": "s01",
+      "start": 0,
+      "end": 5.866,
+      "label": "Opening · App positioning",
+      "image": "IMG_7054.JPG"
+    },
+    {
+      "id": "s02",
+      "start": 5.866,
+      "end": 15.533,
+      "label": "Agent Chat · Pocket advisor",
+      "image": "IMG_7028.PNG"
+    },
+    {
+      "id": "s03",
+      "start": 15.533,
+      "end": 27.233,
+      "label": "Markets & Research · Trade everything, charts and data",
+      "image": "IMG_7044.PNG"
+    },
+    {
+      "id": "s05",
+      "start": 27.233,
+      "end": 35.1,
+      "label": "Trading · Spot and perps",
+      "image": "IMG_7034.PNG"
+    },
+    {
+      "id": "s06",
+      "start": 35.1,
+      "end": 44.566,
+      "label": "Strategy Marketplace · Run",
+      "image": "IMG_7049.PNG"
+    },
+    {
+      "id": "s07",
+      "start": 44.566,
+      "end": 58.433,
+      "label": "Autopilot · Monitor and switch",
+      "image": "IMG_7047.PNG"
+    },
+    {
+      "id": "s08",
+      "start": 58.433,
+      "end": 73.3,
+      "label": "Closing · Research, trade, automate",
+      "image": "IMG_7054.JPG"
+    }
+  ],
+  "cues": [
+    {
+      "id": "c01",
+      "start": 0,
+      "end": 1.8,
+      "text": "Meet the new Minara app.",
+      "image": "IMG_7054.JPG"
+    },
+    {
+      "id": "c02",
+      "start": 1.8,
+      "end": 5.866,
+      "text": "Your ultimate financial agent on your phone.",
+      "image": "IMG_7054.JPG"
+    },
+    {
+      "id": "c03",
+      "start": 5.866,
+      "end": 7.833,
+      "text": "Ask Minara anything.",
+      "image": "IMG_7028.PNG"
+    },
+    {
+      "id": "c04",
+      "start": 7.833,
+      "end": 11.633,
+      "text": "Get clear market insights in seconds.",
+      "image": "IMG_7028.PNG"
+    },
+    {
+      "id": "c05",
+      "start": 11.633,
+      "end": 15.533,
+      "text": "Your pocket financial advisor wherever you go.",
+      "image": "IMG_7027.PNG"
+    },
+    {
+      "id": "c06",
+      "start": 17.5,
+      "end": 21.4,
+      "text": "Stocks, commodities, crypto. One app to trade everything.",
+      "image": "IMG_7044.PNG"
+    },
+    {
+      "id": "c07",
+      "start": 19.433,
+      "end": 21.333,
+      "text": "Check charts.",
+      "image": "IMG_7029.PNG"
+    },
+    {
+      "id": "c08",
+      "start": 21.333,
+      "end": 23.433,
+      "text": "Earnings.",
+      "image": "IMG_7031.PNG"
+    },
+    {
+      "id": "c09",
+      "start": 23.433,
+      "end": 25.3,
+      "text": "Analyst data.",
+      "image": "IMG_7032.PNG"
+    },
+    {
+      "id": "c10",
+      "start": 25.3,
+      "end": 27.233,
+      "text": "And news.",
+      "image": "IMG_7033.PNG"
+    },
+    {
+      "id": "c11",
+      "start": 27.233,
+      "end": 29.033,
+      "text": "Trade stocks on spot.",
+      "image": "IMG_7034.PNG"
+    },
+    {
+      "id": "c12",
+      "start": 29.033,
+      "end": 31.166,
+      "text": "Powered by Ondo Network.",
+      "image": "IMG_7035.PNG"
+    },
+    {
+      "id": "c13",
+      "start": 31.166,
+      "end": 35.1,
+      "text": "Or go long and short with perps.",
+      "image": "IMG_7041.jpg"
+    },
+    {
+      "id": "c14",
+      "start": 35.1,
+      "end": 36.833,
+      "text": "Want to automate your trades?",
+      "image": "IMG_7048.PNG"
+    },
+    {
+      "id": "c15",
+      "start": 36.833,
+      "end": 38.933,
+      "text": "Explore the Strategy Marketplace.",
+      "image": "IMG_7048.PNG"
+    },
+    {
+      "id": "c16",
+      "start": 38.933,
+      "end": 40.9,
+      "text": "Compare.",
+      "image": "IMG_7048.PNG"
+    },
+    {
+      "id": "c17",
+      "start": 40.9,
+      "end": 42.866,
+      "text": "Choose.",
+      "image": "IMG_7049.PNG"
+    },
+    {
+      "id": "c18",
+      "start": 42.866,
+      "end": 44.566,
+      "text": "Then tap Run.",
+      "image": "IMG_7049.PNG"
+    },
+    {
+      "id": "c19",
+      "start": 44.566,
+      "end": 50.666,
+      "text": "Autopilot monitors and executes the strategy 24/7.",
+      "image": "IMG_7047.PNG"
+    },
+    {
+      "id": "c20",
+      "start": 50.666,
+      "end": 51.7,
+      "text": "Pause.",
+      "image": "IMG_7047.PNG"
+    },
+    {
+      "id": "c21",
+      "start": 51.7,
+      "end": 52.933,
+      "text": "Or switch.",
+      "image": "IMG_7050.PNG"
+    },
+    {
+      "id": "c22",
+      "start": 52.933,
+      "end": 55.233,
+      "text": "Anytime. Anywhere.",
+      "image": "IMG_7051.PNG"
+    },
+    {
+      "id": "c23",
+      "start": 55.233,
+      "end": 58.433,
+      "text": "Straight from your phone.",
+      "image": "IMG_7052.PNG"
+    },
+    {
+      "id": "c24",
+      "start": 58.433,
+      "end": 60.4,
+      "text": "Research.",
+      "image": "IMG_7028.PNG"
+    },
+    {
+      "id": "c25",
+      "start": 60.4,
+      "end": 62.366,
+      "text": "Trade.",
+      "image": "IMG_7035.PNG"
+    },
+    {
+      "id": "c26",
+      "start": 62.366,
+      "end": 64.3,
+      "text": "Automate.",
+      "image": "IMG_7049.PNG"
+    },
+    {
+      "id": "c27",
+      "start": 64.3,
+      "end": 66.266,
+      "text": "Stay in control.",
+      "image": "IMG_7050.PNG"
+    },
+    {
+      "id": "c28",
+      "start": 66.266,
+      "end": 68.3,
+      "text": "Minara App 2.0.",
+      "image": "IMG_7054.JPG"
+    },
+    {
+      "id": "c29",
+      "start": 68.3,
+      "end": 70.333,
+      "text": "Your financial intelligence.",
+      "image": "IMG_7054.JPG"
+    },
+    {
+      "id": "c30",
+      "start": 70.333,
+      "end": 73.3,
+      "text": "Your agent in one app.",
+      "image": "IMG_7054.JPG"
+    }
+  ]
+}

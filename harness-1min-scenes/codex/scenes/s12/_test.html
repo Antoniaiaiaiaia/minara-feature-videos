@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>S12 + S13 · Autopilot · test page</title>
+  <link rel="stylesheet" href="scene.css">
+  <script src="assets/gsap.min.js"></script>
+  <script src="assets/CustomEase.min.js"></script>
+</head>
+<body>
+  <header class="review">
+    <b>S12 + S13 <span>Autopilot / Where your profits flow.</span></b>
+    <span>231  · 7.70s · test pageawaiting confirmation · not rendered</span>
+  </header>
+
+  <main id="viewport">
+    <div id="stage">
+      <video id="flow" src="assets/bg-light-flow.mp4" muted playsinline preload="auto"></video>
+      <div id="wash"></div>
+
+      <section id="title" aria-label="Autopilot title">
+        <div class="title-line title-in">Autopilot</div>
+        <div class="title-line title-sub">Where your profits flow.</div>
+        <div class="title-shutter" aria-hidden="true"></div>
+      </section>
+
+      <section id="client" aria-label="Minara desktop client">
+        <aside class="side">
+          <div class="traffic"><i></i><i></i><i></i></div>
+          <div class="avatar"></div>
+          <button class="nav office">Office</button>
+          <button class="nav markets">Markets</button>
+          <button class="nav chat">Chat</button>
+          <button class="nav coding">Coding</button>
+          <button class="nav strategies active">Strategies</button>
+          <button class="nav portfolio">Portfolio</button>
+          <button class="nav more" id="more-btn">More</button>
+          <div id="menu" role="menu">
+            <button class="menu-item autopilot selected">Autopilot</button>
+            <button class="menu-item time">Time-series</button>
+            <button class="menu-item cross">Cross-sectional</button>
+            <button class="menu-item trophy">Top Strategies</button>
+            <button class="menu-item market">Marketplace</button>
+          </div>
+          <div class="download">Download update <b>v0.2.26</b></div>
+        </aside>
+
+        <main class="workspace">
+          <nav class="top-tabs">
+            <button>Welcome</button>
+            <button class="selected" id="autopilot-tab">Autopilot</button>
+            <button>My Strategies <b>22</b></button>
+            <button>Starred <b>54</b></button>
+          </nav>
+
+          <section id="autopilot-board">
+            <div class="metric-row">
+              <article class="metric"><span>Total equity</span><b id="equity-main">$1,078.34</b></article>
+              <article class="metric loss"><span>30D P&amp;L</span><b>-$63.25</b><em>-5.54%</em></article>
+              <article class="metric gain"><span>Unrealized P&amp;L</span><b>+$89.47</b><em>+8.30%</em></article>
+              <article class="metric"><span>Active Strategies</span><b>1</b></article>
+            </div>
+
+            <div class="wallet-layout">
+              <aside class="wallets">
+                <header>Wallets <button>+</button></header>
+                <button class="wallet selected"><i></i><strong>official strategy</strong><span>Total Value</span><b id="wallet-total">$1,078.34</b><em>CoinFull Prime (Neutral)</em></button>
+                <button class="wallet"><i></i><strong>manual trading</strong><span>Total Value</span><b>$0.00</b></button>
+                <button class="wallet"><i></i><strong>Default Lighter</strong><span>Total Value</span><b>$0.01</b></button>
+                <button class="wallet"><i></i><strong>tutorial</strong><span>Total Value</span><b>$0.01</b></button>
+              </aside>
+
+              <section class="autopilot-main">
+                <header class="wallet-head">
+                  <div><i></i><h2>official strategy</h2><span>Hyperliquid · 0x6482...1e20</span></div>
+                  <button>Deposit</button><button class="white">Transfer</button>
+                </header>
+                <p class="balances">Balance <b id="balance-a">$1,078.33</b><span>Available to trade $600.64</span></p>
+                <article class="running-strip">
+                  <div class="coin">₿</div><h3>CoinFull Prime (Neutral)</h3><span>Coin Full</span><b>Active</b><button>Stop</button>
+                </article>
+                <div class="summary-grid">
+                  <div><span>Total P&amp;L</span><b class="gain">+$93.92</b><em>+9.54%</em></div>
+                  <div><span>Unrealized P&amp;L</span><b class="gain">+$89.47</b><em>+8.30%</em></div>
+                  <div><span>Runtime</span><b>15d</b></div>
+                  <div><span>24H P&amp;L</span><b class="loss">-$3.04</b></div>
+                </div>
+                <h3 class="section-title">PnL trend</h3>
+                <div class="chart-wrap"><svg id="autopilot-chart" viewBox="0 0 1080 250" role="img" aria-label="Upward PnL trend"></svg></div>
+                <div class="positions-head">
+                  <button class="selected">Positions</button><button>Open Orders</button><button>Trade History</button><button>Strategy History</button>
+                </div>
+                <div class="position-table" aria-label="Positions table">
+                  <div class="thead"><span>Symbol</span><span>Side</span><span>Size</span><span>Entry</span><span>Mark</span><span>Position Value</span><span>Liquidation</span><span>Unrealized PnL</span><span>Funding</span><span>Close</span><span>TP/SL</span></div>
+                  <div id="positions"></div>
+                </div>
+              </section>
+            </div>
+          </section>
+
+          <section id="strategy-board" aria-label="Wallet strategies board">
+            <header class="portfolio-head">
+              <div class="avatar large"></div>
+              <div><small>official strategy · Hyperliquid · 0x6482...1e20</small><h1 id="balance-big">$1,078.34</h1></div>
+            </header>
+            <nav class="portfolio-tabs"><button>Overview</button><button>Spot</button><button>Perps</button><button class="selected">Strategies</button></nav>
+            <div class="strategy-columns"><span>Strategy</span><span>Creator</span><span>Universe</span><span>Status</span></div>
+            <div id="strategy-list"></div>
+          </section>
+        </main>
+
+        <aside id="drawer" aria-label="Strategy details drawer">
+          <button class="close">×</button>
+          <header><i></i><div><h2>Multi-value-profit Tradfi 30, Top 3</h2><p><b id="run-status">Paused</b> official strategy · Hyperliquid · TradFi 30</p></div></header>
+          <span class="drawer-label">Strategy equity</span>
+          <strong id="drawer-equity">—</strong>
+          <div class="drawer-metrics">
+            <div><span>Total PnL</span><b id="drawer-pnl">-$6.04</b><em>-1.19%</em></div>
+            <div><span>Unrealized PnL</span><b id="drawer-unrealized">— —</b></div>
+            <div><span>Runtime</span><b id="runtime">20 hours</b></div>
+            <div><span>24h PnL</span><b id="drawer-24h">— —</b></div>
+          </div>
+          <div class="live-head"><b>Live performance</b><span>1D</span><span>7D</span><span>1M</span><span class="selected">All</span></div>
+          <div class="live-chart"><svg id="live-chart" viewBox="0 0 500 160" role="img" aria-label="Live performance curve"></svg><p id="no-curve">No live curve is available for this run.</p></div>
+          <div class="drawer-tabs"><button class="selected">Positions (0)</button><button>Open Orders (0)</button><button>Trade History (...)</button></div>
+          <div class="empty-state" id="position-empty">This run has no open positions.</div>
+          <button id="run-btn">Run again</button><button class="secondary">Strategy details</button>
+        </aside>
+
+        <svg id="cursor" width="37" height="46" viewBox="0 0 30 38" aria-hidden="true"><path d="M3 2v29l7-7 6 12 5-3-6-11h11Z" fill="white" stroke="#141416" stroke-width="2"/></svg>
+        <i id="click-ring"></i>
+      </section>
+    </div>
+  </main>
+
+  <section class="controls">
+    <div class="transport">
+      <button id="play"></button><button id="replay"></button><button id="interactive"></button>
+      <input id="scrub" type="range" min="0" max="7.7" step="0.0333333333" value="0" aria-label="">
+      <output id="time">0.00 / 7.70s</output>
+    </div>
+    <div id="chapters"></div>
+    <p id="note"> · UI All DOM/SVG  · GSAP + Minara  · snapcn text-swap title · mockdata · not rendered。</p>
+  </section>
+  <script src="scene.js"></script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+import {createRequire} from 'node:module';
+import {fileURLToPath} from 'node:url';
+import path from 'node:path';
+import {mkdir,writeFile,copyFile} from 'node:fs/promises';
+const here=path.dirname(fileURLToPath(import.meta.url));
+const require=createRequire(import.meta.url);
+const {build}=createRequire(path.resolve(here,'../../../remotion/package.json'))('esbuild');
+const React=require('react'),{renderToStaticMarkup}=require('react-dom/server'),lucide=require('lucide-react');
+const names=['House','ChartNoAxesCombined','MessageSquare','CodeXml','ChartCandlestick','Wallet','LayoutGrid','Search','Bell','PanelLeft','ArrowLeft','ArrowRight','ChevronDown','Download','CircleHelp','Monitor','Share2','ArrowUpRight','ArrowDownLeft','Check','X','Play','Pause','RotateCcw','Maximize','MousePointer2','ArrowUpDown','Copy','CircleCheck','ExternalLink','Ellipsis','TrendingUp','ChartPie','Layers','Settings2'];
+await mkdir(path.join(here,'assets'),{recursive:true});
+const icons=Object.fromEntries(names.map(name=>[name,renderToStaticMarkup(React.createElement(lucide[name],{size:24,strokeWidth:1.6,'aria-hidden':true}))]));
+await writeFile(path.join(here,'assets/icons.js'),`window.ICONS=${JSON.stringify(icons)};\n`);
+await copyFile(path.resolve(here,'../s04-s05/assets/minara-avatar.png'),path.join(here,'assets/avatar.png'));
+await build({entryPoints:[path.join(here,'title.tsx')],bundle:true,minify:true,format:'iife',jsx:'automatic',tsconfig:path.join(here,'tsconfig.json'),define:{'process.env.NODE_ENV':'"production"'},outfile:path.join(here,'assets/title.js')});
+console.log('Built official text-swap and Lucide assets. No video render.');

@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <link rel="icon" href="data:," />
+    <title>Minara App 2.0 — Scenes 05–30 Test</title>
+    <script src="assets/vendor/gsap.min.js"></script>
+    <style>
+      @font-face {
+        font-family: "Geist";
+        src: url("assets/fonts/Geist-Regular.woff2") format("woff2");
+        font-weight: 400;
+        font-style: normal;
+        font-display: block;
+      }
+      @font-face {
+        font-family: "Geist";
+        src: url("assets/fonts/Geist-SemiBold.woff2") format("woff2");
+        font-weight: 600;
+        font-style: normal;
+        font-display: block;
+      }
+      :root {
+        --bg: #f7f7f7;
+        --paper: #ffffff;
+        --ink: #141416;
+        --muted: #717171;
+        --line: #dcdcdc;
+        --dark: #222222;
+        --black: #000000;
+        --green: #087a4c;
+        --red: #b4232a;
+        --blue: #3a78c4;
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html, body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--bg);
+        font-family: "Geist", sans-serif;
+      }
+      #remaining,
+      #remaining-clip {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--bg);
+        color: var(--ink);
+      }
+      .scene {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        background: var(--bg);
+        opacity: 0;
+        visibility: hidden;
+      }
+      .scene.dark { color: #ffffff; background: var(--dark); }
+      .scene.black { color: #ffffff; background: #000000; }
+      .scene-grid {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(0,0,0,.035) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0,0,0,.035) 1px, transparent 1px);
+        background-size: 96px 96px;
+        opacity: .28;
+      }
+      .display-word {
+        position: absolute;
+        left: 110px;
+        top: 50%;
+        width: 850px;
+        color: var(--ink);
+        font-size: 154px;
+        font-weight: 600;
+        line-height: .92;
+        letter-spacing: -.065em;
+      }
+      .dark .display-word,
+      .black .display-word { color: #ffffff; }
+      .eyebrow {
+        color: var(--muted);
+        font-size: 22px;
+        font-weight: 500;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+      }
+      .phone {
+        position: absolute;
+        width: 468px;
+        height: 985px;
+        padding: 12px;
+        border-radius: 70px;
+        background: #050505;
+        transform-origin: 50% 50%;
+        will-change: transform, opacity;
+      }
+      .phone-screen {
+        position: relative;
+        width: 444px;
+        height: 961px;
+        overflow: hidden;
+        border-radius: 58px;
+        color: var(--ink);
+        background: #ffffff;
+      }
+      .phone-screen.dark-ui { color: #ffffff; background: #111111; }
+      .island {
+        position: absolute;
+        z-index: 20;
+        left: 50%;
+        top: 14px;
+        width: 104px;
+        height: 30px;
+        margin-left: -52px;
+        border-radius: 999px;
+        background: #000000;
+      }
+      .status {
+        position: absolute;
+        z-index: 15;
+        left: 24px;
+        right: 24px;
+        top: 17px;
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .appbar {
+        position: absolute;
+        z-index: 10;
+        left: 0;
+        right: 0;
+        top: 51px;
+        height: 62px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 0 20px;
+        border-bottom: 1px solid #e5e5e5;
+        background: inherit;
+        font-size: 15px;
+        font-weight: 600;
+      }
+      .appbar .back { color: var(--muted); font-size: 22px; }
+      .appbar .pill {
+        margin-left: auto;
+        padding: 8px 15px;
+        border-radius: 999px;
+        color: #ffffff;
+        background: #141416;
+        font-size: 12px;
+      }
+      .dark-ui .appbar { border-color: #2f2f2f; }
+      .dark-ui .appbar .pill { color: #141416; background: #ffffff; }
+      .bottom-nav {
+        position: absolute;
+        z-index: 10;
+        left: 20px;
+        right: 20px;
+        bottom: 23px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        color: var(--muted);
+        font-size: 21px;
+      }
+      .bottom-nav .active { color: var(--ink); }
+      .dark-ui .bottom-nav .active { color: #ffffff; }
+      .panel {
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: #ffffff;
+      }
+      .dark .panel,
+      .black .panel,
+      .dark-ui .panel { border-color: #2f2f2f; background: #171717; }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        color: var(--ink);
+        background: #ffffff;
+        font-size: 20px;
+      }
+      .chip-dot { width: 9px; height: 9px; border-radius: 50%; background: #141416; }
+      .green { color: var(--green); }
+      .red { color: var(--red); }
+      .button {
+        display: grid;
+        place-items: center;
+        min-height: 52px;
+        border-radius: 8px;
+        color: #ffffff;
+        background: #141416;
+        font-size: 18px;
+        font-weight: 600;
+      }
+      .button.green-bg { background: var(--green); }
+      .button.red-bg { background: var(--red); }
+      .phone-content { position: absolute; inset: 118px 18px 84px; }
+      .metric-row { display: flex; justify-content: space-between; gap: 12px; }
+      .metric { flex: 1; padding: 14px; }
+      .metric small { color: var(--muted); font-size: 11px; }
+      .metric strong { display: block; margin-top: 4px; font-size: 22px; }
+      .asset-list { display: grid; gap: 10px; margin-top: 14px; }
+      .asset-row {
+        display: grid;
+        grid-template-columns: 38px 1fr auto;
+        gap: 10px;
+        align-items: center;
+        padding: 13px 12px;
+        border-bottom: 1px solid #eeeeee;
+      }
+      .asset-icon { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: #141416; color: #ffffff; font-size: 11px; font-weight: 600; }
+      .asset-name { font-size: 14px; font-weight: 600; }
+      .asset-sub { margin-top: 2px; color: var(--muted); font-size: 10px; }
+      .asset-price { text-align: right; font-size: 13px; font-weight: 600; }
+      .chart-svg { overflow: visible; }
+      .chart-line { fill: none; stroke: var(--green); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+      .chart-area { fill: url(#areaFill); opacity: .18; }
+      .card-title { font-size: 21px; font-weight: 600; letter-spacing: -.025em; }
+      .card-copy { color: var(--muted); font-size: 14px; line-height: 1.45; }
+      .scene-title {
+        position: absolute;
+        left: 120px;
+        top: 105px;
+        font-size: 74px;
+        font-weight: 600;
+        letter-spacing: -.05em;
+      }
+      .scene-subtitle {
+        position: absolute;
+        left: 124px;
+        top: 215px;
+        width: 560px;
+        color: var(--muted);
+        font-size: 24px;
+        line-height: 1.35;
+      }
+      .stage-center { position: absolute; left: 50%; top: 50%; }
+      .section-tabs { display: flex; gap: 22px; color: var(--muted); font-size: 13px; }
+      .section-tabs .active { color: var(--ink); font-weight: 600; }
+      .dark-ui .section-tabs .active { color: #ffffff; }
+      .bars { display: flex; align-items: end; gap: 15px; height: 230px; }
+      .bar { width: 32px; border-radius: 4px 4px 0 0; background: var(--green); transform-origin: 50% 100%; }
+      .bar.red-bar { background: var(--red); }
+      .news-card { padding: 18px; min-height: 145px; }
+      .news-card + .news-card { margin-top: 12px; }
+      .news-card small { color: var(--muted); }
+      .news-card h3 { margin-top: 10px; font-size: 19px; line-height: 1.23; }
+      .marketplace-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+      .strategy-card { padding: 20px; min-height: 260px; }
+      .strategy-card h3 { font-size: 20px; line-height: 1.2; }
+      .strategy-card .return { margin-top: 25px; font-size: 36px; font-weight: 600; }
+      .mini-line { width: 100%; height: 65px; margin-top: 15px; }
+      .network-line { stroke: #5e5e5e; stroke-width: 2; fill: none; }
+      .network-pulse { fill: #ffffff; }
+      .node {
+        position: absolute;
+        min-width: 210px;
+        padding: 18px;
+        border: 1px solid #444444;
+        border-radius: 8px;
+        color: #ffffff;
+        background: #171717;
+      }
+      .node small { color: #b0b0b0; }
+      .node strong { display: block; margin-top: 5px; font-size: 24px; }
+      .soft-blur { will-change: transform, opacity, filter; }
+      .cursor-arrow {
+        position: absolute;
+        z-index: 20;
+        width: 0;
+        height: 0;
+        border-left: 15px solid transparent;
+        border-right: 5px solid transparent;
+        border-top: 29px solid #141416;
+        transform: rotate(-35deg);
+      }
+      .logo-wordmark { display: block; width: 410px; height: auto; }
+    </style>
+  </head>
+  <body>
+    <main id="remaining" data-composition-id="app2-scenes-05-30" data-width="1920" data-height="1080" data-start="0" data-duration="61.667" data-fps="25" data-root="true">
+      <section id="remaining-clip" class="clip" data-start="0" data-duration="61.667">
+        <div id="scenes"></div>
+      </section>
+      <script>
+        (function () {
+          "use strict";
+
+          const status = '<div class="status"><span>9:41</span><span>▮▮▮ &nbsp;⌁&nbsp; 100</span></div><div class="island"></div>';
+          const nav = '<div class="bottom-nav"><span>●</span><span>◇</span><span class="active">▥</span><span>▱</span></div>';
+          const appbar = (title, action = 'Upgrade') => '<div class="appbar"><span class="back">‹</span><span>' + title + '</span><span class="pill">' + action + '</span></div>';
+          const phone = (body, cls = '') => '<div class="phone"><div class="phone-screen ' + cls + '">' + status + body + nav + '</div></div>';
+          const lineSvg = (color = '#08b86b') => '<svg class="mini-line" viewBox="0 0 300 70"><path d="M4 59 C35 57 42 49 68 53 S111 40 135 42 S165 25 190 31 S225 18 248 19 S274 9 296 6" fill="none" stroke="' + color + '" stroke-width="3" stroke-linecap="round"/></svg>';
+          const marketRowsData = [
+            ['SPCX', 'Space exploration', '$146.61', '+9.61%'],
+            ['MU', 'Semiconductors', '$915.59', '+4.05%'],
+            ['SNKD', 'AI infrastructure', '$1.35K', '+4.02%'],
+            ['DRAM', 'Memory cycle', '$54.81', '+10.71%'],
+            ['NBIS', 'AI cloud', '$250.46', '+20.58%']
+          ];
+          const assetRows = (rows) => rows.map((r) => '<div class="asset-row"><span class="asset-icon">' + r[0].slice(0,2) + '</span><span><span class="asset-name">' + r[0] + '</span><span class="asset-sub">' + r[1] + '</span></span><span class="asset-price">' + r[2] + '<br><span class="green">' + r[3] + '</span></span></div>').join('');
+          const marketRows = assetRows(marketRowsData);
+          const strategyCard = (name, ret, risk, button = 'Run') => '<div class="strategy-card panel"><h3>' + name + '</h3><p class="card-copy" style="margin-top:8px">Live · Verified execution</p><div class="return green">' + ret + '</div><p class="card-copy">Annual return · ' + risk + '</p>' + lineSvg() + '<div class="button green-bg">' + button + '</div></div>';
+
+          const scenes = [
+            { id: 's05', start: 0, dur: 3.9, html: `
+              <div class="scene-grid"></div>
+              <div class="scene-title">Pocket intelligence.</div>
+              <div class="scene-subtitle">Market context, distilled for decisions wherever you are.</div>
+              <div class="phone enter-phone" style="left:1120px;top:76px"><div class="phone-screen">${status}${appbar('Market Brief')}
+                <div class="phone-content"><div class="panel metric"><small>Today’s brief</small><strong>AI infrastructure leads</strong><p class="card-copy" style="margin-top:12px">Rates, earnings, and positioning point to selective strength—not a broad chase.</p></div><div class="asset-list">${assetRows(marketRowsData.slice(0, 3))}</div></div>${nav}</div></div>
+              <svg style="position:absolute;left:120px;top:360px;width:760px;height:390px" viewBox="0 0 760 390"><path class="travel-path" d="M20 330 C180 270 205 80 390 110 S590 350 735 90" fill="none" stroke="#b0b0b0" stroke-width="2" stroke-dasharray="8 14"/><circle class="path-dot" cx="20" cy="330" r="8" fill="#141416"/></svg>` },
+            { id: 's06', start: 3.9, dur: 3.9, html: `
+              <div class="scene-title">One market view.</div><div class="scene-subtitle">Stocks, commodities, and crypto—connected in one mobile workspace.</div>
+              <div class="asset-chips" style="position:absolute;left:120px;top:340px;display:grid;gap:18px"><span class="chip"><i class="chip-dot"></i>Stocks</span><span class="chip"><i class="chip-dot"></i>Commodities</span><span class="chip"><i class="chip-dot"></i>Crypto</span></div>
+              <div class="phone enter-phone" style="left:1100px;top:70px"><div class="phone-screen">${status}${appbar('Markets','Search')}<div class="phone-content"><div class="section-tabs"><span class="active">Stocks</span><span>Crypto</span><span>Indices</span><span>Commodities</span></div><div class="asset-list">${marketRows}</div></div>${nav}</div></div>
+              <svg style="position:absolute;inset:0;width:1920px;height:1080px"><path class="connect-path" d="M330 378 C650 378 740 340 1100 340 M330 446 C680 446 770 480 1100 480 M330 514 C640 514 760 620 1100 620" fill="none" stroke="#b0b0b0" stroke-width="1.5" stroke-dasharray="600" stroke-dashoffset="600"/></svg>` },
+            { id: 's07', start: 7.8, dur: 1.9, html: `
+              <div class="scene-title">Charts</div>
+              <div class="panel chart-panel" style="position:absolute;left:420px;top:170px;width:1380px;height:760px;padding:46px"><div class="eyebrow">SPCX · 1D</div><div style="display:flex;align-items:end;gap:18px;margin-top:12px"><strong style="font-size:72px">$146.61</strong><span class="green" style="font-size:24px;margin-bottom:12px">+9.61%</span></div><svg class="chart-svg" viewBox="0 0 1280 520" width="1280" height="520"><defs><linearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#08b86b"/><stop offset="1" stop-color="#ffffff"/></linearGradient></defs><path class="chart-area" d="M0 470 C90 450 160 460 235 430 S360 390 450 405 S575 330 650 350 S790 245 880 285 S1040 145 1125 170 S1210 80 1280 55 L1280 520 L0 520Z"/><path class="chart-line draw-line" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" d="M0 470 C90 450 160 460 235 430 S360 390 450 405 S575 330 650 350 S790 245 880 285 S1040 145 1125 170 S1210 80 1280 55"/></svg></div>` },
+            { id: 's08', start: 9.7, dur: 2.1, html: `
+              <div class="scene-title">Earnings</div><div class="scene-subtitle">Revenue, margin, and EPS in one readable view.</div>
+              <div class="panel" style="position:absolute;left:720px;top:160px;width:1040px;height:760px;padding:48px"><div class="metric-row"><div class="metric"><small>Revenue</small><strong>$114.52B</strong><span class="green">+44.1%</span></div><div class="metric"><small>EPS</small><strong>3.48</strong><span class="green">+21.3%</span></div><div class="metric"><small>Gross margin</small><strong>22.4%</strong></div></div><div class="bars" style="margin-top:70px">${[118,146,155,170,181,198,220,267,330].map((h,i)=>'<span class="bar" style="height:'+h+'px"></span>').join('')}</div><div style="display:flex;gap:25px;color:#717171;margin-top:14px">24 Q2&nbsp;&nbsp;24 Q3&nbsp;&nbsp;24 Q4&nbsp;&nbsp;25 Q1&nbsp;&nbsp;25 Q2&nbsp;&nbsp;25 Q3&nbsp;&nbsp;25 Q4&nbsp;&nbsp;26 Q1&nbsp;&nbsp;26 Q2</div></div>` },
+            { id: 's09', start: 11.8, dur: 1.867, html: `
+              <div class="scene-title">Analyst data</div><div class="scene-subtitle">Consensus without the noise.</div>
+              <div class="panel" style="position:absolute;left:690px;top:210px;width:1080px;height:650px;padding:54px"><div class="eyebrow">Financial estimates</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:28px"><div class="metric panel"><small>Price target</small><strong>$174.20</strong><span class="green">+18.8%</span></div><div class="metric panel"><small>Consensus</small><strong>Overweight</strong><span class="green">65.6% positive</span></div></div><div style="margin-top:65px"><div style="display:flex;justify-content:space-between;color:#717171"><span>Low $128</span><span>Median $174</span><span>High $210</span></div><div style="position:relative;height:14px;margin-top:16px;border-radius:999px;background:#e7e7e7"><span class="range-fill" style="position:absolute;left:18%;width:58%;height:14px;border-radius:999px;background:#141416"></span><span class="target-dot" style="position:absolute;left:62%;top:-9px;width:32px;height:32px;border-radius:50%;background:#ffffff;border:6px solid #141416"></span></div></div></div>` },
+            { id: 's10', start: 13.667, dur: 1.933, html: `
+              <div class="scene-title">News</div><div class="scene-subtitle">Relevant catalysts, ranked for action.</div><div class="news-stack" style="position:absolute;left:760px;top:170px;width:950px"><div class="news-card panel"><small>2 hours ago · Macro</small><h3>AI infrastructure demand holds as rate expectations reset</h3><p class="card-copy" style="margin-top:12px">Semiconductor and network suppliers remain the clearest earnings beneficiaries.</p></div><div class="news-card panel"><small>4 hours ago · Energy</small><h3>Oil volatility lifts select industrial and defensive setups</h3></div><div class="news-card panel"><small>Today · Markets</small><h3>Retail sales and CPI frame the week’s risk window</h3></div></div><span class="focus-dot" style="position:absolute;left:735px;top:294px;width:14px;height:14px;border-radius:50%;background:#141416"></span>` },
+            { id: 's11', start: 15.6, dur: 1.8, html: `
+              <div class="scene-title">Spot</div><div class="scene-subtitle">Move from research to execution without leaving the asset.</div><div class="phone enter-phone" style="left:1080px;top:62px"><div class="phone-screen">${status}${appbar('SPCX · Spot','Buy')}<div class="phone-content"><div style="font-size:50px;font-weight:600">$146.61</div><span class="green">+9.61% today</span><div class="panel" style="margin-top:36px;padding:18px"><div class="section-tabs"><span class="active">Buy</span><span>Sell</span></div><div class="metric-row" style="margin-top:24px"><div class="metric"><small>Amount</small><strong>$100</strong></div><div class="metric"><small>Est. shares</small><strong>0.682</strong></div></div><div class="button green-bg" style="margin-top:30px">Review order</div></div></div>${nav}</div></div><span class="cursor-arrow" style="left:1420px;top:730px"></span>` },
+            { id: 's12', start: 17.4, dur: 2.133, html: `
+              <div class="scene-title">Powered by Ondo.</div><div class="scene-subtitle">Tokenized U.S. equities, with institutional infrastructure beneath the trade.</div><div class="panel ondo-panel" style="position:absolute;left:850px;top:300px;width:770px;height:350px;padding:52px"><div style="font-size:62px;font-weight:600;letter-spacing:-.05em">ONDO NETWORK</div><div class="metric-row" style="margin-top:48px"><div class="metric"><small>Asset</small><strong>SPCX</strong></div><div class="metric"><small>Settlement</small><strong>Onchain</strong></div><div class="metric"><small>Status</small><strong class="green">Ready</strong></div></div></div><svg style="position:absolute;inset:0;width:1920px;height:1080px"><path class="connect-path" d="M430 540 C620 540 690 475 850 475" fill="none" stroke="#717171" stroke-width="2" stroke-dasharray="480" stroke-dashoffset="480"/></svg><div class="button" style="position:absolute;left:260px;top:490px;width:230px">Buy SPCX</div>` },
+            { id: 's13', start: 19.533, dur: 3.934, cls: 'dark', html: `
+              <div class="scene-title">Perpetuals</div><div class="scene-subtitle" style="color:#b0b0b0">Go long or short with the same clear controls.</div><div class="phone enter-phone" style="left:1080px;top:58px"><div class="phone-screen dark-ui">${status}${appbar('GOOGL Perps','20×')}<div class="phone-content"><div class="section-tabs"><span class="active">Positions</span><span>Orders</span><span>History</span></div><div class="metric-row" style="margin-top:28px"><div class="metric panel"><small>Mark price</small><strong>$146.50</strong></div><div class="metric panel"><small>Funding</small><strong>0.010%</strong></div></div><div class="panel" style="margin-top:18px;padding:16px"><div class="asset-list">${[['146.70','8.2K'],['146.60','12.1K'],['146.50','15.7K'],['146.40','9.8K']].map((r,i)=>'<div style="display:flex;justify-content:space-between;padding:9px;color:'+(i<2?'#f2555a':'#08b86b')+'"><span>'+r[0]+'</span><span>'+r[1]+'</span></div>').join('')}</div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px"><div class="button green-bg">Long</div><div class="button red-bg">Short</div></div></div>${nav}</div></div><div class="direction-word" style="position:absolute;left:170px;top:480px;font-size:112px;font-weight:600">LONG</div><div class="direction-word" style="position:absolute;left:560px;top:610px;font-size:112px;font-weight:600;color:#b0b0b0">SHORT</div>` },
+            { id: 's14', start: 23.467, dur: 1.733, cls: 'black', html: `
+              <svg style="position:absolute;inset:0;width:1920px;height:1080px"><path class="track-line" d="M0 540 H760 Q850 540 900 490 Q950 440 1040 440 H1920" fill="none" stroke="#ffffff" stroke-width="3" stroke-dasharray="1920" stroke-dashoffset="1920"/></svg><div class="automate-pill" style="position:absolute;left:50%;top:50%;width:330px;height:92px;margin:-46px 0 0 -165px;border:1px solid #ffffff;border-radius:999px;display:grid;place-items:center;font-size:34px;font-weight:500">Automate?</div><span class="signal-dot" style="position:absolute;left:790px;top:530px;width:20px;height:20px;border-radius:50%;background:#ffffff"></span>` },
+            { id: 's15', start: 25.2, dur: 2.1, html: `
+              <div class="scene-title">Strategy Marketplace</div><div class="scene-subtitle">Discover verified strategies built for different objectives.</div><div class="marketplace-grid" style="position:absolute;left:670px;top:210px;width:1120px">${strategyCard('Adaptive Earnings Regime','+226.59%','Medium risk')}${strategyCard('Golden Bean Sprout','+150.74%','Balanced')}${strategyCard('Multi-Value Trend','+120.16%','Medium risk')}${strategyCard('Aurora Trend Fusion','+122.73%','Balanced')}${strategyCard('3-Day Fixed Basket','+337.16%','High variance')}</div>` },
+            { id: 's16', start: 27.3, dur: 1.967, html: `
+              <div class="scene-title">Compare</div><div class="compare-grid" style="position:absolute;left:620px;top:180px;width:1160px;display:grid;grid-template-columns:1fr 1fr;gap:28px">${strategyCard('Adaptive Earnings Regime','+226.59%','Max drawdown 8.4%')}${strategyCard('Aurora Trend Fusion','+122.73%','Max drawdown 5.1%')}</div><svg style="position:absolute;inset:0;width:1920px;height:1080px"><path class="compare-line" d="M920 500 H1480 M920 590 H1480 M920 680 H1480" stroke="#b0b0b0" stroke-width="1" stroke-dasharray="560" stroke-dashoffset="560"/></svg>` },
+            { id: 's17', start: 29.267, dur: 1.966, html: `
+              <div class="scene-title">Choose</div><div class="strategy-focus" style="position:absolute;left:850px;top:190px;width:700px">${strategyCard('Adaptive Earnings Regime 10×','+226.59%','Max drawdown 8.4%')}</div><div class="selection-frame" style="position:absolute;left:832px;top:172px;width:736px;height:712px;border:1px solid #141416;border-radius:10px;opacity:0"></div>` },
+            { id: 's18', start: 31.233, dur: 1.7, html: `
+              <div class="scene-title">Run</div><div class="strategy-focus" style="position:absolute;left:850px;top:190px;width:700px">${strategyCard('Adaptive Earnings Regime 10×','+226.59%','Max drawdown 8.4%')}</div><span class="cursor-arrow run-cursor" style="left:1375px;top:795px"></span><span class="run-pulse" style="position:absolute;left:1195px;top:796px;width:24px;height:24px;margin:-12px;border:2px solid #141416;border-radius:50%;opacity:0"></span>` },
+            { id: 's19', start: 32.933, dur: 6.1, cls: 'black', html: `
+              <div class="scene-title">Autopilot</div><div class="scene-subtitle" style="color:#b0b0b0">Monitoring and execution, continuously connected.</div><svg style="position:absolute;inset:0;width:1920px;height:1080px"><path class="network-line draw-network" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" d="M960 540 C760 540 730 300 520 300 M960 540 C1160 540 1200 300 1410 300 M960 540 C760 540 730 780 520 780 M960 540 C1160 540 1200 780 1410 780"/><circle class="network-pulse" cx="960" cy="540" r="12"/></svg><div class="node node-a" style="left:360px;top:240px"><small>MARKET DATA</small><strong>Live</strong></div><div class="node node-b" style="left:1300px;top:240px"><small>RISK ENGINE</small><strong>Within limits</strong></div><div class="node node-c" style="left:360px;top:720px"><small>EXECUTION</small><strong>2 fills</strong></div><div class="node node-d" style="left:1300px;top:720px"><small>STRATEGY</small><strong>Running</strong></div><div class="panel" style="position:absolute;left:790px;top:430px;width:340px;height:220px;padding:28px;text-align:center"><div class="eyebrow">Adaptive Earnings</div><div style="margin-top:26px;font-size:46px;font-weight:600" class="green">+12.4%</div><div class="button" style="margin-top:22px;border:1px solid #444">Running · 24/7</div></div>` },
+            { id: 's20', start: 39.033, dur: 1.034, cls: 'black', html: `
+              <div class="display-word" style="left:180px">Pause.</div><div class="pause-control" style="position:absolute;left:1320px;top:410px;width:250px;height:250px;border:1px solid #ffffff;border-radius:50%;display:grid;place-items:center"><span style="font-size:86px">Ⅱ</span></div><span class="pulse-stop" style="position:absolute;left:1260px;top:528px;width:42px;height:4px;background:#ffffff"></span>` },
+            { id: 's21', start: 40.067, dur: 1.233, html: `
+              <div class="display-word" style="left:180px">Switch.</div><div class="switch-stack" style="position:absolute;left:1120px;top:250px;width:570px"><div class="panel switch-card" style="padding:28px"><div class="eyebrow">CURRENT</div><div class="card-title" style="margin-top:12px">Adaptive Earnings</div><div class="green" style="font-size:38px;margin-top:25px">+226.59%</div></div><div class="panel switch-card" style="padding:28px;margin-top:18px"><div class="eyebrow">NEXT</div><div class="card-title" style="margin-top:12px">Aurora Trend Fusion</div><div class="green" style="font-size:38px;margin-top:25px">+122.73%</div></div></div><span class="switch-arrow" style="position:absolute;left:1040px;top:490px;font-size:64px">↕</span>` },
+            { id: 's22', start: 41.3, dur: 2.3, html: `
+              <div class="scene-title">Anytime. Anywhere.</div><div class="spaces" style="position:absolute;left:150px;top:250px;width:1620px;height:650px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px"><div class="panel space-card" style="background:#eeeeee"><span class="eyebrow" style="position:absolute;margin:25px">DESK</span></div><div class="panel space-card" style="background:#dddddd"><span class="eyebrow" style="position:absolute;margin:25px">COMMUTE</span></div><div class="panel space-card" style="background:#222222"><span class="eyebrow" style="position:absolute;margin:25px;color:#b0b0b0">NIGHT</span></div></div><div class="phone travel-phone" style="left:726px;top:90px;transform:scale(.82)"><div class="phone-screen">${status}${appbar('Running','Live')}<div class="phone-content">${strategyCard('Adaptive Earnings','+12.4%','Within limits','Pause')}</div>${nav}</div></div>` },
+            { id: 's23', start: 43.6, dur: 3.2, html: `
+              <div class="scene-title">Straight from your phone.</div><div class="phone center-phone" style="left:1170px;top:62px"><div class="phone-screen">${status}${appbar('Minara','Live')}<div class="phone-content"><div class="panel" style="padding:18px;display:grid;gap:10px"><div class="eyebrow">PORTFOLIO</div><div style="font-size:48px;font-weight:600;line-height:1">$54,912</div><span class="green">+5.47% this month</span></div><div style="margin-top:18px">${strategyCard('Adaptive Earnings','+12.4%','Within limits','Pause')}</div></div>${nav}</div></div><div class="orbit-card panel" style="position:absolute;left:250px;top:300px;width:330px;padding:25px"><div class="eyebrow">RESEARCH</div><div class="card-title" style="margin-top:10px">AI infrastructure</div></div><div class="orbit-card panel" style="position:absolute;left:410px;top:650px;width:330px;padding:25px"><div class="eyebrow">TRADE</div><div class="card-title" style="margin-top:10px">SPCX · Buy</div></div><div class="orbit-card panel" style="position:absolute;left:800px;top:200px;width:330px;padding:25px"><div class="eyebrow">AUTOMATE</div><div class="card-title" style="margin-top:10px">Running</div></div>` },
+            { id: 's24', start: 46.8, dur: 1.967, html: `
+              <div class="display-word">Research.</div><div class="phone recap-phone" style="left:1240px;top:56px"><div class="phone-screen">${status}${appbar('Agent','Ask')}<div class="phone-content"><div class="panel" style="padding:22px"><div class="eyebrow">CONCLUSION</div><div class="card-title" style="margin-top:10px">AI infrastructure leads selective opportunities.</div><p class="card-copy" style="margin-top:16px">Rates, earnings, and positioning align.</p></div></div>${nav}</div></div>` },
+            { id: 's25', start: 48.767, dur: 1.966, html: `
+              <div class="display-word">Trade.</div><div class="phone recap-phone" style="left:1240px;top:56px"><div class="phone-screen">${status}${appbar('SPCX · Spot','Buy')}<div class="phone-content"><div style="font-size:50px;font-weight:600">$146.61</div><span class="green">+9.61%</span><div class="panel" style="margin-top:35px;padding:22px"><div class="metric-row"><div class="metric"><small>Amount</small><strong>$100</strong></div><div class="metric"><small>Shares</small><strong>0.682</strong></div></div><div class="button green-bg" style="margin-top:30px">Buy SPCX</div></div></div>${nav}</div></div>` },
+            { id: 's26', start: 50.733, dur: 1.934, html: `
+              <div class="display-word">Automate.</div><div class="phone recap-phone" style="left:1240px;top:56px"><div class="phone-screen">${status}${appbar('Strategy','Verified')}<div class="phone-content">${strategyCard('Adaptive Earnings Regime','+226.59%','Medium risk')}</div>${nav}</div></div>` },
+            { id: 's27', start: 52.667, dur: 1.966, html: `
+              <div class="display-word" style="width:920px;font-size:132px">Stay in control.</div><div class="phone recap-phone" style="left:1240px;top:56px"><div class="phone-screen">${status}${appbar('Running','Live')}<div class="phone-content">${strategyCard('Adaptive Earnings','+12.4%','Within limits','Pause')}<div class="button" style="margin-top:15px;background:#ffffff;color:#141416;border:1px solid #141416">Switch strategy</div></div>${nav}</div></div>` },
+            { id: 's28', start: 54.633, dur: 2.034, html: `
+              <div class="stage-center"><div class="phone closing-phone" style="left:-234px;top:-410px;transform:scale(.62)"><div class="phone-screen">${status}${appbar('Minara','2.0')}<div class="phone-content"><div class="panel" style="padding:22px"><div class="eyebrow">YOUR AGENT</div><div class="card-title" style="font-size:29px;margin-top:12px">Research. Trade. Automate.</div></div></div></div></div></div><div class="closing-title soft-blur" style="position:absolute;left:50%;top:865px;width:900px;margin-left:-450px;text-align:center;font-size:74px;font-weight:500;letter-spacing:-.05em">Minara App <span style="background:linear-gradient(90deg,#eb53ff,#ff538e,#ff9a32);color:transparent;background-clip:text;-webkit-background-clip:text">2.0</span></div>` },
+            { id: 's29', start: 56.667, dur: 2.033, html: `
+              <div class="soft-blur" style="position:absolute;left:50%;top:50%;width:1500px;margin:-70px 0 0 -750px;text-align:center;font-size:132px;font-weight:500;letter-spacing:-.06em">Your financial intelligence.</div>` },
+            { id: 's30', start: 58.7, dur: 2.967, html: `
+              <div style="position:absolute;left:50%;top:50%;width:1000px;margin:-150px 0 0 -500px;text-align:center"><img class="logo-wordmark soft-blur" src="assets/brand/minara-black-logo.png" alt="Minara" style="margin:0 auto"><div class="soft-blur" style="margin-top:55px;font-size:66px;font-weight:500;letter-spacing:-.05em">Your agent in one app.</div><div class="soft-blur" style="margin-top:22px;color:#717171;font-size:22px">APP 2.0</div></div>` }
+          ];
+
+          const host = document.getElementById('scenes');
+          scenes.forEach((scene) => {
+            const el = document.createElement('div');
+            el.id = scene.id;
+            el.className = 'scene ' + (scene.cls || '');
+            el.setAttribute('data-layout-allow-overflow', '');
+            if (scene.id === 's23') el.setAttribute('data-layout-allow-overlap', '');
+            el.innerHTML = scene.html;
+            host.appendChild(el);
+          });
+
+          const tl = gsap.timeline({ paused: true });
+          scenes.forEach((scene, index) => {
+            tl.set('#' + scene.id, { autoAlpha: 1 }, scene.start);
+            if (index > 0) tl.set('#' + scenes[index - 1].id, { autoAlpha: 0 }, scene.start);
+            const enterPhone = document.querySelector('#' + scene.id + ' .enter-phone');
+            if (index > 0 && enterPhone) tl.fromTo(enterPhone, { opacity: 0, y: 42, scale: .94 }, { opacity: 1, y: 0, scale: 1, duration: .56, ease: 'power3.out' }, scene.start + .08);
+          });
+
+          tl.fromTo('#s05 .enter-phone', { opacity: 0, x: -80, y: 60 }, { opacity: 1, x: 0, y: 0, duration: .7, ease: 'power3.out' }, .1)
+            .to('#s05 .enter-phone', { x: 85, y: -55, duration: 2.95, ease: 'none' }, .8)
+            .fromTo('#s05 .path-dot', { x: 0, y: 0 }, { x: 690, y: -235, duration: 3.2, ease: 'none' }, .4)
+            .to('#s06 .connect-path', { strokeDashoffset: 0, duration: 1.1, ease: 'power2.inOut' }, 4.25)
+            .fromTo('#s06 .chip', { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: .42, stagger: .18, ease: 'power3.out' }, 4.0)
+            .to('#s06 .enter-phone', { x: 25, duration: 2.7, ease: 'sine.inOut' }, 4.95)
+            .to('#s07 .draw-line', { strokeDashoffset: 0, duration: 1.35, ease: 'power2.inOut' }, 7.98)
+            .to('#s07 .chart-panel', { y: -12, duration: 1.72, ease: 'sine.inOut' }, 7.9)
+            .fromTo('#s08 .bar', { scaleY: 0 }, { scaleY: 1, duration: .65, stagger: .07, ease: 'power3.out' }, 9.92)
+            .fromTo('#s09 .range-fill', { scaleX: 0, transformOrigin: '0 50%' }, { scaleX: 1, duration: .7, ease: 'power3.out' }, 12.05)
+            .fromTo('#s09 .target-dot', { opacity: 0, scale: .5 }, { opacity: 1, scale: 1, duration: .35, ease: 'back.out(1.5)' }, 12.55)
+            .fromTo('#s10 .news-card', { opacity: 0, y: 45 }, { opacity: 1, y: 0, duration: .4, stagger: .15, ease: 'power3.out' }, 13.82)
+            .fromTo('#s10 .focus-dot', { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: .3, ease: 'power3.out' }, 14.7)
+            .fromTo('#s11 .run-cursor, #s11 .cursor-arrow', { opacity: 0, x: 90, y: 70 }, { opacity: 1, x: 0, y: 0, duration: .55, ease: 'power3.out' }, 16.2)
+            .to('#s12 .connect-path', { strokeDashoffset: 0, duration: .8, ease: 'power2.inOut' }, 17.7)
+            .to('#s12 .ondo-panel', { x: -22, duration: 1.72, ease: 'sine.inOut' }, 17.62)
+            .fromTo('#s13 .direction-word', { opacity: 0, x: -80 }, { opacity: 1, x: 0, duration: .55, stagger: .28, ease: 'power3.out' }, 19.8)
+            .to('#s13 .enter-phone', { y: -18, duration: 2.1, ease: 'sine.inOut' }, 21.08)
+            .to('#s14 .track-line', { strokeDashoffset: 0, duration: 1.0, ease: 'power2.inOut' }, 23.56)
+            .to('#s14 .signal-dot', { x: 330, y: -100, duration: .8, ease: 'power2.inOut' }, 23.58)
+            .fromTo('#s14 .automate-pill', { opacity: 0, scale: .9 }, { opacity: 1, scale: 1, duration: .38, ease: 'power3.out' }, 23.72)
+            .fromTo('#s15 .strategy-card', { opacity: 0, y: 55 }, { opacity: 1, y: 0, duration: .45, stagger: .09, ease: 'power3.out' }, 25.3)
+            .to('#s16 .compare-line', { strokeDashoffset: 0, duration: .7, ease: 'power2.inOut' }, 27.55)
+            .to('#s16 .compare-grid', { x: 14, duration: 1.62, ease: 'sine.inOut' }, 27.45)
+            .fromTo('#s17 .strategy-focus', { scale: .82, opacity: .3 }, { scale: 1, opacity: 1, duration: .5, ease: 'power3.out' }, 29.38)
+            .to('#s17 .selection-frame', { opacity: 1, duration: .2, repeat: 1, yoyo: true, ease: 'none' }, 30.35)
+            .fromTo('#s18 .run-cursor', { x: 120, y: 100 }, { x: 0, y: 0, duration: .62, ease: 'power3.out' }, 31.32)
+            .to('#s18 .run-pulse', { opacity: 1, scale: 7, duration: .48, ease: 'power2.out' }, 32.18)
+            .to('#s19 .draw-network', { strokeDashoffset: 0, duration: 1.35, ease: 'power2.inOut' }, 33.15)
+            .fromTo('#s19 .node', { opacity: 0, scale: .92 }, { opacity: 1, scale: 1, duration: .45, stagger: .38, ease: 'power3.out' }, 33.55)
+            .to('#s19 .network-pulse', { scale: 1.65, transformOrigin: '50% 50%', duration: .42, repeat: 5, yoyo: true, ease: 'sine.inOut' }, 35.15)
+            .fromTo('#s20 .pulse-stop', { scaleX: 6, opacity: .3, transformOrigin: '100% 50%' }, { scaleX: 1, opacity: 1, duration: .55, ease: 'power3.out' }, 39.1)
+            .fromTo('#s21 .switch-card', { opacity: 0, x: 80 }, { opacity: 1, x: 0, duration: .35, stagger: .2, ease: 'power3.out' }, 40.12)
+            .to('#s21 .switch-stack', { y: -210, duration: .48, ease: 'power3.inOut' }, 40.65)
+            .fromTo('#s22 .space-card', { opacity: 0 }, { opacity: 1, duration: .3, stagger: .2 }, 41.36)
+            .to('#s22 .travel-phone', { x: 500, duration: 1.7, ease: 'power1.inOut' }, 41.55)
+            .fromTo('#s23 .orbit-card', { opacity: 1, scale: 1 }, { opacity: 0, scale: .65, x: 80, duration: .55, stagger: .1, ease: 'power3.inOut' }, 44.45)
+            .fromTo('#s23 .center-phone', { x: 0 }, { x: -220, duration: .8, ease: 'power3.inOut' }, 45.05)
+            .fromTo('#s24 .display-word', { opacity: 0, y: 35, filter: 'blur(12px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: .52, ease: 'power3.out' }, 46.9)
+            .fromTo('#s25 .display-word', { opacity: 0, y: 35, filter: 'blur(12px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: .52, ease: 'power3.out' }, 48.86)
+            .fromTo('#s26 .display-word', { opacity: 0, y: 35, filter: 'blur(12px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: .52, ease: 'power3.out' }, 50.82)
+            .fromTo('#s27 .display-word', { opacity: 0, y: 35, filter: 'blur(12px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: .52, ease: 'power3.out' }, 52.76)
+            .fromTo('#s28 .closing-phone', { opacity: 0, scale: .3 }, { opacity: 1, scale: .62, duration: .7, ease: 'power3.out' }, 54.75)
+            .fromTo('#s28 .soft-blur', { opacity: 0, y: 22, filter: 'blur(12px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: .62, ease: 'power3.out' }, 55.18)
+            .fromTo('#s29 .soft-blur', { opacity: 0, y: 24, filter: 'blur(12px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: .7, ease: 'power3.out' }, 56.8)
+            .fromTo('#s30 .soft-blur', { opacity: 0, y: 22, filter: 'blur(12px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: .65, stagger: .18, ease: 'power3.out' }, 58.86);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines['app2-scenes-05-30'] = tl;
+          const previewTime = new URLSearchParams(window.location.search).get('t');
+          if (previewTime !== null) tl.time(Number(previewTime));
+        })();
+      </script>
+    </main>
+  </body>
+</html>

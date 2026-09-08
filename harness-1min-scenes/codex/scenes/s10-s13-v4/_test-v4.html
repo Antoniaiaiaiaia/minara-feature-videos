@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>S10–S13 · Autopilot proven ones · v4</title><link rel="stylesheet" href="scene.css"></head>
+<body>
+<header class="review-header"><a href="../../../../storyboard.html">← Storyboard</a><span>S10–S13 · Autopilot proven ones</span><span>v4 · 15 seconds</span></header>
+<main id="viewport"><div id="stage">
+ <video id="flow" src="../s12-s13-v2/assets/bg-light-flow.mp4" muted playsinline preload="auto"></video><div class="wash"></div>
+ <div id="title"></div>
+ <nav id="navigation" aria-label="Product navigation"><button id="market-tab">Marketplace</button><button id="portfolio-tab">Portfolio</button></nav>
+ <section id="market" aria-label="Strategy marketplace">
+  <div class="toolbar"><label class="search"><svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><path d="m15 15 5 5"/></svg><input id="search" placeholder="Search strategies" aria-label="Search strategies"></label><span class="market-count">6 strategies</span><label>Sort by <select id="sort" aria-label="Sort strategies"><option value="featured">Featured</option><option value="sharpe">Sharpe ratio</option><option value="drawdown">Lowest drawdown</option></select></label></div>
+  <div id="market-viewport"><div id="market-cards"></div></div>
+ </section>
+ <section id="details" aria-label="Strategy details">
+  <header class="detail-heading"><button id="back" aria-label="Back to marketplace">←</button><div><span id="detail-name">Adaptive Trend Follower</span><p>SOLUSDT · 4H · Published</p></div><span class="detail-badge">Live track record</span></header>
+  <div class="detail-layout"><div class="detail-main">
+   <section class="report"><header><span>Backtest report</span><span class="report-meta">SOLUSDT　4H　Jan 2024 – Sep 2026</span></header><div class="report-grid" id="report-grid"></div></section>
+   <section class="equity"><header>Equity curve <span><i class="backtest-key"></i> Backtest return　<i class="live-key"></i> Live return　<span class="publish-key">⚑ Publish</span></span></header><svg viewBox="0 0 1000 235" aria-label="Rising backtest and live equity"><g class="chart-grid"><path d="M62 30H978M62 82H978M62 134H978M62 186H978"/><text x="4" y="36">+120%</text><text x="8" y="88">+80%</text><text x="8" y="140">+40%</text><text x="24" y="192">0%</text><text x="62" y="225">2024</text><text x="302" y="225">2025</text><text x="562" y="225">2026</text><text x="859" y="225">Sep</text></g><path class="backtest-path" d="M62 187L91 183L110 180L129 181L159 172L180 170L199 173L219 162L242 159L271 150L293 152L314 142L340 140L370 126L398 124L425 128L455 109L490 106L515 98L540 100L570 87L600 88L630 75L660 70L688 73L715 60L748 57L780 51"/><path class="live-area" d="M780 51L804 50L819 44L834 46L853 35L871 37L885 30L910 28L929 31L949 22L978 15V186H780Z"/><path id="live-curve" d="M780 51L804 50L819 44L834 46L853 35L871 37L885 30L910 28L929 31L949 22L978 15"/><path class="publish-line" d="M780 16V188"/><text class="publish-label" x="745" y="12">Publish</text></svg></section>
+  </div><aside class="detail-side">
+   <section class="detail-subs"><div>Subscribers<span id="detail-avatars"></span></div><div>Profit share<strong>20%</strong></div></section>
+   <section id="live-proof"><header>Live performance <span>90 days</span></header><div class="live-value">+24.80%</div><div class="live-metrics"><div>Max drawdown<strong>3.20%</strong></div><div>Win rate<strong>72%</strong></div></div></section>
+   <section class="run-panel"><header>My live run</header><p id="run-description">Start a live run to deploy this strategy to your wallet.</p><button id="run">Run</button></section>
+  </aside></div>
+ </section>
+ <section id="portfolio" aria-label="Portfolio strategies"><div id="portfolio-summary">Running 2 <span>·</span> Paused 1</div><div id="strategies"></div></section>
+ <div id="cursor"><svg viewBox="0 0 32 38"><path d="M3 2v29l8-7 6 12 6-3-6-11 11-1Z" fill="#141416" stroke="white" stroke-width="1.8"/></svg><i></i></div>
+</div></main>
+<footer class="review-controls"><div class="transport"><button id="play" aria-label="Play">▶</button><button id="replay">Replay</button><output id="time">0.00 / 15.00s</output><input id="scrub" aria-label="Scene time" type="range" min="0" max="15" step="0.01" value="0"><select id="speed" aria-label="Playback speed"><option value=".5">0.5×</option><option value="1" selected>1×</option></select><button id="interactive">Try it yourself</button></div><div class="chapters"><button data-time=".9">Title</button><button data-time="4.7">Browse</button><button data-time="6.8">Details</button><button data-time="8.1">Run</button><button data-time="10.7">Portfolio</button><button data-time="13.6">Switch strategy</button><span>1920 × 1080 · 30 fps · Mock data · Preview only · v4</span></div></footer>
+<script src="../s12-s13-v2/assets/gsap.min.js"></script><script src="../s12-s13-v2/assets/CustomEase.min.js"></script><script src="assets/title-preview.js"></script><script src="scene.js"></script>
+</body></html>

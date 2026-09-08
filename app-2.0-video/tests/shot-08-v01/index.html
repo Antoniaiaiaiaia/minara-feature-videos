@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Shot 08 — Earnings screens</title>
+  <style>
+    @font-face{font-family:Geist;src:url('./assets/fonts/Geist-Regular.woff2') format('woff2');font-weight:400}
+    @font-face{font-family:Geist;src:url('./assets/fonts/Geist-SemiBold.woff2') format('woff2');font-weight:600}
+    *{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#f7f7f7;font-family:Geist,Arial,sans-serif}body{display:grid;place-items:center}
+    #viewport{position:relative;width:min(100vw,177.7778vh);aspect-ratio:16/9;overflow:hidden;background:#f7f7f7}
+    #shot{position:absolute;inset:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;background:radial-gradient(circle at 50% 82%,#fff 0 28%,#f7f7f7 70%)}
+    .floor{position:absolute;left:90px;right:90px;bottom:-110px;height:300px;border-radius:50%;background:rgba(0,0,0,.08);filter:blur(64px)}
+    .phone{position:absolute;top:110px;width:480px;height:970px;overflow:hidden;border:1px solid #272727;border-radius:44px 44px 0 0;background:#050505;color:#f5f5f5;box-shadow:0 28px 80px rgba(0,0,0,.18);transform-origin:50% 100%}
+    .phone:nth-of-type(1){left:130px}.phone:nth-of-type(2){left:720px}.phone:nth-of-type(3){left:1310px}
+    .status{height:56px;padding:17px 25px 0;display:flex;align-items:flex-start;font-size:22px;font-weight:600}.signal{margin-left:auto;letter-spacing:2px}.battery{margin-left:9px;padding:1px 7px;border-radius:7px;background:#eee;color:#050505;font-size:18px}
+    .asset-head{height:102px;padding:16px 22px 9px;display:flex;align-items:center;gap:14px}.back{font-size:48px;font-weight:300;color:#ddd}.logo{width:62px;height:62px;overflow:hidden;border:1px solid #292929;border-radius:50%;background:#fff;flex:none}.logo img{width:100%;height:100%;object-fit:cover}.asset-copy{min-width:0}.ticker{font-size:35px;line-height:1;letter-spacing:-1.2px}.name{margin-top:8px;color:#a6a6a6;font-size:20px}.type{margin-left:7px;padding:4px 8px;border-radius:8px;background:#32123b;color:#d95cff;font-size:16px;vertical-align:4px}.type.private{background:#242424;color:#d9d9d9}
+    .tabs{height:60px;margin:0 15px;display:flex;align-items:center;justify-content:space-between;color:#9d9d9d;font-size:21px}.tab{padding:10px 9px;border-radius:12px}.tab.active{background:#292929;color:#fff}
+    .period-block{height:117px;padding:12px 20px 0;border-top:1px solid #191919}.section-title{font-size:26px;font-weight:600}.periods{display:flex;gap:12px;margin-top:13px;white-space:nowrap}.period{padding:10px 13px;border-radius:12px;color:#999;font-size:19px}.period.active{background:#282828;color:#fff}
+    .earnings{height:210px;padding:18px 20px 0}.earnings-head{display:flex;align-items:flex-end}.period-note{margin-top:8px;color:#929292;font-size:18px}.verdict{margin-left:auto;color:#08bd78;font-size:19px;font-weight:600}.metrics{display:grid;grid-template-columns:1fr 1fr;gap:23px 34px;margin-top:21px}.metric label{display:block;color:#929292;font-size:18px}.metric b{display:block;margin-top:6px;font-size:27px;font-weight:400}.metric b em{margin-left:6px;color:#08bd78;font-size:18px;font-style:normal}
+    .chart-block{height:310px;padding:17px 20px 0}.chart-title{font-size:25px;font-weight:600}.chart-label{margin-top:8px;color:#aaa;font-size:18px}.chart{height:210px;margin-top:13px;display:flex;align-items:flex-end;gap:13px;padding:0 8px 25px;border-bottom:1px solid #252525}.bar-wrap{height:100%;display:flex;flex:1;align-items:flex-end;justify-content:center;position:relative}.bar{width:100%;max-width:39px;border-radius:9px 9px 4px 4px;background:#08bd78;transform-origin:50% 100%}.bar-wrap span{position:absolute;bottom:-23px;color:#777;font-size:12px}
+    .brief{margin:13px 20px 0;padding:15px 16px;border:1px solid #242424;border-radius:16px;background:#111}.brief-top{display:flex;align-items:center;font-size:17px;font-weight:600}.brief-top span{margin-left:auto;color:#08bd78}.brief p{margin:7px 0 0;color:#929292;font-size:15px;line-height:1.35}
+  </style>
+</head>
+<body>
+  <div id="viewport" data-composition-id="minara-shot-08" data-width="1920" data-height="1080" data-start="0" data-duration="2.1" data-fps="60" data-root="true">
+    <main id="shot"><div class="floor"></div></main>
+  </div>
+  <script src="./assets/vendor/gsap.min.js"></script>
+  <script>
+    const shot=document.querySelector('#shot');const fit=()=>{const v=document.querySelector('#viewport');shot.style.transform=`scale(${v.clientWidth/1920})`};addEventListener('resize',fit);fit();
+    const assets=[
+      {ticker:'$CRCL',name:'Circle Internet',type:'Stock',logo:'circle.png',period:'2026 Q2',verdict:'Beat',revenue:'$701.3M',delta:'+6.57%',eps:'0.19 / 0.16',income:'$48.2M',margin:'41.2%',bars:[46,43,58,68,78,84,73,75],brief:'Stablecoin growth and stronger transaction revenue lifted the quarter.'},
+      {ticker:'$NVDA',name:'NVIDIA',type:'Stock',logo:'nvidia.png',period:'2026 Q1',verdict:'Beat',revenue:'$44.1B',delta:'+69.2%',eps:'0.96 / 0.93',income:'$26.4B',margin:'71.3%',bars:[34,41,49,56,65,74,85,94],brief:'Data center demand remains the primary earnings and margin driver.'},
+      {ticker:'SPACEX',name:'SpaceX',type:'Private',logo:'spacex.png',period:'FY 2025',verdict:'Strong',revenue:'$13.1B',delta:'+24.8%',eps:'Private',income:'$3.8B',margin:'48.6%',bars:[28,37,45,53,62,70,82,91],brief:'Launch cadence and Starlink subscriptions continue to expand rapidly.'}
+    ];
+    const card=d=>`<article class="phone"><div class="status" data-grow><span>17:11 ◐</span><span class="signal">▮▮▮ ◇</span><span class="battery">60</span></div><header class="asset-head" data-grow><span class="back">‹</span><span class="logo"><img src="assets/logos/${d.logo}" alt="${d.name}"></span><div class="asset-copy"><div class="ticker">${d.ticker}<span class="type ${d.type==='Private'?'private':''}">${d.type}</span></div><div class="name">${d.name}</div></div></header><nav class="tabs" data-grow><span class="tab">Overview</span><span class="tab">Stats</span><span class="tab active">Earnings</span><span class="tab">Analyst</span><span class="tab">News</span></nav><section class="period-block" data-grow><div class="section-title">Earnings Period</div><div class="periods"><span class="period active">${d.period}</span><span class="period">Previous</span><span class="period">Annual</span></div></section><section class="earnings" data-grow><div class="earnings-head"><div><div class="section-title">Earnings Data</div><div class="period-note">Reported · ${d.period}</div></div><span class="verdict">${d.verdict}</span></div><div class="metrics"><div class="metric"><label>Revenue</label><b>${d.revenue}<em>${d.delta}</em></b></div><div class="metric"><label>EPS</label><b>${d.eps}</b></div><div class="metric"><label>Net Income</label><b>${d.income}</b></div><div class="metric"><label>Gross Margin</label><b>${d.margin}</b></div></div></section><section class="chart-block" data-grow><div class="chart-title">Trend Chart</div><div class="chart-label">Quarterly revenue</div><div class="chart">${d.bars.map((h,i)=>`<div class="bar-wrap"><i class="bar" style="height:${h}%"></i><span>${i+1}Q</span></div>`).join('')}</div></section><section class="brief" data-grow><div class="brief-top">AI earnings brief <span>Positive</span></div><p>${d.brief}</p></section></article>`;
+    assets.forEach(d=>shot.insertAdjacentHTML('beforeend',card(d)));
+    const phones=[...shot.querySelectorAll('.phone')];gsap.set(phones,{y:1080});phones.forEach(phone=>{gsap.set(phone.querySelectorAll('[data-grow]'),{opacity:0,y:18,scale:.97});gsap.set(phone.querySelectorAll('.bar'),{scaleY:0})});
+    const tl=gsap.timeline({paused:true});phones.forEach((phone,i)=>{const start=i*.28;tl.to(phone,{y:0,duration:1.12,ease:'power3.out'},start).to(phone.querySelectorAll('[data-grow]'),{opacity:1,y:0,scale:1,duration:.38,stagger:.038,ease:'power2.out'},start+.001).to(phone.querySelectorAll('.bar'),{scaleY:1,duration:.72,stagger:.045,ease:'power3.out'},start+.38)});tl.duration(2.1);window.__timelines=window.__timelines||{};window.__timelines['minara-shot-08']=tl;
+  </script>
+</body>
+</html>

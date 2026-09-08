@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>S04 + S05 · Portfolio → signals → trade history · v12</title><link rel="stylesheet" href="scene.css"><link rel="stylesheet" href="revision.css"></head>
+<body>
+<header><div><strong>S04 + S05</strong><span>Every asset. One intelligence.</span></div><span>PREVIEW · V12 · 9.5 SECONDS · APPROVED</span></header>
+<main>
+ <div id="viewport"><div id="stage">
+  <video id="flow" src="assets/bg-dark-flow.mp4" muted playsinline preload="auto"></video><div id="grade"></div>
+  
+  <h1 id="title"><span>Every</span> <span>asset.</span> <span>One</span> <span>intelligence.</span></h1>
+  <div id="camera"><form id="composer" aria-label="Minara AI Copilot">
+   <textarea id="prompt" rows="2" spellcheck="false" aria-label="Ask Minara" placeholder="Ask anything..."></textarea><i id="caret"></i>
+   <div id="composer-tools">
+    <button type="button" id="attach" aria-label="Attach a file"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5v14"/></svg></button><input type="file" id="file" hidden><span id="file-name"></span>
+    <div class="right-tools"><button type="button" id="model" aria-label="Model options" aria-expanded="false"><svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="3"/><path d="M9 9h6v6H9zM9 2v3m6-3v3M9 19v3m6-3v3M2 9h3m-3 6h3m14-6h3m-3 6h3"/></svg><svg class="chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>
+    <button type="button" disabled aria-label="Microphone unavailable in this local preview"><svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V12a3 3 0 0 0-3-3ZM19 10v2a7 7 0 0 1-14 0M12 19v3"/></svg></button>
+    <button id="send" type="submit" aria-label="Send prompt" disabled><svg viewBox="0 0 24 24"><path d="m5 12 7-7 7 7M12 19V12"/></svg></button></div>
+   </div>
+   <div id="model-menu" hidden><label>Fast mode <input id="fast" type="checkbox"></label></div>
+  </form></div>
+  <div id="wall"></div><section id="trade-history" aria-label="Trade history"></section><div id="edge"></div>
+ </div></div>
+ <div class="transport"><button id="play">Play</button><button id="replay">Replay</button><input id="scrub" type="range" min="0" max="284" value="0" step="1" aria-label="Scene frame"><output id="time">0.000 / 9.500s</output><select id="speed" aria-label="Playback speed"><option value=".5">0.5×</option><option selected value="1">1×</option></select><button id="fullscreen">Fullscreen</button></div>
+ <nav aria-label="Scene chapters"><button data-time=".5">01 · Asset wall</button><button data-time="2.8">02 · Composer</button><button data-time="5.5">03 · Signals</button><button data-time="6.7">04 · Orders on the wall</button><button data-time="8.8">05 · Trade history</button><button id="interactive">Try the input</button></nav>
+ <footer>1920 × 1080 · GSAP / Minara curves · Local UI reconstruction · Illustrative market data · Preview only · Orders are local demonstrations</footer>
+</main>
+<script src="assets/gsap.min.js"></script><script src="assets/CustomEase.min.js"></script><script src="assets/market-data.js"></script><script src="assets/asset-marks.js"></script><script src="motion.js"></script><script src="logo-glyphs.js"></script><script src="scene.js"></script>
+</body></html>

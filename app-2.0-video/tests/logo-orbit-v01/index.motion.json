@@ -1,0 +1,8 @@
+{
+  "duration": 5,
+  "assertions": [
+    { "kind": "appearsBy", "selector": "#logo-card-1", "bySec": 0.1 },
+    { "kind": "staysInFrame", "selector": "#holder" },
+    { "kind": "keepsMoving", "withinSelector": "#ring", "maxStaticSec": 0.3 }
+  ]
+}

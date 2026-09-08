@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1920, initial-scale=1" />
+    <title>Camera Zoom — App 2.0 Motion Example</title>
+    <script src="../../assets/vendor/gsap.min.js"></script>
+    <style>
+      @font-face {
+        font-family: "Geist";
+        src: url("../../assets/fonts/Geist-Regular.woff2") format("woff2");
+        font-weight: 400;
+      }
+      @font-face {
+        font-family: "Geist";
+        src: url("../../assets/fonts/Geist-SemiBold.woff2") format("woff2");
+        font-weight: 600;
+      }
+      * { box-sizing: border-box; }
+      html, body {
+        width: 1920px;
+        height: 1080px;
+        margin: 0;
+        overflow: hidden;
+        color: #141416;
+        background: #f7f7f7;
+        font-family: "Geist", sans-serif;
+      }
+      #camera-anchor {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 0;
+        height: 0;
+      }
+      #camera-rig {
+        position: absolute;
+        left: -234px;
+        top: -492.5px;
+        width: 468px;
+        height: 985px;
+        padding: 12px;
+        border-radius: 70px;
+        background: #050505;
+        transform-origin: 50% 50%;
+        will-change: transform;
+      }
+      .screen {
+        position: relative;
+        width: 444px;
+        height: 961px;
+        overflow: hidden;
+        border-radius: 58px;
+        background: #ffffff;
+      }
+      .island {
+        position: absolute;
+        top: 16px;
+        left: 50%;
+        width: 104px;
+        height: 30px;
+        margin-left: -52px;
+        border-radius: 999px;
+        background: #000000;
+      }
+      .status {
+        display: flex;
+        justify-content: space-between;
+        padding: 24px 26px;
+        font-size: 15px;
+        font-weight: 600;
+      }
+      .header {
+        margin-top: 30px;
+        padding: 18px 26px;
+        border-bottom: 1px solid #e6e6e6;
+        font-size: 18px;
+        font-weight: 600;
+      }
+      .empty-copy {
+        position: absolute;
+        left: 32px;
+        right: 32px;
+        top: 190px;
+        color: #8b8b8b;
+        font-size: 26px;
+        line-height: 1.28;
+      }
+      .chips {
+        position: absolute;
+        left: 26px;
+        bottom: 180px;
+        display: flex;
+        gap: 9px;
+      }
+      .chip {
+        padding: 9px 13px;
+        border: 1px solid #dedede;
+        border-radius: 999px;
+        font-size: 14px;
+      }
+      .input {
+        position: absolute;
+        left: 24px;
+        right: 24px;
+        bottom: 102px;
+        height: 72px;
+        display: grid;
+        grid-template-columns: 54px 1fr 58px;
+        align-items: center;
+        gap: 8px;
+        padding: 7px;
+        border-radius: 999px;
+        background: #f6f6f6;
+        font-size: 21px;
+      }
+      .round {
+        width: 54px;
+        height: 54px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        background: #ffffff;
+        font-size: 34px;
+      }
+      .send { color: #ffffff; background: #141416; font-size: 30px; }
+      .nav {
+        position: absolute;
+        left: 38px;
+        right: 38px;
+        bottom: 35px;
+        display: flex;
+        justify-content: space-between;
+        font-size: 21px;
+      }
+      button {
+        position: fixed;
+        z-index: 10;
+        right: 36px;
+        bottom: 36px;
+        padding: 15px 20px;
+        border: 0;
+        border-radius: 999px;
+        color: #ffffff;
+        background: #141416;
+        font: 600 16px "Geist", sans-serif;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="camera-anchor">
+      <div id="camera-rig">
+        <div class="screen">
+          <div class="island"></div>
+          <div class="status"><span>9:41</span><span>100%</span></div>
+          <div class="header">Minara Agent</div>
+          <div class="empty-copy">Ask a market question and move from context to action.</div>
+          <div class="chips"><span class="chip">CSCO</span><span class="chip">AMD</span><span class="chip">CAT</span><span class="chip">XOM</span></div>
+          <div class="input"><span class="round">＋</span><span>What could move AI stocks this week?</span><span class="round send">↑</span></div>
+          <div class="nav"><span>●</span><span>◇</span><span>▥</span><span>▱</span></div>
+        </div>
+      </div>
+    </div>
+    <button id="replay" type="button">Replay camera zoom</button>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+
+      tl.set("#camera-rig", { x: 0, y: 0, scale: 0.96 })
+        .to("#camera-rig", {
+          x: 0,
+          y: -756,
+          scale: 2.25,
+          duration: 0.78,
+          ease: "power3.inOut",
+        }, 0.28);
+
+      document.getElementById("replay").addEventListener("click", () => tl.restart());
+      const previewTime = new URLSearchParams(window.location.search).get("t");
+      if (previewTime === null) tl.play(0);
+      else tl.time(Number(previewTime));
+      window.cameraZoomExample = tl;
+    </script>
+  </body>
+</html>

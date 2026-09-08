@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Shot 16 — Strategy Card Field</title>
+  <style>
+    @font-face{font-family:Geist;src:url('./assets/fonts/Geist-Regular.woff2') format('woff2');font-weight:400}
+    @font-face{font-family:Geist;src:url('./assets/fonts/Geist-SemiBold.woff2') format('woff2');font-weight:600}
+    *{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#f7f7f7;font-family:Geist,Arial,sans-serif}body{display:grid;place-items:center}
+    #viewport{position:relative;width:min(100vw,177.7778vh);aspect-ratio:16/9;overflow:hidden;background:#f7f7f7}
+    #shot{position:absolute;inset:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;background:radial-gradient(circle at 12% 15%,#fff3df 0,transparent 34%),radial-gradient(circle at 88% 78%,#ffeaf0 0,transparent 38%),#f7f7f7}
+    #plane{position:absolute;left:-40px;top:-70px;width:2600px;display:grid;grid-template-columns:repeat(5,490px);grid-auto-rows:360px;gap:34px;transform-origin:50% 50%;will-change:transform}
+    .card{position:relative;padding:24px 24px 20px;overflow:hidden;border:1px solid #e8e8ea;border-radius:30px;background:rgba(255,255,255,.96);box-shadow:0 20px 52px rgba(20,20,24,.09);color:#15171a}
+    .card-head{height:54px;display:flex;align-items:center}.strategy-mark{position:relative;width:48px;height:48px;margin-right:14px;border-radius:50%;background:#111}.strategy-mark i{position:absolute;top:11px;width:7px;height:26px;border:3px solid #fff;border-top-color:transparent;border-bottom-color:transparent;border-radius:50%}.strategy-mark i:nth-child(1){left:9px}.strategy-mark i:nth-child(2){left:18px}.strategy-mark i:nth-child(3){left:27px}.title{max-width:340px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:25px;font-weight:600;letter-spacing:-.025em}.more{margin-left:auto;color:#85858a;font-size:23px}
+    .meta{height:46px;display:flex;align-items:center;color:#85858a;font-size:17px}.asset-stack{display:flex;margin-right:10px}.asset-stack img{width:28px;height:28px;margin-left:-7px;border:2px solid #fff;border-radius:50%;object-fit:cover;background:#fff}.asset-stack img:first-child{margin-left:0}.creator{display:flex;align-items:center;margin-left:10px}.creator img{width:25px;height:25px;margin-right:7px;border-radius:7px;object-fit:cover}.share{margin-left:auto;white-space:nowrap}.divider{height:1px;background:#ececee}
+    .body{position:relative;height:166px;padding-top:18px}.label{color:#85858a;font-size:17px}.return{margin-top:4px;color:#08bd78;font-size:39px;font-weight:600;letter-spacing:-.035em}.window{position:absolute;left:0;bottom:7px}.window b{display:block;margin-top:4px;color:#08bd78;font-size:27px;font-weight:500}.chart{position:absolute;right:-5px;top:26px;width:245px;height:118px}.chart path{fill:none;stroke:#08bd78;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}.chart .area{stroke:none;fill:url(#fade);opacity:.18}.subscribers{position:absolute;right:9px;bottom:9px;color:#85858a;font-size:16px}.faces{display:flex;align-items:center;margin-top:6px}.face{width:27px;height:27px;margin-left:-7px;border:2px solid #fff;border-radius:50%;background:linear-gradient(135deg,#6f50d9,#e6b35b)}.face:first-child{margin-left:0}.count{margin-left:5px;padding:3px 8px;border-radius:14px;background:#fff;color:#15171a;font-weight:600;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+    .footer{height:58px;display:grid;grid-template-columns:58px 1fr;gap:13px}.star{display:grid;place-items:center;border-radius:15px;background:#f7f7f8;color:#f39a00;font-size:31px}.run{display:grid;place-items:center;border-radius:15px;background:#08bd78;color:#fff;font-size:23px;font-weight:600}.card:nth-child(4n+2) .run{background:#111}.card:nth-child(4n+3) .return,.card:nth-child(4n+3) .window b{color:#15a97b}.card:nth-child(5n) {background:#f9f9fa}
+  </style>
+</head>
+<body>
+  <div id="viewport" data-composition-id="minara-shot-16" data-width="1920" data-height="1080" data-start="0" data-duration="1.967" data-fps="60" data-root="true">
+    <main id="shot"><div id="plane"></div></main>
+  </div>
+  <script src="./assets/vendor/gsap.min.js"></script>
+  <script>
+    const shot=document.querySelector('#shot');const fit=()=>{const v=document.querySelector('#viewport');shot.style.transform=`scale(${v.clientWidth/1920})`};addEventListener('resize',fit);fit();
+    const strategies=[
+      ['CoinFull Prime (Neutral)','BTC · ETH · SOL','+104.25%','+5.39K%','20%',['bitcoin.svg','nasdaq.png','gold.png']],
+      ['Adaptive Earnings Regime','NVIDIA · AMD','+226.59%','+102.97%','10%',['nvidia.png','advanced-micro-devices.png']],
+      ['Multi-Value TradFi 30','US Tech · Macro','+120.16%','+687.39%','30%',['nvidia.png','tesla.png','apple.png']],
+      ['Golden Bean Sprout','Gold · Bitcoin','+150.74%','+82.44%','15%',['gold.png','bitcoin.svg']],
+      ['AI Momentum Select','NVDA · AMZN','+198.42%','+76.81%','12%',['nvidia.png','amazon.png']],
+      ['Magnificent Seven Pulse','AAPL · TSLA','+132.08%','+54.36%','18%',['apple.png','tesla.png']],
+      ['Crypto Trend Neutral','BTC · NASDAQ','+88.64%','+34.72%','20%',['bitcoin.svg','nasdaq.png']],
+      ['Semiconductor Alpha','NVDA · AMD','+172.91%','+69.14%','10%',['nvidia.png','advanced-micro-devices.png']],
+      ['Macro Rotation Core','Gold · Nasdaq','+96.37%','+44.12%','15%',['gold.png','nasdaq.png']],
+      ['Earnings Breakout 10x','NVDA · AMZN','+260.62%','+102.97%','10%',['nvidia.png','amazon.png']]
+    ];
+    const paths=['M3 101 C25 95 39 98 58 91 S92 95 112 82 S144 84 160 63 S190 71 205 45 S228 40 242 12','M3 104 C25 101 42 98 58 99 S91 96 109 89 S142 94 160 77 S189 80 205 59 S228 50 242 24','M3 102 C23 94 40 97 56 90 S89 88 106 72 S137 80 156 58 S188 67 204 42 S230 30 242 14','M3 100 C24 102 40 95 60 98 S90 92 108 86 S141 91 159 69 S188 72 205 50 S228 44 242 18'];
+    const card=(item,index)=>{const [title,category,annual,windowReturn,share,logos]=item;return `<article class="card"><header class="card-head"><span class="strategy-mark"><i></i><i></i><i></i></span><span class="title">${title}</span><span class="more">•••</span></header><div class="meta"><span class="asset-stack">${logos.map(src=>`<img src="assets/logos/${src}">`).join('')}</span><span>${category}</span><span class="creator"><img src="assets/brand/Minara-Avatar.png">Minara Labs</span><span class="share">Share ${share}</span></div><div class="divider"></div><section class="body"><div class="label">Ann. Return</div><div class="return">${annual}</div><svg class="chart" viewBox="0 0 245 118"><defs><linearGradient id="fade" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#08bd78"/><stop offset="1" stop-color="#08bd78" stop-opacity="0"/></linearGradient></defs><path d="${paths[index%paths.length]}"></path></svg><div class="window"><span class="label">Window Return</span><b>${windowReturn}</b></div><div class="subscribers">Subscribers<div class="faces"><i class="face"></i><i class="face"></i><i class="face"></i><span class="count">99+</span></div></div></section><footer class="footer"><span class="star">★</span><span class="run">Run</span></footer></article>`};
+    const all=Array.from({length:20},(_,index)=>strategies[index%strategies.length]);document.querySelector('#plane').innerHTML=all.map(card).join('');
+    const tl=gsap.timeline({paused:true});gsap.set('#plane',{x:-190,y:-250,rotation:-7});tl.fromTo('.card',{filter:'blur(8px)',scale:.97},{filter:'blur(0px)',scale:1,duration:.28,ease:'power2.out'},0).to('#plane',{x:-455,y:-420,duration:1.967,ease:'none'},0);tl.duration(1.967);window.__timelines=window.__timelines||{};window.__timelines['minara-shot-16']=tl;
+  </script>
+</body>
+</html>

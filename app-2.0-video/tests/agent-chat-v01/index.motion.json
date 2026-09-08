@@ -1,0 +1,11 @@
+{
+  "duration": 5.767,
+  "assertions": [
+    { "kind": "appearsBy", "selector": "#phone-rig", "bySec": 0.1 },
+    { "kind": "appearsBy", "selector": "#typed-line", "bySec": 0.8 },
+    { "kind": "before", "a": "#typed-line", "b": "#evidence-card" },
+    { "kind": "appearsBy", "selector": "#evidence-card", "bySec": 2.8 },
+    { "kind": "staysInFrame", "selector": "#evidence-card" },
+    { "kind": "keepsMoving", "withinSelector": "#agent-chat-clip", "maxStaticSec": 0.7 }
+  ]
+}

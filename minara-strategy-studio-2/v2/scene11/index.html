@@ -1,0 +1,204 @@
+<!doctype html><html><head><meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#F9F9F9}
+#root,[data-composition-id="root"]{position:relative;width:1920px;height:1080px;overflow:hidden;
+  background:#F9F9F9;font-family:'Geist',system-ui,-apple-system,sans-serif;color:#141416}
+
+.field.camera{position:absolute}
+
+.card{position:absolute;background:#fff;border:1px solid #ECECEC;border-radius:22px;
+  box-shadow:0 30px 70px -35px rgba(0,0,0,.22);padding:24px 26px 30px;opacity:0;
+  display:flex;flex-direction:column}
+/* NOTE: every card — including the "featured" one that gets the close-up + Publish tap —
+   shares this exact same box/typography. There is no .card--featured variant anymore
+   (Antonia 2026-07-05: 3rd complaint that the first card looked out of place). The close-up
+   feel during the zoomed-in shot comes purely from the camera (field scale), not from the
+   card's own CSS being bigger. */
+
+.tag{display:inline-block;align-self:flex-start;font-size:14px;font-weight:600;
+  padding:5px 12px;border-radius:8px;margin-bottom:10px}
+
+.cname{font-size:22px;font-weight:800;margin-bottom:10px;line-height:1.15}
+
+.poolwrap{margin-bottom:14px}
+.labrow{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.labrow .l{font-size:13px;color:#8a8a8a;font-weight:600}
+.labrow .p{font-size:13px;color:#141416;font-weight:800;font-variant-numeric:tabular-nums}
+.track{width:100%;height:9px;border-radius:6px;background:#F1F1F1;overflow:hidden}
+.fill{width:0%;height:100%;border-radius:6px;background:linear-gradient(120deg,#EB53FF,#FF538E 48%,#FF9A32)}
+
+.commblock{margin-bottom:10px}
+.commblock .l{font-size:13px;color:#8a8a8a;font-weight:600;margin-bottom:4px}
+.commblock .val{font-size:34px;font-weight:800;color:#07B56A;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+
+/* live copiers — a stack of overlapping SVG avatars fills the card's mid space ("copy-trading" feel) */
+.followers{margin-top:8px}
+.folLabel{font-size:13px;color:#8a8a8a;font-weight:600;margin-bottom:12px}
+.avstack{display:flex;align-items:center}
+.avstack .fav{width:52px;height:52px;border-radius:50%;overflow:hidden;background:#fff;
+  border:3px solid #fff;box-shadow:0 4px 12px -4px rgba(0,0,0,.25);margin-left:-16px}
+.avstack .fav:first-child{margin-left:0}
+.avstack .fav img{width:100%;height:100%;object-fit:cover;display:block}
+.avstack .more{width:52px;height:52px;border-radius:50%;margin-left:-16px;background:#F1F1F1;
+  border:3px solid #fff;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#555}
+
+.actionSlot{position:relative;height:56px;margin-top:auto}
+.pub{position:absolute;left:0;top:0;background:#141416;color:#fff;font-weight:700;
+  font-size:26px;padding:12px 36px;border-radius:12px;white-space:nowrap}
+.badge{position:absolute;left:0;top:0;background:#E7F8EF;color:#07B56A;font-weight:800;
+  font-size:14px;padding:7px 16px;border-radius:999px;white-space:nowrap;opacity:0;transform:scale(.6)}
+
+.touch{position:absolute;width:40px;height:40px;border-radius:50%;background:rgba(20,20,20,.14);
+  opacity:0;transform:translate(-50%,-50%);z-index:40}
+</style></head>
+<body>
+<div id="root" data-composition-id="root" data-width="1920" data-height="1080" data-start="0" data-duration="3.5">
+  <div class="field camera" id="field"></div>
+</div>
+<script src="lib/gsap.min.js"></script><script src="lib/CustomEase.min.js"></script>
+<script>
+gsap.registerPlugin(CustomEase);
+const SNAP=CustomEase.create("snap","M0,0 C0.95,0.03 0,0.98 1,1");
+const tl=gsap.timeline({paused:true});
+
+// ---- deterministic UNIFORM grid layout (no Math.random) ----
+// Every cell is the SAME W×H with the SAME inner CSS (no .card--featured variant — see style
+// block note above), so the featured card is byte-identical in layout/fonts/padding to the other
+// 11. It is only ever distinguished by animation timing (close-up camera + tap sequence), never by
+// its own box size or type scale. GAP is halved from the previous pass per Antonia's request.
+// (Antonia 2026-07-05: uniform-card + tighter-grid fix, 3rd time this was raised.)
+const CARD_W=460, CARD_H=452, GAP=32, COLS=4, ROWS=3, FPAD_X=110, FPAD_Y=90;
+const FIELD_W=COLS*CARD_W+(COLS-1)*GAP+FPAD_X*2;
+const FIELD_H=ROWS*CARD_H+(ROWS-1)*GAP+FPAD_Y*2;
+const cells=[]; for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++) cells.push({c,r});
+const FEATURED_CELL=5; // (col1,row1) — middle row, near screen center
+
+const STRATS=[
+  {name:'BTC Momentum Breakout',tag:'Crypto · 15m',bg:'#FFF0E2',fg:'#E7830F',pool:92,comm:8420},
+  {name:'ETH Range Scalper',   tag:'Crypto · 5m', bg:'#FFF0E2',fg:'#E7830F',pool:76,comm:3210},
+  {name:'NVDA Momentum Swing', tag:'Stock · 1h',  bg:'#E9F7FF',fg:'#2AA3D6',pool:81,comm:5490},
+  {name:'Gold Breakout System',tag:'Volatility',  bg:'#EEF0FF',fg:'#5B63E6',pool:59,comm:1980},
+  {name:'AAPL Mean Reversion', tag:'Stock · 1h',  bg:'#E9F7FF',fg:'#2AA3D6',pool:88,comm:4120},
+  {name:'BTC Grid Bot',        tag:'Crypto · 30m',bg:'#FFF0E2',fg:'#E7830F',pool:73,comm:2650},
+  {name:'S&P Trend Rider',     tag:'Stock · 4h',  bg:'#E9F7FF',fg:'#2AA3D6',pool:65,comm:3340},
+  {name:'SOL Liquidity Sweep', tag:'Liquidity',   bg:'#E8F1FF',fg:'#2F7FF0',pool:70,comm:1890},
+  {name:'ETH DCA Engine',      tag:'Crypto · 1h', bg:'#FFF0E2',fg:'#E7830F',pool:84,comm:3980},
+  {name:'NASDAQ Momentum',     tag:'Stock · 15m', bg:'#E9F7FF',fg:'#2AA3D6',pool:77,comm:2410},
+  {name:'USDC Yield Arb',      tag:'Liquidity',   bg:'#E8F1FF',fg:'#2F7FF0',pool:91,comm:1560},
+  {name:'SOL Momentum Breakout',tag:'Crypto · 5m',bg:'#FFF0E2',fg:'#E7830F',pool:67,comm:2230}
+];
+
+const field=document.getElementById('field');
+field.style.width=FIELD_W+'px'; field.style.height=FIELD_H+'px';
+field.style.left=((1920-FIELD_W)/2)+'px'; field.style.top=((1080-FIELD_H)/2)+'px';
+
+const built=[]; let bgI=1;
+cells.forEach((cell,idx)=>{
+  const isFeatured=idx===FEATURED_CELL;
+  const s=isFeatured?STRATS[0]:STRATS[bgI++];
+  const x=FPAD_X+cell.c*(CARD_W+GAP), y=FPAD_Y+cell.r*(CARD_H+GAP), h=CARD_H;
+  const card=document.createElement('div');
+  card.className='card';
+  card.id='card'+idx;
+  card.style.left=x+'px'; card.style.top=y+'px'; card.style.width=CARD_W+'px'; card.style.height=h+'px';
+  // deterministic follower-avatar stack (SVG) + copier count — fills the card's mid space
+  let favs='';
+  for(let k=0;k<5;k++){const an=((idx*5+k)%20)+1;favs+='<div class="fav"><img src="assets/avatars/av'+an+'.svg" alt=""></div>';}
+  const copiers=40+((idx*53)%180);
+  favs+='<div class="more">+'+copiers+'</div>';
+  card.innerHTML=
+    '<div class="tag" style="background:'+s.bg+';color:'+s.fg+'">'+s.tag+'</div>'+
+    '<div class="cname">'+s.name+'</div>'+
+    '<div class="poolwrap"><div class="labrow"><span class="l">Funding pool</span>'+
+      '<span class="p" id="pct'+idx+'">0%</span></div>'+
+      '<div class="track"><div class="fill" id="fill'+idx+'"></div></div></div>'+
+    '<div class="commblock"><div class="l">Your commission</div>'+
+      '<div class="val" id="val'+idx+'">+$0</div></div>'+
+    '<div class="followers"><div class="folLabel">Live copiers</div>'+
+      '<div class="avstack">'+favs+'</div></div>'+
+    '<div class="actionSlot">'+
+      (isFeatured?'<div class="pub" id="pub'+idx+'">Publish</div>':'')+
+      '<div class="badge" id="badge'+idx+'">✓ Published</div></div>';
+  field.appendChild(card);
+  built.push({idx,isFeatured,strat:s});
+});
+const touch=document.createElement('div'); touch.className='touch'; touch.id='touch';
+field.appendChild(touch);
+
+// ---- measure real layout for camera anchor + tap point (robust vs. hand math) ----
+const fieldRect=field.getBoundingClientRect();
+const featEl=document.getElementById('card'+FEATURED_CELL);
+const featRect=featEl.getBoundingClientRect();
+const originX=(featRect.left-fieldRect.left)+featRect.width/2;
+const originY=(featRect.top-fieldRect.top)+featRect.height/2;
+field.style.transformOrigin=originX+'px '+originY+'px';
+
+const btnEl=document.getElementById('pub'+FEATURED_CELL);
+const btnRect=btnEl.getBoundingClientRect();
+touch.style.left=((btnRect.left-fieldRect.left)+btnRect.width/2)+'px';
+touch.style.top=((btnRect.top-fieldRect.top)+btnRect.height/2)+'px';
+
+// closeup scale derived from the measured featured card so it always fits the 1920x1080 frame
+// with generous breathing room (never hand-tuned/guessed — recomputes if card content size
+// changes). Capped conservatively so the featured card reads as a clean, fully-intact card
+// (Publish button + text included) rather than a blown-up close-up (Antonia 2026-07-05 fix).
+const CLOSEUP_MARGIN=240;
+const INITIAL_SCALE=Math.min(1.55,
+  (1080-CLOSEUP_MARGIN*2)/featRect.height,
+  (1920-CLOSEUP_MARGIN*2)/featRect.width);
+// The featured cell is col-1 of a 4-col grid, so its center sits left of screen-center. Translate
+// the field so the featured cell center lands dead-center (960,540) during the close-up, then
+// animate x/y back to 0 as the camera pulls out — leaving the grid in its natural centered layout
+// with the featured card in its proper aligned slot. transformOrigin=featured center keeps the
+// scale anchored on that same cell. (Antonia 2026-07-05 alignment fix.)
+const screenOx=fieldRect.left+originX, screenOy=fieldRect.top+originY;
+const CLOSEUP_TX=960-screenOx, CLOSEUP_TY=540-screenOy;
+gsap.set(field,{scale:INITIAL_SCALE,x:CLOSEUP_TX,y:CLOSEUP_TY});
+
+// ---- 0.0-0.55 featured card in, close-up (camera already zoomed) ----
+const F=FEATURED_CELL;
+tl.fromTo('#card'+F,{opacity:0,y:20,scale:.94},{opacity:1,y:0,scale:1,duration:.55,ease:SNAP},0.0);
+
+// ---- 0.55 tap Publish (enlarged button) -> Published ----
+tl.set('#touch',{opacity:.5,scale:1.4},0.55);
+tl.to('#touch',{opacity:0,scale:.7,duration:.4,ease:'power2.out'},0.55);
+tl.fromTo('#pub'+F,{scale:1},{scale:.9,duration:.13,yoyo:true,repeat:1,ease:'power2.out'},0.55);
+tl.to('#pub'+F,{opacity:0,duration:.18,ease:SNAP},0.68);
+tl.fromTo('#badge'+F,{opacity:0,scale:.6},{opacity:1,scale:1,duration:.5,ease:'back.out(1.7)'},0.68);
+
+// ---- 0.75-1.95 featured commission counts up (proxy object — never tween textContent) ----
+// (funding-pool bar itself is deferred — see the shared 2.83-3.78 pool-fill block below)
+const commF={v:0};
+tl.to(commF,{v:STRATS[0].comm,duration:1.2,ease:'power1.out',
+  onUpdate:()=>{document.getElementById('val'+F).textContent='+$'+Math.round(commF.v).toLocaleString();}},0.75);
+
+// ---- 1.15-2.75 camera pulls back (dolly out) revealing the full tiled field ----
+tl.to(field,{scale:1,x:0,y:0,duration:1.6,ease:SNAP},1.15);
+
+// ---- 1.3-3.0 the other 11 creator cards reveal + commission counts up, deterministic per-index stagger ----
+built.filter(b=>!b.isFeatured).forEach((b,i)=>{
+  const t0=1.3+i*0.15;
+  tl.fromTo('#card'+b.idx,{opacity:0,y:16,scale:.92},{opacity:1,y:0,scale:1,duration:.4,ease:SNAP},t0);
+  tl.fromTo('#badge'+b.idx,{opacity:0,scale:.6},{opacity:1,scale:1,duration:.4,ease:'back.out(1.6)'},t0+.15);
+  const cObj={v:0};
+  tl.to(cObj,{v:b.strat.comm,duration:.7,ease:'power1.out',
+    onUpdate:()=>{document.getElementById('val'+b.idx).textContent='+$'+Math.round(cObj.v).toLocaleString();}},t0+.2);
+});
+
+// ---- 2.83-3.78 ALL 12 funding-pool bars grow slowly together, starting near 0% ----
+// (bars sit at their CSS default width:0% / "0%" text until this window — Antonia 2026-07-05 fix:
+// bars were reading near-full too early because each was tied to its card's entrance stagger)
+built.forEach(b=>{
+  const pObj={v:0};
+  tl.to('#fill'+b.idx,{width:b.strat.pool+'%',duration:.95,ease:SNAP},2.83);
+  tl.to(pObj,{v:b.strat.pool,duration:.95,ease:'power1.out',
+    onUpdate:()=>{document.getElementById('pct'+b.idx).textContent=Math.round(pObj.v)+'%';}},2.83);
+});
+
+// ---- 3.78-5.5 held: full field of creators, all funded and earning ----
+window.__timelines=window.__timelines||{};
+/* fit to reference-narration timeline (subtitle video) */var __T=3.5;(function(){var c=tl.duration();tl.timeScale(1);if(c>__T+0.01){var f=__T/c;tl.getChildren(false,true,true).forEach(function(ch){ch.startTime(ch.startTime()*f);if(ch.duration)ch.duration(Math.max(0.001,ch.duration()*f));});}else if(c<__T-0.01){tl.to({_p:0},{_p:1,duration:__T-c});}})();
+window.__timelines["root"]=tl;
+</script></body></html>

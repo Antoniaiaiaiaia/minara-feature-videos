@@ -1,0 +1,156 @@
+[
+ {
+  "id": "S01",
+  "t0": 0.0,
+  "t1": 1.733,
+  "kind": "TITLE",
+  "text": "Introducing"
+ },
+ {
+  "id": "S02",
+  "t0": 1.733,
+  "t1": 3.667,
+  "kind": "TITLE",
+  "text": "Minara Harness"
+ },
+ {
+  "id": "S03",
+  "t0": 3.667,
+  "t1": 7.633,
+  "kind": "PRODUCT",
+  "text": "product reveal"
+ },
+ {
+  "id": "S04",
+  "t0": 7.633,
+  "t1": 9.467,
+  "kind": "TITLE",
+  "text": "Every asset. One intelligence."
+ },
+ {
+  "id": "S05",
+  "t0": 9.467,
+  "t1": 15.4,
+  "kind": "PRODUCT",
+  "text": "product animation · full-asset analysis / opportunity"
+ },
+ {
+  "id": "S06",
+  "t0": 15.4,
+  "t1": 17.233,
+  "kind": "TITLE",
+  "text": "From opportunity to execution."
+ },
+ {
+  "id": "S07",
+  "t0": 17.233,
+  "t1": 22.833,
+  "kind": "PRODUCT",
+  "text": "product animation · intent → execution"
+ },
+ {
+  "id": "S08",
+  "t0": 22.833,
+  "t1": 24.667,
+  "kind": "TITLE",
+  "text": "Strategy Studio"
+ },
+ {
+  "id": "S09",
+  "t0": 24.667,
+  "t1": 30.533,
+  "kind": "PRODUCT",
+  "text": "product animation · Strategy Studio"
+ },
+ {
+  "id": "S10",
+  "t0": 30.533,
+  "t1": 32.367,
+  "kind": "TITLE",
+  "text": "Pick a strategy / Autopilot it."
+ },
+ {
+  "id": "S11",
+  "t0": 32.367,
+  "t1": 38.233,
+  "kind": "PRODUCT",
+  "text": "product animation · Marketplace → Autopilot"
+ },
+ {
+  "id": "S12",
+  "t0": 38.233,
+  "t1": 40.067,
+  "kind": "TITLE",
+  "text": "Portfolio management, multi-agented."
+ },
+ {
+  "id": "S13",
+  "t0": 40.067,
+  "t1": 45.933,
+  "kind": "PRODUCT",
+  "text": "product animation · Portfolio multi-agent"
+ },
+ {
+  "id": "S14",
+  "t0": 45.933,
+  "t1": 47.767,
+  "kind": "TITLE",
+  "text": "Learns from your trades. / Wins. Losses. Lessons."
+ },
+ {
+  "id": "S15",
+  "t0": 47.767,
+  "t1": 53.633,
+  "kind": "PRODUCT",
+  "text": "product animation · trade history → lessons"
+ },
+ {
+  "id": "S16",
+  "t0": 53.633,
+  "t1": 55.467,
+  "kind": "TITLE",
+  "text": "Beyond finance."
+ },
+ {
+  "id": "S17",
+  "t0": 55.467,
+  "t1": 61.333,
+  "kind": "PRODUCT",
+  "text": "product animation · general capability"
+ },
+ {
+  "id": "S18",
+  "t0": 61.333,
+  "t1": 63.167,
+  "kind": "TITLE",
+  "text": "Your models. One workspace."
+ },
+ {
+  "id": "S19",
+  "t0": 63.167,
+  "t1": 69.033,
+  "kind": "PRODUCT",
+  "text": "product animation · multi-model switching"
+ },
+ {
+  "id": "S20",
+  "t0": 69.033,
+  "t1": 72.933,
+  "kind": "BRAND",
+  "text": "Minara Harness / Your agent now earns for you"
+ },
+ {
+  "id": "S21",
+  "t0": 72.933,
+  "t1": 74.75,
+  "kind": "BRAND",
+  "text": "Minara logo"
+ },
+ {
+  "id": "S22",
+  "t0": 74.75,
+  "t1": 77.25,
+  "kind": "BRAND",
+  "text": "minara.ai"
+ }
+]

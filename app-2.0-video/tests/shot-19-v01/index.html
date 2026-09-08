@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Shot 19 — Two Cycles on Autopilot</title>
+  <style>
+    @font-face{font-family:Geist;src:url('./assets/fonts/Geist-Regular.woff2') format('woff2');font-weight:400}
+    @font-face{font-family:Geist;src:url('./assets/fonts/Geist-SemiBold.woff2') format('woff2');font-weight:600}
+    @property --pnl{syntax:"<integer>";initial-value:428;inherits:false}
+    *{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#cfd3d6;font-family:Geist,Arial,sans-serif}body{display:grid;place-items:center}
+    #viewport{position:relative;width:min(100vw,177.7778vh);aspect-ratio:16/9;overflow:hidden;background:#cfd3d6}
+    #shot{position:absolute;inset:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;background:#cfd3d6;color:#15171a}
+    .camera{position:absolute;inset:0;transform-origin:0 0;will-change:transform}
+    .day-layer,.night-layer{position:absolute;inset:-100%}.day-layer{background:linear-gradient(145deg,#e5e7e8 0%,#c8cdd0 58%,#b9c1c5 100%)}.night-layer{opacity:0;background:linear-gradient(145deg,#182853 0%,#0e1d43 58%,#08142f 100%)}
+    .sky-glow{position:absolute;left:80px;top:120px;width:820px;height:720px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.52),rgba(255,255,255,0) 68%);filter:blur(12px);opacity:.72;transform:translate(1920px,1080px)}
+    .night-glow{position:absolute;left:90px;top:100px;width:810px;height:730px;border-radius:50%;background:radial-gradient(circle,rgba(96,133,225,.36),rgba(24,40,83,0) 68%);transform:translate(1920px,1080px)}
+    .stars{position:absolute;inset:0;opacity:.52;background-image:radial-gradient(circle,#b9cbff 0 3px,transparent 4px),radial-gradient(circle,#fff 0 2px,transparent 3px);background-position:75px 80px,180px 170px;background-size:210px 170px,290px 230px}
+    .cloud-field{position:absolute;inset:0;pointer-events:none}.cloud{position:absolute;height:112px;border-radius:70px;filter:drop-shadow(0 18px 20px rgba(27,35,49,.1));opacity:.93}.cloud:before,.cloud:after{content:"";position:absolute;border-radius:50%;background:inherit}.cloud:before{width:150px;height:150px;left:70px;bottom:0}.cloud:after{width:205px;height:205px;left:175px;bottom:0}.day-clouds .cloud{background:linear-gradient(180deg,#f8fafb,#dce2e5)}.night-clouds{opacity:0}.night-clouds .cloud{background:linear-gradient(180deg,#4169a8,#223c73);filter:drop-shadow(0 20px 24px rgba(3,8,25,.22))}
+    .c1{left:-110px;bottom:80px;width:400px}.c2{left:300px;bottom:-18px;width:520px;transform:scale(1.18)}.c3{left:730px;bottom:72px;width:420px;transform:scale(.82)}.c4{left:1040px;bottom:-36px;width:580px;transform:scale(1.28)}.c5{right:-160px;bottom:96px;width:440px;transform:scale(.94)}
+    .orbit{position:absolute;z-index:4;left:1496px;top:538px;width:0;height:0;will-change:transform}.sun,.moon{position:absolute;left:0;top:0;width:440px;height:440px;transform:translate(-1160px,-220px)}.moon{transform:translate(720px,-220px)}
+    .sun-core{position:absolute;inset:94px;border-radius:50%;background:#ffd72f;box-shadow:0 34px 74px rgba(255,183,46,.25)}.ray{position:absolute;left:206px;top:0;width:28px;height:66px;border-radius:99px;background:#ffd72f;transform-origin:14px 220px}.ray:nth-child(2){transform:rotate(0deg)}.ray:nth-child(3){transform:rotate(30deg)}.ray:nth-child(4){transform:rotate(60deg)}.ray:nth-child(5){transform:rotate(90deg)}.ray:nth-child(6){transform:rotate(120deg)}.ray:nth-child(7){transform:rotate(150deg)}.ray:nth-child(8){transform:rotate(180deg)}.ray:nth-child(9){transform:rotate(210deg)}.ray:nth-child(10){transform:rotate(240deg)}.ray:nth-child(11){transform:rotate(270deg)}.ray:nth-child(12){transform:rotate(300deg)}.ray:nth-child(13){transform:rotate(330deg)}
+    .moon-shape{position:absolute;inset:30px;border-radius:50%;background:linear-gradient(145deg,#fff8d8,#bdcfff);box-shadow:0 40px 84px rgba(150,180,255,.3);-webkit-mask:radial-gradient(circle at 67% 34%,transparent 0 42%,#000 43%);mask:radial-gradient(circle at 67% 34%,transparent 0 42%,#000 43%)}
+    .phone-stage{position:absolute;z-index:12;left:1260px;top:26px;width:430px;height:932px;transform:scale(1.1);transform-origin:0 0}.phone{position:relative;width:430px;height:932px;padding:10px;border-radius:58px;background:#121417;box-shadow:0 45px 100px rgba(6,10,18,.24);overflow:hidden;transform-origin:50% 80%;will-change:transform,opacity}
+    .screen{position:relative;width:100%;height:100%;overflow:hidden;border-radius:49px;background:#f7f8f8;color:#15171a}.status{position:relative;height:40px;padding:13px 23px 0;display:flex;font-size:12px;font-weight:600}.status span:last-child{margin-left:auto}.island{position:absolute;left:50%;top:9px;width:108px;height:27px;transform:translateX(-50%);border-radius:99px;background:#121417}
+    .header{height:70px;padding:7px 18px 11px;display:flex;align-items:center}.avatar{width:46px;height:46px;border-radius:50%;object-fit:cover;background:#fff;box-shadow:0 5px 14px rgba(16,24,28,.1)}.identity{margin-left:12px}.identity h1{margin:0;font-size:22px;line-height:1.05;letter-spacing:-.035em}.identity p{margin:5px 0 0;color:#777d80;font-size:13px}.running{margin-left:auto;height:32px;padding:0 12px;border-radius:16px;background:#ddf8ed;color:#087d53;display:flex;align-items:center;font-size:12px;font-weight:600}.live-dot{width:7px;height:7px;margin-right:7px;border-radius:50%;background:#1ab173}
+    .content{padding:5px 18px 84px}.hero{height:205px;padding:18px;border-radius:25px;background:#14171a;color:#fff;box-shadow:0 14px 35px rgba(16,23,25,.14)}.eyebrow{display:flex;color:#9ca3a5;font-size:12px;font-weight:600;letter-spacing:.04em}.eyebrow span:last-child{margin-left:auto;color:#4be0a8;letter-spacing:0}.pnl{--pnl:428;margin-top:6px;color:#47dda4;font-size:44px;font-weight:600;line-height:1;letter-spacing:-.05em;counter-reset:pnl var(--pnl)}.pnl:before{content:"+$" counter(pnl) ".20"}.pnl-sub{margin-top:7px;color:#b7bdbe;font-size:13px}.chart{width:100%;height:83px;margin-top:8px}.chart .area{fill:rgba(71,221,164,.09);stroke:none}.chart .pnl-line{fill:none;stroke:#47dda4;stroke-width:4.5;stroke-linecap:round;stroke-linejoin:round}
+    .agent-card{position:relative;height:82px;margin-top:12px;padding:14px 15px;border-radius:20px;background:#fff;display:flex;align-items:center;box-shadow:0 7px 20px rgba(29,55,49,.06);overflow:hidden}.agent-icon{position:relative;width:42px;height:42px;border-radius:14px;background:#e0f8ee}.agent-icon:before{content:"";position:absolute;inset:11px;border-radius:50%;background:#1ab173;box-shadow:0 0 0 6px rgba(26,177,115,.12)}.agent-copy{margin-left:12px}.agent-copy b{display:block;font-size:16px}.agent-copy span{display:block;margin-top:4px;color:#798083;font-size:12px}.signal-count{margin-left:auto;text-align:right;color:#118b61;font-size:13px;font-weight:600}.signal-count small{display:block;margin-top:4px;color:#8a9092;font-size:11px;font-weight:400}.scan{position:absolute;left:0;right:0;top:-24px;height:24px;background:linear-gradient(180deg,rgba(26,177,115,0),rgba(26,177,115,.14),rgba(26,177,115,0));pointer-events:none}
+    .section-head{height:48px;display:flex;align-items:flex-end;padding:0 2px 9px}.section-head h2{margin:0;font-size:19px;letter-spacing:-.02em}.section-head span{margin-left:auto;color:#7e8487;font-size:12px}.trade-list{display:grid;gap:7px}.trade{height:60px;padding:0 13px;border-radius:17px;background:#fff;display:grid;grid-template-columns:40px 1fr auto;align-items:center;box-shadow:0 5px 16px rgba(29,55,49,.045);will-change:transform,opacity,background}.coin{width:34px;height:34px;border-radius:11px;background:#edf1f0;display:grid;place-items:center;color:#596063;font-size:11px;font-weight:600}.trade-copy b{display:block;font-size:14px}.trade-copy small{display:block;margin-top:3px;color:#8b9193;font-size:11px}.value{text-align:right;font-size:16px;font-weight:600}.up{color:#0ca66d}.down{color:#ef626c}
+    .tabbar{position:absolute;left:10px;right:10px;bottom:10px;height:72px;padding:6px 14px 5px;border-radius:24px 24px 39px 39px;background:rgba(255,255,255,.94);box-shadow:0 -8px 24px rgba(17,39,33,.07);display:grid;grid-template-columns:repeat(4,1fr);align-items:center;backdrop-filter:blur(18px)}.tab{height:54px;border-radius:17px;display:grid;place-items:center;align-content:center;gap:3px;color:#8a9092;font-size:10px}.tab i{font-style:normal;font-size:21px;line-height:1}.tab.active{background:#e2f8ef;color:#087d53;font-weight:600}
+  </style>
+</head>
+<body>
+  <div data-hf-id="hf-wnh7" id="viewport" data-composition-id="minara-shot-19" data-width="1920" data-height="1080" data-start="0" data-duration="6.1" data-fps="60" data-root="true">
+    <main data-hf-id="hf-ihxp" id="shot">
+      <div data-hf-id="hf-g4sl" class="camera">
+      <div data-hf-id="hf-bm02" class="day-layer"><div data-hf-id="hf-md5n" class="sky-glow"></div></div>
+      <div data-hf-id="hf-fq2e" class="night-layer"><div data-hf-id="hf-z6w8" class="night-glow"></div><div data-hf-id="hf-h9kr" class="stars"></div></div>
+      <div data-hf-id="hf-m75p" class="cloud-field day-clouds"><i data-hf-id="hf-tikt" class="cloud c1"></i><i data-hf-id="hf-xgou" class="cloud c2"></i><i data-hf-id="hf-3men" class="cloud c3"></i><i data-hf-id="hf-7kio" class="cloud c4"></i><i data-hf-id="hf-8c6h" class="cloud c5"></i></div>
+      <div data-hf-id="hf-2k15" class="cloud-field night-clouds"><i data-hf-id="hf-fl35" class="cloud c1"></i><i data-hf-id="hf-8e5e" class="cloud c2"></i><i data-hf-id="hf-0tov" class="cloud c3"></i><i data-hf-id="hf-5imw" class="cloud c4"></i><i data-hf-id="hf-uhst" class="cloud c5"></i></div>
+      <div data-hf-id="hf-6f1c" class="orbit">
+        <div data-hf-id="hf-64ru" class="sun"><i data-hf-id="hf-2xdm" class="sun-core"></i><i data-hf-id="hf-hhxk" class="ray"></i><i data-hf-id="hf-4uio" class="ray"></i><i data-hf-id="hf-3nll" class="ray"></i><i data-hf-id="hf-41wm" class="ray"></i><i data-hf-id="hf-2uzj" class="ray"></i><i data-hf-id="hf-39ak" class="ray"></i><i data-hf-id="hf-22dh" class="ray"></i><i data-hf-id="hf-2goi" class="ray"></i><i data-hf-id="hf-19rf" class="ray"></i><i data-hf-id="hf-1o2g" class="ray"></i><i data-hf-id="hf-3kls" class="ray"></i><i data-hf-id="hf-36ar" class="ray"></i></div>
+        <div data-hf-id="hf-0s4z" class="moon"><i data-hf-id="hf-yyi7" class="moon-shape"></i></div>
+      </div>
+      <div data-hf-id="hf-7wwl" class="phone-stage"><article data-hf-id="hf-zv8n" class="phone">
+        <div data-hf-id="hf-cdmk" class="screen">
+          <div data-hf-id="hf-8kim" class="status"><span data-hf-id="hf-zwmt">9:41</span><i data-hf-id="hf-7ler" class="island"></i><span data-hf-id="hf-m4l3">5G&#160;&#160;100%</span></div>
+          <header data-hf-id="hf-hr6f" class="header"><img data-hf-id="hf-o253" class="avatar" src="assets/brand/Minara-Avatar.png" alt="Minara"><div data-hf-id="hf-wk3y" class="identity"><h1 data-hf-id="hf-kbex">Autopilot</h1><p data-hf-id="hf-uvah">Minara is managing your strategy</p></div><span data-hf-id="hf-e9s1" class="running"><i data-hf-id="hf-70h8" class="live-dot"></i>Running</span></header>
+          <section data-hf-id="hf-dncj" class="content">
+            <div data-hf-id="hf-hie8" class="hero"><div data-hf-id="hf-rk6h" class="eyebrow"><span data-hf-id="hf-se0u">NET P&amp;L</span><span data-hf-id="hf-mzdf">LIVE</span></div><div data-hf-id="hf-2pim" class="pnl"></div><div data-hf-id="hf-7zd6" class="pnl-sub">+$284.60 today · 14 executions</div><svg data-hf-id="hf-d2wb" class="chart" viewBox="0 0 358 83" preserveAspectRatio="none"><path data-hf-id="hf-z5lg" class="area" d="M0 75 C26 69 37 71 60 64 S96 68 119 51 S151 56 176 42 S214 49 238 31 S278 39 302 22 S337 20 358 8 L358 83 L0 83 Z" /><path data-hf-id="hf-43pk" class="pnl-line" d="M0 75 C26 69 37 71 60 64 S96 68 119 51 S151 56 176 42 S214 49 238 31 S278 39 302 22 S337 20 358 8" /></svg></div>
+            <div data-hf-id="hf-dr8e" class="agent-card"><span data-hf-id="hf-luli" class="agent-icon"></span><div data-hf-id="hf-g2h7" class="agent-copy"><b data-hf-id="hf-xo5i">Analyzing all markets</b><span data-hf-id="hf-poap">Risk, entries and exits monitored</span></div><div data-hf-id="hf-c792" class="signal-count">128 signals<small data-hf-id="hf-a9yj">Updated now</small></div><i data-hf-id="hf-76fz" class="scan"></i></div>
+            <div data-hf-id="hf-6dq8" class="section-head"><h2 data-hf-id="hf-r2n7">Recent trades</h2><span data-hf-id="hf-vvlb">View all</span></div>
+            <div data-hf-id="hf-l6uv" class="trade-list">
+              <div data-hf-id="hf-glma" class="trade"><span data-hf-id="hf-4fvl" class="coin">BTC</span><span data-hf-id="hf-0g9h" class="trade-copy"><b data-hf-id="hf-w8ce">BTC Long</b><small data-hf-id="hf-ratv">Filled · 0.18 BTC</small></span><b data-hf-id="hf-81it" class="value up">+$184.60</b></div>
+              <div data-hf-id="hf-0jee" class="trade"><span data-hf-id="hf-ds7g" class="coin">SPY</span><span data-hf-id="hf-gnm1" class="trade-copy"><b data-hf-id="hf-6sen">SPY Trim</b><small data-hf-id="hf-3zx0">Filled · 12 shares</small></span><b data-hf-id="hf-8go9" class="value up">+$96.20</b></div>
+              <div data-hf-id="hf-0xpf" class="trade"><span data-hf-id="hf-adwd" class="coin">ETH</span><span data-hf-id="hf-huj4" class="trade-copy"><b data-hf-id="hf-1wqk">ETH Stop</b><small data-hf-id="hf-p3wh">Risk control · 1.4 ETH</small></span><b data-hf-id="hf-sdtc" class="value down">−$31.80</b></div>
+              <div data-hf-id="hf-1c0g" class="trade"><span data-hf-id="hf-mcqp" class="coin">NVDA</span><span data-hf-id="hf-hg83" class="trade-copy"><b data-hf-id="hf-v5sc">NVDA Long</b><small data-hf-id="hf-ybrf">Filled · 8 shares</small></span><b data-hf-id="hf-3c6t" class="value up">+$212.40</b></div>
+            </div>
+          </section>
+          <nav data-hf-id="hf-emzu" class="tabbar"><span data-hf-id="hf-l4lx" class="tab"><i data-hf-id="hf-p1cq">⌂</i>Home</span><span data-hf-id="hf-5ytv" class="tab"><i data-hf-id="hf-pfnr">⌁</i>Markets</span><span data-hf-id="hf-4oof" class="tab active"><i data-hf-id="hf-a0za">◎</i>Autopilot</span><span data-hf-id="hf-gdmv" class="tab"><i data-hf-id="hf-9mo9">●</i>Profile</span></nav>
+        </div>
+      </article></div>
+      </div>
+    </main>
+  </div>
+  <script src="./assets/vendor/gsap.min.js"></script>
+  <script>
+    const shot=document.querySelector('#shot');const fit=()=>{const v=document.querySelector('#viewport');shot.style.transform=`scale(${v.clientWidth/1920})`};addEventListener('resize',fit);fit();
+    const tl=gsap.timeline({paused:true});
+    gsap.set('.phone',{y:90,opacity:0,scale:.965});gsap.set('.trade',{x:22,opacity:.22});gsap.set('.pnl-line',{strokeDasharray:700,strokeDashoffset:700});
+    tl.to('.phone',{y:0,opacity:1,scale:1,duration:.7,ease:'back.out(1.35)'},0)
+      .to('.orbit',{rotation:180,duration:.275,ease:'back.inOut(2.6)'},1)
+      .to('.orbit',{rotation:360,duration:.275,ease:'back.inOut(2.6)'},2.275)
+      .to('.orbit',{rotation:540,duration:.275,ease:'back.inOut(2.6)'},3.55)
+      .to('.orbit',{rotation:720,duration:.275,ease:'back.inOut(2.6)'},4.825)
+      .to('.night-layer',{opacity:1,duration:.275,ease:'sine.inOut'},1).to('.night-clouds',{opacity:1,duration:.275,ease:'sine.inOut'},1)
+      .to('.night-layer',{opacity:0,duration:.275,ease:'sine.inOut'},2.275).to('.night-clouds',{opacity:0,duration:.275,ease:'sine.inOut'},2.275)
+      .to('.night-layer',{opacity:1,duration:.275,ease:'sine.inOut'},3.55).to('.night-clouds',{opacity:1,duration:.275,ease:'sine.inOut'},3.55)
+      .to('.night-layer',{opacity:0,duration:.275,ease:'sine.inOut'},4.825).to('.night-clouds',{opacity:0,duration:.275,ease:'sine.inOut'},4.825)
+      .to('.pnl-line',{strokeDashoffset:0,duration:5.65,ease:'none'},.3)
+      .to('.scan',{y:106,duration:.64,ease:'sine.inOut',repeat:8,yoyo:true},.15)
+      .to('.agent-icon',{scale:1.12,duration:.7,repeat:7,yoyo:true,ease:'sine.inOut'},.2)
+      .to('.live-dot',{scale:1.65,opacity:.32,duration:.42,repeat:12,yoyo:true,ease:'sine.inOut'},.1);
+    tl.to('.camera',{x:-1360,y:112,scale:1.55,duration:2.033,ease:'power2.inOut'},4.067);
+    document.querySelectorAll('.trade').forEach((row,index)=>{tl.to(row,{x:0,opacity:1,duration:.28,ease:'power2.out'},.38+index*.62).to(row,{background:'#e8fbf3',duration:.14,yoyo:true,repeat:1},.5+index*.62)});
+    tl.to('.pnl',{'--pnl':8742,duration:5.55,ease:'none',roundProps:'--pnl'},.35);
+    tl.duration(6.1);window.__timelines=window.__timelines||{};window.__timelines['minara-shot-19']=tl;
+  </script>
+</body>
+</html>

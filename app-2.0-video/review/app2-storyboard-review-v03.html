@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Minara App 2.0 — Storyboard Review v03</title>
+  <style>
+    @font-face{font-family:Geist;src:url('../assets/fonts/Geist-Regular.woff2') format('woff2');font-weight:400}
+    @font-face{font-family:Geist;src:url('../assets/fonts/Geist-SemiBold.woff2') format('woff2');font-weight:600}
+    :root{--bg:#f7f7f7;--paper:#fff;--ink:#111;--muted:#707070;--line:#d8d8d8;--dark:#171717}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:Geist,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+    button{font:inherit}
+    .shell{max-width:1440px;margin:auto;padding:0 30px 80px}
+    nav{height:72px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}
+    .brand{font-weight:600;letter-spacing:-.03em}.version,.mono{font-variant-numeric:tabular-nums}
+    .version{font-size:13px;color:var(--muted)}
+    .hero{min-height:440px;display:grid;grid-template-columns:7fr 5fr;align-items:end;padding:76px 0 54px;border-bottom:1px solid var(--line)}
+    h1{font-size:clamp(54px,6vw,92px);line-height:.96;letter-spacing:-.065em;margin:0;max-width:950px;font-weight:600}
+    .hero-copy{align-self:end;padding:0 10px 4px 34px;border-left:1px solid var(--line)}
+    .hero-copy p{font-size:19px;line-height:1.45;margin:0 0 26px;max-width:440px}
+    .facts{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);background:var(--paper)}
+    .fact{padding:16px;border-right:1px solid var(--line)}.fact:last-child{border-right:0}
+    .fact b{display:block;font-size:22px;letter-spacing:-.04em}.fact span{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+    .section-title{display:flex;align-items:end;justify-content:space-between;padding:58px 0 20px}
+    .section-title h2{font-size:32px;letter-spacing:-.045em;margin:0}.section-title p{margin:0;color:var(--muted);font-size:14px}
+    .chapter-grid{display:grid;grid-template-columns:repeat(12,1fr);border-top:1px solid var(--line);border-left:1px solid var(--line)}
+    .chapter{grid-column:span 3;min-height:132px;padding:18px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:rgba(255,255,255,.55);cursor:pointer;transition:background .18s,color .18s}
+    .chapter:nth-child(n+5):nth-child(-n+7){grid-column:span 4}.chapter:last-child{grid-column:span 12}
+    .chapter:hover,.chapter.active{background:var(--dark);color:#fff}.chapter:hover .chapter-time,.chapter.active .chapter-time{color:#aaa}
+    .chapter-index{font-size:12px;margin-bottom:30px}.chapter h3{font-size:18px;margin:0 0 7px;letter-spacing:-.03em}.chapter-time{font-size:12px;color:var(--muted)}
+    .rail{height:54px;display:flex;margin-top:20px;background:#e7e7e7;overflow:hidden}
+    .rail button{height:100%;min-width:2px;padding:0;border:0;border-right:1px solid #f7f7f7;background:#cfcfcf;cursor:pointer;position:relative}
+    .rail button:nth-child(even){background:#b8b8b8}.rail button:hover,.rail button.active{background:#111}
+    .rail button span{position:absolute;left:7px;bottom:6px;font-size:9px;color:transparent}.rail button:hover span,.rail button.active span{color:#fff}
+    .review{display:grid;grid-template-columns:minmax(410px,5fr) minmax(0,7fr);gap:28px;align-items:start}
+    .player-panel{position:sticky;top:18px;background:#0d0d0d;color:#fff;padding:12px}
+    video{width:100%;display:block;aspect-ratio:16/9;background:#000}
+    .player-meta{display:grid;grid-template-columns:1fr auto;gap:12px;padding:18px 6px 7px;align-items:end}
+    .player-meta h3{margin:0 0 6px;font-size:22px;letter-spacing:-.04em}.player-meta p{margin:0;color:#aaa;font-size:13px;line-height:1.4}
+    .counter{font-size:12px;color:#aaa;white-space:nowrap}
+    .player-actions{display:flex;gap:8px;padding:8px 6px 2px}
+    .player-actions button{border:1px solid #444;background:transparent;color:#fff;padding:9px 13px;cursor:pointer}.player-actions button:hover{background:#fff;color:#111}
+    .shots{border-top:1px solid var(--line)}
+    .shot{display:grid;grid-template-columns:76px 1fr;border-bottom:1px solid var(--line);background:rgba(255,255,255,.36);cursor:pointer;transition:background .18s,transform .18s}
+    .shot:hover{background:#fff}.shot.active{background:#fff;box-shadow:inset 3px 0 #111}
+    .shot-no{padding:20px 12px;color:var(--muted);font-size:12px}.shot-body{padding:18px 16px 20px;border-left:1px solid var(--line)}
+    .shot-head{display:flex;justify-content:space-between;gap:18px;align-items:baseline}.shot h3{font-size:20px;letter-spacing:-.035em;margin:0}.shot-time{font-size:12px;color:var(--muted);white-space:nowrap}
+    .vo{font-size:14px;margin:9px 0 16px;color:#333}.notes{display:grid;grid-template-columns:1fr 1fr;gap:14px}.note{font-size:12px;line-height:1.5;color:var(--muted)}.note b{display:block;color:#111;margin-bottom:3px;font-weight:600}
+    .external{display:inline-block;margin-left:8px;border:1px solid #999;padding:3px 6px;font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:#666}
+    .rules{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-left:1px solid var(--line);margin-top:64px}
+    .rule{min-height:180px;padding:20px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}.rule b{display:block;font-size:19px;margin-bottom:40px;letter-spacing:-.03em}.rule p{font-size:13px;line-height:1.5;color:var(--muted);margin:0}
+    footer{padding-top:48px;display:flex;justify-content:space-between;color:var(--muted);font-size:12px}
+    @media(max-width:900px){.hero,.review{grid-template-columns:1fr}.hero{gap:40px}.hero-copy{padding-left:0;border-left:0}.chapter,.chapter:nth-child(n+5):nth-child(-n+7),.chapter:last-child{grid-column:span 6}.player-panel{position:relative;top:0}.rules{grid-template-columns:1fr 1fr}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <nav><div class="brand">MINARA / APP 2.0</div><div class="version">STORYBOARD REVIEW · V03 · 14 AUG 2026</div></nav>
+    <section class="hero">
+      <h1>One phone.<br>Every financial move.</h1>
+      <div class="hero-copy">
+        <p>A 73.352-second timeline rebuilt to match the draft rhythm. Click any shot to jump to its video time and check order, duration, and visual intent.</p>
+        <div class="facts"><div class="fact"><b>30</b><span>Shots</span></div><div class="fact"><b>08</b><span>Chapters</span></div><div class="fact"><b>73.352</b><span>Seconds</span></div></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-title"><h2>Chapter architecture</h2><p>Covers the full draft without changing voiceover boundaries</p></div>
+      <div class="chapter-grid" id="chapters"></div>
+      <div class="rail" id="rail" aria-label="Video timeline"></div>
+    </section>
+
+    <section>
+      <div class="section-title"><h2>Shot-by-shot review</h2><p>Full storyboard retained; video preview removed</p></div>
+      <div class="shots" id="shots"></div>
+    </section>
+
+    <section class="rules" aria-label="Production rules">
+      <div class="rule"><b>Reference, never reuse</b><p>The draft and photos are reference-only for composition and rhythm. All final UI is redrawn, and the interface is English-only.</p></div>
+      <div class="rule"><b>One visual system</b><p>Geist, default #F7F7F7, and black, white, and gray. Semantic green, deep night navy, and the 2.0 gradient appear only in specified shots.</p></div>
+      <div class="rule"><b>Controlled camera</b><p>“camera zoom” moves the complete phone rig with the approved parameters; no rotation, drift, or afterimages.</p></div>
+      <div class="rule"><b>Controlled type</b><p>Text uses the opening blur-pop, entering as words or meaningful phrases rather than letter by letter.</p></div>
+    </section>
+    <footer><span>Minara App 2.0 / working storyboard</span><span>Source duration 01:13.352</span></footer>
+  </main>
+  <script src="../assets/vendor/gsap.min.js"></script>
+  <script>
+    const pad=n=>String(n).padStart(2,'0');
+    const tc=s=>`${pad(Math.floor(s/60))}:${pad(Math.floor(s%60))}.${String(Math.round((s%1)*1000)).padStart(3,'0')}`;
+    let data, active=0;
+    const video=null, shotsEl=document.querySelector('#shots'), rail=document.querySelector('#rail');
+
+    function seek(index, play=true){
+      active=Math.max(0,Math.min(data.shots.length-1,index));
+      const shot=data.shots[active];
+      if(video){video.currentTime=shot.start+.001;if(play) video.play().catch(()=>{});}
+      document.querySelectorAll('.shot,.rail button').forEach(el=>el.classList.toggle('active',Number(el.dataset.index)===active));
+      document.querySelectorAll('.chapter').forEach(el=>el.classList.toggle('active',el.dataset.id===shot.chapter));
+    }
+
+    fetch('app2-storyboard-timeline-v03.json').then(r=>r.json()).then(json=>{
+      data=json;
+      document.querySelector('#chapters').innerHTML=data.chapters.map((c,i)=>`<article class="chapter" data-id="${c.id}" data-start="${c.start}"><div class="chapter-index">0${i+1}</div><h3>${c.label}</h3><div class="chapter-time mono">${tc(c.start)} — ${tc(c.end)}</div></article>`).join('');
+      rail.innerHTML=data.shots.map((s,i)=>`<button data-index="${i}" style="flex:${s.end-s.start}" title="${s.id} ${s.title}"><span>${s.id}</span></button>`).join('');
+      shotsEl.innerHTML=data.shots.map((s,i)=>`<article class="shot" id="shot-${s.id}" data-index="${i}"><div class="shot-no mono">${s.id}</div><div class="shot-body"><div class="shot-head"><h3>${s.title}${s.ownership?'<span class="external">External plate</span>':''}</h3><span class="shot-time mono">${tc(s.start)} — ${tc(s.end)}</span></div><p class="vo">${s.voiceover}</p><div class="notes"><div class="note"><b>Visual</b>${s.visual}</div><div class="note"><b>Motion / transition</b>${s.motion}<br>${s.transition}</div></div></div></article>`).join('');
+      document.querySelectorAll('.shot,.rail button').forEach(el=>el.addEventListener('click',()=>seek(Number(el.dataset.index))));
+      document.querySelectorAll('.chapter').forEach(el=>el.addEventListener('click',()=>seek(data.shots.findIndex(s=>s.chapter===el.dataset.id))));
+      seek(0,false);
+      if(window.gsap){gsap.from('.hero > *',{opacity:0,y:22,filter:'blur(10px)',duration:.65,stagger:.12,ease:'power3.out'});gsap.from('.chapter',{opacity:0,y:14,duration:.45,stagger:.045,ease:'power2.out'});}
+    });
+  </script>
+</body>
+</html>

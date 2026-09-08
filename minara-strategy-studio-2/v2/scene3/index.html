@@ -1,0 +1,375 @@
+<!doctype html><html><head><meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#16181d}
+/* scene3-only dark override (spec §3: whole-scene bg override permitted per-scene) */
+#root,[data-composition-id="root"]{position:relative;width:1920px;height:1080px;overflow:hidden;
+  background:#16181d;font-family:'Geist',system-ui,-apple-system,sans-serif;color:#141416}
+
+/* faint light grid, slides left->right for the whole scene (finite tween, no repeat:-1) */
+.gridbg{position:absolute;top:-120px;left:-400px;right:-400px;bottom:-120px;
+  background-image:
+    repeating-linear-gradient(90deg, rgba(255,255,255,.065) 0 1px, transparent 1px 80px),
+    repeating-linear-gradient(0deg, rgba(255,255,255,.065) 0 1px, transparent 1px 80px);
+  background-position:0px 0px}
+
+.screen{position:absolute;inset:0}
+
+/* beat 0: real Minara Strategy Studio page, full-frame, slow scroll up (reuses ending webpage) */
+#webShow{position:absolute;inset:0;z-index:30;overflow:hidden;background:#FBFBFB}
+#webShow img{position:absolute;left:0;top:0;width:1920px;height:auto;display:block}
+
+/* ---- beat A: factor card array (27, 3-col, scrolls top->bottom, crops past frame) ---- */
+.fgrid{position:absolute;left:50%;top:150px;display:grid;grid-template-columns:repeat(3,1fr);gap:36px 40px;width:1700px}
+.fcard{background:#fff;border-radius:22px;padding:34px 38px;height:206px;
+  display:flex;align-items:center;justify-content:space-between;box-shadow:0 24px 60px -28px rgba(0,0,0,.55);opacity:0}
+.fname{font-size:29px;font-weight:700;line-height:1.25;max-width:300px}
+.ftag{display:inline-block;font-size:18px;font-weight:600;border-radius:9px;padding:5px 14px;margin-top:12px}
+.t-liq{background:#E8F1FF;color:#2f7ff0}.t-tech{background:#EAF7EE;color:#2a9d55}.t-vol{background:#EEF0FF;color:#5b63e6}
+.ic{font-size:34px;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* ---- beat B: idea/strategy performance array (20, scrolls top->bottom, crops past frame) ---- */
+.sgrid{position:absolute;left:50%;top:150px;display:grid;grid-template-columns:repeat(3,1fr);gap:36px 40px;width:1700px}
+.scard{background:#fff;border-radius:22px;padding:30px 36px;height:236px;
+  display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 24px 60px -28px rgba(0,0,0,.55);opacity:0}
+.sname{font-size:24px;font-weight:700}
+.sspark{width:100%;height:56px;margin:6px 0}
+.sbottom{display:flex;align-items:center;justify-content:space-between}
+.screator{display:flex;align-items:center;gap:10px}
+.savatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  color:#fff;font-weight:800;font-size:16px;flex-shrink:0}
+.suser{font-size:18px;font-weight:700;color:#9a9a9a;font-family:'Geist Mono',monospace}
+.sret{font-size:32px;font-weight:800;color:#07B56A;font-variant-numeric:tabular-nums}
+
+/* ---- shared big panel (chat / backtest pops) ---- */
+.panel{position:absolute;left:300px;width:1320px;background:#fff;border-radius:24px;
+  box-shadow:0 50px 110px -35px rgba(0,0,0,.6);opacity:0;padding:48px 56px}
+.panel h2{font-size:40px;font-weight:800}
+.psub{color:#8a8a8a;font-size:23px;margin-top:6px;font-weight:600}
+
+/* -- beat C1: agent chat (understand) — NOT boxed; elements live directly on the dark screen -- */
+#chatPanel{top:70px;height:940px;left:300px;background:transparent;box-shadow:none;padding:20px 40px}
+#chatPanel h2{color:#fff}
+#chatPanel .psub{color:#b8bcc4}
+.chatlist{margin-top:26px;display:flex;flex-direction:column;gap:20px}
+.msgrow{display:flex;align-items:flex-end;gap:14px;opacity:0}
+.msgrow.u{justify-content:flex-end}
+.msgrow.m{justify-content:flex-start}
+.mavatar{width:50px;height:50px;border-radius:50%;flex-shrink:0;object-fit:cover;background:#141416}
+.bubble{max-width:760px;padding:20px 26px;border-radius:20px;font-size:25px;font-weight:600;line-height:1.4}
+.bubble.u{background:#F1F1F1;color:#141416;border-bottom-right-radius:6px}
+.bubble.m{background:#FAFAFA;border:1px solid #EFEFEF;color:#141416;border-bottom-left-radius:6px}
+.pill2{margin-top:26px;background:#141416;color:#fff;border-radius:999px;width:max-content;
+  padding:14px 30px 14px 18px;display:flex;align-items:center;gap:12px;font-size:24px;font-weight:700;opacity:0}
+.pill2 .chkdot{width:32px;height:32px;border-radius:50%;background:#07B56A;display:flex;align-items:center;
+  justify-content:center;flex-shrink:0}
+.pill2 .chkdot svg{width:18px;height:18px;display:block}
+
+/* -- beat C2 pop 1: time-series (single-asset) backtest -- */
+#pop1{top:90px;height:860px;left:130px;width:1660px}
+.pophead{display:flex;align-items:center;justify-content:space-between}
+.poptitle{display:flex;align-items:center;gap:16px}
+.pname{font-size:36px;font-weight:800}
+.pubbadge{background:#E7F8EF;color:#07B56A;font-size:18px;font-weight:700;border-radius:999px;padding:6px 16px}
+.popbtns{display:flex;gap:14px}
+.btn{padding:14px 28px;border-radius:12px;font-size:20px;font-weight:700;white-space:nowrap}
+.btn.solid{background:#141416;color:#fff}
+.btn.ghost{background:#fff;border:1px solid #ECECEC;color:#141416}
+.outperform{margin-top:20px;font-size:30px;font-weight:700;color:#141416}
+.outperform .g{font-weight:800}
+.kpirow{display:flex;justify-content:space-between;margin:28px 0 6px}
+.kpi{opacity:0}
+.kpi .kl{font-size:19px;color:#9a9a9a;font-weight:600}
+.kpi .kv{font-size:38px;font-weight:800;margin-top:6px;font-variant-numeric:tabular-nums}
+.chartlabel{font-size:22px;font-weight:700;color:#141416;margin-top:22px;display:flex;align-items:center;gap:18px}
+.chartlabel.small{margin-top:20px;font-size:20px}
+.legend{font-size:18px;font-weight:600;color:#8a8a8a;display:flex;align-items:center;gap:16px}
+.dot{width:12px;height:12px;border-radius:50%;display:inline-block;margin-right:6px}
+.dot.g{background:#07B56A}.dot.gray{background:#c7c7c7}
+.chartbox{position:relative;width:100%;height:340px;margin-top:8px}
+.xaxis{display:flex;justify-content:space-between;margin-top:6px}
+.xaxis span{font-size:17px;color:#9a9a9a;font-weight:600;font-family:'Geist Mono',monospace}
+.g{color:#07B56A}.r{color:#F75D5F}
+
+/* -- beat C2 pop 2: cross-sectional (multi-symbol) backtest -- */
+#pop2{top:75px;height:920px;left:130px;width:1660px}
+.ctrlrow{display:flex;align-items:center;gap:26px;flex-wrap:nowrap}
+.ctrl{font-size:19px;color:#8a8a8a;font-weight:600;white-space:nowrap;opacity:0}
+.ctrl b{color:#141416;font-weight:700}
+.ctrlspacer{flex:1}
+.chartbox2{position:relative;width:100%;height:280px;margin-top:8px}
+.ddbox{position:relative;width:100%;height:110px;margin-top:6px}
+.treemap{display:flex;flex-direction:column;gap:8px;width:100%;height:196px;margin-top:8px}
+.trow{display:flex;gap:8px;width:100%}
+.trow.r1{height:108px}.trow.r2{height:80px}
+.ttile{border-radius:10px;display:flex;flex-direction:column;justify-content:center;padding:14px 18px;
+  color:#fff;overflow:hidden;opacity:0;transform:scale(.85)}
+.ttile .tname{font-size:19px;font-weight:700}
+.ttile .tpct{font-size:15px;opacity:.85;margin-top:4px;font-variant-numeric:tabular-nums}
+</style></head>
+<body>
+<div id="root" data-composition-id="root" data-width="1920" data-height="1080" data-start="0" data-duration="6.43">
+
+  <div class="gridbg" id="gridbg"></div>
+
+  <!-- beat 0: real Minara Strategy Studio UI showcase, slowly scrolls up, then hands off -->
+  <div id="webShow"><img src="assets/minara-bg.png" alt=""></div>
+
+  <!-- beat A: factor card array, scrolls top -> bottom -->
+  <div class="screen" id="factors">
+    <div class="fgrid" id="fgrid"></div>
+  </div>
+
+  <!-- beat B: strategy/idea performance array (creator avatar + username), scrolls top -> bottom -->
+  <div class="screen" id="scripts">
+    <div class="sgrid" id="sgrid"></div>
+  </div>
+
+  <!-- beat C1: understand — agent chat conversation -->
+  <div class="panel" id="chatPanel">
+    <h2>Minara is listening…</h2>
+    <div class="psub">Multi-factor long/short · Tradfi 30</div>
+    <div class="chatlist" id="chatlist"></div>
+  </div>
+
+  <!-- beat C2 pop 1: time-series backtest (single asset, real Minara layout ref) -->
+  <div class="panel" id="pop1">
+    <div class="pophead">
+      <div class="poptitle"><span class="pname">HYPE 15m Leveraged MACD</span><span class="pubbadge">Published</span></div>
+      <div class="popbtns"><div class="btn ghost">Edit</div><div class="btn solid">Run</div></div>
+    </div>
+    <div class="outperform">Outperforms HYPE by <span class="g">+394%</span></div>
+    <div class="kpirow" id="kpi1">
+      <div class="kpi"><div class="kl">Total Return</div><div class="kv g">+187.40%</div></div>
+      <div class="kpi"><div class="kl">Max Drawdown</div><div class="kv r">16.80%</div></div>
+      <div class="kpi"><div class="kl">Win Rate</div><div class="kv">57.20%</div></div>
+      <div class="kpi"><div class="kl">Profit Factor</div><div class="kv">2.15</div></div>
+      <div class="kpi"><div class="kl">Sharpe Ratio</div><div class="kv">1.62</div></div>
+    </div>
+    <div class="chartlabel">Equity Curve
+      <span class="legend"><i class="dot g"></i>Strategy<i class="dot gray"></i>Buy &amp; Hold</span>
+    </div>
+    <div class="chartbox"><svg id="eq1" width="100%" height="340" viewBox="0 0 1208 340" preserveAspectRatio="none"></svg></div>
+    <div class="xaxis"><span>Jan</span><span>Mar</span><span>May</span><span>Jul</span><span>Sep</span><span>Nov</span></div>
+  </div>
+
+  <!-- beat C2 pop 2: cross-sectional backtest (multi-symbol universe, real Minara layout ref) -->
+  <div class="panel" id="pop2">
+    <div class="ctrlrow" id="ctrlrow">
+      <div class="ctrl">Universe <b>TradFi 30</b></div>
+      <div class="ctrl">Leverage <b>1.0×</b></div>
+      <div class="ctrl">Interval <b>1d</b></div>
+      <div class="ctrl">Direction <b>Long / Short</b></div>
+      <div class="ctrl">Ratio <b>5 symbols</b></div>
+      <div class="ctrl">Weight <b>Signal-Weighted</b></div>
+      <div class="ctrlspacer"></div>
+      <div class="popbtns"><div class="btn ghost">Optimize</div><div class="btn solid">Run Backtest</div></div>
+    </div>
+    <div class="chartlabel">Equity Curve <span class="g" style="font-weight:800">+142.60%</span></div>
+    <div class="chartbox2"><svg id="eq2" width="100%" height="280" viewBox="0 0 1208 280" preserveAspectRatio="none"></svg></div>
+    <div class="chartlabel small">Drawdown <span class="r" style="font-weight:800">-14.20%</span></div>
+    <div class="ddbox"><svg id="dd" width="100%" height="110" viewBox="0 0 1208 110" preserveAspectRatio="none"></svg></div>
+    <div class="chartlabel small">Composition</div>
+    <div class="treemap" id="treemap">
+      <div class="trow r1"></div>
+      <div class="trow r2"></div>
+    </div>
+  </div>
+
+</div>
+<script src="lib/gsap.min.js"></script><script src="lib/CustomEase.min.js"></script>
+<script>
+gsap.registerPlugin(CustomEase);
+const SNAP=CustomEase.create("snap","M0,0 C0.95,0.03 0,0.98 1,1");
+
+// mulberry32 fixed seed (no Math.random anywhere) — canonical spec tool, §5
+function mk(s){return()=>{s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function equityPath(seed,w,h,n){const r=mk(seed);let v=0.12,p=[];for(let i=0;i<n;i++){const drift=0.006+(i/n)*0.012;v+=drift+(r()-0.46)*0.03;v=Math.max(0.05,v);p.push([i/(n-1)*w,h-v*h]);}return p;}
+function toPath(pts){return 'M'+pts.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join(' L');}
+// rescale a path's y-range into [topPad, botY] so the curve fills the chart height and never clips off the top
+function fitY(pts,topPad,botY){const ys=pts.map(p=>p[1]);const mn=Math.min(...ys),mx=Math.max(...ys);const rng=(mx-mn)||1;return pts.map(p=>[p[0], topPad+(p[1]-mn)/rng*(botY-topPad)]);}
+function sparkPoints(seed,w,h,n){return equityPath(seed,w,h,n).map(p=>p[0].toFixed(0)+','+p[1].toFixed(0)).join(' ');}
+// tamer walk for a benchmark/buy-and-hold line (lower drift, sits under the strategy line)
+function benchPath(seed,w,h,n){const r=mk(seed);let v=0.10,p=[];for(let i=0;i<n;i++){const drift=0.0012+(i/n)*0.003;v+=drift+(r()-0.5)*0.012;v=Math.max(0.02,v);p.push([i/(n-1)*w,h-v*h]);}return p;}
+// bounded drawdown walk: always <=0, normalized so the worst point == -maxFrac exactly (keeps DD<=20% by construction)
+function ddSeries(seed,n,maxFrac){const r=mk(seed);let v=0,arr=[0];for(let i=1;i<n;i++){v+=(r()-0.62)*0.028;v=Math.min(0,v);arr.push(v);}const min=Math.min(...arr);const k=min<0?maxFrac/(-min):1;return arr.map(x=>x*k);}
+
+// ==== beat A data: 27 AI quant factors (3-col x 9 rows, scrolling list) ====
+const FACTORS=[
+ ['Zero-Volume Days','IC 0.086',['t-liq','Liquidity']],
+ ['MACD (Price-Normalized)','IC 0.053',['t-tech','Technical']],
+ ['Up-Day Volatility','IC 0.050',['t-vol','Volatility']],
+ ['Order Book Depth Ratio','IC 0.041',['t-liq','Liquidity']],
+ ['RSI Divergence','IC 0.038',['t-tech','Technical']],
+ ['Realized Vol Skew','IC 0.033',['t-vol','Volatility']],
+ ['Bid-Ask Spread Compression','IC 0.047',['t-liq','Liquidity']],
+ ['Volume-Weighted Momentum','IC 0.061',['t-tech','Technical']],
+ ['Implied Vol Term Structure','IC 0.044',['t-vol','Volatility']],
+ ['Funding Rate Basis','IC 0.058',['t-liq','Liquidity']],
+ ['Price Reversal Intensity','IC 0.036',['t-tech','Technical']],
+ ['Skew-Adjusted Beta','IC 0.039',['t-vol','Volatility']],
+ ['Whale Wallet Flow','IC 0.052',['t-liq','Liquidity']],
+ ['MA Crossover Density','IC 0.031',['t-tech','Technical']],
+ ['Realized-Implied Vol Spread','IC 0.045',['t-vol','Volatility']],
+ ['Exchange Netflow Ratio','IC 0.049',['t-liq','Liquidity']],
+ ['ATR Compression Breakout','IC 0.037',['t-tech','Technical']],
+ ['Volatility Clustering Score','IC 0.042',['t-vol','Volatility']],
+ ['Open Interest Momentum','IC 0.055',['t-liq','Liquidity']],
+ ['Candlestick Pattern Score','IC 0.029',['t-tech','Technical']],
+ ['Vol-of-Vol Ratio','IC 0.033',['t-vol','Volatility']],
+ ['Liquidity Provider Imbalance','IC 0.048',['t-liq','Liquidity']],
+ ['Trend Strength Index','IC 0.040',['t-tech','Technical']],
+ ['Downside Deviation Ratio','IC 0.035',['t-vol','Volatility']],
+ ['Cross-Exchange Arbitrage Signal','IC 0.043',['t-liq','Liquidity']],
+ ['Volume Profile Node Density','IC 0.032',['t-tech','Technical']],
+ ['Order Flow Toxicity Score','IC 0.028',['t-liq','Liquidity']],
+];
+const fgrid=document.getElementById('fgrid');
+FACTORS.forEach(f=>{const d=document.createElement('div');d.className='fcard';
+ d.innerHTML=`<div><div class="fname">${f[0]}</div><span class="ftag ${f[2][0]}">${f[2][1]}</span></div><div class="ic">${f[1]}</div>`;
+ fgrid.appendChild(d);});
+const fcards=[...fgrid.children];
+const F_ROWS=Math.ceil(FACTORS.length/3), F_SCROLL=(F_ROWS*206+(F_ROWS-1)*36)-900;
+
+// ==== beat B data: 20 user-made idea/strategy cards (creator avatar + @username, scrolling list) ====
+const USERNAMES=['tabman','dr_alpha','mrtoken','amber_q','vesper','kade','nova_fx','ryzen','pxl_quant','arbiter',
+ 'hexley','quantq','driftwood','ironclad','lumen','cinder','halcyon','brix','kestrel','wraith'];
+const AVCOLORS=['#5b63e6','#2f7ff0','#07B56A','#E7830f','#c0392b','#8b3bd6','#2aa3d6','#e6b800'];
+const SCRIPTS=[
+ ['Multi-factor long-short · Tradfi 30','+105.82%',7],
+ ['Coin 30 Momentum Long','+225.44%',31],
+ ['TradFi Dual-Momentum L/S','+122.79%',13],
+ ['BTC Trend Follow','+68.40%',19],
+ ['ETH Mean Reversion','+41.20%',41],
+ ['Vol Breakout Scalper','+89.70%',53],
+ ['Range Compression Breakout','+76.30%',61],
+ ['Cross-Asset Momentum L/S','+142.15%',17],
+ ['Funding Rate Arbitrage','+54.90%',29],
+ ['Volatility Carry Strategy','+98.60%',71],
+ ['Order Flow Imbalance Scalp','+63.10%',83],
+ ['Pairs Trading · BTC-ETH','+47.80%',5],
+ ['Grid Trading · Range Bound','+38.20%',23],
+ ['Sector Rotation · Layer1s','+112.90%',47],
+ ['Mean Reversion · RSI Extreme','+72.60%',59],
+ ['Breakout Continuation','+134.70%',67],
+ ['Cross-Chain Yield Rotation','+64.50%',89],
+ ['Trend Filter · Multi-Timeframe','+156.30%',97],
+ ['Momentum Factor Blend','+119.40%',113],
+ ['Adaptive Trend Following','+103.80%',139],
+ ['Liquidity Sweep Reversal','+91.50%',151],
+];
+const sgrid=document.getElementById('sgrid');
+SCRIPTS.forEach((s,i)=>{const pts=sparkPoints(s[2],476,56,36);const user=USERNAMES[i%USERNAMES.length];
+ const color=AVCOLORS[i%AVCOLORS.length];const initial=user[0].toUpperCase();
+ const d=document.createElement('div');d.className='scard';
+ d.innerHTML=`<div class="sname">${s[0]}</div>
+  <svg class="sspark" viewBox="0 0 476 56" preserveAspectRatio="none"><polyline fill="none" stroke="#07B56A" stroke-width="3" points="${pts}"/></svg>
+  <div class="sbottom">
+    <div class="screator"><div class="savatar" style="background:${color}">${initial}</div><div class="suser">@${user}</div></div>
+    <div class="sret">${s[1]}</div>
+  </div>`;sgrid.appendChild(d);});
+const scards=[...sgrid.children];
+const S_ROWS=Math.ceil(SCRIPTS.length/3), S_SCROLL=(S_ROWS*236+(S_ROWS-1)*36)-900;
+
+// ==== beat C1 data: agent chat — user describes the strategy, Minara restates it precisely ====
+const MSGS=[
+ ['u','Short overbought alt-coins with weak liquidity — size by Kelly, stop on volatility, rebalance daily.'],
+ ['m','Understood. Building a long/short on the Tradfi 30 universe: go short when RSI divergence < −0.5 and liquidity score > 0.7; position size = Kelly fraction × 0.5; stop = entry − 3 × ATR(14); daily rebalance, signal-weighted across 5 symbols. Running the backtest now…'],
+];
+const chatlist=document.getElementById('chatlist');
+MSGS.forEach(m=>{const row=document.createElement('div');row.className='msgrow '+m[0];
+ if(m[0]==='m'){row.innerHTML=`<img class="mavatar" src="assets/avatar.png"><div class="bubble m">${m[1]}</div>`;}
+ else{row.innerHTML=`<div class="bubble u">${m[1]}</div>`;}
+ chatlist.appendChild(row);});
+const msgrows=[...chatlist.children];
+
+// ==== beat C2 pop1 data: time-series backtest — strategy (green) vs buy&hold (gray) ====
+const eq1=document.getElementById('eq1');
+const P1=fitY(equityPath(45,1208,340,120),28,300), B1=fitY(benchPath(46,1208,340,120),170,322);
+const line1=document.createElementNS('http://www.w3.org/2000/svg','path');line1.setAttribute('d',toPath(P1));
+line1.setAttribute('fill','none');line1.setAttribute('stroke','#07B56A');line1.setAttribute('stroke-width','5');line1.setAttribute('stroke-linejoin','round');
+const benchline1=document.createElementNS('http://www.w3.org/2000/svg','path');benchline1.setAttribute('d',toPath(B1));
+benchline1.setAttribute('fill','none');benchline1.setAttribute('stroke','#c7c7c7');benchline1.setAttribute('stroke-width','4');benchline1.setAttribute('stroke-linejoin','round');
+const area1=document.createElementNS('http://www.w3.org/2000/svg','path');area1.setAttribute('d',toPath(P1)+' L1208,340 L0,340 Z');
+area1.setAttribute('fill','rgba(7,181,106,.10)');area1.setAttribute('opacity','0');
+eq1.appendChild(area1);eq1.appendChild(benchline1);eq1.appendChild(line1);
+const L1=line1.getTotalLength();line1.style.strokeDasharray=L1;line1.style.strokeDashoffset=L1;
+const LB1=benchline1.getTotalLength();benchline1.style.strokeDasharray=LB1;benchline1.style.strokeDashoffset=LB1;
+
+// ==== beat C2 pop2 data: cross-sectional backtest — equity area + drawdown + composition treemap ====
+const eq2=document.getElementById('eq2');
+const P2=fitY(equityPath(51,1208,280,120),24,250);
+const line2=document.createElementNS('http://www.w3.org/2000/svg','path');line2.setAttribute('d',toPath(P2));
+line2.setAttribute('fill','none');line2.setAttribute('stroke','#07B56A');line2.setAttribute('stroke-width','5');line2.setAttribute('stroke-linejoin','round');
+const area2=document.createElementNS('http://www.w3.org/2000/svg','path');area2.setAttribute('d',toPath(P2)+' L1208,280 L0,280 Z');
+area2.setAttribute('fill','rgba(7,181,106,.16)');area2.setAttribute('opacity','0');
+eq2.appendChild(area2);eq2.appendChild(line2);
+const L2=line2.getTotalLength();line2.style.strokeDasharray=L2;line2.style.strokeDashoffset=L2;
+
+const dd=document.getElementById('dd');
+const DDN=90,DDH=110,DDMAX=0.142;
+const ddVals=ddSeries(23,DDN,DDMAX);
+const ddPts=ddVals.map((v,i)=>[i/(DDN-1)*1208, (-v/DDMAX)*DDH*0.9]);
+const ddLine=document.createElementNS('http://www.w3.org/2000/svg','path');ddLine.setAttribute('d',toPath(ddPts));
+ddLine.setAttribute('fill','none');ddLine.setAttribute('stroke','#F75D5F');ddLine.setAttribute('stroke-width','4');ddLine.setAttribute('stroke-linejoin','round');
+const ddArea=document.createElementNS('http://www.w3.org/2000/svg','path');ddArea.setAttribute('d',toPath(ddPts)+' L1208,0 L0,0 Z');
+ddArea.setAttribute('fill','rgba(247,93,95,.14)');ddArea.setAttribute('opacity','0');
+dd.appendChild(ddArea);dd.appendChild(ddLine);
+const LDD=ddLine.getTotalLength();ddLine.style.strokeDasharray=LDD;ddLine.style.strokeDashoffset=LDD;
+
+// composition treemap — English tickers, deterministic weights, flex-grow sized (no manual % math)
+const TREE=[
+ {row:1,name:'NVDA',w:24},{row:1,name:'MSTR',w:18},{row:1,name:'HOOD',w:16},
+ {row:2,name:'RKLB',w:14},{row:2,name:'SK Hynix',w:12},{row:2,name:'HIMS',w:9},{row:2,name:'SNDK',w:7},
+];
+const TREEBLUE=['#1f5fd6','#2f7ff0','#4c93f5','#6aa8f7','#8dbdf9','#a9cdfa','#c3ddfc'];
+const rows={1:document.querySelector('.trow.r1'),2:document.querySelector('.trow.r2')};
+TREE.forEach((t,i)=>{const el=document.createElement('div');el.className='ttile';
+ el.style.flex=t.w+' 1 0%';el.style.background=TREEBLUE[i];
+ el.innerHTML=`<div class="tname">${t.name}</div><div class="tpct">${t.w}%</div>`;
+ rows[t.row].appendChild(el);});
+const ttiles=[...document.querySelectorAll('.ttile')];
+
+gsap.set([fgrid,sgrid],{xPercent:-50});
+
+const DUR=6.43;
+const tl=gsap.timeline({paused:true});
+
+// ambient dark grid slides left->right for the whole scene (finite tween, ease:'none')
+tl.to('#gridbg',{backgroundPosition:'420px 0px',duration:DUR,ease:'none'},0);
+
+// ==== Beat 0 (0.0-1.6): real Minara Strategy Studio UI, slow scroll up, then hands off ====
+gsap.set('#webShow',{opacity:1});
+tl.to('#webShow img',{y:-360,duration:1.45,ease:'none'},0.05);
+tl.to('#webShow',{opacity:0,duration:.22,ease:'power2.in'},1.42);
+
+// ==== Beat A (1.6-2.6): factors pop in, scroll, exit ====
+tl.fromTo(fcards,{opacity:0,y:30,scale:.94},{opacity:1,y:0,scale:1,duration:.26,ease:SNAP,stagger:.011},1.6);
+tl.to(fgrid,{y:-F_SCROLL,duration:.55,ease:SNAP},1.85);
+tl.to('#factors',{opacity:0,y:-20,duration:.18,ease:'power2.in'},2.5);
+
+// ==== Beat B (2.67-3.7): idea cards pop in, scroll, exit ====
+tl.set('#scripts',{opacity:1},2.67);
+tl.fromTo(scards,{opacity:0,y:30,scale:.94},{opacity:1,y:0,scale:1,duration:.26,ease:SNAP,stagger:.012},2.7);
+tl.to(sgrid,{y:-S_SCROLL,duration:.55,ease:SNAP},2.95);
+tl.to('#scripts',{opacity:0,y:-20,duration:.18,ease:'power2.in'},3.6);
+
+// ==== Beat C1 (3.7-4.55): agent chat — 2 messages, Minara returns a large block of text ====
+tl.fromTo('#chatPanel',{opacity:0,y:40,scale:.96},{opacity:1,y:0,scale:1,duration:.3,ease:SNAP},3.7);
+msgrows.forEach((r,i)=>{tl.fromTo(r,{opacity:0,y:18},{opacity:1,y:0,duration:.28,ease:SNAP},3.98+i*.32);});
+tl.to('#chatPanel',{opacity:0,y:-20,scale:.97,duration:.18,ease:'power2.in'},4.5);
+
+// ==== Beat C2 (4.57-6.4): real Minara cross-sectional backtest UI, holds to end ====
+tl.fromTo('#pop2',{opacity:0,y:40,scale:.96},{opacity:1,y:0,scale:1,duration:.4,ease:SNAP},4.57);
+tl.fromTo('.ctrl',{opacity:0,y:14},{opacity:1,y:0,duration:.2,ease:SNAP,stagger:.04},4.78);
+tl.to(line2,{strokeDashoffset:0,duration:.7,ease:'power1.inOut'},4.95);
+tl.to(ddLine,{strokeDashoffset:0,duration:.6,ease:'power1.inOut'},5.15);
+tl.to(area2,{opacity:1,duration:.3,ease:SNAP},5.55);
+tl.to(ddArea,{opacity:1,duration:.3,ease:SNAP},5.6);
+tl.fromTo(ttiles,{opacity:0,scale:.85},{opacity:1,scale:1,duration:.28,ease:'back.out(1.5)',stagger:.05},5.45);
+
+window.__timelines=window.__timelines||{};
+/* fit to reference-narration timeline (subtitle video) */var __T=6.43;(function(){var c=tl.duration();tl.timeScale(1);if(c>__T+0.01){var f=__T/c;tl.getChildren(false,true,true).forEach(function(ch){ch.startTime(ch.startTime()*f);if(ch.duration)ch.duration(Math.max(0.001,ch.duration()*f));});}else if(c<__T-0.01){tl.to({_p:0},{_p:1,duration:__T-c});}})();
+window.__timelines["root"]=tl;
+</script></body></html>

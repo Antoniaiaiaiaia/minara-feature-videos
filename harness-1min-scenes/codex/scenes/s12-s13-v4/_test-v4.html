@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>S12 + S13 · Autopilot, under control · V4</title><link rel="stylesheet" href="scene.css"></head>
+<body>
+  <header class="review-header"><a href="../../../../storyboard.html">← Storyboard</a><b>S12 + S13 · Autopilot</b><span>V4 · Autopilot, under control</span></header>
+  <main id="viewport"><div id="stage" data-composition-id="s12-s13-v4">
+    <video id="flow" src="../s12-s13-v2/assets/bg-light-flow.mp4" muted playsinline preload="auto"></video><div class="wash"></div>
+    <div id="title"></div>
+    <section id="concept" aria-label="Autopilot demonstration">
+      <nav class="tabs" aria-label="Product navigation"><span>Overview</span><button id="autopilot" aria-expanded="false">Autopilot</button><span>Strategies</span></nav>
+      <div id="strategies" aria-label="Mock strategies"></div>
+    </section>
+    <div id="cursor"><svg viewBox="0 0 32 38"><path d="M3 2v29l8-7 6 12 6-3-6-11 11-1Z" fill="#141416" stroke="white" stroke-width="1.8"/></svg><i></i></div>
+  </div></main>
+  <footer class="review-controls"><div class="transport"><button id="play" aria-label="Play">▶</button><button id="replay">Replay</button><output id="time">0.00 / 7.70s</output><input id="scrub" aria-label="Scene time" type="range" min="0" max="7.7" step="0.01" value="0"><select id="speed" aria-label="Playback speed"><option value=".5">0.5×</option><option value="1" selected>1×</option></select><button id="interactive">Try it yourself</button></div><div class="chapters"><button data-time="0.3">Title</button><button data-time="2.43">Tabs</button><button data-time="4.08">Cards</button><button data-time="7.5">Running</button><span>1920 × 1080 · 30 fps · Mock data · Preview only</span></div></footer>
+  <script src="../s12-s13-v2/assets/gsap.min.js"></script><script src="../s12-s13-v2/assets/CustomEase.min.js"></script><script src="title.js"></script><script src="scene.js"></script>
+</body>
+</html>

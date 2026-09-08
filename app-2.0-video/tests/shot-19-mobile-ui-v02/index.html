@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Shot 19 — Mobile UI Study</title>
+  <style>
+    @font-face{font-family:Geist;src:url('./assets/fonts/Geist-Regular.woff2') format('woff2');font-weight:400}
+    @font-face{font-family:Geist;src:url('./assets/fonts/Geist-SemiBold.woff2') format('woff2');font-weight:600}
+    *{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden;font-family:Geist,-apple-system,BlinkMacSystemFont,sans-serif;background:#9fe0d6}
+    body{display:grid;place-items:center}.canvas{position:relative;width:min(100vw,177.7778vh);aspect-ratio:16/9;overflow:hidden;background:linear-gradient(145deg,#08aaa7 0%,#73d7d2 52%,#cceaf3 100%)}
+    .shape{position:absolute;border-radius:50%;filter:blur(.2px)}.shape.a{left:-140px;bottom:-270px;width:780px;height:610px;background:#ffc2bb;transform:rotate(-19deg)}.shape.b{right:-250px;top:120px;width:720px;height:390px;background:#f8efe6;transform:rotate(-22deg)}.shape.c{left:290px;top:140px;width:330px;height:330px;background:rgba(255,255,255,.13)}
+    .phone{position:absolute;left:50%;top:50%;width:430px;height:932px;transform:translate(-50%,-50%);padding:10px;border-radius:58px;background:#121417;box-shadow:0 45px 100px rgba(19,49,57,.28)}
+    .screen{position:relative;width:100%;height:100%;overflow:hidden;border-radius:49px;background:#f7f8f8;color:#15171a}.status{position:relative;height:40px;padding:13px 23px 0;display:flex;font-size:12px;font-weight:600}.status span:last-child{margin-left:auto}.island{position:absolute;left:50%;top:9px;width:108px;height:27px;transform:translateX(-50%);border-radius:99px;background:#121417}
+    .header{height:70px;padding:7px 18px 11px;display:flex;align-items:center}.avatar{width:46px;height:46px;border-radius:50%;object-fit:cover;background:#fff;box-shadow:0 5px 14px rgba(16,24,28,.1)}.identity{margin-left:12px}.identity h1{margin:0;font-size:22px;line-height:1.05;letter-spacing:-.035em}.identity p{margin:5px 0 0;color:#777d80;font-size:13px}.running{margin-left:auto;height:32px;padding:0 12px;border-radius:16px;background:#ddf8ed;color:#087d53;display:flex;align-items:center;font-size:12px;font-weight:600}.running i{width:7px;height:7px;margin-right:7px;border-radius:50%;background:#1ab173}
+    .content{padding:5px 18px 84px}.hero{height:205px;padding:18px;border-radius:25px;background:#14171a;color:#fff;box-shadow:0 14px 35px rgba(16,23,25,.14)}.eyebrow{display:flex;color:#9ca3a5;font-size:12px;font-weight:600;letter-spacing:.04em}.eyebrow span:last-child{margin-left:auto;color:#4be0a8;letter-spacing:0}.pnl{margin-top:6px;color:#47dda4;font-size:44px;font-weight:600;line-height:1;letter-spacing:-.05em}.pnl-sub{margin-top:7px;color:#b7bdbe;font-size:13px}.chart{width:100%;height:83px;margin-top:8px}.chart .area{fill:rgba(71,221,164,.09)}.chart .line{fill:none;stroke:#47dda4;stroke-width:4.5;stroke-linecap:round;stroke-linejoin:round}
+    .agent-card{height:82px;margin-top:12px;padding:14px 15px;border-radius:20px;background:#fff;display:flex;align-items:center;box-shadow:0 7px 20px rgba(29,55,49,.06)}.agent-icon{position:relative;width:42px;height:42px;border-radius:14px;background:#e0f8ee}.agent-icon:before{content:"";position:absolute;inset:11px;border-radius:50%;background:#1ab173;box-shadow:0 0 0 6px rgba(26,177,115,.12)}.agent-copy{margin-left:12px}.agent-copy b{display:block;font-size:16px}.agent-copy span{display:block;margin-top:4px;color:#798083;font-size:12px}.signal-count{margin-left:auto;text-align:right;color:#118b61;font-size:13px;font-weight:600}.signal-count small{display:block;margin-top:4px;color:#8a9092;font-size:11px;font-weight:400}
+    .section-head{height:48px;display:flex;align-items:flex-end;padding:0 2px 9px}.section-head h2{margin:0;font-size:19px;letter-spacing:-.02em}.section-head span{margin-left:auto;color:#7e8487;font-size:12px}.list{display:grid;gap:7px}.trade{height:60px;padding:0 13px;border-radius:17px;background:#fff;display:grid;grid-template-columns:40px 1fr auto;align-items:center;box-shadow:0 5px 16px rgba(29,55,49,.045)}.coin{width:34px;height:34px;border-radius:11px;background:#edf1f0;display:grid;place-items:center;color:#596063;font-size:11px;font-weight:600}.trade-copy b{display:block;font-size:14px}.trade-copy small{display:block;margin-top:3px;color:#8b9193;font-size:11px}.value{text-align:right;font-size:16px;font-weight:600}.up{color:#0ca66d}.down{color:#ef626c}
+    .tabbar{position:absolute;left:10px;right:10px;bottom:10px;height:72px;padding:6px 14px 5px;border-radius:24px 24px 39px 39px;background:rgba(255,255,255,.94);box-shadow:0 -8px 24px rgba(17,39,33,.07);display:grid;grid-template-columns:repeat(4,1fr);align-items:center;backdrop-filter:blur(18px)}.tab{height:54px;border-radius:17px;display:grid;place-items:center;align-content:center;gap:3px;color:#8a9092;font-size:10px}.tab i{font-style:normal;font-size:21px;line-height:1}.tab.active{background:#e2f8ef;color:#087d53;font-weight:600}
+    .badge{position:absolute;left:42px;top:50%;transform:translateY(-50%);padding:12px 16px;border-radius:99px;background:rgba(21,23,26,.82);color:#fff;font-size:14px;letter-spacing:.03em;box-shadow:0 12px 30px rgba(0,0,0,.15)}
+  </style>
+</head>
+<body>
+  <main class="canvas">
+    <i class="shape a"></i><i class="shape b"></i><i class="shape c"></i><div class="badge">430 × 932 pt · iPhone portrait</div>
+    <article class="phone">
+      <div class="screen">
+        <div class="status"><span>9:41</span><i class="island"></i><span>5G&nbsp;&nbsp;100%</span></div>
+        <header class="header"><img class="avatar" src="assets/brand/Minara-Avatar.png" alt="Minara"><div class="identity"><h1>Autopilot</h1><p>Minara is managing your strategy</p></div><span class="running"><i></i>Running</span></header>
+        <section class="content">
+          <div class="hero"><div class="eyebrow"><span>NET P&amp;L</span><span>LIVE</span></div><div class="pnl">+$4,488.20</div><div class="pnl-sub">+$284.60 today · 14 executions</div><svg class="chart" viewBox="0 0 358 83" preserveAspectRatio="none"><path class="area" d="M0 75 C26 69 37 71 60 64 S96 68 119 51 S151 56 176 42 S214 49 238 31 S278 39 302 22 S337 20 358 8 L358 83 L0 83 Z"></path><path class="line" d="M0 75 C26 69 37 71 60 64 S96 68 119 51 S151 56 176 42 S214 49 238 31 S278 39 302 22 S337 20 358 8"></path></svg></div>
+          <div class="agent-card"><span class="agent-icon"></span><div class="agent-copy"><b>Analyzing all markets</b><span>Risk, entries and exits monitored</span></div><div class="signal-count">128 signals<small>Updated now</small></div></div>
+          <div class="section-head"><h2>Recent trades</h2><span>View all</span></div>
+          <div class="list">
+            <div class="trade"><span class="coin">BTC</span><span class="trade-copy"><b>BTC Long</b><small>Filled · 0.18 BTC</small></span><b class="value up">+$184.60</b></div>
+            <div class="trade"><span class="coin">SPY</span><span class="trade-copy"><b>SPY Trim</b><small>Filled · 12 shares</small></span><b class="value up">+$96.20</b></div>
+            <div class="trade"><span class="coin">ETH</span><span class="trade-copy"><b>ETH Stop</b><small>Risk control · 1.4 ETH</small></span><b class="value down">−$31.80</b></div>
+            <div class="trade"><span class="coin">NVDA</span><span class="trade-copy"><b>NVDA Long</b><small>Filled · 8 shares</small></span><b class="value up">+$212.40</b></div>
+          </div>
+        </section>
+        <nav class="tabbar"><span class="tab"><i>⌂</i>Home</span><span class="tab"><i>⌁</i>Markets</span><span class="tab active"><i>◎</i>Autopilot</span><span class="tab"><i>●</i>Profile</span></nav>
+      </div>
+    </article>
+  </main>
+</body>
+</html>

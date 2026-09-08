@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>S16 + S17 · Learns from your trades</title>
+  <link rel="stylesheet" href="scene.css">
+</head>
+<body>
+  <header class="review-header"><strong>S16 + S17 <span>Learns from your trades.</span></strong><span>TEST PAGE · MOCK DATA · AWAITING APPROVAL</span></header>
+  <main id="viewport">
+    <div id="stage" data-composition-id="s16-s17" data-width="1920" data-height="1080" data-duration="7.7">
+      <video id="flow" src="assets/bg-light-flow.mp4" preload="auto" muted playsinline data-start="0" data-duration="7.7" data-track-index="0"></video>
+      <div id="headline-root" aria-label="Learns from your trades. Wins. Losses. Lessons."></div>
+      <div id="history-head"><span>Positions</span><span>Open Orders</span><strong>Account Trade History</strong><span>Funding History</span><span>Order History</span></div>
+      <div id="history-labels"><span>Closed trades</span><span>Realized PnL</span></div>
+      <div id="product-camera">
+      <section id="memory-client" aria-label="Trading memory and learning">
+        <div class="window-top"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4m-4-8 3-3 3 3 3-4"/></svg></div>
+        <aside>
+          <label class="search"><svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><path d="m15 15 5 5"/></svg><input id="memory-search" aria-label="Search personalization" placeholder="Search personalization"></label>
+          <small>About you</small><span>My Profile</span><span>Learned Preferences</span><span>Custom</span>
+          <small>Safety and guidance</small><span>Financial safety</span>
+          <small>Memory content</small><span>Long-term memory</span><button id="memory-nav" class="selected">Trading Memory</button><span>Behavior Memory</span>
+          <small>Learning and status</small><span>Learning Health</span><span>Preference Learning</span><span>Decision Capture</span><span>Self-learning</span>
+        </aside>
+        <div class="memory-content">
+          <h1>Trading memory &amp; learning</h1>
+          <div class="notice"><span>△</span><p>Past results don't predict future performance and nothing here is advice. To correct what Minara believes, tell it directly in chat; this page is read-only.</p></div>
+          <nav class="memory-tabs" aria-label="Trading Memory"><button data-tab="activity">Activity</button><button data-tab="learned">What it learned</button><button data-tab="notes" class="active">Your notes</button></nav>
+          <div id="notes-panel" class="tab-panel">
+            <section class="analysis-panel"><h2>How you like to analyze</h2><p>Preferences and habits Minara noticed about your process.</p><div id="saved-count"><span class="save-icon">✓</span><span id="count">0</span> memories saved</div></section>
+          </div>
+          <div id="activity-panel" class="tab-panel" hidden><section class="data-panel"><h2>Trading activity, last 90 days</h2><div class="small-tabs"><strong>Perps (6)</strong><span>Spot (0)</span></div><div id="activity-table"></div></section></div>
+          <div id="learned-panel" class="tab-panel" hidden>
+            <div class="snapshot-grid"><section class="data-panel"><h2>Snapshot</h2><div class="stats"><span>Decisions recorded<b>6</b></span><span>Last 30 days<b>6</b></span><span>Hit rate<b>50%</b></span><span>Avg vs market<b>—</b></span></div></section><section class="data-panel"><h2>How frameworks performed (12 weeks)</h2><p class="muted italic">Not enough scored decisions yet to chart a trend.</p></section></div>
+            <section class="data-panel"><h2>Frameworks Minara used recently</h2><p class="muted italic">No frameworks have enough recent decisions to show.</p></section>
+            <details id="decision-ledger" class="data-panel"><summary>Full decision ledger <span>6 decisions (read-only)</span></summary><div id="ledger-rows"></div></details>
+          </div>
+        </div>
+      </section>
+      <div id="cards-viewport" aria-label="Scrollable trading memories" tabindex="0"><div id="cards" aria-label="Mock trades and learned memories"></div></div>
+      </div>
+      <div id="analysis-focus"></div>
+      <svg id="cursor" viewBox="0 0 28 36"><path d="M3 2v27l7-7 5 11 5-2-5-11h10Z"/></svg>
+      <div id="click-ring"></div>
+      <div id="lesson-detail" role="dialog" aria-modal="true" aria-label="Memory source" hidden><button id="close-detail" aria-label="Close memory details">×</button><p class="muted">Trading Memory · Source</p><h2 id="detail-lesson"></h2><div id="detail-trade"></div><p class="muted">Saved as context for later analysis. A past outcome is not a prediction.</p></div>
+    </div>
+  </main>
+  <footer class="review-controls">
+    <div class="playback"><button id="play" aria-label="Play preview">Play</button><button id="replay">Replay</button><output id="time">0.00 / 7.70s</output><input id="scrub" type="range" min="0" max="7.7" step="0.001" value="0" aria-label="Preview time"><select id="speed" aria-label="Playback speed"><option value="1">1×</option><option value="0.5">0.5×</option><option value="0.25">0.25×</option></select></div>
+    <div class="chapters"><button data-time="0.55">Title</button><button data-time="2.35">Trade history</button><button data-time="2.98">Learning scan</button><button data-time="4.24">Lessons</button><button data-time="6.3">Memory</button><button data-time="7.45">More memories</button><button id="interactive">Explore UI</button></div>
+    <p id="review-note">Original timing: 53.633–61.333s · 231 frames · 1920 × 1080 · No video rendered</p>
+  </footer>
+  <script src="assets/gsap.min.js"></script><script src="assets/CustomEase.min.js"></script><script src="title/assets/title.js"></script><script src="scene.js"></script>
+</body>
+</html>

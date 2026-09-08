@@ -1,0 +1,44 @@
+<!doctype html><html><head><meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#F9F9F9}
+#root,[data-composition-id="root"]{position:relative;width:1920px;height:1080px;overflow:hidden;
+  background:#F9F9F9;font-family:'Geist',system-ui,-apple-system,sans-serif;color:#141416;text-align:center}
+.hero{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%)}
+.intro{font-weight:400;font-size:66px;color:#141416;letter-spacing:0;opacity:0;margin-bottom:6px;line-height:1.15}
+.title{font-weight:500;font-size:132px;letter-spacing:-.02em;line-height:1}
+.title .w{display:inline-block;opacity:0;margin:0 20px}
+.title .g{background:linear-gradient(120deg,#EB53FF,#FF538E 48%,#FF9A32);-webkit-background-clip:text;background-clip:text;color:transparent}
+</style></head>
+<body>
+<div id="root" data-composition-id="root" data-width="1920" data-height="1080" data-start="0" data-duration="3.5">
+  <div class="hero">
+    <div class="intro" id="intro">Introducing</div>
+    <div class="title" id="title"><span class="w">Strategy</span><span class="w">Studio</span><span class="w g">2.0</span></div>
+  </div>
+</div>
+<script src="lib/gsap.min.js"></script><script src="lib/CustomEase.min.js"></script>
+<script>
+gsap.registerPlugin(CustomEase);
+const SNAP=CustomEase.create("snap","M0,0 C0.95,0.03 0,0.98 1,1");
+const tl=gsap.timeline({paused:true});
+
+// Introducing — light line fades up first
+tl.fromTo('#intro',{opacity:0,y:20},{opacity:1,y:0,duration:.4,ease:SNAP},0);
+
+// Strategy / Studio / 2.0 — springy pop-in, ~0.6s apart
+tl.fromTo('.title .w',{opacity:0,scale:.4,y:30},
+  {opacity:1,scale:1,y:0,duration:.65,ease:'back.out(1.6)',stagger:.6},0.4);
+
+// intro steps aside once the title takes over
+tl.to('#intro',{opacity:0,y:-10,duration:.3,ease:SNAP},2.6);
+
+// hold — subtle settle breath on the full title
+tl.to('.title',{scale:1.015,duration:.3,ease:SNAP},2.7);
+tl.to('.title',{scale:1,duration:.4,ease:SNAP},3.0);
+
+window.__timelines=window.__timelines||{};
+/* fit to reference-narration timeline (subtitle video) */var __T=3.5;(function(){var c=tl.duration();tl.timeScale(1);if(c>__T+0.01){var f=__T/c;tl.getChildren(false,true,true).forEach(function(ch){ch.startTime(ch.startTime()*f);if(ch.duration)ch.duration(Math.max(0.001,ch.duration()*f));});}else if(c<__T-0.01){tl.to({_p:0},{_p:1,duration:__T-c});}})();
+window.__timelines["root"]=tl;
+</script></body></html>

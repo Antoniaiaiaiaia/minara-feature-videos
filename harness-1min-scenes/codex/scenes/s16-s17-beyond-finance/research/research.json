@@ -1,0 +1,84 @@
+{
+  "company": "NVIDIA Corporation",
+  "ticker": "NVDA",
+  "fiscal_period": {
+    "label": "Fiscal 2026",
+    "ended": "2026-01-25",
+    "comparison_period": "Fiscal 2025, ended 2025-01-26",
+    "currency": "USD",
+    "unit": "millions unless stated"
+  },
+  "executive_summary": "NVIDIA's fiscal 2026 revenue reached $215.938 billion, up 65% year over year, with Data Center revenue at $193.737 billion, up 68%. GAAP net income rose 65% to $120.067 billion. The growth engine remained AI infrastructure, while GAAP gross margin fell 3.9 points to 71.1% as the business shifted to Blackwell full scale data center solutions and absorbed a $4.5 billion H20 charge.",
+  "metrics": [
+    {
+      "name": "Revenue",
+      "gaap": true,
+      "fy2026": 215938,
+      "fy2025": 130497,
+      "yoy_percent": 65,
+      "display": "$215.938B vs $130.497B"
+    },
+    {
+      "name": "Data Center revenue",
+      "gaap": true,
+      "fy2026": 193737,
+      "fy2025": 115186,
+      "yoy_percent": 68,
+      "display": "$193.737B vs $115.186B"
+    },
+    {
+      "name": "Net income",
+      "gaap": true,
+      "fy2026": 120067,
+      "fy2025": 72880,
+      "yoy_percent": 65,
+      "display": "$120.067B vs $72.880B"
+    },
+    {
+      "name": "Gross margin",
+      "gaap": true,
+      "fy2026_percent": 71.1,
+      "fy2025_percent": 75.0,
+      "change_points": -3.9,
+      "display": "71.1% vs 75.0% (-3.9 pts)"
+    }
+  ],
+  "insights": [
+    {
+      "title": "Data Center carried the year",
+      "text": "Data Center revenue was $193.737B, about 89.7% of total FY2026 revenue, and grew 68% year over year. NVIDIA says accelerated computing and AI drove the increase."
+    },
+    {
+      "title": "Earnings scaled faster than operating income",
+      "text": "GAAP net income rose 65% and operating income rose 60%, even as gross margin declined 3.9 points. The 10-K attributes the margin decline to the transition from Hopper HGX systems to Blackwell full scale data center solutions and the H20 charge."
+    },
+    {
+      "title": "China and customer concentration remain watch items",
+      "text": "The 10-K says one direct customer represented 22% of FY2026 revenue and another 14%, primarily in Compute & Networking. It also says NVIDIA was effectively foreclosed from China's data center compute market at fiscal year end; Q1 FY2027 guidance assumes no China Data Center compute revenue."
+    }
+  ],
+  "watch_items": [
+    "Gross margin: 71.1% GAAP in FY2026 versus 75.0% in FY2025.",
+    "Product transition: Blackwell full scale data center solutions and a faster annual architecture cadence can create supply, qualification and timing volatility.",
+    "China/export controls: the company reported effective foreclosure from China's data center compute market at FY2026 year end and no China Data Center compute revenue in Q1 FY2027 outlook.",
+    "Non-GAAP comparability: beginning in Q1 FY2027, NVIDIA will include stock based compensation expense in non-GAAP measures."
+  ],
+  "sources": [
+    {
+      "title": "NVIDIA Announces Financial Results for Fourth Quarter and Fiscal 2026",
+      "url": "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-Financial-Results-for-Fourth-Quarter-and-Fiscal-2026/default.aspx",
+      "used_for": "FY2026/FY2025 GAAP and non-GAAP summary, Data Center growth, FY2027 outlook, shareholder returns"
+    },
+    {
+      "title": "NVIDIA Corporation Form 10-K for fiscal year ended January 25, 2026",
+      "url": "https://d18rn0p25nwr6d.cloudfront.net/CIK-0001045810/e361e58a-7483-44f5-bc62-a9080ae6ec72.pdf",
+      "used_for": "Fiscal period, end market revenue, margin drivers, customer concentration, China/export control disclosures"
+    },
+    {
+      "title": "NVIDIA Investor Relations Annual Reports and Proxies",
+      "url": "https://investor.nvidia.com/financial-info/annual-reports-and-proxies/default.aspx",
+      "used_for": "Investor Relations index for the FY2026 annual report"
+    }
+  ],
+  "retrieved": "2026-09-07"
+}

@@ -1,0 +1,21 @@
+{
+  "name": "s14-s15-portfolio-preview",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "check": "node verify.mjs"
+  },
+  "dependencies": {
+    "@remotion/google-fonts": "^4.0.521",
+    "@remotion/player": "4.0.484",
+    "culori": "^4.0.2",
+    "lucide-react": "^1.41.0",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "remotion": "4.0.484"
+  },
+  "devDependencies": {
+    "@types/culori": "^4.0.1"
+  }
+}

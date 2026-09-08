@@ -1,0 +1,249 @@
+<!doctype html><html><head><meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#16181d}
+#root,[data-composition-id="root"]{position:relative;width:1920px;height:1080px;overflow:hidden;
+  background:#16181d;font-family:'Geist',system-ui,-apple-system,sans-serif;color:#141416}
+
+/* faint light grid backdrop on the dark bg (same treatment as scene3), back layer */
+.gridbg{position:absolute;inset:0;z-index:0;
+  background-image:
+    repeating-linear-gradient(90deg, rgba(255,255,255,.06) 0 1px, transparent 1px 80px),
+    repeating-linear-gradient(0deg, rgba(255,255,255,.06) 0 1px, transparent 1px 80px)}
+
+/* rising green volume bars along the bottom, back layer behind the cards */
+.barChart{position:absolute;left:0;bottom:0;width:1920px;height:1080px;z-index:1}
+.bar{position:absolute;bottom:0;width:24px;background:#07B56A;border-radius:5px 5px 0 0;transform-origin:bottom;opacity:.9}
+
+/* strategy compare cards (conservative + aggressive screens) */
+.cards{position:absolute;top:190px;left:180px;width:1560px;display:grid;grid-template-columns:repeat(3,1fr);gap:36px;z-index:3}
+.cc{background:#fff;border:1px solid #ECECEC;border-radius:26px;box-shadow:0 30px 70px -38px rgba(0,0,0,.24);padding:34px 38px;opacity:0;display:flex;flex-direction:column}
+.cc .hd{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;height:76px}
+.cc h3{font-size:26px;font-weight:800;line-height:1.25;flex:1}
+.cc .badge{flex:none;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:#fff}
+.cc .tags{display:flex;gap:8px;height:34px;margin-top:8px}
+.cc .tag{padding:5px 14px;border-radius:999px;font-size:15px;font-weight:700;white-space:nowrap}
+.cc .meta{display:flex;justify-content:space-between;color:#9a9a9a;font-size:18px;font-weight:600;height:24px;margin-top:12px}
+.cc .divider{height:1px;background:#F1F1F1;margin-top:18px}
+.cc .tr{color:#9a9a9a;font-size:20px;font-weight:600;margin-top:16px;height:24px}
+.cc .rv{font-size:56px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.01em;height:60px;margin-top:2px}
+.cc .rv.g{color:#07B56A}
+.cc .spark{width:100%;height:56px;margin:14px 0;display:block}
+.cc .row2{display:flex;justify-content:space-between;margin-top:8px;height:52px}
+.cc .row2 .l{color:#9a9a9a;font-size:16px;font-weight:600}
+.cc .row2 .b{font-weight:700;font-size:23px;font-variant-numeric:tabular-nums;margin-top:4px}
+.cc .footer{display:flex;align-items:center;justify-content:space-between;margin-top:16px;padding-top:14px;border-top:1px solid #F1F1F1;height:34px}
+.cc .footer .live{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:700;color:#07B56A}
+.cc .footer .dot{width:9px;height:9px;border-radius:50%;background:#07B56A}
+.cc .footer .auto{font-size:15px;font-weight:600;color:#9a9a9a}
+
+/* on-chain verification: 1 -> 5 parallel -> 1 split/parallel/merge diagram (clean rounded squares only) */
+.chainStage{position:absolute;left:0;top:0;width:1920px;height:1080px;z-index:5}
+.curvesSvg{position:absolute;left:0;top:0;width:1920px;height:1080px}
+.node{position:absolute;width:120px;height:120px;border-radius:24px;background:#fff;border:2px solid #ECECEC;opacity:0;
+  box-shadow:0 26px 64px -26px rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center}
+.node svg{width:64px;height:64px;display:block}
+.verif{position:absolute;left:50%;top:985px;z-index:6;display:inline-flex;align-items:center;gap:16px;
+  background:#E7F8EF;color:#07B56A;font-weight:800;font-size:44px;padding:22px 52px;border-radius:999px;opacity:0;white-space:nowrap;
+  box-shadow:0 30px 70px -26px rgba(7,181,106,.5)}
+.verif .ck{font-size:44px;line-height:1}
+</style></head>
+<body>
+<div id="root" data-composition-id="root" data-width="1920" data-height="1080" data-start="0" data-duration="5.07">
+
+  <!-- faint light grid backdrop on dark bg -->
+  <div class="gridbg"></div>
+
+  <!-- rising green volume bars (persist 0-3.8s, back layer) -->
+  <div class="barChart" id="barChart"></div>
+
+  <!-- conservative strategy screen -->
+  <div class="cards" id="consCards"></div>
+
+  <!-- aggressive strategy screen -->
+  <div class="cards" id="aggCards"></div>
+
+  <!-- on-chain verification: 1 -> 5 parallel -> 1 split/parallel/merge diagram -->
+  <div class="chainStage" id="chainStage">
+    <svg class="curvesSvg" id="curvesSvg"></svg>
+  </div>
+  <div class="verif" id="verif"><span class="ck">✓</span>Verified on-chain</div>
+
+</div>
+<script src="lib/gsap.min.js"></script><script src="lib/CustomEase.min.js"></script>
+<script>
+gsap.registerPlugin(CustomEase);
+const SNAP=CustomEase.create("snap","M0,0 C0.95,0.03 0,0.98 1,1");
+
+// mulberry32 fixed-seed PRNG (no Math.random)
+function mk(s){return()=>{s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+// continuous random-walk equity curve; driftBase/driftRange/noiseAmp tune smoothness (spec defaults: .006/.012/.03)
+function equityPath(seed,w,h,n,driftBase,driftRange,noiseAmp){
+  const r=mk(seed);let v=0.12,p=[];
+  for(let i=0;i<n;i++){const drift=driftBase+(i/n)*driftRange;v+=drift+(r()-0.46)*noiseAmp;v=Math.max(0.05,v);p.push([i/(n-1)*w,h-v*h]);}
+  return p;
+}
+function toPoints(pts){return pts.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ');}
+function pathLength(pts){let d=0;for(let i=1;i<pts.length;i++){d+=Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]);}return d;}
+
+const NS='http://www.w3.org/2000/svg';
+function svgEl(tag,attrs){const el=document.createElementNS(NS,tag);for(const k in attrs)el.setAttribute(k,attrs[k]);return el;}
+
+const TAG={
+  crypto:['#FFF0E2','#E7830f'],stock:['#E9F7FF','#2aa3d6'],liquidity:['#E8F1FF','#2f7ff0'],
+  technical:['#EAF7EE','#2a9d55'],volatility:['#EEF0FF','#5b63e6'],neutral:['#F1F1F1','#555']
+};
+
+function buildCard(container,c){
+  const pts=equityPath(c.seed,420,56,40,c.driftBase,c.driftRange,c.noiseAmp);
+  const d=document.createElement('div');d.className='cc';
+  const t1=TAG[c.t1],t2=TAG[c.t2];
+  d.innerHTML=`
+    <div class="hd"><h3>${c.name}</h3><div class="badge" style="background:${c.badgeBg}">${c.badgeIcon}</div></div>
+    <div class="tags"><span class="tag" style="background:${t1[0]};color:${t1[1]}">${c.t1label}</span><span class="tag" style="background:${t2[0]};color:${t2[1]}">${c.t2label}</span></div>
+    <div class="meta"><span>${c.timeframe}</span><span>${c.alloc}</span></div>
+    <div class="divider"></div>
+    <div class="tr">Total Return</div>
+    <div class="rv g">${c.ret}</div>
+    <svg class="spark" viewBox="0 0 420 56" preserveAspectRatio="none"><polyline fill="none" stroke="#07B56A" stroke-width="3.5" points="${toPoints(pts)}"/></svg>
+    <div class="row2">
+      <div class="col"><div class="l">Max DD</div><div class="b" style="color:#F75D5F">${c.dd}</div></div>
+      <div class="col"><div class="l">Sharpe</div><div class="b">${c.sharpe}</div></div>
+      <div class="col"><div class="l">Win Rate</div><div class="b">${c.winrate}</div></div>
+    </div>
+    <div class="footer"><div class="live"><span class="dot"></span>Live</div><div class="auto">Auto-rebalance</div></div>`;
+  container.appendChild(d);return d;
+}
+
+// conservative: low drift range, low noise -> smooth, modest curves
+const CONS=[
+ {name:'BTC Grid DCA · Low Vol',t1:'crypto',t1label:'Crypto',t2:'technical',t2label:'Grid',timeframe:'6M Backtest',alloc:'18% Alloc',
+  ret:'+38.20%',dd:'7.40%',sharpe:'2.14',winrate:'71%',seed:11,driftBase:.003,driftRange:.004,noiseAmp:.01,badgeBg:'#F7931A',badgeIcon:'₿'},
+ {name:'Stablecoin Yield L/S',t1:'liquidity',t1label:'Liquidity',t2:'neutral',t2label:'Delta-Neutral',timeframe:'3M Live',alloc:'22% Alloc',
+  ret:'+24.65%',dd:'4.80%',sharpe:'2.62',winrate:'78%',seed:13,driftBase:.003,driftRange:.004,noiseAmp:.01,badgeBg:'#2775CA',badgeIcon:'$'},
+ {name:'TradFi 30 Mean-Reversion',t1:'stock',t1label:'Stock',t2:'technical',t2label:'Mean-Rev',timeframe:'12M Backtest',alloc:'15% Alloc',
+  ret:'+41.90%',dd:'9.10%',sharpe:'1.98',winrate:'66%',seed:17,driftBase:.003,driftRange:.004,noiseAmp:.01,badgeBg:'#2aa3d6',badgeIcon:'S'},
+];
+const consCards=document.getElementById('consCards');
+const consEls=CONS.map(c=>buildCard(consCards,c));
+
+// aggressive: high drift range, high noise -> steep, punchy curves; DD kept <=20% per hard rule
+const AGG=[
+ {name:'Coin 30 Momentum Long',t1:'crypto',t1label:'Crypto',t2:'volatility',t2label:'Momentum',timeframe:'3M Live',alloc:'9% Alloc',
+  ret:'+224.80%',dd:'19.60%',sharpe:'1.02',winrate:'54%',seed:31,driftBase:.01,driftRange:.02,noiseAmp:.05,badgeBg:'#E7830f',badgeIcon:'⚡'},
+ {name:'Perp Breakout 5x',t1:'crypto',t1label:'Crypto',t2:'volatility',t2label:'Breakout',timeframe:'1M Live',alloc:'6% Alloc',
+  ret:'+198.30%',dd:'19.90%',sharpe:'0.95',winrate:'49%',seed:37,driftBase:.01,driftRange:.02,noiseAmp:.05,badgeBg:'#5b63e6',badgeIcon:'⚙'},
+ {name:'Alt Season Long-Short',t1:'crypto',t1label:'Crypto',t2:'technical',t2label:'Long-Short',timeframe:'2M Live',alloc:'8% Alloc',
+  ret:'+176.40%',dd:'18.70%',sharpe:'1.08',winrate:'52%',seed:41,driftBase:.01,driftRange:.02,noiseAmp:.05,badgeBg:'#555',badgeIcon:'⇄'},
+];
+const aggCards=document.getElementById('aggCards');
+const aggEls=AGG.map(c=>buildCard(aggCards,c));
+gsap.set(aggEls,{opacity:0});
+
+// --- rising green volume bars (deterministic heights via mulberry32) ---
+// left group = conservative (low, slow reveal <1.65s); right group = aggressive (taller, faster reveal, up to ~80% frame)
+const barChart=document.getElementById('barChart');
+const N_LEFT=18,N_RIGHT=32,N_BARS=N_LEFT+N_RIGHT,SLOT=1920/N_BARS,MAXH=864; // 80% of 1080
+const rndBar=mk(29);
+function makeBar(i,h){
+  const el=document.createElement('div');el.className='bar';
+  el.style.left=(i*SLOT+(SLOT-24)/2).toFixed(1)+'px';
+  el.style.height=Math.min(h,MAXH).toFixed(0)+'px';
+  barChart.appendChild(el);return el;
+}
+const leftBars=[];for(let i=0;i<N_LEFT;i++){leftBars.push(makeBar(i,30+rndBar()*50));}          // 30-80px, low
+const rightBars=[];for(let j=0;j<N_RIGHT;j++){const f=j/(N_RIGHT-1);rightBars.push(makeBar(N_LEFT+j,90+f*f*(MAXH-90)+rndBar()*40));} // quadratic ramp to ~80% frame
+gsap.set([...leftBars,...rightBars],{scaleY:0});
+
+// --- on-chain verification: 1 -> 5 parallel -> 1 split / parallel / merge diagram ---
+const chainStage=document.getElementById('chainStage');
+const curvesSvg=document.getElementById('curvesSvg');
+const S=120,HALF=S/2;                              // rounded-square node size
+const ROWS=[180,360,540,720,900];                  // 5 parallel channels
+const X_L=200,X_ML=660,X_MR=1200,X_R=1720,CY=540;  // column centers (entry / mid-left / mid-right / exit) — shifted +20 to center node group in 1920 frame
+
+// flat single-color icons (Feather-style paths), stroke-based so they read cleanly at any size
+const ICON={
+  user:'<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+  box:'<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>',
+  link:'<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
+  check:'<polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>'
+};
+function iconSVG(type){
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="#23262b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICON[type]}</svg>`;
+}
+function makeNode(cx,cy,iconType){
+  const n=document.createElement('div');n.className='node';
+  n.style.left=(cx-HALF)+'px';n.style.top=(cy-HALF)+'px';
+  n.innerHTML=iconSVG(iconType);
+  chainStage.appendChild(n);return n;
+}
+// entry/exit = user (person); the 10 middle squares = blockchain (block / link / checkmark-block, varied)
+const MID_ICONS=['box','link','check','box','link'];
+const leftSq=makeNode(X_L,CY,'user');
+const mlSquares=ROWS.map((y,i)=>makeNode(X_ML,y,MID_ICONS[i]));
+const mrSquares=ROWS.map((y,i)=>makeNode(X_MR,y,MID_ICONS[i]));
+const rightSq=makeNode(X_R,CY,'user');
+
+// build a gray base path + a green flow overlay (dash-hidden) for one connection
+function makeConn(d){
+  const base=svgEl('path',{d,fill:'none',stroke:'#5b606b','stroke-width':'4','stroke-linecap':'round',opacity:0});
+  const flow=svgEl('path',{d,fill:'none',stroke:'#07B56A','stroke-width':'6','stroke-linecap':'round'});
+  curvesSvg.appendChild(base);curvesSvg.appendChild(flow);
+  const L=base.getTotalLength();
+  base.style.strokeDasharray=L;base.style.strokeDashoffset=L;   // drawn during build
+  flow.style.strokeDasharray=L;flow.style.strokeDashoffset=L;   // drawn during pulse
+  return {base,flow,L};
+}
+// LEFT FAN-OUT (1 -> 5): right edge of entry curves to left edge of each mid-left square
+const fanConns=ROWS.map(y=>makeConn(`M ${X_L+HALF},${CY} C ${(X_L+X_ML)/2},${CY} ${(X_L+X_ML)/2},${y} ${X_ML-HALF},${y}`));
+// MIDDLE PARALLEL (5 straight horizontal tracks): mid-left -> same-row mid-right
+const parConns=ROWS.map(y=>makeConn(`M ${X_ML+HALF},${y} L ${X_MR-HALF},${y}`));
+// RIGHT MERGE (5 -> 1): right edge of each mid-right curves to left edge of exit
+const mergeConns=ROWS.map(y=>makeConn(`M ${X_MR+HALF},${y} C ${(X_MR+X_R)/2},${y} ${(X_MR+X_R)/2},${CY} ${X_R-HALF},${CY}`));
+
+const GRN={backgroundColor:'#E7F8EF',borderColor:'#07B56A'};
+
+const tl=gsap.timeline({paused:true});
+
+// beats retimed to reference timeline: conservative 0-1.03, aggressive 1.03-2.10, on-chain 2.10-5.07
+// rising green volume bars backdrop (conservative low -> aggressive taller), hand off at 2.0s
+tl.to(leftBars,{scaleY:1,duration:.35,ease:SNAP,stagger:.045},0.0);
+tl.to(rightBars,{scaleY:1,duration:.3,ease:SNAP,stagger:.03},0.85);
+tl.to('#barChart',{opacity:0,duration:.3,ease:'power2.in'},2.0);
+
+// 7.1 conservative screen (0 - 1.03)
+tl.fromTo(consEls,{opacity:0,y:40,scale:.96},{opacity:1,y:0,scale:1,duration:.5,ease:SNAP,stagger:.1},0.0);
+tl.to(consEls,{opacity:0,y:-30,scale:.96,duration:.35,ease:SNAP,stagger:.04},0.85);
+
+// 7.2 aggressive screen (1.03 - 2.10)
+tl.fromTo(aggEls,{opacity:0,y:40,scale:.96},{opacity:1,y:0,scale:1,duration:.5,ease:SNAP,stagger:.1},1.03);
+tl.to(aggEls,{opacity:0,y:-30,scale:.96,duration:.35,ease:SNAP,stagger:.04},1.95);
+
+// 7.3 on-chain verification builds 2.10 -> ~3.7, holds to end (5.07)
+tl.fromTo(leftSq,{opacity:0,scale:.6,x:-14},{opacity:1,scale:1,x:0,duration:.3,ease:'back.out(1.7)'},2.1);
+tl.to(fanConns.map(c=>c.base),{strokeDashoffset:0,duration:.35,ease:SNAP,stagger:.04},2.3);
+tl.fromTo(mlSquares,{opacity:0,scale:.6},{opacity:1,scale:1,duration:.3,ease:'back.out(1.7)',stagger:.04},2.6);
+tl.to(parConns.map(c=>c.base),{strokeDashoffset:0,duration:.3,ease:SNAP,stagger:.03},2.8);
+tl.fromTo(mrSquares,{opacity:0,scale:.6},{opacity:1,scale:1,duration:.3,ease:'back.out(1.7)',stagger:.04},3.0);
+tl.to(mergeConns.map(c=>c.base),{strokeDashoffset:0,duration:.35,ease:SNAP,stagger:.04},3.15);
+tl.fromTo(rightSq,{opacity:0,scale:.6,x:14},{opacity:1,scale:1,x:0,duration:.3,ease:'back.out(1.7)'},3.35);
+
+// green flow pulse travels left -> right through the split-parallel-merge path
+tl.to(leftSq,{...GRN,duration:.12,ease:SNAP},3.4);
+tl.to(fanConns.map(c=>c.flow),{strokeDashoffset:0,duration:.2,ease:'power1.inOut',stagger:.015},3.5);
+tl.to(mlSquares,{...GRN,duration:.12,ease:SNAP,stagger:.015},3.6);
+tl.to(parConns.map(c=>c.flow),{strokeDashoffset:0,duration:.18,ease:'power1.inOut',stagger:.015},3.65);
+tl.to(mrSquares,{...GRN,duration:.12,ease:SNAP,stagger:.015},3.76);
+tl.to(mergeConns.map(c=>c.flow),{strokeDashoffset:0,duration:.18,ease:'power1.inOut',stagger:.015},3.78);
+tl.to(rightSq,{...GRN,duration:.12,ease:SNAP},3.88);
+
+// verified caption pill (below the diagram)
+gsap.set('#verif',{xPercent:-50,yPercent:-50});
+tl.fromTo('#verif',{opacity:0,scale:.6,y:16},{opacity:1,scale:1,y:0,duration:.4,ease:'back.out(1.7)'},3.6);
+
+window.__timelines=window.__timelines||{};
+/* fit to reference-narration timeline (subtitle video) */var __T=5.07;(function(){var c=tl.duration();tl.timeScale(1);if(c>__T+0.01){var f=__T/c;tl.getChildren(false,true,true).forEach(function(ch){ch.startTime(ch.startTime()*f);if(ch.duration)ch.duration(Math.max(0.001,ch.duration()*f));});}else if(c<__T-0.01){tl.to({_p:0},{_p:1,duration:__T-c});}})();
+window.__timelines["root"]=tl;
+</script></body></html>

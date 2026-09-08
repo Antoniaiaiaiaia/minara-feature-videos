@@ -1,0 +1,30 @@
+{
+  "name": "harness-1min-scenes-remotion",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "render:s03-v3": "remotion render src/index.ts S03v3 ../codex/output/s03-product-reveal-v3.mp4 --codec h264 --crf 13 --pixel-format yuv420p --color-space bt709 --muted",
+    "render:s03-v2": "remotion render src/index.ts S03v2 ../output/s03-product-reveal-v2.mp4 --codec h264 --crf 13 --pixel-format yuv420p --color-space bt709 --muted",
+    "render:s03": "remotion render src/index.ts S03 ../output/s03-product-reveal.mp4 --codec h264 --crf 13 --pixel-format yuv420p --color-space bt709 --muted",
+    "studio": "remotion studio src/index.ts",
+    "render:s01": "remotion render src/index.ts S01 ../output/s01-introducing-minara-harness.mp4 --codec h264 --crf 13 --pixel-format yuv420p --color-space bt709 --muted",
+    "still:s01": "remotion still src/index.ts S01"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.484",
+    "@remotion/fonts": "4.0.484",
+    "@remotion/player": "4.0.484",
+    "culori": "^4.0.1",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "remotion": "4.0.484"
+  },
+  "devDependencies": {
+    "@types/culori": "^2.1.1",
+    "@types/node": "^22.20.1",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
+    "esbuild": "^0.28.2",
+    "typescript": "~5.9.0"
+  }
+}

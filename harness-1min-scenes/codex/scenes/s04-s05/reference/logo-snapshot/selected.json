@@ -1,0 +1,1108 @@
+[
+  {
+    "symbol": "NVDA",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-NVDA.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/NVDA.png",
+    "sha256": "65adfc123c82dd816d8bebeaded5d0bdd72a4a799d1c0e23d310eaf6e2c457e6"
+  },
+  {
+    "symbol": "AAPL",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-AAPL.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/AAPL.png",
+    "sha256": "7865a92f297a3e77e4516561f7d6cf1e1d7cae95cebf4b6ad8b3d200b8751d5c"
+  },
+  {
+    "symbol": "MSFT",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-MSFT.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/MSFT.png",
+    "sha256": "5464732326598baca91f5aaa9b19ca9b8ced1655465a41a54f3424485be5e33a"
+  },
+  {
+    "symbol": "AMZN",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-AMZN.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/AMZN.png",
+    "sha256": "4940123a81ddefbf5915f143f2ab7220e0a76e5c06e6b7a9eaad1b4acf42da51"
+  },
+  {
+    "symbol": "GOOGL",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-GOOGL.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/GOOGL.png",
+    "sha256": "bd3b7de49841562702c9b4f18f221a2c318979e1380f1658064600081021e4fe"
+  },
+  {
+    "symbol": "META",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-META.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/META.png",
+    "sha256": "c48757bf1cc853fcf07dd247df5cc8edc2699853d09874e9cf6cfec6702c15c5"
+  },
+  {
+    "symbol": "TSLA",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-TSLA.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/TSLA.png",
+    "sha256": "4f1bd145f2ad8de3c83d973ab4c2a36e352fdd838bf3ba10e8b186f53509f8c0"
+  },
+  {
+    "symbol": "AMD",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-AMD.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/AMD.png",
+    "sha256": "2c94246f0c6dd24e4136d603400d486def9be17696db53d7841533011b3a99c9"
+  },
+  {
+    "symbol": "AVGO",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-AVGO.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/AVGO.png",
+    "sha256": "0afd68b45dbefb8ad9e75bc9cda3898a3d75ab026dde215cfe9def48d4fb4a41"
+  },
+  {
+    "symbol": "MU",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-MU.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/MU.png",
+    "sha256": "c4c6752eef5eeef3392c61484b4e971eb95c4a3876fe5ce416a68d7ab9d43985"
+  },
+  {
+    "symbol": "PLTR",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-PLTR.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/PLTR.png",
+    "sha256": "7845824279ed6c8c43068f300b0fe535ee5bcfd4847a26c2279886430498f673"
+  },
+  {
+    "symbol": "COIN",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-COIN.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/COIN.png",
+    "sha256": "7e6731c56cc0420dd150bf591bd370d5db6271dffb815df36f71b59ba0bbb2da"
+  },
+  {
+    "symbol": "NFLX",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-NFLX.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/NFLX.png",
+    "sha256": "351d461bc92473fd2b16ceb4032ba82e5b159c91404c48070d29aa4325898355"
+  },
+  {
+    "symbol": "RKLB",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-RKLB.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/RKLB.png",
+    "sha256": "ae6470a0216654f83a7dd733de15b77c36a037edc8790acbf4cd0bfbdf820fe2"
+  },
+  {
+    "symbol": "ORCL",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-ORCL.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/ORCL.png",
+    "sha256": "79bb1cdf0dc02acc962bff80867e4d4ce6d6a035cff1180270a71472fece99f0"
+  },
+  {
+    "symbol": "ADBE",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-ADBE.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/ADBE.png",
+    "sha256": "e48f89d4e1ebee9f4679a05dec4386adc62549f10bb89aa8886ff3a2629309a3"
+  },
+  {
+    "symbol": "CRM",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-CRM.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/CRM.png",
+    "sha256": "abd0c3efe9b4cd4541fbc642b1cf7575898361ca1d89d03b857d7bc0fd2fede5"
+  },
+  {
+    "symbol": "INTC",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-INTC.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/INTC.png",
+    "sha256": "2945d0d001ec02285d97379147a3c4cafb47064e3ad82967c422de601c989b29"
+  },
+  {
+    "symbol": "QCOM",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-QCOM.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/QCOM.png",
+    "sha256": "3b097b1488401cb2848e4cda192043098f14e37504a5e5f661516bb2e789d2a2"
+  },
+  {
+    "symbol": "TXN",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-TXN.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/TXN.png",
+    "sha256": "78d856c2f203fc930393c0ba17702e1fab70067c129666fe29bb85a6df0d1664"
+  },
+  {
+    "symbol": "AMAT",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-AMAT.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/AMAT.png",
+    "sha256": "7627d2610c4d9e8442c2c06969ebdf1b15169199fc3f836a95cc36021efab0ab"
+  },
+  {
+    "symbol": "LRCX",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-LRCX.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/LRCX.png",
+    "sha256": "db141b47c6f03ef5202303c531f07889f3796d85106d2e748d1ba6530ec1d97e"
+  },
+  {
+    "symbol": "KLAC",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-KLAC.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/KLAC.png",
+    "sha256": "1abe364b6edd518790b7519349aa545df175ca6969ef948e581fac8fb7736dd3"
+  },
+  {
+    "symbol": "ADI",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-ADI.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/ADI.png",
+    "sha256": "45fbe60477ea2a4d84cedf33221b44f4ed4822b781bce664228d84bc4830303f"
+  },
+  {
+    "symbol": "ANET",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-ANET.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/ANET.png",
+    "sha256": "8d92bfcf7390edba1ab178f3c090d2a5f36020e29a36cb532ae3bcf8020ba09f"
+  },
+  {
+    "symbol": "ARM",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-ARM.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/ARM.png",
+    "sha256": "242aa6b7fe2df4ca8213df5ba69be70cb233debe35e6f11cfe4fd848f3339e20"
+  },
+  {
+    "symbol": "TSM",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-TSM.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/TSM.png",
+    "sha256": "7fabd18a1cc531cd6b815f95b4263bde42c5250f5bf846465925e85df55c4a95"
+  },
+  {
+    "symbol": "ASML",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-ASML.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/ASML.png",
+    "sha256": "066822c3c362d456a18371f18f66426e661e7042e27cae8f79db3d47b9f9e860"
+  },
+  {
+    "symbol": "SHOP",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-SHOP.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/SHOP.png",
+    "sha256": "9d23c906679a8e9489a3ee6d9dbbff7efc1e14ef4511d53e749e122a9cb60cd8"
+  },
+  {
+    "symbol": "UBER",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-UBER.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/UBER.png",
+    "sha256": "2ca8f4fb1548dc9527b61b7c7f48b2f5ff80a407ffc934c969266a3716119f5b"
+  },
+  {
+    "symbol": "ABNB",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-ABNB.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/ABNB.png",
+    "sha256": "183e24c6461d7f74d6638faf574668ffe279499627a26d5c222bb99b8334f939"
+  },
+  {
+    "symbol": "HOOD",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-HOOD.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/HOOD.png",
+    "sha256": "7e231a0969c743544890e6ee370d63d5f7d41c5f922c2c583171f5455d8b6962"
+  },
+  {
+    "symbol": "CRWD",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-CRWD.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/CRWD.png",
+    "sha256": "dc8d79793af5573e8c89256d46de5fb467ef4bd1b52158f06ae99d251e1b7adf"
+  },
+  {
+    "symbol": "SNOW",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-SNOW.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/SNOW.png",
+    "sha256": "bd46063b61d215127e12d7b9ed1777c965f0cb0e4ec9bbf387acf7c54ec43b7c"
+  },
+  {
+    "symbol": "PANW",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-PANW.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/PANW.png",
+    "sha256": "cef4b0f5b4260c13862ada016f5298570e20346e9d58f1778669709feb049f7f"
+  },
+  {
+    "symbol": "NET",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-NET.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/NET.png",
+    "sha256": "8d0fe86f498f8c44ca86397464aaeccd2956b02e0864edc7e09c4d471dc9d25b"
+  },
+  {
+    "symbol": "DDOG",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-DDOG.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/DDOG.png",
+    "sha256": "98cd97f5dbb7a8380c7ee52d400ff9f90182d680f47b18392854a261bdbca7b3"
+  },
+  {
+    "symbol": "NOW",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-NOW.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/NOW.png",
+    "sha256": "37685add2efcbb11e9e9102e781ba89e562a920a664cc45a4c48c65385c1e2b4"
+  },
+  {
+    "symbol": "IBM",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-IBM.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/IBM.png",
+    "sha256": "0c00f631f778b9945b7599e1b0174f0346bdd622bc5979bac50c8b996c8cf88d"
+  },
+  {
+    "symbol": "INTU",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-INTU.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/INTU.png",
+    "sha256": "a80f021425a034ec2f8cdafa658880056a0e1335f3bc18b91255e4004e17e61f"
+  },
+  {
+    "symbol": "CSCO",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-CSCO.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/CSCO.png",
+    "sha256": "b07274fdd0c9d14d8f0d4ad952888ff2ea47b5315fe95e1b0b35317e9697989c"
+  },
+  {
+    "symbol": "DELL",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-DELL.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/DELL.png",
+    "sha256": "5c58f0394008867874719c0b600e11a1bc9e93c591bbca9e445b3f29c78ec246"
+  },
+  {
+    "symbol": "HPQ",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-HPQ.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/HPQ.png",
+    "sha256": "be282ef7767e42f9fe3be7de11bcaf431ebcd7f4c4be000a56d62ee0dc0e693e"
+  },
+  {
+    "symbol": "HPE",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-HPE.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/HPE.png",
+    "sha256": "fd27c19464f594a4c8f41fff59bf0e361d0b26894b8533ae2fabf73d1d0e4796"
+  },
+  {
+    "symbol": "SMCI",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-SMCI.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/SMCI.png",
+    "sha256": "8193770c6837c36dc6064388122b2d80e626a699f7637362445904a390c537bd"
+  },
+  {
+    "symbol": "WMT",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-WMT.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/WMT.png",
+    "sha256": "e32229b23d924425247e8ec6f9e5baec93bcbf46bb935b2542fb01af1799f332"
+  },
+  {
+    "symbol": "COST",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-COST.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/COST.png",
+    "sha256": "64f1f9025601494ea8848780219672c8b83d1aa8993a2dd285183c89caf516a1"
+  },
+  {
+    "symbol": "TGT",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-TGT.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/TGT.png",
+    "sha256": "7afd965a29503897889befe24cea6a944da98fa587604bc1e4ec4a711b96856e"
+  },
+  {
+    "symbol": "HD",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-HD.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/HD.png",
+    "sha256": "cd366480e47c9b4a370cdb61400d9b65a685343c900d4d570d6fa496a48c4545"
+  },
+  {
+    "symbol": "LOW",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-LOW.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/LOW.png",
+    "sha256": "83203342cfb0d13614781f74ed70e08d30449e2d44362145aec6f171b74d2627"
+  },
+  {
+    "symbol": "NKE",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-NKE.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/NKE.png",
+    "sha256": "a2eb7087831d5228cd8231b84e5e2ac254d8d5f6d35df1874780c7aa3acf8411"
+  },
+  {
+    "symbol": "SBUX",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-SBUX.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/SBUX.png",
+    "sha256": "33aaa49b362e5f7b9826a8b0a6d20a420e51acb470b41053ee33c291128a44f4"
+  },
+  {
+    "symbol": "MCD",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-MCD.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/MCD.png",
+    "sha256": "c7f24a76bf035ac59bc09366bbe8eb37f3fe79fcc53239e93169e2e9ee227d37"
+  },
+  {
+    "symbol": "KO",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-KO.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/KO.png",
+    "sha256": "0b16138b7e293a63a7aa3417a6993f7f3deea5c33dfe43c380b9ebe12876dcd9"
+  },
+  {
+    "symbol": "PEP",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-PEP.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/PEP.png",
+    "sha256": "ffe69a77f0ea958be96b464505f287dd4bcf56c6ff17f601035ec9287def0ddd"
+  },
+  {
+    "symbol": "DIS",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-DIS.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/DIS.png",
+    "sha256": "a03f60cf9c7961578f75b24583227ffd175454ad17e5fecf9d0d31041761a559"
+  },
+  {
+    "symbol": "CMCSA",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-CMCSA.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/CMCSA.png",
+    "sha256": "8a3fe995dc7283150ef29e9c8732a7726c8dc77967eae5a204f75ee2ac30965c"
+  },
+  {
+    "symbol": "VZ",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-VZ.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/VZ.png",
+    "sha256": "3196b474886685471a0d9cc0a21810a31dbcff03f84b5a63d1f650c64e3eb853"
+  },
+  {
+    "symbol": "T",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-T.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/T.png",
+    "sha256": "b7c37fd6ed3e65097a28e2accedba8971cc17d681acb859f98c3e003bf57586c"
+  },
+  {
+    "symbol": "TMUS",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-TMUS.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/TMUS.png",
+    "sha256": "9f885afc2bfeb1e507b6b03be991efd7509ac109c07722359362c14e25b5986a"
+  },
+  {
+    "symbol": "V",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-V.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/V.png",
+    "sha256": "67945a85198c451b6908f62706f8888bde37b06ad64abb27d160f3e3f7b15b33"
+  },
+  {
+    "symbol": "MA",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-MA.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/MA.png",
+    "sha256": "576c5f65faa602df0f1eed590072aa1e4a08d488cd7d07a5d1a027ba47b1fc9b"
+  },
+  {
+    "symbol": "AXP",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-AXP.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/AXP.png",
+    "sha256": "7c00ed137b208b3a8ba8607a212a2ff9961874c8c93a0488a5123875d99cd201"
+  },
+  {
+    "symbol": "PYPL",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-PYPL.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/PYPL.png",
+    "sha256": "539c93fd1afdddb654bb8ee45a7e1ad813370acf00c06fac66561d25c5e9d860"
+  },
+  {
+    "symbol": "JPM",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-JPM.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/JPM.png",
+    "sha256": "79b7f8e3a577e3abefac1c78c74aa8fc76c518549c2d39fbd1149e34f434f84c"
+  },
+  {
+    "symbol": "BAC",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-BAC.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/BAC.png",
+    "sha256": "b3b40cd5048cab28bd39df62fb7f4da0c13547cff272cbfc6951dc1c1f591643"
+  },
+  {
+    "symbol": "C",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-C.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/C.png",
+    "sha256": "60de9540d5421b99daacce2a0b51670a00ac3785bdc27ca5d3247f38b8b7438d"
+  },
+  {
+    "symbol": "GS",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-GS.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/GS.png",
+    "sha256": "2ad76a855472a1b4a47733fec41c316b3700139ee8514b218e7bd10fb5554196"
+  },
+  {
+    "symbol": "MS",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-MS.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/MS.png",
+    "sha256": "506109b984b105f774fc7649909bd0f689c0b697c575e2df23c9e51b42964953"
+  },
+  {
+    "symbol": "WFC",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-WFC.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/WFC.png",
+    "sha256": "2a4e9130b49453e4033dd323b0e3c0d5d554064b012765ca793200b3c18f016e"
+  },
+  {
+    "symbol": "SCHW",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-SCHW.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/SCHW.png",
+    "sha256": "24a552b83558d7e2d8d5defb4a248a622e815e5b180a8d735b120347e89141ec"
+  },
+  {
+    "symbol": "BLK",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-BLK.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/BLK.png",
+    "sha256": "84549b73db7988264c398ffb05b9a75982430eacf6f60ab07def3b10687f36b4"
+  },
+  {
+    "symbol": "CAT",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-CAT.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/CAT.png",
+    "sha256": "1dea5c009e07ea5d57e821e7ae04dcf356e5e9ed1d3f6cefc96fba5ad3481e06"
+  },
+  {
+    "symbol": "DE",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-DE.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/DE.png",
+    "sha256": "f4e47c8234c8a3d65a3c037dcb48ad5d6146c651204d8bb8e9c9650bdac19ca6"
+  },
+  {
+    "symbol": "GE",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-GE.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/GE.png",
+    "sha256": "95188b797921032142bd64712d0e49c18140138cebfc66896ac878bda76ab022"
+  },
+  {
+    "symbol": "HON",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-HON.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/HON.png",
+    "sha256": "507d9a4703996d02bf1d0234dfb7610bf7b7c49b1efaf140c9d0c876caa4f548"
+  },
+  {
+    "symbol": "BA",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-BA.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/BA.png",
+    "sha256": "7b4d8a2bd69182a69b0faf2a29c08a811a9c76ab440fa62259792b79a83054c0"
+  },
+  {
+    "symbol": "LMT",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-LMT.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/LMT.png",
+    "sha256": "4d28a29af0d15d46ef4da0855e899bfc57ac43cc1d338fea30e29809fc95c4e7"
+  },
+  {
+    "symbol": "RTX",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-RTX.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/RTX.png",
+    "sha256": "1ce0e669f91c5a5125ac31e93fc1b81fa6989b0dd9f35766e73923ed34021219"
+  },
+  {
+    "symbol": "NOC",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-NOC.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/NOC.png",
+    "sha256": "4ab7e0710238512338206c416949fa4c4db489a6f2e11a54b422d0bd2361e3fc"
+  },
+  {
+    "symbol": "GD",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-GD.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/GD.png",
+    "sha256": "bd22571d875b34668f2239bb97bcbd251feff1ceb82290ec9fff4e5690cc8996"
+  },
+  {
+    "symbol": "UPS",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-UPS.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/UPS.png",
+    "sha256": "ade2ddb7bdbb62e4b886a0647a6deb5f02a9e75f833f7211bb23630d673aab96"
+  },
+  {
+    "symbol": "FDX",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-FDX.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/FDX.png",
+    "sha256": "356ae2e0eb7de7671827a0d4e901caba359ba6a5094d5db9cde04cc576295a46"
+  },
+  {
+    "symbol": "UNP",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-UNP.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/UNP.png",
+    "sha256": "7c5e6e66838ffd44b2bb071758485d7387ab4fee11e053141d88d7a57f271f21"
+  },
+  {
+    "symbol": "CSX",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-CSX.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/CSX.png",
+    "sha256": "70f23b1f8b669275bc85f67fdd7def0ae6c1e9650d91e88b501d5c39979dbf9c"
+  },
+  {
+    "symbol": "XOM",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-XOM.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/XOM.png",
+    "sha256": "0b1d5fb71de7b018cc54dc117fa26d2e7c679e41d13976d23be5ad1ef18c5ad2"
+  },
+  {
+    "symbol": "CVX",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-CVX.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/CVX.png",
+    "sha256": "1ec4fa69f5cbaa598602b1722a32092cc5686b476353d1985ea84d9cf61a92fd"
+  },
+  {
+    "symbol": "COP",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-COP.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/COP.png",
+    "sha256": "d9d547cbc6d24f241ca8ab54f9cdecb4ab32d6d8d1e13e34df9bfd01a5cd6500"
+  },
+  {
+    "symbol": "SLB",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-SLB.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/SLB.png",
+    "sha256": "aaaf1eead0f7f92d3146462c441e873cecb5dddb069863be681c912f86372dfb"
+  },
+  {
+    "symbol": "OXY",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-OXY.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/OXY.png",
+    "sha256": "b536922f329c03968850ca8897ca9bc5b0bcd4e9e0e92c94b43f466d0aaa4c7c"
+  },
+  {
+    "symbol": "EOG",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-EOG.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/EOG.png",
+    "sha256": "bee9e1435cde189a2d6b34272e96a4621ad838445bd3e57ec7654f857c64f8f9"
+  },
+  {
+    "symbol": "PFE",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-PFE.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/PFE.png",
+    "sha256": "9cddfdf72e5d9eb617674bd5dd0c958b651a9bc03ba2c9208b45c2dc4be55ccd"
+  },
+  {
+    "symbol": "MRK",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-MRK.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/MRK.png",
+    "sha256": "64f37fe23c4de57f810b54664c25db9928113cef76451e86e180eebae3102c10"
+  },
+  {
+    "symbol": "ABBV",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-ABBV.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/ABBV.png",
+    "sha256": "d0285f08a0885c0efefafe8506c1cb101216efd4f501b3ed043cc69271501e46"
+  },
+  {
+    "symbol": "ABT",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-ABT.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/ABT.png",
+    "sha256": "132cc6262972306619f672a99dccb6a8b140febc8e7618456bbe0848765b437d"
+  },
+  {
+    "symbol": "AMGN",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-AMGN.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/AMGN.png",
+    "sha256": "be0823b5af9e054f31f67a782b9563683e1575581c6c45538592fc6e61e54538"
+  },
+  {
+    "symbol": "GILD",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-GILD.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/GILD.png",
+    "sha256": "087a6d4a7dc456f30af105c8e7fbb080e0b5d0653410dfecc9c181de84a4029d"
+  },
+  {
+    "symbol": "LLY",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-LLY.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/LLY.png",
+    "sha256": "e51670387d685b1e5a01ebf54fc43b6dbabf04206787bfa9e54bd4048760590f"
+  },
+  {
+    "symbol": "JNJ",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-JNJ.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/JNJ.png",
+    "sha256": "fcec0737190e8ba4f725075149ab35a7f16ab74ac13586fd7b164228beb6f1af"
+  },
+  {
+    "symbol": "UNH",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-UNH.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/UNH.png",
+    "sha256": "d34ad53fbaddc4ba557f88cf9e6ad6b1ce5e0ae3e0d7e3f97b9ff9486b991323"
+  },
+  {
+    "symbol": "CVS",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-CVS.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/CVS.png",
+    "sha256": "ef6eb8c879ca663b43c712f49a6563c1e191b0c5169f250b0057c0e40f254baa"
+  },
+  {
+    "symbol": "TMO",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-TMO.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/TMO.png",
+    "sha256": "62dbd6a7db09fc55d35fd8123307a75c18621b44cd499bca93a6b2f32aef5b35"
+  },
+  {
+    "symbol": "DHR",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-DHR.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/DHR.png",
+    "sha256": "e131c6b3f74dfd57b78c3786a007eddc78fb20a9653db6a7f810c571f86117b4"
+  },
+  {
+    "symbol": "ISRG",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-ISRG.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/ISRG.png",
+    "sha256": "2d8379ef57dd4204f624353e5177e3609215f7a8ccc73ad775fdab79a2859d48"
+  },
+  {
+    "symbol": "REGN",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-REGN.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/REGN.png",
+    "sha256": "c85f2f3ca52710f5a6df73fb6a94c5a34078910223ac5974ff67a6dd6a0625f0"
+  },
+  {
+    "symbol": "VRTX",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-VRTX.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/VRTX.png",
+    "sha256": "0981a9d147222aa04763ed29333a5ac4f839931307d0f1df3bee3e2d64ea4646"
+  },
+  {
+    "symbol": "MDT",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-MDT.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/MDT.png",
+    "sha256": "ffb8de9ecfceb1b89c0fdff8119e0997b0ced065c675f874bc243709553b7f40"
+  },
+  {
+    "symbol": "BMY",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-BMY.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/BMY.png",
+    "sha256": "d4581abf90dd21a6261bb3d14fffe7bfa6be09e5942cb4870431e6a89b5974e2"
+  },
+  {
+    "symbol": "ZTS",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-ZTS.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/ZTS.png",
+    "sha256": "9cf26d5aaef5cc07d83f623fef37832f8a3a96f4e82ec64c4d0abef06920acd2"
+  },
+  {
+    "symbol": "LIN",
+    "category": "stocks",
+    "logo": "assets/clear-logos/stocks-LIN.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/ticker_icons/LIN.png",
+    "sha256": "44aa05bb57d373eadcee46cbe8ad33973016e7724e599de286eb94e76347f172"
+  },
+  {
+    "symbol": "BTC",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-BTC.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/BTC.png",
+    "sha256": "ba8cceeb7f2fba268ca76660c7607b667f3871e806950fbc5128c5972d694ec7"
+  },
+  {
+    "symbol": "ETH",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-ETH.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/ETH.png",
+    "sha256": "f9b0803388deac237bf8b811ad2dbbbcffc5d3411a0ee1abe1e6013a2810c479"
+  },
+  {
+    "symbol": "SOL",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-SOL.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/SOL.png",
+    "sha256": "dd1e84bf7030c8a90b479b16dcc3e1d9b4419e924f1da27f9b9b9ef31dd67d76"
+  },
+  {
+    "symbol": "XRP",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-XRP.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/XRP.png",
+    "sha256": "ef731157e1a2f6b2efaf59f1c3f809a701f6c3532e919fa57428e97d70ba1065"
+  },
+  {
+    "symbol": "DOGE",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-DOGE.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/DOGE.png",
+    "sha256": "d99cd80f87fa0891acdcfa6af50315e1793afebf70435cdf9a237cc372327da9"
+  },
+  {
+    "symbol": "ADA",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-ADA.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/ADA.png",
+    "sha256": "dcb9c689a86d3a6d668f1cc9ebf28be3a9daf0ece0a23bf9a682234f8e6fbd84"
+  },
+  {
+    "symbol": "AVAX",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-AVAX.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/AVAX.png",
+    "sha256": "af30692f4cea09f79cd72682f47e43463c455962945d2592dadb35ebf30f9a9d"
+  },
+  {
+    "symbol": "LINK",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-LINK.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/LINK.png",
+    "sha256": "1c40a471c0c77d08531acb2a01b9f57cc15043c8ea80e1c103bd44660de279f3"
+  },
+  {
+    "symbol": "SUI",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-SUI.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/SUI.png",
+    "sha256": "46907eb109ab28ab3c98c82f2849b47120741a0432a880e3412773ca5d01df86"
+  },
+  {
+    "symbol": "HYPE",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-HYPE.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/HYPE.png",
+    "sha256": "12a57617edb56e3bb20acfb804a0d28468756a0731f6e528064fb11c6ab2daba"
+  },
+  {
+    "symbol": "BNB",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-BNB.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/BNB.png",
+    "sha256": "ada16d3986e741e115ccf4154b06a47b5acdd2cadd9dfe788c603f21e728214a"
+  },
+  {
+    "symbol": "TRX",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-TRX.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/TRX.png",
+    "sha256": "90e7e17721832d2cbc7b66d60c3e59422726343d2afe8c99cb0ea9edd4866381"
+  },
+  {
+    "symbol": "DOT",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-DOT.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/DOT.png",
+    "sha256": "9a3635f36f770352f2b3fd0be0fd3101990815b9ea88369d6814794e6b8993c1"
+  },
+  {
+    "symbol": "LTC",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-LTC.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/LTC.png",
+    "sha256": "307d45fe8aefc6f6a1ac105a9210f6f6925815665606280291c84a2e81891b6c"
+  },
+  {
+    "symbol": "BCH",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-BCH.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/BCH.png",
+    "sha256": "59be0bbc2e8573b5e20e2c831bb6e26daf947ab63f6127f11e17ff2c705cb0ca"
+  },
+  {
+    "symbol": "XLM",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-XLM.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/XLM.png",
+    "sha256": "86d0d1d0877a62f5407df6901ec2427fc8e5082340b995c1dd8b644879f776d3"
+  },
+  {
+    "symbol": "XMR",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-XMR.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/XMR.png",
+    "sha256": "f053309b5b58547860395afd10977c2247080cbded9342f7afa801238bfad03f"
+  },
+  {
+    "symbol": "ETC",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-ETC.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/ETC.png",
+    "sha256": "e9e5a3718797b7b3bf28966d774e57320329f8c3099fb1e97099142d5a97c638"
+  },
+  {
+    "symbol": "ATOM",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-ATOM.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/ATOM.png",
+    "sha256": "64c64953f7b780c588c8214803327fb24a5124eda0757ccc10fb575ff5f1edf5"
+  },
+  {
+    "symbol": "NEAR",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-NEAR.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/NEAR.png",
+    "sha256": "380738c6fa6e175af0a0de351b942b2d5394ae4176ad622c3323a84d666907d7"
+  },
+  {
+    "symbol": "APT",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-APT.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/APT.png",
+    "sha256": "1659ffc79043adf4ad3e65c5ade2d7102584e0a39da3031b993ce537de456c67"
+  },
+  {
+    "symbol": "ARB",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-ARB.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/ARB.png",
+    "sha256": "7219cedd4cf22999206d7396f71448097b0ba750ab60d5a73bb173e5c8a98c69"
+  },
+  {
+    "symbol": "OP",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-OP.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/OP.png",
+    "sha256": "339d631c5aa34263a88247a758330b63710b78a369691ddebe0afb13c523c5e3"
+  },
+  {
+    "symbol": "UNI",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-UNI.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/UNI.png",
+    "sha256": "599c7f119de1192dc0a12ebb0f4d715e7fb187d94c554e02fbbcfe51337d156f"
+  },
+  {
+    "symbol": "AAVE",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-AAVE.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/AAVE.png",
+    "sha256": "5de6f208e729816617b58c6c405f93fe460d37ee008b18ca811361483348c320"
+  },
+  {
+    "symbol": "MKR",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-MKR.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/MKR.png",
+    "sha256": "71729e888fd5bbdeeea5005a7246d63bdb23085cf9cf7e4c216487de51d4dbfb"
+  },
+  {
+    "symbol": "ICP",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-ICP.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/ICP.png",
+    "sha256": "9ddfdafa1d1445daa3f020eef72c817b985f5d4aaeed505895171e39c601f80e"
+  },
+  {
+    "symbol": "FIL",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-FIL.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/FIL.png",
+    "sha256": "55bfd033d3746ad10365aa4bde8388b9cf45b56bc05ba524e011c88363a99fa8"
+  },
+  {
+    "symbol": "HBAR",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-HBAR.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/HBAR.png",
+    "sha256": "73c326eb3da83f2246a2e8a39c5d13cee780284fa2ad89a4ef6020a9fdafc906"
+  },
+  {
+    "symbol": "VET",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-VET.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/VET.png",
+    "sha256": "e5d64ce35c79a265a4086d71ec1b33a065668e41fb919924c127edfeffd10576"
+  },
+  {
+    "symbol": "ALGO",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-ALGO.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/ALGO.png",
+    "sha256": "2f9155d62ed2173c993d62c96011540150193ea88c088a153ab7b5eccfa37274"
+  },
+  {
+    "symbol": "EOS",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-EOS.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/EOS.png",
+    "sha256": "2829923e8cbceecf7e18d2ce11a045e7da20516ae9db384da6b47fc3e21a8b02"
+  },
+  {
+    "symbol": "XTZ",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-XTZ.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/XTZ.png",
+    "sha256": "cfe86443e5fcb4837a1a00800eddbafd49aad3834a6b62bca17f84e6455187af"
+  },
+  {
+    "symbol": "THETA",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-THETA.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/THETA.png",
+    "sha256": "9af91fa8aadcef55a77ed5b909a3453730a8bb6bc0619a40c7bcceadc8f54f7f"
+  },
+  {
+    "symbol": "GRT",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-GRT.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/GRT.png",
+    "sha256": "d7307db9c8a4bfe0d4d2c9c5590e23542caf1592def5f8d874768039de7f92c3"
+  },
+  {
+    "symbol": "RUNE",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-RUNE.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/RUNE.png",
+    "sha256": "0a74c6f3f3efe5f84321b704865580d5fd63f9b83dfc580f45be79b64b4f0554"
+  },
+  {
+    "symbol": "INJ",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-INJ.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/INJ.png",
+    "sha256": "f47f0d51b6b979198d15c9e847035e2fdb782181b63016625f7dafc0a597f147"
+  },
+  {
+    "symbol": "QNT",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-QNT.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/QNT.png",
+    "sha256": "d08beedf07704fbb9ca6700a3f13796b4ec8773f4822272dc6db9e7ce5a2e1bd"
+  },
+  {
+    "symbol": "EGLD",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-EGLD.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/EGLD.png",
+    "sha256": "2e0761d565a9674d73c23e8229aa2ea3f1ad975e6cb7fa5eab4360884fce3b16"
+  },
+  {
+    "symbol": "STX",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-STX.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/STX.png",
+    "sha256": "d567592fd0f11557f97e04a92ec48880a85e7a6afb704ff7e5b6e115b20c6893"
+  },
+  {
+    "symbol": "FTM",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-FTM.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/FTM.png",
+    "sha256": "8a11ac5ab30d408008dbe5455a473f355c9d47e6c0b949e44f87a70669e8f032"
+  },
+  {
+    "symbol": "SNX",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-SNX.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/SNX.png",
+    "sha256": "fe00f0fd28452df517e36c5934ec26a71e4b80ec5a993a8e708055a722bdf611"
+  },
+  {
+    "symbol": "CRV",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-CRV.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/CRV.png",
+    "sha256": "45a4a59b04097270800826e09f9d4198f7329d7e4e2020fad153d6157e2e6e32"
+  },
+  {
+    "symbol": "LDO",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-LDO.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/LDO.png",
+    "sha256": "80600ae0aa2e389092ea93036954f6b9a70f10f780eb510d797248e3ab642515"
+  },
+  {
+    "symbol": "DYDX",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-DYDX.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/DYDX.png",
+    "sha256": "8a3987a398e19998e05ef4b895b9d303304d65f9584f220c4a935f866a7153e8"
+  },
+  {
+    "symbol": "COMP",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-COMP.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/COMP.png",
+    "sha256": "f4b410410a6989ab0c1565a1608f00a39315a3780c4a810601a065fc8c920e1f"
+  },
+  {
+    "symbol": "ZEC",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-ZEC.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/ZEC.png",
+    "sha256": "ab5b71f2bb593de2f3d3328f4a79254df72ea0a1076795ba7d3bd54e4b1181c9"
+  },
+  {
+    "symbol": "DASH",
+    "category": "crypto",
+    "logo": "assets/clear-logos/crypto-DASH.png",
+    "source": "https://raw.githubusercontent.com/nvstly/icons/3ba2624c7776761af53c8b9f0569173e696f7786/crypto_icons/DASH.png",
+    "sha256": "61c10c8d35d31844c149ddd453144dd926a36bb772a151af5cf9df620be277d9"
+  }
+]

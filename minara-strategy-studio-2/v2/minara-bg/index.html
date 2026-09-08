@@ -1,0 +1,285 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<title>Minara — Strategy Studio (bg)</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--grad:linear-gradient(120deg,#EB53FF,#FF538E 48%,#FF9A32);--g:#16A34A;--gL:#E9F7EF;--r:#EF4444;
+  --ink:#141416;--sub:#8A8A8A;--faint:#B4B4B8;--line:#ECECEC;--card:#fff;--bg:#FBFBFB}
+html,body{background:var(--bg);color:var(--ink);font-family:'Geist',system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
+body{padding-bottom:120px}
+.mono{font-family:'Geist Mono',monospace}
+.tnum{font-variant-numeric:tabular-nums}
+
+/* top nav */
+.nav{position:sticky;top:0;z-index:20;height:70px;background:rgba(255,255,255,.9);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);display:flex;align-items:center;gap:34px;padding:0 40px}
+.nav .brand{font-size:22px;font-weight:800;letter-spacing:-.01em}
+.nav .navlink{font-size:20px;font-weight:600;color:var(--sub)}
+.nav .spacer{flex:1}
+.nav .moon{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center}
+.nav .moon svg{width:22px;height:22px;stroke:var(--sub);fill:none;stroke-width:2}
+.nav .ava{width:44px;height:44px;border-radius:50%;background:var(--grad)}
+
+.wrap{max-width:1300px;margin:0 auto;padding:28px 40px}
+
+/* strategy header */
+.shead{display:flex;align-items:center;gap:16px;margin-bottom:22px}
+.shead .name{font-size:30px;font-weight:800;letter-spacing:-.01em;display:flex;align-items:center;gap:12px}
+.shead .caret{color:var(--faint);font-size:20px}
+.pill{font-size:15px;font-weight:700;padding:6px 14px;border-radius:999px}
+.pill.pub{background:var(--gL);color:var(--g)}
+.pill.id{background:#F1F1F3;color:var(--sub);font-family:'Geist Mono',monospace;display:inline-flex;align-items:center;gap:8px}
+.shead .spacer{flex:1}
+.btn{font-size:18px;font-weight:700;padding:12px 26px;border-radius:12px;white-space:nowrap;display:inline-flex;align-items:center;gap:8px}
+.btn.run{background:var(--g);color:#fff}
+.btn.edit{background:var(--ink);color:#fff}
+.btn.ghost{background:#fff;border:1px solid var(--line);color:var(--ink)}
+
+/* tabs */
+.tabs{display:flex;gap:8px;background:#F1F1F3;border-radius:14px;padding:6px;width:max-content;margin-bottom:22px}
+.tab{font-size:18px;font-weight:600;color:var(--sub);padding:11px 22px;border-radius:10px;display:flex;align-items:center;gap:9px}
+.tab.on{background:#fff;color:var(--ink);box-shadow:0 4px 12px -6px rgba(0,0,0,.18)}
+.tab svg{width:19px;height:19px}
+
+/* config rows */
+.cfg{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;margin-bottom:16px}
+.cfg .grp{display:flex;align-items:center;gap:8px;font-size:18px;color:var(--sub);font-weight:600;white-space:nowrap}
+.cfg .grp b{color:var(--ink);font-weight:700}
+.cfg .box{border:1px solid var(--line);border-radius:12px;padding:11px 16px;display:flex;align-items:center;gap:9px;background:#fff}
+.tf30{width:22px;height:22px;border-radius:50%;background:var(--grad);flex:none}
+.chk{width:20px;height:20px;border-radius:5px;border:1.5px solid #CFCFD4}
+.spc{flex:1}
+
+/* KPI grid */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin:26px 0}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px 24px}
+.kpi .kl{font-size:16px;color:var(--sub);font-weight:600;border-bottom:1px dashed #E2E2E6;padding-bottom:2px;width:max-content}
+.kpi .kv{font-size:40px;font-weight:800;letter-spacing:-.02em;margin:12px 0 6px;line-height:1}
+.kpi .kv.g{color:var(--g)}.kpi .kv.r{color:var(--r)}
+.kpi .ks{font-size:16px;color:var(--faint);font-weight:600}
+
+/* chart card */
+.chartCard{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:26px 28px;margin-bottom:26px}
+.chartHead{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.chartHead .t{font-size:22px;font-weight:800}
+.legend{display:flex;gap:22px;font-size:16px;font-weight:600;color:var(--sub)}
+.legend span{display:flex;align-items:center;gap:8px}
+.legend i{width:24px;height:4px;border-radius:2px}
+.chartBody{display:flex;gap:14px}
+.yax{display:flex;flex-direction:column;justify-content:space-between;height:420px;font-size:14px;color:var(--faint);font-weight:600;text-align:right;padding:6px 0}
+.plot{flex:1;position:relative;height:420px}
+.plot svg{width:100%;height:100%;display:block}
+.xax{display:flex;justify-content:space-between;font-size:14px;color:var(--faint);font-weight:600;margin-top:8px;padding-left:64px}
+
+/* section */
+.sec{font-size:22px;font-weight:800;margin:30px 0 16px}
+/* monthly returns heatmap */
+.heat{display:grid;grid-template-columns:80px repeat(12,1fr);gap:8px;background:var(--card);border:1px solid var(--line);
+  border-radius:18px;padding:22px 24px}
+.heat .h{font-size:15px;font-weight:700;color:var(--sub);display:flex;align-items:center;justify-content:center;height:44px}
+.heat .yr{font-size:16px;font-weight:800;display:flex;align-items:center;height:52px}
+.heat .cell{height:52px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+  font-size:15px;font-weight:700;font-variant-numeric:tabular-nums}
+
+/* holdings table */
+.table{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.trh,.tr{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr 1.2fr;align-items:center;padding:18px 26px}
+.trh{font-size:15px;color:var(--sub);font-weight:700;border-bottom:1px solid var(--line);text-transform:uppercase;letter-spacing:.04em}
+.tr{border-bottom:1px solid #F4F4F5;font-size:19px;font-weight:600}
+.tr:last-child{border-bottom:0}
+.sym{display:flex;align-items:center;gap:14px;font-weight:800}
+.tk{width:40px;height:40px;border-radius:50%;color:#fff;font-weight:800;font-size:17px;display:flex;align-items:center;justify-content:center;flex:none}
+.wbar{height:10px;border-radius:6px;background:#F1F1F3;overflow:hidden}
+.wbar i{display:block;height:100%;background:var(--grad);border-radius:6px}
+.pos{color:var(--g);font-weight:800}.neg{color:var(--r);font-weight:800}
+.mini{width:120px;height:36px}
+</style></head>
+<body>
+<div class="nav">
+  <span class="brand">Strategy Studio</span>
+  <span class="navlink">Top Strategies</span>
+  <span class="spacer"></span>
+  <span class="moon"><svg viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></span>
+  <span class="ava"></span>
+</div>
+
+<div class="wrap">
+  <!-- strategy header -->
+  <div class="shead">
+    <span class="name">V6 – strategy test <span class="caret">▾</span></span>
+    <span class="pill pub">Published</span>
+    <span class="pill id">ID: 8QUBRW ⧉</span>
+    <span class="spacer"></span>
+    <span class="btn run">▶ Run</span>
+    <span class="btn edit">Edit</span>
+  </div>
+
+  <!-- tabs -->
+  <div class="tabs">
+    <span class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="#8A8A8A" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg>Alpha</span>
+    <span class="tab on"><svg viewBox="0 0 24 24" fill="none" stroke="#141416" stroke-width="2"><path d="M3 17l5-5 4 3 8-9"/></svg>Backtest</span>
+    <span class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="#8A8A8A" stroke-width="2"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4"/></svg>Code</span>
+  </div>
+
+  <!-- config row 1 -->
+  <div class="cfg">
+    <span class="grp box">Universe <span class="tf30"></span><b>TradFi 30</b> ▾</span>
+    <span class="grp box">Leverage <b>1.0</b> x</span>
+    <span class="grp box">Interval <b>1d</b> ▾</span>
+    <span class="grp box">Period 📅 <b>07/02/2022</b> → <b>07/02/2026</b> ✕</span>
+    <span class="grp box">⊙ Setting</span>
+  </div>
+  <!-- config row 2 -->
+  <div class="cfg">
+    <span class="grp box">Direction <b>Long Only</b> ▾</span>
+    <span class="grp box">Ratio <b>5</b> symbols ▾</span>
+    <span class="grp box">Weight <b>signal-weighted</b> ▾</span>
+    <span class="grp"><span class="chk"></span> the inverted score</span>
+    <span class="spc"></span>
+    <span class="btn ghost">▷ Run Backtest</span>
+    <span class="btn edit">⚙ Optimize</span>
+  </div>
+
+  <!-- KPI grid -->
+  <div class="kpis">
+    <div class="kpi"><div class="kl">Total Return</div><div class="kv g">+1743.90%</div><div class="ks">$184,390</div></div>
+    <div class="kpi"><div class="kl">CAGR</div><div class="kv g">+107.12%</div><div class="ks">annualized</div></div>
+    <div class="kpi"><div class="kl">Max Drawdown</div><div class="kv r">-38.06%</div><div class="ks">peak-to-trough</div></div>
+    <div class="kpi"><div class="kl">Total Fills</div><div class="kv">139</div><div class="ks">rebalance fills</div></div>
+    <div class="kpi"><div class="kl">Sharpe Ratio</div><div class="kv g">1.59</div><div class="ks">risk-adj return</div></div>
+    <div class="kpi"><div class="kl">Calmar Ratio</div><div class="kv g">2.81</div><div class="ks">CAGR / |MaxDD|</div></div>
+    <div class="kpi"><div class="kl">Alpha</div><div class="kv g">+57.08%</div><div class="ks">vs SP500, annualized</div></div>
+    <div class="kpi"><div class="kl">Beta</div><div class="kv">1.57</div><div class="ks">vs SP500</div></div>
+  </div>
+
+  <!-- equity curve -->
+  <div class="chartCard">
+    <div class="chartHead">
+      <span class="t">Equity Curve</span>
+      <span class="legend"><span><i style="background:#16A34A"></i>Equity</span><span><i style="background:#C7C7CC"></i>SP500 Buy &amp; Hold</span></span>
+    </div>
+    <div class="chartBody">
+      <div class="yax"><span>210,000</span><span>180,000</span><span>150,000</span><span>120,000</span><span>90,000</span><span>60,000</span><span>30,000</span><span>0</span></div>
+      <div class="plot"><svg id="eq" viewBox="0 0 1180 420" preserveAspectRatio="none"></svg></div>
+    </div>
+    <div class="xax"><span>2023</span><span>Jul</span><span>2024</span><span>Jul</span><span>2025</span><span>Jul</span><span>2026</span><span>Jul</span></div>
+  </div>
+
+  <!-- monthly returns heatmap -->
+  <div class="sec">Monthly Returns</div>
+  <div class="heat" id="heat"></div>
+
+  <!-- composition -->
+  <div class="sec">Current Composition</div>
+  <div class="table" id="holdings">
+    <div class="trh"><span>Symbol</span><span>Weight</span><span>Return</span><span>Fills</span><span>Contribution</span></div>
+  </div>
+
+  <!-- recent rebalances -->
+  <div class="sec">Recent Rebalances</div>
+  <div class="table" id="log">
+    <div class="trh"><span>Date</span><span>Action</span><span>Symbol</span><span>Price</span><span>P&amp;L</span></div>
+  </div>
+</div>
+
+<script>
+// deterministic RNG so the chart/tables are stable across reloads (no Math.random)
+function mk(s){return()=>{s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+
+// ---- equity curve: flat 2022-23, small drawdown early 2024, steep volatile climb to ~190k ----
+const W=1180,H=420,MAX=210000,N=210;
+function yOf(v){return H-(v/MAX)*H;}
+const r=mk(7);
+let eq=[],sp=[],v=11000,s=11000;
+for(let i=0;i<N;i++){
+  const p=i/(N-1);
+  // exponential-ish target 11k -> 190k, most growth in the back half
+  const target=11000*Math.pow(17.3,Math.pow(p,1.7));
+  const vol=0.012+p*0.05;                       // volatility grows over time
+  v=v*0.90+target*0.10*(1+(r()-0.5)*vol*3);
+  // an early-2024 drawdown dip (~p 0.34-0.42)
+  if(p>0.34&&p<0.42) v*=0.985;
+  eq.push([p*W, yOf(Math.max(9000,v))]);
+  s=s*0.985+ (11000+ p*18000)*0.015*(1+(r()-0.5)*0.02);
+  sp.push([p*W, yOf(Math.max(9000,s))]);
+}
+function path(a){return 'M'+a.map(q=>q[0].toFixed(1)+','+q[1].toFixed(1)).join(' L');}
+const svg=document.getElementById('eq');
+const NS='http://www.w3.org/2000/svg';
+function el(t,at){const e=document.createElementNS(NS,t);for(const k in at)e.setAttribute(k,at[k]);return e;}
+// gridlines
+for(let g=0;g<=7;g++){const y=(g/7)*H;svg.appendChild(el('line',{x1:0,y1:y,x2:W,y2:y,stroke:'#F0F0F2','stroke-width':1}));}
+// equity fill + line
+svg.appendChild(el('path',{d:path(eq)+` L${W},${H} L0,${H} Z`,fill:'rgba(22,163,74,.10)'}));
+svg.appendChild(el('path',{d:path(sp),fill:'none',stroke:'#C7C7CC','stroke-width':3.5,'stroke-linejoin':'round'}));
+// red drawdown patch (early 2024)
+const dd=eq.filter(q=>q[0]/W>0.33&&q[0]/W<0.43);
+if(dd.length){svg.appendChild(el('path',{d:path(dd)+` L${dd[dd.length-1][0]},${H} L${dd[0][0]},${H} Z`,fill:'rgba(239,68,68,.14)'}));}
+svg.appendChild(el('path',{d:path(eq),fill:'none',stroke:'#16A34A','stroke-width':4,'stroke-linejoin':'round'}));
+
+// ---- monthly returns heatmap (4 years x 12 months) ----
+const MO=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const YRS=['2023','2024','2025','2026'];
+const heat=document.getElementById('heat');
+heat.appendChild(Object.assign(document.createElement('div'),{className:'h'}));
+MO.forEach(m=>{const d=document.createElement('div');d.className='h';d.textContent=m;heat.appendChild(d);});
+const hr=mk(41);
+YRS.forEach((yr,yi)=>{
+  const yc=document.createElement('div');yc.className='yr';yc.textContent=yr;heat.appendChild(yc);
+  for(let m=0;m<12;m++){
+    // later years trend more positive; occasional red
+    const bias=0.30+yi*0.12;
+    const val=(hr()-(1-bias))*22; // negative-ish early years, positive-ish later
+    const ret=Math.round(val*10)/10;
+    const c=document.createElement('div');c.className='cell';
+    const pos=ret>=0;
+    const a=Math.min(0.9,Math.abs(ret)/16+0.14);
+    c.style.background=pos?`rgba(22,163,74,${a})`:`rgba(239,68,68,${a})`;
+    c.style.color=Math.abs(ret)>7?'#fff':(pos?'#0E7A38':'#B91C1C');
+    c.textContent=(pos?'+':'')+ret+'%';
+    heat.appendChild(c);
+  }
+});
+
+// ---- current composition ----
+const HOLD=[
+ ['NVDA','#76B900',34,'+212.4%',31],
+ ['MSTR','#F7931A',22,'+688.1%',27],
+ ['HOOD','#00C805',18,'+143.7%',22],
+ ['RKLB','#1D4ED8',14,'+321.9%',19],
+ ['PLTR','#111111',12,'+96.5%',18],
+];
+const holdings=document.getElementById('holdings');
+HOLD.forEach(h=>{
+  const row=document.createElement('div');row.className='tr';
+  row.innerHTML=`<span class="sym"><span class="tk" style="background:${h[1]}">${h[0][0]}</span>${h[0]}</span>`+
+    `<span><div class="wbar" style="width:80%"><i style="width:${h[2]*2.4}%"></i></div><span class="tnum" style="font-size:15px;color:#8A8A8A">${h[2]}%</span></span>`+
+    `<span class="pos tnum">${h[3]}</span>`+
+    `<span class="tnum">${h[4]}</span>`+
+    `<span class="pos tnum">+${(h[2]*1.3).toFixed(1)}%</span>`;
+  holdings.appendChild(row);
+});
+
+// ---- recent rebalances ----
+const LOGD=[
+ ['2026-07-02','BUY','NVDA','$172.40','+$4,210'],
+ ['2026-07-02','SELL','TSLA','$248.10','+$1,980'],
+ ['2026-06-25','BUY','MSTR','$1,684.0','+$9,120'],
+ ['2026-06-25','BUY','RKLB','$42.80','+$2,340'],
+ ['2026-06-18','SELL','AMD','$168.20','-$640'],
+ ['2026-06-18','BUY','HOOD','$96.10','+$3,050'],
+ ['2026-06-11','BUY','PLTR','$62.40','+$1,770'],
+];
+const log=document.getElementById('log');
+LOGD.forEach(l=>{
+  const row=document.createElement('div');row.className='tr';
+  const pnlPos=!l[4].startsWith('-');
+  row.innerHTML=`<span class="tnum" style="color:#8A8A8A">${l[0]}</span>`+
+    `<span style="font-weight:800;color:${l[1]==='BUY'?'#16A34A':'#EF4444'}">${l[1]}</span>`+
+    `<span style="font-weight:800">${l[2]}</span>`+
+    `<span class="tnum">${l[3]}</span>`+
+    `<span class="tnum ${pnlPos?'pos':'neg'}">${l[4]}</span>`;
+  log.appendChild(row);
+});
+</script>
+</body></html>

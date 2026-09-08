@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <link rel="icon" href="data:," />
+    <title>Trading Logo Orbit — Test 01</title>
+    <script src="assets/vendor/gsap.min.js"></script>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html,
+      body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #f9f9f9;
+      }
+
+      #logo-orbit,
+      #orbit-clip {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #f9f9f9;
+      }
+
+      #scene {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        perspective: 300px;
+        perspective-origin: 50% 50%;
+      }
+
+      #holder {
+        position: relative;
+        width: 1px;
+        height: 1px;
+        transform-style: preserve-3d;
+        transform: rotateX(-10deg) rotateY(-10deg) rotateZ(26deg);
+      }
+
+      #ring {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1px;
+        height: 1px;
+        transform-style: preserve-3d;
+      }
+
+      .logo-card {
+        position: absolute;
+        left: -50px;
+        top: -50px;
+        width: 100px;
+        height: 100px;
+        overflow: visible;
+        border-radius: 10px;
+        transform-style: preserve-3d;
+        backface-visibility: visible;
+        will-change: transform, opacity, filter;
+      }
+
+      .face {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        border-radius: 10px;
+        background: #ffffff;
+        backface-visibility: hidden;
+      }
+
+      .face.back {
+        transform: rotateY(180deg);
+      }
+
+      .face img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    </style>
+  </head>
+  <body>
+    <main
+      id="logo-orbit"
+      data-composition-id="trading-logo-orbit-test-01"
+      data-width="1920"
+      data-height="1080"
+      data-start="0"
+      data-duration="5"
+      data-fps="60"
+      data-root="true"
+    >
+      <section id="orbit-clip" class="clip" data-start="0" data-duration="5">
+        <div id="scene">
+          <div id="holder">
+            <div id="ring"></div>
+          </div>
+        </div>
+      </section>
+
+      <script>
+        (function () {
+          "use strict";
+
+          var logos = [
+            "01-robinhood.png",
+            "03-etoro.png",
+            "05-fidelity.png",
+            "06-charles-schwab.png",
+            "09-trading-212.png",
+            "10-thinkorswim.png",
+            "11-binance.png",
+            "14-okx.png",
+            "21-tradingview.png",
+            "24-ninjatrader.png",
+            "25-ctrader.png",
+            "26-cryptohopper.png",
+            "27-tradovate.png",
+            "28-tradestation.png",
+            "29-3commas.png",
+            "30-pionex.png",
+            "31-quantconnect.png",
+            "33-algotrader.png"
+          ];
+
+          var ring = document.getElementById("ring");
+          var cards = logos.map(function (file, index) {
+            var card = document.createElement("div");
+            card.id = "logo-card-" + (index + 1);
+            card.className = "logo-card";
+            card.setAttribute("data-layout-allow-overlap", "");
+            card.setAttribute("data-layout-allow-overflow", "");
+            card.innerHTML =
+              '<div class="face front"><img src="assets/logos/' + file + '" alt="" /></div>' +
+              '<div class="face back"><img src="assets/logos/' + file + '" alt="" /></div>';
+            ring.appendChild(card);
+            return card;
+          });
+
+          var state = { angle: 0 };
+          var distance = 239.80582524271844;
+          var step = 360 / cards.length;
+
+          function renderOrbit() {
+            cards.forEach(function (card, index) {
+              var angle = index * step + state.angle;
+              var radians = angle * Math.PI / 180;
+              var z = Math.cos(radians) * distance;
+              var depth = (z + distance) / (distance * 2);
+              card.style.transform = "rotateY(" + angle + "deg) translateZ(" + distance + "px)";
+              card.style.opacity = String(0.24 + depth * 0.76);
+              card.style.filter = "saturate(" + (0.72 + depth * 0.28) + ") brightness(" + (0.92 + depth * 0.08) + ")";
+              card.style.zIndex = String(Math.round(z + distance));
+            });
+          }
+
+          var tl = gsap.timeline({ paused: true });
+          tl.to(state, {
+            angle: -90,
+            duration: 5,
+            ease: "none",
+            onUpdate: renderOrbit,
+          }, 0);
+
+          renderOrbit();
+          window.__timelines = window.__timelines || {};
+          window.__timelines["trading-logo-orbit-test-01"] = tl;
+        })();
+      </script>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,15 @@
+#research{position:absolute;inset:0;z-index:4;pointer-events:none;color:#e7e7ea}
+.research-heading{position:absolute;left:310px;top:115px;display:flex;align-items:center;gap:25px}
+.research-heading h2{font-size:29px;letter-spacing:-.025em;font-weight:600;margin:0 0 8px}
+.research-heading p{font-size:20px;color:#a2a2aa;margin:0}.research-heading p>span{margin:0 8px}
+.research-members{display:flex;padding-left:8px}.research-members svg{width:45px;height:45px;margin-left:-8px;border:3px solid #202022;border-radius:50%}
+.research-viewport{position:absolute;left:300px;right:300px;top:210px;height:690px;overflow:hidden;mask-image:linear-gradient(transparent,#000 5%,#000 90%,transparent)}
+#research-thread{position:relative;padding-top:25px;will-change:transform}
+.research-row{position:relative;display:flex;gap:20px;height:154px;margin-bottom:16px;align-items:flex-start}
+.research-user{height:112px;display:block;margin-left:420px;text-align:right}
+.research-avatar{width:58px;height:58px;flex:none;margin-top:32px}.research-avatar svg{width:100%;height:100%;border-radius:50%;box-shadow:0 7px 24px #0003}
+.research-message{max-width:1080px}.research-author{font-size:23px;font-weight:600;line-height:30px;margin-bottom:11px}
+.research-author>span:not(.swap-text){font-size:19px;font-weight:400;color:#a2a2aa;margin-left:15px}
+.research-bubble{font-size:29px;line-height:1.45;letter-spacing:-.012em;padding:21px 25px;border-radius:9px 22px 22px 22px;background:#252528ed;border:1px solid #ffffff0e;box-shadow:0 10px 25px #0001}
+.research-user .research-bubble{font-size:28px;background:#3a3a40d9;border-radius:22px 9px 22px 22px;padding:18px 24px}
+.research-user .research-author{font-size:20px;color:#b7b7bf;margin-bottom:8px}

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Minara · Soft brand reveal · v1</title>
+<style>
+@font-face{font-family:Geist;src:url('../../assets/fonts/Geist-Regular.woff2');font-weight:400}
+*{box-sizing:border-box}body{margin:0;background:#0f0f11;color:#e7e7ea;font:14px Geist,sans-serif}
+header,footer{width:min(1500px,94vw);margin:24px auto}header{display:flex;justify-content:space-between;align-items:center}header span,p{color:#8a8a92}h1{font-size:18px;font-weight:400;margin:0}
+#viewport{position:relative;width:min(94vw,1500px,calc((100vh - 220px)*16/9));aspect-ratio:16/9;margin:auto;overflow:hidden;background:#f5f5f7;border-radius:4px}
+#stage{position:absolute;width:1920px;height:1080px;transform-origin:top left;overflow:hidden;background:#f5f5f7}
+#flow{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ripple{position:absolute;width:920px;height:920px;left:500px;top:80px;border-radius:50%;background:radial-gradient(circle,transparent 53%,rgba(138,138,146,.14) 59%,rgba(255,255,255,.65) 64%,rgba(138,138,146,.10) 69%,transparent 76%);filter:blur(20px);opacity:0;will-change:transform,opacity}
+#logo{position:absolute;left:570px;top:424px;width:780px;height:auto;opacity:0;filter:blur(24px);mask-image:linear-gradient(90deg,#000 0%,#000 38%,transparent 62%,transparent 100%);mask-size:270% 100%;mask-position:100% 0;will-change:filter,mask-position,opacity}
+#url{position:absolute;inset:0;display:grid;place-items:center;font-size:94px;font-weight:400;letter-spacing:-.045em;color:#141416;opacity:0;filter:blur(18px);will-change:filter,opacity,transform}
+.transport{display:flex;align-items:center;gap:12px}button,select{font:inherit;padding:9px 14px;border:1px solid #3a3a40;border-radius:6px;background:#17171a;color:#e7e7ea;cursor:pointer}button:hover{background:#3a3a40}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid white;outline-offset:3px}input{flex:1;min-width:60px;accent-color:#e7e7ea}output{font-variant-numeric:tabular-nums;white-space:nowrap}.chapters{display:flex;gap:8px;margin-top:14px}.chapters button{font-size:12px;color:#aaaab2}p{font-size:12px;margin-top:16px}footer{max-width:1500px}
+@media(max-width:650px){header span,.chapters{display:none}.transport{gap:6px}button,select{padding:8px}output{font-size:11px}}
+</style>
+<header><h1>Minara · Soft brand reveal</h1><span>v1 / 10 seconds</span></header>
+<main id="viewport" aria-label="Ten-second Minara brand animation">
+  <div id="stage" data-width="1920" data-height="1080" data-duration="10">
+    <video id="flow" src="../../assets/bg/bg-light-flow.mp4" muted playsinline preload="auto"></video>
+    <div class="ripple" aria-hidden="true"></div><div class="ripple" aria-hidden="true"></div><div class="ripple" aria-hidden="true"></div>
+    <img id="logo" src="assets/minara-logo.png" alt="Minara">
+    <div id="url">minara.ai</div>
+  </div>
+</main>
+<footer>
+  <div class="transport"><button id="play">Play</button><button id="replay">Replay</button><input id="scrub" type="range" min="0" max="10" step="0.001" value="0" aria-label="Animation time"><output id="time">0.00 / 10.00s</output><select id="speed" aria-label="Playback speed"><option value="1">1×</option><option value="0.5">0.5×</option></select></div>
+  <div class="chapters"><button data-time="1.2">Ripple</button><button data-time="2.15">Soft wipe</button><button data-time="4.5">Logo hold</button><button data-time="6.5">Dissolve</button><button data-time="9.4">minara.ai</button></div>
+  <p>1920 × 1080 · 30 fps · Silent · Drag the timeline to review.</p>
+</footer>
+<script src="assets/gsap.min.js"></script>
+<script>
+const stage=document.querySelector('#stage'),viewport=document.querySelector('#viewport'),flow=document.querySelector('#flow');
+const play=document.querySelector('#play'),scrub=document.querySelector('#scrub'),readout=document.querySelector('#time'),speed=document.querySelector('#speed');
+new ResizeObserver(()=>stage.style.transform=`scale(${viewport.clientWidth/1920})`).observe(viewport);
+const timeline=gsap.timeline({paused:true});
+document.querySelectorAll('.ripple').forEach((ring,i)=>{
+  const start=.15+i*.48;
+  timeline.fromTo(ring,{scale:.08,opacity:0},{scale:2.8,duration:4.6,ease:'power2.out'},start)
+    .to(ring,{opacity:.85,duration:.85,ease:'sine.inOut'},start)
+    .to(ring,{opacity:0,duration:2.7,ease:'sine.inOut'},start+1.35);
+});
+timeline.to('#logo',{opacity:1,duration:1.15,ease:'sine.inOut'},.9)
+  .to('#logo',{maskPosition:'0% 0%',duration:2.65,ease:'power2.inOut'},.85)
+  .to('#logo',{filter:'blur(0px)',duration:2.35,ease:'power2.out'},1.25)
+  .to('#logo',{opacity:0,filter:'blur(22px)',duration:1.4,ease:'sine.inOut'},5.7)
+  .fromTo('#url',{opacity:0,filter:'blur(18px)',y:9},{opacity:1,filter:'blur(0px)',y:0,duration:2,ease:'sine.inOut'},7.05)
+  .to({}, {duration:.95},9.05);
+let playing=false,current=0,last=0;
+function paint(t){current=Math.max(0,Math.min(10,t));timeline.seek(current,true);scrub.value=current;readout.value=`${current.toFixed(2)} / 10.00s`;}
+function pause(){playing=false;flow.pause();play.textContent='Play';}
+async function seek(t){pause();paint(t);if(flow.readyState>=1&&Math.abs(flow.currentTime-current)>.015){flow.currentTime=current;await new Promise(resolve=>flow.addEventListener('seeked',resolve,{once:true}));}}
+async function start(){if(current>=10)await seek(0);flow.currentTime=current;flow.playbackRate=+speed.value;await flow.play();playing=true;last=performance.now();play.textContent='Pause';}
+function tick(now){if(playing){paint(current+(now-last)/1000*(+speed.value));if(current>=10)pause();}last=now;requestAnimationFrame(tick);}
+play.onclick=()=>playing?pause():start();document.querySelector('#replay').onclick=async()=>{await seek(0);await start();};
+scrub.oninput=()=>{pause();paint(+scrub.value);flow.currentTime=current;};
+speed.onchange=()=>flow.playbackRate=+speed.value;
+document.querySelectorAll('[data-time]').forEach(button=>button.onclick=()=>seek(+button.dataset.time));
+window.scene={timeline,seek,pause,start,get time(){return current;},get playing(){return playing;}};
+paint(0);requestAnimationFrame(tick);
+Promise.all([document.fonts.ready,document.querySelector('#logo').decode(),new Promise(resolve=>flow.readyState>=2?resolve():flow.addEventListener('loadeddata',resolve,{once:true}))]).then(()=>{window.ready=true;if(!matchMedia('(prefers-reduced-motion: reduce)').matches)start().catch(()=>pause());});
+</script>
+</html>

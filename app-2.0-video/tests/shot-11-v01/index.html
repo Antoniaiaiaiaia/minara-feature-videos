@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Shot 11 — SPCX Perps</title>
+  <style>
+    @font-face{font-family:Geist;src:url('./assets/fonts/Geist-Regular.woff2') format('woff2');font-weight:400}
+    @font-face{font-family:Geist;src:url('./assets/fonts/Geist-SemiBold.woff2') format('woff2');font-weight:600}
+    *{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#f7f7f7;font-family:Geist,Arial,sans-serif}body{display:grid;place-items:center}
+    #viewport{position:relative;width:min(100vw,177.7778vh);aspect-ratio:16/9;overflow:hidden;background:#f7f7f7}
+    #shot{position:absolute;inset:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;background:#f7f7f7;color:#111}
+    #camera{position:absolute;inset:0;transform-origin:50% 55%;will-change:transform}
+    .device{position:absolute;top:-70px;width:760px;height:1120px;overflow:hidden;border:14px solid #0c0c0d;border-radius:64px;background:#fff;box-shadow:0 30px 90px rgba(0,0,0,.12);transform-origin:50% 100%;will-change:transform,opacity,filter}.device::after{content:"";position:absolute;z-index:30;left:50%;bottom:13px;width:142px;height:7px;transform:translateX(-50%);border-radius:99px;background:#111}.device.long{left:155px}.device.short{left:1005px}
+    .status{height:54px;padding:13px 32px 0;display:flex;align-items:flex-start;font-size:17px;font-weight:600}.status .island{position:absolute;left:50%;top:12px;width:116px;height:30px;transform:translateX(-50%);border-radius:99px;background:#050505}.signals{margin-left:auto;display:flex;gap:10px;align-items:center;font-size:15px}.battery{padding:2px 6px;border-radius:7px;background:#26c657;color:#fff}
+    .nav{height:82px;display:flex;align-items:center;justify-content:center;border-bottom:1px solid #ececee;font-size:30px;font-weight:600}.back{position:absolute;left:32px;font-size:52px;font-weight:300;line-height:1;color:#141414}
+    .wallet{height:96px;padding:0 27px;display:flex;align-items:center;border-bottom:1px solid #ededee}.wallet-dot{width:10px;height:10px;margin-right:14px;border-radius:50%;background:linear-gradient(135deg,#ee39ff,#ff9d39)}.avatar{width:47px;height:47px;margin-right:13px;border-radius:13px;object-fit:cover}.wallet-name{font-size:27px;font-weight:600}.chev{margin-left:10px;font-size:25px}.balance{margin-left:auto;color:#79797d;font-size:22px}.balance b{margin-left:8px;color:#111;font-size:28px;font-weight:500}.transfer{margin-left:18px;color:#39a0ff;font-size:22px}
+    .asset-row{height:86px;padding:0 28px;display:flex;align-items:center;border-bottom:1px solid #ededee}.asset-logo{width:46px;height:46px;margin-right:13px;border-radius:50%;object-fit:cover;background:#111}.ticker{font-size:30px;font-weight:600}.leverage{margin-left:auto;color:#c0c0c4;font-size:22px}.leverage b{font-weight:400}.cross{margin-left:24px;color:#a7a7ab;font-size:22px}
+    .direction{height:92px;padding:0 28px;display:grid;grid-template-columns:190px 1fr;align-items:center;border-bottom:1px solid #ededee;color:#77777b;font-size:23px}.toggle{height:58px;padding:4px;display:grid;grid-template-columns:1fr 1fr;border-radius:17px;background:#f5f5f6}.toggle span{display:grid;place-items:center;border-radius:14px;color:#111;font-size:25px;font-weight:500}.long .toggle .long-side{background:#08bd78;color:#fff}.short .toggle .short-side{background:#ff5e64;color:#fff}
+    .order-type{height:72px;padding:0 29px;display:flex;align-items:center;border-bottom:1px solid #ededee;color:#77777b;font-size:23px}.order-type b{margin-left:auto;color:#171717;font-weight:500}.order-type i{margin-left:12px;font-size:31px;font-style:normal;color:#777}
+    .trade-area{height:336px;display:grid;grid-template-columns:390px 1fr;border-bottom:1px solid #ededee}.form{padding:18px 16px 12px}.input{height:57px;margin-bottom:12px;padding:0 16px;border-radius:14px;background:#f6f6f7;display:flex;align-items:center;color:#77777b;font-size:22px}.input b{margin-left:auto;font-size:27px;font-weight:500}.slider{position:relative;height:12px;margin:18px 4px 22px;border-radius:99px;background:#f0f0f2}.slider-fill{position:absolute;left:0;top:0;width:4%;height:100%;border-radius:99px;background:#08bd78}.short .slider-fill{background:#ff5e64}.knob{position:absolute;left:4%;top:50%;width:29px;height:29px;margin:-14.5px 0 0 -14.5px;border:5px solid #fff;border-radius:50%;background:#111;box-shadow:0 2px 9px rgba(0,0,0,.22)}.risk-title{display:flex;align-items:center;margin:0 3px 16px;font-size:21px}.radio{width:27px;height:27px;margin-right:10px;border:2px solid #111;border-radius:50%;box-shadow:inset 0 0 0 6px #fff;background:#111}.risk-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.risk-grid .input{margin:0;height:56px;font-size:18px}.risk-grid .input b{font-size:20px}
+    .book{padding:17px 15px 0;border-left:1px solid #ededee}.book-head,.book-row{display:grid;grid-template-columns:1fr 1fr .72fr;gap:8px}.book-head{margin-bottom:6px;color:#77777b;font-size:15px}.book-row{padding:4px 0;color:#77777b;font-size:18px}.ask{color:#ff6066}.bid{color:#08bd78}.mid{display:flex;align-items:center;margin:7px 0 5px;color:#08bd78;font-size:31px;font-weight:600}.short .mid{color:#ff5e64}.mid small{margin-left:auto;font-size:17px;font-weight:400}
+    .cta{width:calc(100% - 54px);height:78px;margin:36px 27px 10px;border:0;border-radius:18px;background:#08bd78;color:#fff;font:600 30px Geist;display:grid;place-items:center;will-change:transform,filter,box-shadow}.short .cta{background:#ff5e64}.hint{text-align:center;color:#8b8b8f;font-size:16px}
+    .tabs{height:76px;padding:24px 28px 0;display:flex;gap:44px;font-size:22px;color:#777}.tabs b{color:#111}.position-card{margin:0 28px;padding:18px;border-radius:20px;background:#f7f7f8}.position-side{display:inline-block;padding:5px 10px;border-radius:8px;background:#daf6e9;color:#08bd78;font-size:16px}.short .position-side{background:#ffe3e4;color:#ff5e64}.position-card h3{margin:13px 0 15px;font-size:24px}.stats{display:grid;grid-template-columns:1fr 1fr 1fr;color:#777;font-size:15px}.stats b{display:block;margin-top:5px;color:#111;font-size:21px;font-weight:500}
+    .cursor{position:absolute;z-index:40;width:76px;height:76px;border:3px solid rgba(255,255,255,.88);border-radius:50%;background:rgba(74,74,76,.42);box-shadow:0 3px 14px rgba(0,0,0,.2);opacity:0;will-change:transform,opacity,box-shadow}.cursor::after{content:"";position:absolute;left:50%;top:50%;width:16px;height:16px;transform:translate(-50%,-50%);border-radius:50%;background:#666}.cursor-left{left:165px;top:568px}.cursor-right{left:1015px;top:568px}
+  </style>
+</head>
+<body>
+  <div id="viewport" data-composition-id="minara-shot-11" data-width="1920" data-height="1080" data-start="0" data-duration="1.8" data-fps="60" data-root="true">
+    <main id="shot"><div id="camera"><div id="screens"></div><div class="cursor cursor-left"></div><div class="cursor cursor-right"></div></div></main>
+  </div>
+  <script src="./assets/vendor/gsap.min.js"></script>
+  <script>
+    const shot=document.querySelector('#shot');const fit=()=>{const v=document.querySelector('#viewport');shot.style.transform=`scale(${v.clientWidth/1920})`};addEventListener('resize',fit);fit();
+    const rows=(values,cls)=>values.map((p,i)=>`<div class="book-row"><span class="${cls}">${p}</span><span>${[134.54,152.85,167.41,49.98,57.76][i]}K</span><span>${[25,18.3,5.97,8.58,7.78][i]}K</span></div>`).join('');
+    const screen=(side)=>`<article class="device ${side}"><div class="status"><span>14:43</span><i class="island"></i><div class="signals"><span>▮▮▮</span><span>◒</span><span class="battery">100</span></div></div><div class="nav" data-grow><span class="back">‹</span>SPCX Perps</div><div class="wallet" data-grow><i class="wallet-dot"></i><img class="avatar" src="assets/brand/Minara-Avatar.png"><span class="wallet-name">minara strategy</span><span class="chev">⌄</span><span class="balance">Balance <b>$277.61</b></span><span class="transfer">Transfer</span></div><div class="asset-row" data-grow><img class="asset-logo" src="assets/logos/spacex.png"><span class="ticker">SPCX</span><span class="leverage">Leverage <b>20X</b> ›</span><span class="cross">Cross ›</span></div><div class="direction" data-grow><span>Direction</span><div class="toggle"><span class="long-side">Long</span><span class="short-side">Short</span></div></div><div class="order-type" data-grow><span>Type</span><b>Market</b><i>›</i></div><div class="trade-area" data-grow><div class="form"><div class="input">Market <b>$146.515</b></div><div class="input">Position <b>$<span class="position-value">0</span></b></div><div class="slider"><i class="slider-fill"></i><i class="knob"></i></div><div class="risk-title"><i class="radio"></i>Take profit / Stop Loss</div><div class="risk-grid"><div class="input">TP Price</div><div class="input">Gain <b>$</b></div><div class="input">SL Price</div><div class="input">Loss <b>$</b></div></div></div><div class="book"><div class="book-head"><span>Price</span><span>Total</span><span>Size</span></div>${rows(['153.0','154.0','155.0'],'ask')}<div class="mid">$146.515 <small>${side==='long'?'+9.56%':'-9.56%'}</small></div>${rows(['146.0','145.0','144.0'],'bid')}</div></div><button class="cta" data-grow>${side==='long'?'Long':'Short'} SPCX</button><div class="tabs" data-grow><b>Positions</b><span>Open Orders</span><span>Trade History</span></div><div class="position-card" data-grow><span class="position-side">${side==='long'?'Long':'Short'} 20x</span><h3>SPCX / USDC</h3><div class="stats"><span>Position Size<b>0.0037 SPCX</b></span><span>Margin<b>$55.0449</b></span><span>Entry Price<b>$146.515</b></span></div></div></article>`;
+    document.querySelector('#screens').innerHTML=screen('long')+screen('short');
+    const screens=[...document.querySelectorAll('.device')];gsap.set('#camera',{scale:.88});gsap.set(screens,{y:1120,scale:.96,opacity:0,filter:'blur(12px)'});screens.forEach(s=>gsap.set(s.querySelectorAll('[data-grow]'),{opacity:0,y:18,scale:.96}));
+    const fills=[...document.querySelectorAll('.slider-fill')],knobs=[...document.querySelectorAll('.knob')],values=[...document.querySelectorAll('.position-value')],state=[{v:0},{v:0}];const update=()=>values.forEach((el,i)=>el.textContent=Math.round(state[i].v).toLocaleString('en-US'));
+    const tl=gsap.timeline({paused:true});screens.forEach((s,i)=>{const at=i*.14;tl.to(s,{y:0,scale:1,opacity:1,filter:'blur(0px)',duration:.62,ease:'back.out(1.65)'},at).to(s.querySelectorAll('[data-grow]'),{opacity:1,y:0,scale:1,duration:.32,stagger:.018,ease:'back.out(1.8)'},at+.04)});
+    tl.to('#camera',{scale:1.025,duration:.62,ease:'power3.inOut'},.35)
+      .to('.cursor',{opacity:1,duration:.1},.58)
+      .to(fills,{width:'76%',duration:.34,ease:'back.out(1.35)'},.78)
+      .to(knobs,{left:'76%',duration:.34,ease:'back.out(1.35)'},.78)
+      .to('.cursor-left',{x:252,duration:.34,ease:'power2.inOut'},.78)
+      .to('.cursor-right',{x:252,duration:.34,ease:'power2.inOut'},.78)
+      .to(state[0],{v:1250,duration:.34,ease:'power2.inOut',onUpdate:update},.78)
+      .to(state[1],{v:900,duration:.34,ease:'power2.inOut',onUpdate:update},.78)
+      .to('.cursor-left',{x:332,y:231,duration:.22,ease:'power2.inOut'},1.13)
+      .to('.cursor-right',{x:332,y:231,duration:.22,ease:'power2.inOut'},1.2)
+      .to('.cursor',{scale:.72,boxShadow:'0 0 0 14px rgba(110,110,112,.18)',duration:.1,ease:'power2.in'},1.35)
+      .to('.cursor',{scale:1,boxShadow:'0 3px 14px rgba(0,0,0,.2)',duration:.18,ease:'back.out(2.3)'},1.45)
+      .to('.long .cta',{scale:.94,filter:'brightness(1.12)',boxShadow:'0 0 0 6px rgba(8,189,120,.18)',duration:.1},1.35)
+      .to('.long .cta',{scale:1,filter:'brightness(1)',boxShadow:'0 0 0 0 rgba(8,189,120,0)',duration:.18,ease:'back.out(2.4)'},1.45)
+      .to('.short .cta',{scale:.94,filter:'brightness(1.08)',boxShadow:'0 0 0 6px rgba(255,94,100,.18)',duration:.1},1.42)
+      .to('.short .cta',{scale:1,filter:'brightness(1)',boxShadow:'0 0 0 0 rgba(255,94,100,0)',duration:.18,ease:'back.out(2.4)'},1.52)
+      .to('.cursor',{opacity:0,duration:.14},1.66);
+    tl.duration(1.8);window.__timelines=window.__timelines||{};window.__timelines['minara-shot-11']=tl;
+  </script>
+</body>
+</html>

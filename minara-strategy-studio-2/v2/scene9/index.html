@@ -1,0 +1,369 @@
+<!doctype html><html><head><meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#F9F9F9}
+#root,[data-composition-id="root"]{position:relative;width:1920px;height:1080px;overflow:hidden;
+  background:#F9F9F9;font-family:'Geist',system-ui,-apple-system,sans-serif;color:#141416}
+
+/* ---------- beat A: rich DeFi dashboard grid ---------- */
+#gridWrap{position:absolute;inset:0;z-index:5;overflow:visible}
+#gridStage{position:absolute;inset:0;transform-origin:960px 540px}
+.gcard{position:absolute;background:#fff;border:1px solid #ECECEC;border-radius:26px;
+  box-shadow:0 30px 70px -34px rgba(0,0,0,.26);padding:26px 32px;opacity:0;
+  display:flex;flex-direction:column;gap:14px}
+.gc-head{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.gc-name{font-size:27px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:290px}
+.switch{width:84px;height:46px;border-radius:999px;background:#E2E2E6;position:relative;overflow:hidden;flex-shrink:0}
+.switch .fillOn{position:absolute;inset:0;background:#07B56A}
+.switch .knob{position:absolute;top:5px;left:5px;width:36px;height:36px;border-radius:50%;background:#fff;
+  box-shadow:0 4px 10px rgba(0,0,0,.25);z-index:2}
+.gc-mid{display:flex;align-items:baseline;gap:14px}
+.gc-ret{font-size:40px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.gc-ret.pos{color:#07B56A}
+.gc-ret.neg{color:#F75D5F}
+.gc-sub{font-size:19px;font-weight:600;color:#9a9a9a}
+.gc-spark{width:100%;height:56px;display:block}
+.gc-alloc-lab{font-size:19px;color:#9a9a9a;font-weight:600;display:flex;justify-content:space-between}
+.gc-alloc-lab b{color:#141416;font-weight:800;font-variant-numeric:tabular-nums}
+.gc-bar{margin-top:8px;height:14px;border-radius:999px;background:#EDEDF0;position:relative}
+.gc-bar-fill{position:absolute;left:0;top:0;bottom:0;width:0%;background:#07B56A;border-radius:999px}
+.gcard.off{background:#FCFCFC}
+.gcard.off .gc-name{color:#b6b6bb}
+.gcard.off .switch{background:#EBEBEE}
+
+/* ---------- beat B: stylized globe + illustrated avatar ring ---------- */
+#globeLayer{position:absolute;inset:0;z-index:2}
+#globeLayer canvas{display:block}
+#ring{position:absolute;left:500px;top:80px;width:920px;height:920px;z-index:8;transform-origin:50% 50%}
+.avatar{position:absolute;width:104px;height:104px;border-radius:50%;overflow:hidden;background:#fff;
+  box-shadow:0 12px 28px -10px rgba(0,0,0,.35);opacity:0}
+.avInner{width:100%;height:100%}
+.avInner img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* ---------- beat C: minara badge (exact screen center) + hi-fi metric ring ---------- */
+.badge{position:absolute;left:960px;top:540px;transform:translate(-50%,-50%) scale(0);width:216px;height:216px;
+  border-radius:50%;overflow:hidden;background:#fff;border:8px solid #fff;box-shadow:0 34px 80px -26px rgba(0,0,0,.38);
+  opacity:0;z-index:25}
+.badge img{width:100%;height:100%;object-fit:cover}
+#metricRing{position:absolute;inset:0;z-index:22}
+.mcard{position:absolute;transform:translate(-50%,-50%) scale(.5);background:#fff;
+  border:1px solid #ECECEC;border-radius:28px;box-shadow:0 30px 70px -30px rgba(0,0,0,.30);
+  padding:30px 36px;opacity:0;display:flex;flex-direction:column;justify-content:center;gap:14px}
+.mc-top{display:flex;align-items:center;justify-content:space-between;gap:14px}
+.mc-lab{font-size:24px;font-weight:600;color:#9a9a9a}
+.mc-val{font-size:61px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.02em;line-height:1}
+.mcard.hero .mc-val{font-size:77px}
+.mc-val.pos{color:#07B56A}
+.mc-val.neg{color:#F75D5F}
+.mc-val.neu{color:#141416}
+.mc-chip{font-size:22px;font-weight:700;padding:6px 16px;border-radius:999px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.mc-chip.pos{background:#E7F8EF;color:#07B56A}
+.mc-chip.neg{background:#FDEBEC;color:#F75D5F}
+.mc-spark{width:100%;height:46px;display:block}
+.mc-bars{display:flex;align-items:flex-end;gap:7px;height:46px}
+.mc-bars i{flex:1;border-radius:5px 5px 0 0;background:#EDEDF0;display:block}
+.mc-bars i.hi{background:#07B56A}
+.mc-donutWrap{display:flex;align-items:center;gap:20px}
+.mc-donut{width:88px;height:88px;flex-shrink:0}
+.mc-donutLab{font-size:20px;font-weight:700;color:#9a9a9a}
+</style></head>
+<body>
+<div id="root" data-composition-id="root" data-width="1920" data-height="1080" data-start="0" data-duration="8.14">
+  <div id="globeLayer"></div>
+  <div id="gridWrap"><div id="gridStage"></div></div>
+  <div id="ring"></div>
+  <div id="metricRing"></div>
+  <div class="badge" id="minaraBadge"><img src="assets/avatar.png" alt=""></div>
+</div>
+
+<script src="lib/three.min.js"></script>
+<script src="lib/gsap.min.js"></script>
+<script src="lib/CustomEase.min.js"></script>
+<script>
+gsap.registerPlugin(CustomEase);
+const SNAP=CustomEase.create("snap","M0,0 C0.95,0.03 0,0.98 1,1");
+
+// deterministic mulberry32 (spec §5) — no Math.random anywhere in this file
+function mk(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);
+  t=t+Math.imul(t^t>>>7,61|t)^t;return ((t^t>>>14)>>>0)/4294967296;};}
+
+// deterministic random-walk sparkline (spec §4 equityPath, adapted to per-card seed + drift sign)
+function sparkPoints(seed,w,h,n,up){
+  const r=mk(seed);let v=up?0.30:0.68;const pts=[];
+  for(let i=0;i<n;i++){
+    const drift=up?(0.007+(i/n)*0.010):-(0.006+(i/n)*0.009);
+    v+=drift+(r()-0.5)*0.05; v=Math.min(0.94,Math.max(0.06,v));
+    pts.push((i/(n-1)*w).toFixed(1)+','+((1-v)*h).toFixed(1));
+  }
+  return pts.join(' ');
+}
+
+// ============================================================
+// BEAT A — rich DeFi dashboard: 16 large cards (4x cards' old
+// area — ~300% bigger), each w/ switch + sparkline + alloc bar.
+// Grid deliberately overflows the 1920x1080 frame (§8 taste).
+// ============================================================
+const gridStage=document.getElementById('gridStage');
+const GCOLS=4,GROWS=4,GCW=500,GCH=300,GGX=26,GGY=26;
+const gTotalW=GCOLS*GCW+(GCOLS-1)*GGX, gTotalH=GROWS*GCH+(GROWS-1)*GGY;
+const gLeft0=960-gTotalW/2, gTop0=540-gTotalH/2;
+
+const NAMES=['Coin 30 Momentum','Multi-factor L/S','HYPE MACD Cross','BTC Trend Rider',
+  'ETH Breakout','Vol Arb Neutral','Mean Revert RSI','Grid DCA Bot',
+  'SOL Momentum','Basis Carry','Funding Rate Arb','Cross-Chain Yield',
+  'Options Skew','Pairs BTC / ETH','Trend Follower X','Liquidity MM'];
+const RETS=[92,54,128,41,77,18,-6,33,145,12,9,61,-11,47,103,22];
+
+// deterministic on/off switches (~50% off per Antonia review) + alloc% — mulberry32 streams, not Math.random (§0.4)
+const rndSwitch=mk(8), rndAlloc=mk(53);
+const onFlags=NAMES.map(()=>rndSwitch()>0.5);
+const allocPcts=NAMES.map(()=>Math.round(15+rndAlloc()*70));
+
+const gridCards=[];
+let gi=0;
+for(let r=0;r<GROWS;r++){
+  for(let c=0;c<GCOLS;c++){
+    const x=gLeft0+c*(GCW+GGX), y=gTop0+r*(GCH+GGY);
+    const ccx=x+GCW/2, ccy=y+GCH/2;
+    const dist=Math.hypot(ccx-960,ccy-540);
+    const i=gi, up=RETS[i]>=0, isOn=onFlags[i], alloc=allocPcts[i];
+    const spark=sparkPoints(300+i*13,436,56,22,up);
+    const knobX=isOn?43:0, fillOp=isOn?1:0;
+    const el=document.createElement('div');el.className='gcard'+(isOn?'':' off');
+    el.style.left=x+'px';el.style.top=y+'px';el.style.width=GCW+'px';el.style.height=GCH+'px';
+    // off strategies show NO allocation at all — label + bar fully omitted, not zeroed (per Antonia review)
+    const allocBlock=isOn?
+      '<div class="gc-alloc"><div class="gc-alloc-lab"><span>Allocated</span><b>'+alloc+'%</b></div>'+
+      '<div class="gc-bar"><div class="gc-bar-fill" style="width:'+alloc+'%"></div></div></div>':'';
+    el.innerHTML=
+      '<div class="gc-head"><span class="gc-name">'+NAMES[i]+'</span>'+
+      '<div class="switch"><div class="fillOn" style="opacity:'+fillOp+'"></div>'+
+      '<div class="knob" style="transform:translateX('+knobX+'px)"></div></div></div>'+
+      '<div class="gc-mid"><span class="gc-ret '+(up?'pos':'neg')+'">'+(up?'+':'')+RETS[i]+'%</span>'+
+      '<span class="gc-sub">24h return</span></div>'+
+      '<svg class="gc-spark" viewBox="0 0 436 56" preserveAspectRatio="none">'+
+      '<polyline fill="none" stroke="'+(up?'#07B56A':'#F75D5F')+'" stroke-width="3.5" points="'+spark+'"/></svg>'+
+      allocBlock;
+    gridStage.appendChild(el);
+    gridCards.push({el,dist});
+    gi++;
+  }
+}
+gridCards.sort((a,b)=>a.dist-b.dist); // center-outward reveal order
+gsap.set(gridCards.map(g=>g.el),{opacity:0,scale:.35});
+
+// ============================================================
+// BEAT B — three.js STYLIZED cartoon globe + orbiting illustrated
+// talent avatars. Globe texture is synthesized on a <canvas> (flat
+// blue ocean + hand-placed green continent blobs at real-world lat/
+// lon) rather than fetched — no network dependency, fully
+// deterministic, and guarantees the "3d-icon globe" look Antonia
+// asked for instead of a photoreal earth (ponytail: skip hunting for
+// a matching stock texture, build the flat-color fallback directly).
+// ============================================================
+const layer=document.getElementById('globeLayer'), W=1920,H=1080;
+const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
+renderer.setSize(W,H);renderer.setPixelRatio(2);
+if(THREE.sRGBEncoding)renderer.outputEncoding=THREE.sRGBEncoding;
+layer.appendChild(renderer.domElement);
+const scene3=new THREE.Scene();
+const cam=new THREE.PerspectiveCamera(30,W/H,0.1,100);cam.position.set(0,0,9);
+const globeGroup=new THREE.Group();scene3.add(globeGroup);
+
+// equirectangular canvas texture: bright ocean + simplified green continents
+function buildGlobeCanvas(){
+  const cw=1024,ch=512,cv=document.createElement('canvas');cv.width=cw;cv.height=ch;
+  const ctx=cv.getContext('2d');
+  ctx.fillStyle='#2E90E0';ctx.fillRect(0,0,cw,ch); // clean blue ocean
+  ctx.fillStyle='#3FCE72'; // bright simplified-continent green
+  function land(lon,lat,rx,ry,rot){ // lon:-180..180 lat:-90..90 (deg), rx/ry in px
+    const x=(lon+180)/360*cw, y=(90-lat)/180*ch;
+    ctx.save();ctx.translate(x,y);ctx.rotate((rot||0)*Math.PI/180);
+    ctx.beginPath();ctx.ellipse(0,0,rx,ry,0,0,Math.PI*2);ctx.fill();ctx.restore();
+  }
+  land(-100,48,95,60,-12);   // North America
+  land(-95,20,40,34,10);     // Central America / Caribbean blend
+  land(-62,-14,46,80,8);     // South America
+  land(12,52,52,40,-6);      // Europe
+  land(-42,74,44,26,0);      // Greenland
+  land(22,10,70,68,4);       // Africa (upper)
+  land(24,-24,44,40,0);      // Africa (lower)
+  land(95,55,150,66,-4);     // Asia (main mass)
+  land(60,28,60,34,10);      // Middle East / India blend
+  land(135,-26,44,30,-8);    // Australia
+  land(0,-88,cw*0.6,26,0);   // Antarctica sliver
+  return cv;
+}
+const globeTex=new THREE.CanvasTexture(buildGlobeCanvas());
+if(THREE.sRGBEncoding)globeTex.encoding=THREE.sRGBEncoding;
+globeTex.needsUpdate=true;
+
+// MeshLambertMaterial (no specular) = flat cartoon shading, soft even light, not photoreal
+const GLOBE_R=1.24; // was 1.55 — shrunk ~20% per Antonia review
+const earthMat=new THREE.MeshLambertMaterial({map:globeTex,transparent:true,opacity:0});
+const globe=new THREE.Mesh(new THREE.SphereGeometry(GLOBE_R,48,48),earthMat);globeGroup.add(globe);
+const atmoMat=new THREE.MeshBasicMaterial({color:0x8fd0f5,transparent:true,opacity:0,side:THREE.BackSide});
+const atmo=new THREE.Mesh(new THREE.SphereGeometry(GLOBE_R*1.07,32,32),atmoMat);globeGroup.add(atmo);
+globeGroup.scale.setScalar(0.001);
+scene3.add(new THREE.AmbientLight(0xffffff,.85)); // soft + even — no harsh photoreal falloff
+const d1=new THREE.DirectionalLight(0xffffff,.55);d1.position.set(3,5,4);scene3.add(d1);
+const d2=new THREE.DirectionalLight(0xffffff,.3);d2.position.set(-4,-2,2);scene3.add(d2);
+
+const ring=document.getElementById('ring');
+// ring radius widened (430->560) so the avatar-to-globe gap roughly doubles
+// now that the globe itself is ~20% smaller (per Antonia review)
+const N_AV=20, RCX=460,RCY=460,RR=560;
+const avatars=[];
+for(let i=0;i<N_AV;i++){
+  const a=(-90+(i+0.5)*(360/N_AV))*Math.PI/180;
+  const x=RCX+Math.cos(a)*RR, y=RCY+Math.sin(a)*RR;
+  const outer=document.createElement('div');outer.className='avatar';
+  outer.style.left=(x-52)+'px';outer.style.top=(y-52)+'px';
+  const inner=document.createElement('div');inner.className='avInner';
+  // illustrated flat-vector SVG avatars (DiceBear personas), each baked onto its
+  // own solid brand-color circle via backgroundType=solid — no photo assets
+  inner.innerHTML='<img src="assets/avatars/av'+(i+1)+'.svg" alt="">';
+  outer.appendChild(inner);
+  ring.appendChild(outer);
+  avatars.push({outer,inner});
+}
+gsap.set(avatars.map(a=>a.outer),{opacity:0,scale:.3});
+gsap.set(ring,{rotation:0});
+
+// render3 drives three.js AND counter-rotates avatars so they stay upright while the ring orbits
+function render3(){
+  renderer.render(scene3,cam);
+  const rot=gsap.getProperty(ring,'rotation');
+  for(let i=0;i<avatars.length;i++){avatars[i].inner.style.transform='rotate('+(-rot)+'deg)';}
+}
+
+// ============================================================
+// BEAT C — Minara AI springs from exact screen center (960,540);
+// 11 large, hi-fi DeFi-dashboard metric cards ring around it — each
+// carries a big number PLUS a supporting element (sparkline / donut /
+// bar row / delta chip), sized and placed non-uniformly so they can
+// overlap each other and crop past the frame edge (spec §8 taste).
+// ============================================================
+const metricRing=document.getElementById('metricRing');
+// hero (big) cards interleaved at positions 0/3/6 so they spread evenly around the
+// ring instead of clustering at the top (fixes the top-right pile-up "UI崩坏")
+const METRICS=[
+  {lab:'Balance',           id:'bal',  val:'$100,000', cls:'pos', w:460,h:280,hero:true,  extra:'spark', sparkSeed:401,up:true,  chip:'+2.34%',chipCls:'pos'},
+  {lab:'Sharpe Ratio',                 val:'1.86',      cls:'pos', w:340,h:230,             extra:'donut', donutPct:.62},
+  {lab:'Open Positions',               val:'128',       cls:'neu', w:340,h:230,             extra:'bars',  barsSeed:404},
+  {lab:'Total PnL',         id:'pnl',  val:'+$0',       cls:'pos', w:460,h:280,hero:true,  extra:'spark', sparkSeed:402,up:true,  chip:'+18.5%',chipCls:'pos'},
+  {lab:'Win Rate',                     val:'71.2%',     cls:'pos', w:360,h:230,             extra:'donut', donutPct:.712},
+  {lab:'Max Drawdown',                 val:'-11.4%',    cls:'neg', w:340,h:230,             extra:'donut', donutPct:.57},
+  {lab:'APY',                          val:'34.6%',     cls:'pos', w:400,h:250,hero:true,  extra:'donut', donutPct:.62},
+  {lab:'TVL / AUM',                    val:'$42.8M',    cls:'neu', w:400,h:250,             extra:'bars',  barsSeed:403},
+  {lab:'24h Change',                   val:'+2.34%',    cls:'pos', w:340,h:230,             extra:'chip',  chip:'+2.34%',chipCls:'pos',sparkSeed:405,up:true},
+  {lab:'Allocation',                   val:'86%',       cls:'neu', w:340,h:230,             extra:'donut', donutPct:.86},
+  {lab:'Active Strategies',            val:'24',        cls:'neu', w:340,h:230,             extra:'bars',  barsSeed:406}
+];
+const N_M=METRICS.length, MCX=960,MCY=540;
+
+// tiny donut ring SVG (stroke-dasharray) — deterministic percent fill
+function donutSVG(pct,color){
+  const r=36,c=2*Math.PI*r,off=c*(1-pct);
+  return '<svg class="mc-donut" viewBox="0 0 88 88"><circle cx="44" cy="44" r="'+r+'" fill="none" stroke="#EDEDF0" stroke-width="10"/>'+
+    '<circle cx="44" cy="44" r="'+r+'" fill="none" stroke="'+color+'" stroke-width="10" stroke-linecap="round" '+
+    'stroke-dasharray="'+c.toFixed(1)+'" stroke-dashoffset="'+off.toFixed(1)+'" transform="rotate(-90 44 44)"/></svg>';
+}
+// tiny bar-row (deterministic heights via mulberry32, last bar highlighted)
+function barsHTML(seed,color){
+  const r=mk(seed),n=7,parts=[];
+  for(let i=0;i<n;i++){const h=Math.round(28+r()*100);parts.push('<i'+(i===n-1?' class="hi" style="background:'+color+';height:'+h+'%"':' style="height:'+h+'%"')+'></i>');}
+  return '<div class="mc-bars">'+parts.join('')+'</div>';
+}
+function sparkSVG(seed,up,color){
+  const pts=sparkPoints(seed,240,46,16,up);
+  return '<svg class="mc-spark" viewBox="0 0 240 46" preserveAspectRatio="none">'+
+    '<polyline fill="none" stroke="'+color+'" stroke-width="3" points="'+pts+'"/></svg>';
+}
+function metricColor(cls){return cls==='neg'?'#F75D5F':(cls==='pos'?'#07B56A':'#8a8a8a');}
+
+// deterministic non-uniform placement (mulberry32, not Math.random) — DESIGN_VARIANCE:
+// hero cards sit closer + bigger, standard cards get radius/angle jitter so the ring
+// is asymmetric and cards can overlap / crop past the 1920x1080 frame (spec §8).
+const rndLayout=mk(29);
+// even angular spacing on a widescreen ellipse — cards ring Minara symmetrically
+// (tiny jitter only) so the group reads as an organized dashboard, not a top pile-up.
+// Adjacent cards still overlap (card width > arc spacing) and crop past frame edges (§8).
+const RX=690, RY=475;
+const metricCards=[];
+for(let i=0;i<N_M;i++){
+  const m=METRICS[i];
+  const angle=-90+(i+0.5)*(360/N_M)+(rndLayout()*8-4);
+  const a=angle*Math.PI/180;
+  const rMul=m.hero?1.06:1.0; // big hero cards nudged outward so they don't cover the center badge
+  const x=MCX+Math.cos(a)*RX*rMul, y=MCY+Math.sin(a)*RY*rMul;
+  const color=metricColor(m.cls);
+  // 'chip' extra = header delta-chip only (no extra body element needed on a card
+  // whose big number already IS the percentage change); other types add a body element
+  let extraHTML='';
+  if(m.extra==='spark') extraHTML=sparkSVG(m.sparkSeed,m.up,color);
+  else if(m.extra==='donut') extraHTML='<div class="mc-donutWrap">'+donutSVG(m.donutPct,color)+'<span class="mc-donutLab">of target</span></div>';
+  else if(m.extra==='bars') extraHTML=barsHTML(m.barsSeed,color);
+  const chipHTML=m.chip?'<span class="mc-chip '+m.chipCls+'">'+m.chip+'</span>':'';
+  const el=document.createElement('div');el.className='mcard'+(m.hero?' hero':'');
+  el.style.left=x+'px';el.style.top=y+'px';el.style.width=m.w+'px';el.style.height=m.h+'px';
+  el.innerHTML=
+    '<div class="mc-top"><span class="mc-lab">'+m.lab+'</span>'+chipHTML+'</div>'+
+    '<div class="mc-val '+m.cls+'"'+(m.id?' id="'+m.id+'"':'')+'>'+m.val+'</div>'+
+    extraHTML;
+  metricRing.appendChild(el);
+  metricCards.push(el);
+}
+gsap.set(metricCards,{opacity:0,scale:.5});
+
+// ============================================================
+// master timeline (paused, seek-safe) — last tween ends 9.6s, holds to 10.6s
+// ============================================================
+const tl=gsap.timeline({paused:true,onUpdate:render3});
+
+// ---- BEAT A: dashboard grid (0.0 - 3.6s) ----
+gridCards.forEach((g,rank)=>{
+  tl.to(g.el,{opacity:1,scale:1,duration:.5,ease:'back.out(1.6)'},rank*0.045);
+});
+// slow settle "camera breathe" while the dashboard holds
+tl.to('#gridStage',{scale:1.03,duration:1.6,ease:SNAP},1.8);
+// mass recedes/dissolves, continuing into the transform
+tl.to(gridCards.map(g=>g.el),{opacity:0,scale:.55,duration:.45,ease:SNAP,stagger:.02},3.0);
+
+// ---- BEAT B: talent globe (3.6 - 6.9s) ----
+tl.to(globeGroup.scale,{x:1,y:1,z:1,duration:.6,ease:'back.out(1.6)'},3.6);
+tl.to(earthMat,{opacity:1,duration:.6,ease:SNAP},3.6);
+tl.to(atmoMat,{opacity:.35,duration:.6,ease:SNAP},3.6);
+tl.to(globeGroup.rotation,{y:2.0,duration:3.3,ease:'none'},3.6);
+avatars.forEach((a,i)=>{
+  tl.to(a.outer,{opacity:1,scale:1,duration:.45,ease:'back.out(1.7)'},3.75+i*0.06);
+});
+tl.to(ring,{rotation:32,duration:1.7,ease:'none'},5.0);
+// fade globe + ring as Minara badge is about to spring from its exact center
+tl.to(ring,{opacity:0,scale:.7,duration:.5,ease:'power2.in'},6.6);
+tl.to(globeGroup.scale,{x:.001,y:.001,z:.001,duration:.5,ease:'power2.in'},6.6);
+tl.to(earthMat,{opacity:0,duration:.4,ease:SNAP},6.6);
+tl.to(atmoMat,{opacity:0,duration:.4,ease:SNAP},6.6);
+
+// ---- BEAT C: Minara AI + metrics (6.9 - 10.0s) ----
+tl.fromTo('#minaraBadge',{opacity:0,scale:0},{opacity:1,scale:1,duration:.7,ease:'back.out(1.8)'},6.9);
+// ring UI generates progressively 7.0 -> 9.5s (was too fast) — one card every 0.2s
+metricCards.forEach((el,i)=>{
+  tl.to(el,{opacity:1,scale:1,duration:.55,ease:'back.out(1.6)'},7.0+i*0.20);
+});
+const balObj={v:100000};
+tl.to(balObj,{v:118500,duration:2.0,ease:'power1.out',snap:{v:1},
+  modifiers:{v:function(v){document.getElementById('bal').textContent='$'+Math.round(v).toLocaleString();return v;}}
+},7.6);
+const pnlObj={v:0};
+tl.to(pnlObj,{v:18500,duration:1.8,ease:'power1.out',snap:{v:1},
+  modifiers:{v:function(v){document.getElementById('pnl').textContent='+$'+Math.round(v).toLocaleString();return v;}}
+},7.7);
+
+window.__timelines=window.__timelines||{};
+/* fit to reference-narration timeline (subtitle video) */var __T=8.14;(function(){var c=tl.duration();tl.timeScale(1);if(c>__T+0.01){var f=__T/c;tl.getChildren(false,true,true).forEach(function(ch){ch.startTime(ch.startTime()*f);if(ch.duration)ch.duration(Math.max(0.001,ch.duration()*f));});}else if(c<__T-0.01){tl.to({_p:0},{_p:1,duration:__T-c});}})();
+window.__timelines["root"]=tl;
+render3(); // initial frame
+</script>
+</body></html>

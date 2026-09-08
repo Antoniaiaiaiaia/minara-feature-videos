@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>S14 + S15 | Portfolio | Review</title>
+  <link rel="stylesheet" href="scene.css">
+  <script src="../s10/assets/gsap.min.js"></script><script src="../s10/assets/CustomEase.min.js"></script><script src="assets/icons.js"></script>
+</head>
+<body>
+  <header class="review"><div><b>S14 + S15</b><span>Portfolio</span></div><span>355 frames / 11.83s <i></i> Opening title 2x duration</span></header>
+  <main id="viewport">
+    <div id="stage" data-composition-id="s14-s15" data-width="1920" data-height="1080" data-duration="10">
+      <video id="flow" src="../../assets/bg/bg-light-flow.mp4" muted playsinline preload="auto"></video>
+      <div id="flow-wash"></div>
+      <section id="title" aria-label="Portfolio management, aligned."></section>
+      <section id="client" aria-label="Portfolio desktop application">
+        <aside class="sidebar">
+          <div class="window-controls"><div class="traffic"><i></i><i></i><i></i></div><span data-icon="PanelLeft"></span><span data-icon="ArrowLeft"></span><span class="dim" data-icon="ArrowRight"></span></div>
+          <div class="sidebar-profile"><img src="assets/avatar.png" alt="Profile"><span data-icon="Search"></span><span data-icon="Bell"></span></div>
+          <nav class="navlist" aria-label="Main navigation">
+            <div><span data-icon="House"></span>Office</div><div><span data-icon="ChartNoAxesCombined"></span>Markets</div><div><span data-icon="MessageSquare"></span>Chat</div><div><span data-icon="CodeXml"></span>Coding</div><div><span data-icon="ChartCandlestick"></span>Strategies</div><div class="selected"><span data-icon="Wallet"></span>Portfolio</div><div><span data-icon="LayoutGrid"></span>More</div>
+          </nav>
+          <div class="download"><span data-icon="Download"></span><div>Download update<small>v0.2.26</small></div><span data-icon="ArrowRight"></span></div>
+          <div class="sidebar-user"><img src="assets/avatar.png" alt="">Wizard Anon</div>
+        </aside>
+        <div class="app-area">
+          <header class="windowbar"><span data-icon="Wallet"></span>Portfolio<div><span data-icon="Monitor"></span><span data-icon="CircleHelp"></span></div></header>
+          <div class="portfolio-content">
+            <header class="account-header">
+              <img class="avatar" src="assets/avatar.png" alt="Portfolio profile">
+              <div class="account-info"><div class="wallet-line"><button id="wallet-button" aria-expanded="false"><span data-icon="Wallet"></span><b id="wallet-name">All wallets</b><span data-icon="ChevronDown"></span></button><span id="network">EVM &middot; 0x7a2e...94b1 / Solana &middot; D3mo...9c2A</span></div><h1 id="account-balance">$386,742.80</h1></div>
+              <div class="account-actions"><button data-action="Transfer">Transfer</button><button data-action="Withdraw">Withdraw</button><button data-action="Deposit" class="white">Deposit</button></div>
+              <div id="wallet-menu" hidden><button data-wallet="Overview">All wallets</button><button data-wallet="Spot">Spot wallet</button><button data-wallet="Perps">official strategy</button></div>
+            </header>
+            <nav id="tabs" role="tablist" aria-label="Portfolio views"><button id="tab-Overview" role="tab" aria-selected="true" data-tab="Overview">Overview</button><button id="tab-Spot" role="tab" aria-selected="false" data-tab="Spot">Spot</button><button id="tab-Perps" role="tab" aria-selected="false" data-tab="Perps">Perps</button><button id="tab-Strategies" role="tab" aria-selected="false" data-tab="Strategies">Strategies</button></nav>
+            <section id="panel" role="tabpanel" aria-labelledby="tab-Overview"></section>
+          </div>
+          <footer class="ticker"><div id="ticker-track"></div></footer>
+        </div>
+        <aside id="detail" hidden aria-label="Asset or strategy details"><button id="close-detail" title="Close details" data-icon="X"></button><div id="detail-body"></div></aside>
+        <dialog id="action-dialog"><form id="action-form"><header><h2 id="action-title">Transfer</h2><button type="button" id="close-dialog" title="Close" data-icon="X"></button></header><label>Asset<select id="action-asset"><option>USDC</option></select></label><label id="destination-label">To<select id="action-destination"><option>official strategy</option><option>Spot wallet</option></select></label><label>Amount (USDC)<input id="action-amount" type="number" min="1" max="33834.20" step=".01" value="15000" required></label><p class="muted">Available <b id="cash-available">33,834.20 USDC</b></p><button class="white" type="submit" id="confirm-action">Confirm transfer</button><p class="demo-note">Local demo wallet</p></form></dialog>
+        <div id="receipt" role="status" hidden></div>
+      </section>
+      <section id="cards" aria-label="30 spot, perps and strategy cards"></section>
+      <section id="categories" aria-label="Spot, Perps, Strategies"><div id="category-Spot" class="category-label"></div><div id="category-Perps" class="category-label"></div><div id="category-Strategies" class="category-label"></div></section>
+      <div id="pointer" aria-hidden="true"><span data-icon="MousePointer2"></span></div><div id="click-ring" aria-hidden="true"></div>
+    </div>
+  </main>
+  <footer class="review-controls">
+    <div class="transport"><button id="play" title="Play" data-icon="Play"></button><button id="replay" title="Replay" data-icon="RotateCcw"></button><input id="scrub" type="range" min="0" max="10" step="0.001" value="0" aria-label="Scene time"><output id="time">0.00 / 10.00s</output><select id="speed" aria-label="Playback speed"><option value="1">1x</option><option value="0.5">0.5x</option><option value="0.25">0.25x</option></select><button id="fullscreen" title="Fullscreen" data-icon="Maximize"></button><button id="interactive"><span data-icon="MousePointer2"></span>Try Portfolio</button></div>
+    <nav class="chapters" aria-label="Preview chapters"><button data-seek="0.75">Title</button><button data-seek="2.7">Asset cards</button><button data-seek="5.1">Words to tabs</button><button data-seek="7.59">Spot</button><button data-seek="8.69">Perps</button><button data-seek="9.9">Strategies</button></nav>
+    <p id="review-note">Mock data only. Play, scrub, or try the Portfolio tabs. No MP4 has been rendered.</p>
+  </footer>
+  <script src="assets/title.js"></script><script src="scene.js"></script>
+</body>
+</html>

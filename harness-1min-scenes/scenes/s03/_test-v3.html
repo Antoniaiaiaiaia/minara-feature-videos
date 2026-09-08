@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>S03 · Product reveal · v3 · 70% speed</title>
+<style>
+  html,body{margin:0;background:#0a0a0b;color:#e7e7ea;font:14px/1.5 -apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif}
+  .wrap{max-width:1280px;margin:24px auto;padding:0 16px}
+  video{display:block;width:100%;background:#0a0a0b;border-radius:8px}
+  .bar{display:flex;gap:12px;align-items:center;margin-top:12px}
+  input[type=range]{flex:1}
+  button{background:#17171a;color:#e7e7ea;border:1px solid rgba(255,255,255,.12);border-radius:6px;padding:6px 12px;cursor:pointer}
+  .tc{font-variant-numeric:tabular-nums;color:#8a8a92;min-width:220px}
+  .marks{position:relative;height:18px;margin-top:4px;color:#8a8a92;font-size:12px}
+  .marks span{position:absolute;transform:translateX(-50%);white-space:nowrap}
+  .marks span::before{content:"";display:block;width:1px;height:6px;background:#8a8a92;margin:0 auto 2px}
+  h1{font-size:16px;font-weight:600;margin:0 0 12px}
+  p{color:#8a8a92;margin:8px 0 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>S03 · Product reveal — v3 · 70% speed · 5.667 s</h1>
+  <video id="v" src="../../codex/output/s03-product-reveal-v3.mp4" muted playsinline preload="auto"></video>
+  <div class="bar">
+    <button id="play">▶ Play</button>
+    <button id="prev">◀ 1 frame</button>
+    <button id="next">1 frame ▶</button>
+    <input id="s" type="range" min="0" max="169" step="1" value="0">
+    <div class="tc" id="tc">frame 0 · 0.000 s</div>
+  </div>
+  <div class="marks" id="marks"></div>
+  <p>← → step one frame; Space to play.</p>
+</div>
+<script>
+  const FPS = 30, N = 170;
+  const v = document.getElementById('v'), s = document.getElementById('s'), tc = document.getElementById('tc');
+  const marks = document.getElementById('marks');
+  [[0,'Entry'],[29,'Sidebar tabs'],[65,'Main workspace'],[92,'Settled'],[115,'Hold'],[128,'Exit'],[169,'Out']].forEach(([f,l])=>{
+    const e=document.createElement('span'); e.style.left=(f/(N-1)*100)+'%'; e.textContent=l; marks.appendChild(e);
+  });
+  function show(f){ f=Math.max(0,Math.min(N-1,f)); s.value=f; tc.textContent=`frame ${f} · ${(f/FPS).toFixed(3)} s`; }
+  function seekTo(f){ v.pause(); v.currentTime=(f+0.5)/FPS; show(f); }
+  s.addEventListener('input',()=>seekTo(+s.value));
+  v.addEventListener('timeupdate',()=>{ if(!v.paused) show(Math.round(v.currentTime*FPS)); });
+  document.getElementById('play').onclick=()=>{ if(v.paused){ v.play(); } else v.pause(); };
+  document.getElementById('prev').onclick=()=>seekTo(+s.value-1);
+  document.getElementById('next').onclick=()=>seekTo(+s.value+1);
+  v.addEventListener('play',()=>document.getElementById('play').textContent='❚❚ Pause');
+  v.addEventListener('pause',()=>document.getElementById('play').textContent='▶ Play');
+  v.addEventListener('ended',()=>show(N-1));
+  window.addEventListener('keydown',e=>{
+    if(e.key==='ArrowLeft'){e.preventDefault();seekTo(+s.value-1);} 
+    else if(e.key==='ArrowRight'){e.preventDefault();seekTo(+s.value+1);} 
+    else if(e.key===' '){e.preventDefault();document.getElementById('play').click();}
+  });
+</script>
+</body>
+</html>

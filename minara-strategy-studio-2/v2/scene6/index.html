@@ -1,0 +1,235 @@
+<!doctype html><html><head><meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#F9F9F9}
+#root,[data-composition-id="root"]{position:relative;width:1920px;height:1080px;overflow:hidden;
+  background:#F9F9F9;font-family:'Geist',system-ui,-apple-system,sans-serif;color:#141416}
+
+/* desk (small, lower-left) — struggling-at-a-desk stage of the journey */
+#desk{position:absolute;left:120px;top:660px;width:260px;height:250px;transform-origin:50% 100%;opacity:0}
+
+/* desk lamp, warm glow */
+.d-glow{position:absolute;left:150px;top:56px;width:90px;height:90px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,178,80,.55),rgba(255,178,80,0) 70%)}
+.d-lamp-arm{position:absolute;left:191px;top:70px;width:6px;height:64px;background:#141416;
+  border-radius:3px;transform-origin:bottom center;transform:rotate(-20deg)}
+.d-lamp-shade{position:absolute;left:172px;top:56px;width:46px;height:24px;background:#141416;
+  border-radius:8px 8px 22px 22px;transform:rotate(-10deg)}
+.d-lamp-base{position:absolute;left:184px;top:134px;width:18px;height:10px;background:#3a3a3c;border-radius:3px}
+
+/* monitor */
+.d-screen{position:absolute;left:55px;top:36px;width:130px;height:84px;background:#fff;border:1px solid #ECECEC;
+  border-radius:8px;box-shadow:0 24px 48px -26px rgba(0,0,0,.22);overflow:hidden}
+.d-screen .bar{position:absolute;left:0;top:0;width:100%;height:14px;background:#F5F5F5}
+.d-screen .dot-ok{position:absolute;left:8px;top:5px;width:4px;height:4px;border-radius:50%;background:#07B56A}
+.d-screen .row{position:absolute;left:12px;height:6px;border-radius:3px;background:#F1F1F1}
+.d-mstand{position:absolute;left:110px;top:120px;width:20px;height:18px;background:#3a3a3c}
+.d-mbase{position:absolute;left:90px;top:136px;width:60px;height:8px;background:#3a3a3c;border-radius:4px}
+
+/* desktop surface */
+.d-top{position:absolute;left:10px;top:144px;width:220px;height:14px;background:#141416;border-radius:4px;
+  box-shadow:0 30px 60px -30px rgba(0,0,0,.22)}
+.d-leg{position:absolute;top:158px;width:14px;height:58px;background:#3a3a3c}
+.d-leg.l{left:26px}.d-leg.r{left:200px}
+
+/* river */
+svg.river{position:absolute;inset:0;pointer-events:none}
+svg.ground{position:absolute;inset:0;pointer-events:none;z-index:0}
+.dot{position:absolute;width:18px;height:18px;border-radius:50%;background:#07B56A;opacity:0;
+  box-shadow:0 0 0 6px rgba(7,181,106,.16);transform:translate(-50%,-50%)}
+
+/* manor (grand, upper-right) */
+#manor{position:absolute;left:1240px;top:160px;width:500px;height:380px;transform-origin:50% 100%;opacity:0}
+.m-wing{position:absolute;top:210px;width:130px;height:170px;background:#fff;border:1px solid #ECECEC;
+  border-radius:8px;box-shadow:0 30px 60px -30px rgba(0,0,0,.2)}
+.m-wing.l{left:0}.m-wing.r{left:370px}
+.m-wroof{position:absolute;top:170px;width:0;height:0;border-left:65px solid transparent;
+  border-right:65px solid transparent;border-bottom:40px solid #3a3a3c}
+.m-wroof.l{left:0}.m-wroof.r{left:370px}
+.m-body{position:absolute;left:110px;top:140px;width:280px;height:240px;background:#fff;border:1px solid #ECECEC;
+  border-radius:14px;box-shadow:0 40px 90px -40px rgba(0,0,0,.28)}
+.m-roof{position:absolute;left:100px;top:60px;width:0;height:0;border-left:150px solid transparent;
+  border-right:150px solid transparent;border-bottom:90px solid #141416}
+#m-finial{position:absolute;left:240px;top:44px;width:20px;height:20px;border-radius:50%;
+  background:linear-gradient(120deg,#EB53FF,#FF538E 48%,#FF9A32);box-shadow:0 8px 20px -6px rgba(255,83,142,.6);
+  opacity:0;transform:scale(0)}
+.m-door{position:absolute;left:235px;top:310px;width:30px;height:70px;background:#141416;border-radius:4px 4px 0 0}
+.m-win{position:absolute;width:30px;height:30px;background:#F5F5F5;border:1px solid #ECECEC;border-radius:4px}
+
+/* strategy cards — richer content, placed beside the river curve */
+.card{position:absolute;left:0;top:0;width:236px;padding:24px 26px 22px;background:#fff;border:1px solid #ECECEC;
+  border-radius:20px;box-shadow:0 30px 70px -32px rgba(0,0,0,.3);opacity:0;transform:translate(-50%,-50%) scale(.15);z-index:5}
+.card .c-name{font-size:20px;font-weight:700;color:#141416;letter-spacing:-.01em;line-height:1.1}
+.card .val{margin-top:8px;font-size:44px;font-weight:800;color:#07B56A;font-variant-numeric:tabular-nums;letter-spacing:-.01em;line-height:1}
+.card svg{width:100%;height:36px;margin-top:12px;display:block}
+.card .c-tag{display:inline-block;margin-top:12px;padding:5px 13px;border-radius:100px;font-size:14px;font-weight:600}
+</style></head>
+<body>
+<div id="root" data-composition-id="root" data-width="1920" data-height="1080" data-start="0" data-duration="4.37">
+  <!-- ground: the whole area BELOW the green river fills light green after the curve is drawn -->
+  <svg class="ground" viewBox="0 0 1920 1080"><path id="riverFill" d="M0,830 L360,830 C900,950 900,250 1300,430 L1920,430 L1920,1080 L0,1080 Z" fill="#DDF3E6" opacity="0"/></svg>
+
+  <!-- desk: small, cramped work setup — where the journey starts -->
+  <div id="desk">
+    <div class="d-glow"></div>
+    <div class="d-lamp-arm"></div>
+    <div class="d-lamp-shade"></div>
+    <div class="d-top"></div>
+    <div class="d-leg l"></div>
+    <div class="d-leg r"></div>
+    <div class="d-lamp-base"></div>
+    <div class="d-mbase"></div>
+    <div class="d-mstand"></div>
+    <div class="d-screen">
+      <div class="bar"></div><div class="dot-ok"></div>
+      <div class="row" style="top:28px;width:90px"></div>
+      <div class="row" style="top:42px;width:70px"></div>
+      <div class="row" style="top:56px;width:100px"></div>
+    </div>
+  </div>
+
+  <!-- river -->
+  <svg class="river" viewBox="0 0 1920 1080">
+    <path id="riverShine" d="M360,830 C900,950 900,250 1300,430" fill="none" stroke="#fff" stroke-width="8"
+      stroke-linecap="round" opacity=".4"/>
+    <path id="riverMain" d="M360,830 C900,950 900,250 1300,430" fill="none" stroke="#07B56A" stroke-width="26"
+      stroke-linecap="round"/>
+  </svg>
+  <div class="dot" id="dot0"></div>
+  <div class="dot" id="dot1"></div>
+  <div class="dot" id="dot2"></div>
+
+  <!-- manor -->
+  <div id="manor">
+    <div class="m-wing l"></div>
+    <div class="m-wing r"></div>
+    <div class="m-wroof l"></div>
+    <div class="m-wroof r"></div>
+    <div class="m-body"></div>
+    <div class="m-roof"></div>
+    <div id="m-finial"></div>
+    <div class="m-door"></div>
+    <div class="m-win" style="left:140px;top:175px"></div>
+    <div class="m-win" style="left:235px;top:175px"></div>
+    <div class="m-win" style="left:330px;top:175px"></div>
+    <div class="m-win" style="left:140px;top:250px"></div>
+    <div class="m-win" style="left:330px;top:250px"></div>
+    <div class="m-win" style="left:20px;top:250px;width:24px;height:24px"></div>
+    <div class="m-win" style="left:456px;top:250px;width:24px;height:24px"></div>
+  </div>
+
+  <!-- strategy cards, hugging both sides of the river curve -->
+  <div class="card" id="c0">
+    <div class="c-name">Momentum Alpha</div>
+    <div class="val" id="v0">$100</div>
+    <div class="c-tag" style="background:#EAF7EE;color:#2a9d55">Technical · 30D</div>
+  </div>
+  <div class="card" id="c1">
+    <div class="c-name">BTC Trend</div>
+    <div class="val" id="v1">$1,000</div>
+    <div class="c-tag" style="background:#FFF0E2;color:#E7830f">Crypto · 90D</div>
+  </div>
+  <div class="card" id="c2">
+    <div class="c-name">Vol Harvest</div>
+    <div class="val" id="v2">$10,000</div>
+    <div class="c-tag" style="background:#EEF0FF;color:#5b63e6">Volatility · 60D</div>
+  </div>
+  <div class="card" id="c3">
+    <div class="c-name">Mean Revert</div>
+    <div class="val" id="v3">$100,000</div>
+    <div class="c-tag" style="background:#E9F7FF;color:#2aa3d6">Stock · 45D</div>
+  </div>
+</div>
+<script src="lib/gsap.min.js"></script><script src="lib/CustomEase.min.js"></script>
+<script>
+gsap.registerPlugin(CustomEase);
+const SNAP=CustomEase.create("snap","M0,0 C0.95,0.03 0,0.98 1,1");
+// mulberry32 fixed seed — no Math.random
+function mk(s){return()=>{s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function equityPath(seed,w,h,n){const r=mk(seed);let v=0.12,p=[];for(let i=0;i<n;i++){const drift=0.006+(i/n)*0.012;v+=drift+(r()-0.46)*0.03;v=Math.max(0.05,v);p.push([i/(n-1)*w,h-v*h]);}return p;}
+function ptsStr(pts){return pts.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ');}
+
+// live asset-value counters (replaced the static % + sparkline): each card's number
+// ticks up like a real balance — card1 $100 (stays 3-digit), card2 $1K, card3 $10K, card4 $100K
+const cVals=[{el:'v0',from:100,to:188},{el:'v1',from:1000,to:1860},{el:'v2',from:10000,to:12840},{el:'v3',from:100000,to:121600}];
+const cProx=cVals.map(c=>({v:c.from}));
+const cEl=cVals.map(c=>document.getElementById(c.el));
+
+// river stroke reveal setup
+const riverMain=document.getElementById('riverMain'),riverShine=document.getElementById('riverShine');
+const L=riverMain.getTotalLength();
+[riverMain,riverShine].forEach(p=>{p.style.strokeDasharray=L;p.style.strokeDashoffset=L;});
+
+// growth-node dots placed along the actual river curve (deterministic fractions, not random)
+const dotFrac=[.28,.55,.82];
+['dot0','dot1','dot2'].forEach((id,i)=>{
+  const pt=riverMain.getPointAtLength(L*dotFrac[i]);
+  const d=document.getElementById(id);d.style.left=pt.x+'px';d.style.top=pt.y+'px';
+});
+
+// card centers: placed beside the river curve itself, alternating above/below,
+// hugging its rising path from desk to manor (deterministic, not random)
+function offsetFromCurve(path,L,frac,dist,side){
+  const eps=0.002,t0=Math.max(0,frac-eps),t1=Math.min(1,frac+eps);
+  const p0=path.getPointAtLength(L*t0),p1=path.getPointAtLength(L*t1);
+  const dx=p1.x-p0.x,dy=p1.y-p0.y,len=Math.hypot(dx,dy)||1;
+  let nx=-dy/len,ny=dx/len; // one perpendicular of the tangent
+  const wantUp=side==='above';
+  if((wantUp&&ny>0)||(!wantUp&&ny<0)){nx=-nx;ny=-ny;} // flip so ny sign matches the requested side
+  const p=path.getPointAtLength(L*frac);
+  return{x:p.x+nx*dist,y:p.y+ny*dist};
+}
+const cardFrac={c0:.15,c1:.40,c2:.62,c3:.80};
+const cardSide={c0:'above',c1:'below',c2:'above',c3:'below'};
+Object.keys(cardFrac).forEach(id=>{
+  const pt=offsetFromCurve(riverMain,L,cardFrac[id],150,cardSide[id]);
+  gsap.set('#'+id,{left:pt.x,top:pt.y});
+});
+
+const tl=gsap.timeline({paused:true});
+
+// 0.0–0.6 desk grows in, lower-left
+tl.fromTo('#desk',{scaleY:.05,scaleX:.85,opacity:0},{scaleY:1,scaleX:1,opacity:1,duration:.6,ease:SNAP},0.0);
+
+// 1.8–4.5 river draws itself diagonally toward the manor (slow, ~2.7s)
+tl.to([riverMain,riverShine],{strokeDashoffset:0,duration:2.7,ease:'power1.inOut'},1.8);
+// after the curve finishes drawing, flood the area beneath it with light green
+tl.to('#riverFill',{opacity:1,duration:.6,ease:'power1.out'},4.5);
+dotFrac.forEach((f,i)=>{
+  tl.fromTo('#dot'+i,{opacity:0,scale:0},{opacity:1,scale:1,duration:.4,ease:'back.out(1.8)'},1.8+2.7*f);
+});
+
+// first three cards pop along the journey; the LAST card (c3, nearest the manor)
+// pops just before the manor starts building — "最后一张卡片先出现，然后房子生长"
+tl.fromTo('#c0',{scale:.15,opacity:0},{scale:1,opacity:1,duration:.6,ease:'back.out(1.6)'},1.8);
+tl.fromTo('#c1',{scale:.15,opacity:0},{scale:1,opacity:1,duration:.6,ease:'back.out(1.6)'},2.6);
+tl.fromTo('#c2',{scale:.15,opacity:0},{scale:1,opacity:1,duration:.6,ease:'back.out(1.6)'},3.4);
+tl.fromTo('#c3',{scale:.15,opacity:0},{scale:1,opacity:1,duration:.6,ease:'back.out(1.6)'},4.2);
+
+// asset-value tick-ups: start when each card appears, keep climbing (steady, never "finishes") to scene end
+var __cPop=[1.8,2.6,3.4,4.2], __cEnd=7.2;
+cVals.forEach(function(c,i){
+  tl.to(cProx[i],{v:c.to,duration:__cEnd-__cPop[i],ease:'none',onUpdate:function(){cEl[i].textContent='$'+Math.round(cProx[i].v).toLocaleString();}},__cPop[i]);
+});
+
+// ---- manor CONSTRUCTS element-by-element after the last card (construction feel) ----
+// container just becomes visible; each part grows in, bottom-up structural order:
+// body -> wings -> main roof -> wing roofs -> windows -> door -> finial
+gsap.set('#manor',{opacity:1});
+gsap.set(['.m-body','.m-wing','.m-door'],{transformOrigin:'50% 100%',scaleY:.04,opacity:0});
+gsap.set(['.m-roof','.m-wroof'],{transformOrigin:'50% 100%',scale:0,opacity:0});
+gsap.set('.m-win',{transformOrigin:'50% 50%',scale:0,opacity:0});
+tl.to('.m-body',{scaleY:1,opacity:1,duration:.5,ease:'back.out(1.5)'},4.6);
+tl.to('.m-wing',{scaleY:1,opacity:1,duration:.45,ease:'back.out(1.5)'},5.0);
+tl.to('.m-roof',{scale:1,opacity:1,duration:.45,ease:'back.out(1.6)'},5.35);
+tl.to('.m-wroof',{scale:1,opacity:1,duration:.4,ease:'back.out(1.6)'},5.55);
+tl.to('.m-win',{scale:1,opacity:1,duration:.35,ease:'back.out(1.7)',stagger:.06},5.75);
+tl.to('.m-door',{scaleY:1,opacity:1,duration:.4,ease:'back.out(1.6)'},6.25);
+tl.fromTo('#m-finial',{opacity:0,scale:0},{opacity:1,scale:1,duration:.4,ease:'back.out(1.9)'},6.5);
+tl.to('#m-finial',{scale:1.15,duration:.3,ease:'sine.inOut',yoyo:true,repeat:1},6.9);
+
+window.__timelines=window.__timelines||{};
+/* fit to reference-narration timeline (subtitle video) */var __T=4.37;(function(){var c=tl.duration();tl.timeScale(1);if(c>__T+0.01){var f=__T/c;tl.getChildren(false,true,true).forEach(function(ch){ch.startTime(ch.startTime()*f);if(ch.duration)ch.duration(Math.max(0.001,ch.duration()*f));});}else if(c<__T-0.01){tl.to({_p:0},{_p:1,duration:__T-c});}})();
+window.__timelines["root"]=tl;
+</script></body></html>

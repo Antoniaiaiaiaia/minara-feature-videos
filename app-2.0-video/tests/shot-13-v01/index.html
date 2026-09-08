@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Shot 13 — Long and Short</title>
+  <style>
+    @font-face{font-family:Geist;src:url('./assets/fonts/Geist-Regular.woff2') format('woff2');font-weight:400}
+    @font-face{font-family:Geist;src:url('./assets/fonts/Geist-SemiBold.woff2') format('woff2');font-weight:600}
+    *{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#f7f7f7;font-family:Geist,Arial,sans-serif}body{display:grid;place-items:center}
+    #viewport{position:relative;width:min(100vw,177.7778vh);aspect-ratio:16/9;overflow:hidden;background:#f7f7f7}
+    #shot{position:absolute;inset:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;background:#f7f7f7}
+    .split{position:absolute;left:50%;top:86px;width:1px;height:910px;background:linear-gradient(transparent,#d6d6d6 12%,#d6d6d6 88%,transparent)}
+    .chart-card{position:absolute;top:90px;width:780px;height:550px;overflow:hidden;border-radius:32px;background:#111113;color:#fff;box-shadow:0 28px 70px rgba(15,15,17,.16);transform-origin:50% 100%;will-change:transform,opacity,filter}.chart-card.long{left:120px}.chart-card.short{left:1020px}
+    .card-head{height:110px;padding:25px 28px 0;display:flex;align-items:flex-start}.side-pill{padding:8px 13px;border-radius:99px;background:rgba(8,189,120,.14);color:#16d58c;font-size:17px;font-weight:600}.short .side-pill{background:rgba(255,94,100,.14);color:#ff7278}.asset{margin-left:14px;font-size:24px;font-weight:600}.price{margin-left:auto;text-align:right;font-size:34px;font-weight:600;letter-spacing:-1px}.change{display:block;margin-top:3px;color:#16d58c;font-size:16px}.short .change{color:#ff7278}
+    .chart{position:relative;height:410px;margin:0 20px 18px;border-radius:22px;background:linear-gradient(180deg,#161619,#101012);overflow:hidden}.chart-grid{position:absolute;inset:0;background:linear-gradient(rgba(255,255,255,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:100% 82px,116px 100%}.chart svg{position:absolute;inset:0;width:100%;height:100%}.trace{fill:none;stroke-width:6;stroke-linecap:round;stroke-linejoin:round}.long .trace{stroke:#08bd78}.short .trace{stroke:#ff5e64}.area{opacity:0}.pulse{position:absolute;width:18px;height:18px;margin:-9px 0 0 -9px;border:4px solid #fff;border-radius:50%;box-shadow:0 0 0 8px rgba(255,255,255,.12);opacity:0}.long .pulse{left:94%;top:15%;background:#08bd78}.short .pulse{left:94%;top:85%;background:#ff5e64}.volume{position:absolute;left:26px;right:26px;bottom:18px;height:62px;display:flex;align-items:flex-end;gap:10px;opacity:.52}.volume i{flex:1;border-radius:4px 4px 0 0;background:#08bd78;transform-origin:50% 100%}.short .volume i{background:#ff5e64}.volume i:nth-child(1){height:28%}.volume i:nth-child(2){height:46%}.volume i:nth-child(3){height:34%}.volume i:nth-child(4){height:61%}.volume i:nth-child(5){height:42%}.volume i:nth-child(6){height:75%}.volume i:nth-child(7){height:51%}.volume i:nth-child(8){height:86%}.volume i:nth-child(9){height:48%}.volume i:nth-child(10){height:67%}.volume i:nth-child(11){height:39%}.volume i:nth-child(12){height:79%}.volume i:nth-child(13){height:56%}.volume i:nth-child(14){height:92%}
+    .action{position:absolute;top:690px;width:780px;height:210px;border:0;border-radius:34px;color:#fff;font:600 74px Geist;letter-spacing:-.055em;display:flex;align-items:center;justify-content:center;gap:25px;box-shadow:0 26px 60px rgba(0,0,0,.12);transform-origin:50% 50%;will-change:transform,filter,box-shadow}.action.long{left:120px;background:#08bd78}.action.short{left:1020px;background:#ff5e64}.arrow{font-size:86px;line-height:.8}.action small{display:block;margin-top:9px;font-size:18px;font-weight:400;letter-spacing:0;opacity:.78}
+    .cursor{position:absolute;z-index:20;width:40px;height:49px;opacity:0;filter:drop-shadow(0 4px 7px rgba(0,0,0,.3));will-change:transform,opacity}.cursor svg{width:100%;height:100%}.cursor-long{left:735px;top:625px}.cursor-short{left:1635px;top:625px}
+  </style>
+</head>
+<body>
+  <div id="viewport" data-composition-id="minara-shot-13" data-width="1920" data-height="1080" data-start="0" data-duration="3.934" data-fps="60" data-root="true">
+    <main id="shot">
+      <div class="split"></div>
+      <section class="chart-card long"><header class="card-head"><span class="side-pill">LONG</span><span class="asset">NVDA PERP</span><div class="price">$<span id="long-price">182.41</span><span class="change" id="long-change">+0.00%</span></div></header><div class="chart"><div class="chart-grid"></div><svg viewBox="0 0 760 410" preserveAspectRatio="none"><defs><linearGradient id="long-area" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#08bd78" stop-opacity=".34"/><stop offset="1" stop-color="#08bd78" stop-opacity="0"/></linearGradient></defs><path class="area" d="M0 345 C70 334 112 310 170 320 S258 266 320 280 S405 214 462 225 S545 150 602 167 S690 88 760 62 L760 410 L0 410Z" fill="url(#long-area)"/><path class="trace" d="M0 345 C70 334 112 310 170 320 S258 266 320 280 S405 214 462 225 S545 150 602 167 S690 88 760 62"/></svg><div class="pulse"></div><div class="volume"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div></section>
+      <section class="chart-card short"><header class="card-head"><span class="side-pill">SHORT</span><span class="asset">TSLA PERP</span><div class="price">$<span id="short-price">248.98</span><span class="change" id="short-change">-0.00%</span></div></header><div class="chart"><div class="chart-grid"></div><svg viewBox="0 0 760 410" preserveAspectRatio="none"><defs><linearGradient id="short-area" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ff5e64" stop-opacity=".28"/><stop offset="1" stop-color="#ff5e64" stop-opacity="0"/></linearGradient></defs><path class="area" d="M0 64 C70 82 112 110 170 99 S258 155 320 140 S405 214 462 197 S545 270 602 250 S690 326 760 349 L760 410 L0 410Z" fill="url(#short-area)"/><path class="trace" d="M0 64 C70 82 112 110 170 99 S258 155 320 140 S405 214 462 197 S545 270 602 250 S690 326 760 349"/></svg><div class="pulse"></div><div class="volume"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div></section>
+      <button class="action long"><span class="arrow">↗</span><span>Long</span></button>
+      <button class="action short"><span class="arrow">↘</span><span>Short</span></button>
+      <div class="cursor cursor-long"><svg viewBox="0 0 40 49"><path d="M3 2 35 31l-15 2-8 14z" fill="#111" stroke="#fff" stroke-width="2"/></svg></div>
+      <div class="cursor cursor-short"><svg viewBox="0 0 40 49"><path d="M3 2 35 31l-15 2-8 14z" fill="#111" stroke="#fff" stroke-width="2"/></svg></div>
+    </main>
+  </div>
+  <script src="./assets/vendor/gsap.min.js"></script>
+  <script>
+    const shot=document.querySelector('#shot');const fit=()=>{const v=document.querySelector('#viewport');shot.style.transform=`scale(${v.clientWidth/1920})`};addEventListener('resize',fit);fit();
+    const longTrace=document.querySelector('.long .trace'),shortTrace=document.querySelector('.short .trace');[longTrace,shortTrace].forEach(path=>{const len=path.getTotalLength();gsap.set(path,{strokeDasharray:len,strokeDashoffset:len})});
+    gsap.set('.chart-card',{y:90,scale:.82,opacity:0,filter:'blur(15px)'});gsap.set('.action',{y:80,scale:.62,opacity:0,filter:'blur(14px)'});gsap.set('.volume i',{scaleY:0});
+    const state={long:182.41,short:248.98};const longPrice=document.querySelector('#long-price'),shortPrice=document.querySelector('#short-price'),longChange=document.querySelector('#long-change'),shortChange=document.querySelector('#short-change');
+    const update=()=>{longPrice.textContent=state.long.toFixed(2);shortPrice.textContent=state.short.toFixed(2);longChange.textContent='+'+(((state.long/182.41)-1)*100).toFixed(2)+'%';shortChange.textContent=(((state.short/248.98)-1)*100).toFixed(2)+'%'};
+    const tl=gsap.timeline({paused:true});
+    tl.to('.chart-card',{y:0,scale:1,opacity:1,filter:'blur(0px)',duration:.62,stagger:.1,ease:'back.out(1.75)'},0)
+      .to('.action',{y:0,scale:1,opacity:1,filter:'blur(0px)',duration:.58,stagger:.1,ease:'back.out(2)'},.12)
+      .to('.cursor',{opacity:1,duration:.12},.32)
+      .to('.cursor-long',{x:-250,y:175,duration:.3,ease:'power2.out'},.36)
+      .to('.cursor-short',{x:-250,y:175,duration:.3,ease:'power2.out'},.36)
+      .to('.action',{scale:.92,filter:'brightness(1.15)',duration:.1,ease:'power2.in'},.68)
+      .to('.action',{scale:1,filter:'brightness(1)',duration:.22,ease:'back.out(2.5)'},.78)
+      .to([longTrace,shortTrace],{strokeDashoffset:0,duration:3,ease:'power1.inOut'},.7)
+      .to('.area',{opacity:1,duration:2.65,ease:'power1.in'},.9)
+      .to('.volume i',{scaleY:1,duration:.72,stagger:.035,ease:'back.out(2)'},.82)
+      .to(state,{long:198.72,short:226.41,duration:3,ease:'power1.inOut',onUpdate:update},.7)
+      .to('.pulse',{opacity:1,scale:1,duration:.34,ease:'back.out(2.5)'},3.36)
+      .to('.cursor',{opacity:0,duration:.18},1.05);
+    tl.duration(3.934);window.__timelines=window.__timelines||{};window.__timelines['minara-shot-13']=tl;
+  </script>
+</body>
+</html>

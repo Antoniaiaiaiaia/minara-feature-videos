@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1920,height=1080">
+  <title>Minara App 2.0 — Shot 05</title>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face{font-family:Geist;src:url('assets/fonts/Geist-Regular.woff2') format('woff2');font-weight:400}
+    @font-face{font-family:Geist;src:url('assets/fonts/Geist-SemiBold.woff2') format('woff2');font-weight:600}
+    *{box-sizing:border-box}html,body{width:1920px;height:1080px;margin:0;overflow:hidden;font-family:Geist,sans-serif;color:#141416}
+    #shot-05,#shot-05-clip{position:relative;width:1920px;height:1080px;overflow:hidden}
+    .scene-fill{position:absolute;inset:0;background:#f7f7f7}
+    .halo{position:absolute;left:50%;top:50%;width:1200px;height:720px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(ellipse,rgba(255,255,255,.95) 0%,rgba(255,255,255,.55) 42%,rgba(247,247,247,0) 72%)}
+    .orbit{position:absolute;left:50%;top:50%;z-index:1;border:1.5px solid rgba(20,20,22,.15);border-radius:50%;opacity:0}
+    #orbit-outer{width:1580px;height:590px;margin:-295px 0 0 -790px;transform:rotate(-7deg)}
+    #orbit-inner{width:1260px;height:430px;margin:-215px 0 0 -630px;transform:rotate(8deg)}
+    #asset-layer{position:absolute;inset:0;pointer-events:none}
+    .asset{position:absolute;left:50%;top:50%;width:132px;height:132px;margin:-66px 0 0 -66px;overflow:hidden;border:2px solid #fff;border-radius:50%;background:#fff;box-shadow:0 24px 60px rgba(20,20,22,.16);will-change:transform,opacity,filter}
+    .asset img{display:block;width:100%;height:100%;border-radius:50%;object-fit:cover}
+    #phone-anchor{position:absolute;z-index:10;left:50%;top:50%;width:0;height:0}
+    #phone{position:absolute;left:-236px;top:-470px;width:472px;height:940px;padding:12px;border-radius:72px;background:#050505;box-shadow:0 48px 110px rgba(20,20,22,.18);will-change:transform,opacity,filter}
+    .screen{position:relative;width:448px;height:916px;overflow:hidden;border-radius:60px;background:#fff}
+    .island{position:absolute;z-index:4;left:50%;top:15px;width:108px;height:31px;margin-left:-54px;border-radius:99px;background:#050505}
+    .status{height:62px;display:flex;justify-content:space-between;align-items:center;padding:0 28px;font-size:17px;font-weight:600}
+    .topbar{display:flex;align-items:center;padding:20px 26px 18px;border-bottom:1px solid #e8e8e8}.topbar h1{margin:0;font-size:29px;line-height:1;letter-spacing:-.045em}.live{margin-left:auto;padding:9px 13px;border-radius:99px;background:#e9f8f1;color:#117850;font-size:13px;font-weight:600}
+    .portfolio{margin:20px 22px 0;padding:23px 24px;border-radius:24px;background:#151517;color:#fff}.portfolio span{color:#c6c6c8;font-size:15px}.portfolio b{display:block;margin-top:7px;font-size:44px;line-height:1;letter-spacing:-.055em}.portfolio em{display:block;margin-top:10px;color:#65d6a6;font-size:17px;font-style:normal;font-weight:600}
+    .tabs{display:flex;gap:8px;margin:17px 22px 9px}.tab{padding:9px 14px;border:1px solid #dedede;border-radius:99px;font-size:14px;font-weight:500}.tab.active{color:#fff;background:#151517;border-color:#151517}
+    .market{display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:13px;margin:0 22px;padding:10px 0;border-bottom:1px solid #e9e9e9}.coin{width:42px;height:42px;overflow:hidden;border:1px solid #ededed;border-radius:50%;background:#fff}.coin img{display:block;width:100%;height:100%;object-fit:cover}.market b{font-size:17px;line-height:1.05}.market p{margin:4px 0 0;color:#747474;font-size:13px}.price{text-align:right;font-size:15px;font-weight:600}.price i{display:block;margin-top:4px;color:#159765;font-size:13px;font-style:normal}
+    .bottom-nav{position:absolute;left:28px;right:28px;bottom:24px;height:54px;display:flex;align-items:center;justify-content:space-between}.avatar{width:42px;height:42px;overflow:hidden;border-radius:50%}.avatar img{width:100%;height:100%;object-fit:cover}.nav-icon{width:42px;height:42px;display:grid;place-items:center}.nav-icon svg{width:31px;height:31px}.nav-active{border-radius:50%;background:#141416}
+  </style>
+</head>
+<body>
+<main id="shot-05" data-composition-id="minara-shot-05" data-width="1920" data-height="1080" data-start="0" data-duration="1.967" data-fps="60" data-root="true">
+  <section id="shot-05-clip" class="clip" data-start="0" data-duration="1.967">
+    <div class="scene-fill"></div><div class="halo"></div>
+    <div id="orbit-outer" class="orbit"></div>
+    <div id="orbit-inner" class="orbit"></div>
+    <div id="asset-layer">
+      <div class="asset a1"><img src="assets/tradingview/bitcoin.svg" alt="Bitcoin"></div>
+      <div class="asset a2"><img src="assets/tradingview/apple.png" alt="Apple"></div>
+      <div class="asset a3"><img src="assets/tradingview/microsoft.png" alt="Microsoft"></div>
+      <div class="asset a4"><img src="assets/tradingview/nvidia.png" alt="NVIDIA"></div>
+      <div class="asset b1"><img src="assets/tradingview/tesla.png" alt="Tesla"></div>
+      <div class="asset b2"><img src="assets/tradingview/amazon.png" alt="Amazon"></div>
+      <div class="asset b3"><img src="assets/tradingview/advanced-micro-devices.png" alt="AMD"></div>
+      <div class="asset b4"><img src="assets/tradingview/meta-platforms.png" alt="Meta"></div>
+    </div>
+    <div id="phone-anchor"><div id="phone">
+      <div class="screen"><div class="island"></div><div class="status"><span>9:41</span><span>5G&nbsp;&nbsp;100%</span></div>
+        <div class="topbar"><h1>All Markets</h1><span class="live">LIVE</span></div>
+        <div class="portfolio"><span>Total market exposure</span><b>$128,420.80</b><em>+$4,286.42 today</em></div>
+        <div class="tabs"><span class="tab active">All</span><span class="tab">Stocks</span><span class="tab">Crypto</span><span class="tab">Futures</span></div>
+        <div class="market"><span class="coin"><img src="assets/tradingview/bitcoin.svg" alt="Bitcoin"></span><div><b>Bitcoin</b><p>Crypto</p></div><span class="price">$67,842<i>+2.41%</i></span></div>
+        <div class="market"><span class="coin"><img src="assets/tradingview/nvidia.png" alt="NVIDIA"></span><div><b>NVIDIA</b><p>NASDAQ</p></div><span class="price">$128.34<i>+3.18%</i></span></div>
+        <div class="market"><span class="coin"><img src="assets/tradingview/apple.png" alt="Apple"></span><div><b>Apple</b><p>NASDAQ</p></div><span class="price">$226.05<i>+1.26%</i></span></div>
+        <div class="market"><span class="coin"><img src="assets/tradingview/tesla.png" alt="Tesla"></span><div><b>Tesla</b><p>NASDAQ</p></div><span class="price">$248.98<i>+2.12%</i></span></div>
+        <div class="market"><span class="coin"><img src="assets/tradingview/advanced-micro-devices.png" alt="AMD"></span><div><b>AMD</b><p>NASDAQ</p></div><span class="price">$156.40<i>+1.84%</i></span></div>
+        <div class="market"><span class="coin"><img src="assets/tradingview/amazon.png" alt="Amazon"></span><div><b>Amazon</b><p>NASDAQ</p></div><span class="price">$187.69<i>+0.74%</i></span></div>
+        <nav class="bottom-nav"><span class="avatar"><img src="assets/brand/Minara-Avatar.png" alt="Minara"></span><span class="nav-icon nav-active"><svg viewBox="0 0 32 32"><rect x="11" y="11" width="10" height="10" rx="2" fill="#fff" transform="rotate(45 16 16)"/></svg></span><span class="nav-icon"><svg viewBox="0 0 32 32"><rect x="4" y="8" width="16" height="20" fill="#fff" stroke="#141416" stroke-width="2"/><rect x="11" y="4" width="17" height="24" fill="#fff" stroke="#141416" stroke-width="2"/></svg></span><span class="nav-icon"><svg viewBox="0 0 32 32"><path d="M4 8h21v6h-4a4 4 0 0 0 0 8h4v3H4z" fill="#fff" stroke="#141416" stroke-width="2"/><path d="M21 14h7v8h-7a4 4 0 0 1 0-8Z" fill="#fff" stroke="#141416" stroke-width="2"/></svg></span></nav>
+      </div>
+    </div></div>
+  </section>
+  <script>
+    (function(){
+      var orbitState={progress:0,visibility:0};
+      var orbitItems=[
+        ['.a1',Math.PI,760,275],['.a2',0,760,275],['.a3',-Math.PI/2,760,275],['.a4',Math.PI/2,760,275],
+        ['.b1',Math.PI*.75,610,205],['.b2',-Math.PI*.25,610,205],['.b3',Math.PI*.25,610,205],['.b4',-Math.PI*.75,610,205]
+      ];
+      function updateOrbit(){
+        orbitItems.forEach(function(item,index){
+          var angle=item[1]-orbitState.progress*Math.PI*1.25;
+          var depth=(Math.sin(angle)+1)/2;
+          var el=document.querySelector(item[0]);
+          gsap.set(el,{x:Math.cos(angle)*item[2],y:Math.sin(angle)*item[3],scale:.68+depth*.48,rotation:(depth-.5)*8,opacity:(.5+depth*.5)*orbitState.visibility,filter:'blur('+((1-depth)*1.4)+'px)'});
+          el.style.zIndex=depth>.52?'20':'2';
+        });
+      }
+      updateOrbit();
+      var tl=gsap.timeline({paused:true});
+      tl.fromTo('#phone',{y:90,scale:.9,opacity:0,filter:'blur(10px)'},{y:0,scale:1,opacity:1,filter:'blur(0px)',duration:.48,ease:'power3.out'},0)
+        .to('.orbit',{opacity:1,duration:.28,ease:'power2.out'},.48)
+        .to(orbitState,{visibility:1,duration:.3,ease:'power2.out',onUpdate:updateOrbit},.48)
+        .fromTo('.asset img',{scale:.55,opacity:0,filter:'blur(10px)'},{scale:1,opacity:1,filter:'blur(0px)',duration:.38,stagger:.055,ease:'back.out(1.8)'},.48)
+        .to(orbitState,{progress:1,duration:1.487,ease:'none',onUpdate:updateOrbit},.48);
+      window.__timelines=window.__timelines||{};window.__timelines['minara-shot-05']=tl;
+    })();
+  </script>
+</main>
+</body>
+</html>

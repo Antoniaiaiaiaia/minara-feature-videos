@@ -1,0 +1,52 @@
+// Reuses the project browser PNG → FFmpeg pipeline, v7 sidebar-stagger correction.
+import assert from 'node:assert/strict';
+import {execFileSync} from 'node:child_process';
+import {mkdir,writeFile} from 'node:fs/promises';
+import {existsSync} from 'node:fs';
+import path from 'node:path';
+import {fileURLToPath,pathToFileURL} from 'node:url';
+const here=path.dirname(fileURLToPath(import.meta.url));
+const frames=path.join(here,'render-frames'),verification=path.join(here,'render-verification');
+const output=path.resolve(here,'../../output2/s03-product-reveal-v7.mp4');
+assert(!existsSync(output),'Refusing to overwrite an existing export');
+await mkdir(frames,{recursive:true});await mkdir(verification,{recursive:true});
+const {chromium}=await import(pathToFileURL(path.resolve(path.dirname(process.execPath),'../lib/node_modules/@playwright/cli/node_modules/playwright/index.mjs')));
+const browser=await chromium.launch({headless:true,channel:'chrome',args:['--disable-gpu']}),errors=[];
+try{
+ const page=await browser.newPage({viewport:{width:1920,height:1080},deviceScaleFactor:1});
+ page.on('pageerror',e=>errors.push(e.message));
+ await page.goto(pathToFileURL(path.join(here,'_test-v7.html')).href);
+ await page.waitForFunction(()=>window.ready);
+ await page.addStyleTag({content:`
+  html,body{width:1920px!important;height:1080px!important;overflow:hidden!important}
+  body>.review-header,body>.review-controls{display:none!important}
+  #viewport{position:fixed!important;inset:0!important;width:1920px!important;height:1080px!important;max-width:none!important;margin:0!important}
+  #stage{transform:none!important}
+ `});
+ assert.deepEqual(await page.locator('#stage').evaluate(e=>[e.getBoundingClientRect().width,e.getBoundingClientRect().height]),[1920,1080]);
+ assert.equal(await page.evaluate(()=>scene.duration),3);
+ const nav=await page.evaluate(()=>{
+  const at=t=>{scene.seek(t);return [...document.querySelectorAll('#sidebar-tabs button')].map(b=>({opacity:+getComputedStyle(b).opacity,x:+gsap.getProperty(b,'x')}));};
+  return {early:at(.2),mid:at(.6),done:at(1)};
+ });
+ assert.equal(nav.early.length,7);
+ assert(nav.early[0].opacity>nav.early[1].opacity && nav.early[6].opacity===0,'Tabs enter individually, in order');
+ assert(nav.mid[0].x===0 && nav.mid[6].x>0,'Later tabs still slide while earlier tabs have settled');
+ assert(nav.done.every(b=>b.opacity===1 && b.x===0),'All seven tab entrances complete');
+ for(let frame=0;frame<90;frame++){
+  await page.evaluate(async t=>{scene.seek(t);await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));},frame/30);
+  await page.screenshot({path:path.join(frames,`f-${String(frame).padStart(5,'0')}.png`)});
+  if((frame+1)%30===0)console.log(`Captured ${frame+1}/90`);
+ }
+ assert.equal(await page.locator('#office-page,#strategy-page').count(),0);
+ assert.equal(await page.evaluate(()=>scene.state.page),'Chat');
+ assert.deepEqual(errors,[]);
+}finally{await browser.close();}
+execFileSync('ffmpeg',['-n','-hide_banner','-loglevel','error','-framerate','30','-i',path.join(frames,'f-%05d.png'),'-frames:v','90','-c:v','libx264','-crf','13','-pix_fmt','yuv420p','-colorspace','bt709','-color_primaries','bt709','-color_trc','bt709','-an','-movflags','+faststart',output],{stdio:'inherit'});
+const probe=JSON.parse(execFileSync('ffprobe',['-v','error','-show_streams','-show_format','-of','json',output],{encoding:'utf8'}));
+const v=probe.streams[0];
+assert.equal(probe.streams.length,1);assert.equal(v.codec_name,'h264');assert.equal(v.width,1920);assert.equal(v.height,1080);assert.equal(v.r_frame_rate,'30/1');assert.equal(+v.nb_frames,90);assert.equal(+probe.format.duration,3);
+await writeFile(path.join(verification,'render.json'),JSON.stringify({output,errors,probe},null,2));
+const picks=[1,5,9,15,23,30,70,89].map(f=>`eq(n,${f})`).join('+');
+execFileSync('ffmpeg',['-y','-hide_banner','-loglevel','error','-i',output,'-vf',`select='${picks}',scale=400:225,tile=4x2`,'-frames:v','1',path.join(verification,'contact-sheet.png')],{stdio:'inherit'});
+console.log(`PASS: ${output} · 1920×1080 · 30fps · 90 frames · 3.000s · silent H.264`);

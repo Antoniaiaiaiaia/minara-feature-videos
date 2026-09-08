@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Minara App 2.0 · Editable Storyboard Timeline</title>
+  <style>
+    :root {
+      --cream: #faf9f5;
+      --paper: #ffffff;
+      --ink: #15171a;
+      --muted: #777b78;
+      --line: #dddcd6;
+      --green: #1ab173;
+      --green-dark: #087d51;
+      --pink: #ff538e;
+      --violet: #8353ff;
+      --orange: #ff9a32;
+      --shadow: 0 16px 48px rgba(21, 23, 26, .08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--cream);
+      font-family: Figtree, Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+    .app { min-height: 100vh; padding: 24px; }
+    header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      margin: 0 auto 18px;
+      max-width: 1560px;
+    }
+    h1 { font-size: 30px; line-height: 1.05; margin: 0 0 8px; letter-spacing: -.03em; }
+    .sub { color: var(--muted); font-size: 14px; }
+    .badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .badge { background: #edf8f3; color: var(--green-dark); border: 1px solid #c9eadc; padding: 6px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; }
+    .warning { background: #fff3e6; border-color: #ffd4a8; color: #98500a; }
+    .toolbar { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+    .btn {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--paper);
+      color: var(--ink);
+      padding: 9px 12px;
+      font-weight: 700;
+      box-shadow: 0 2px 8px rgba(21, 23, 26, .04);
+    }
+    .btn:hover { border-color: #aaa; }
+    .btn.primary { background: var(--ink); color: white; border-color: var(--ink); }
+    .btn.green { background: var(--green); color: white; border-color: var(--green); }
+    .layout {
+      max-width: 1560px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 330px;
+      gap: 18px;
+    }
+    .stack { display: grid; gap: 18px; min-width: 0; }
+    .card { background: var(--paper); border: 1px solid #ecebe6; border-radius: 18px; box-shadow: var(--shadow); overflow: hidden; }
+    .card-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; border-bottom: 1px solid #ecebe6; }
+    .card-title { font-size: 14px; font-weight: 800; }
+    .hint { color: var(--muted); font-size: 12px; }
+    .preview-wrap { display: grid; grid-template-columns: minmax(280px, 420px) 1fr; min-height: 360px; }
+    .phone-stage { display: grid; place-items: center; padding: 18px; background: radial-gradient(circle at 50% 35%, #fff 0, #f1f0eb 70%); border-right: 1px solid #ecebe6; }
+    .phone {
+      height: 320px;
+      aspect-ratio: 945 / 2048;
+      border: 8px solid var(--ink);
+      border-radius: 30px;
+      overflow: hidden;
+      background: #eee;
+      box-shadow: 0 22px 50px rgba(21,23,26,.18);
+      position: relative;
+    }
+    .phone img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .phone .empty { display: grid; place-items: center; width: 100%; height: 100%; color: var(--muted); font-size: 12px; text-align: center; padding: 20px; }
+    .caption-overlay {
+      position: absolute;
+      left: 8%; right: 8%; bottom: 7%;
+      color: white; background: rgba(15,17,18,.88);
+      border-radius: 10px; padding: 8px 10px;
+      text-align: center; font-size: 10px; font-weight: 700;
+      box-shadow: 0 8px 22px rgba(0,0,0,.25);
+    }
+    .preview-info { padding: 28px; display: flex; flex-direction: column; justify-content: center; gap: 14px; }
+    .timecode { font-size: 48px; font-weight: 800; letter-spacing: -.05em; font-variant-numeric: tabular-nums; }
+    .eyebrow { color: var(--green-dark); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .12em; }
+    .active-copy { font-size: 25px; line-height: 1.22; font-weight: 700; max-width: 760px; }
+    .active-meta { color: var(--muted); font-size: 13px; }
+    .transport { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+    .transport .btn { min-width: 42px; }
+    .transport input[type="range"] { width: 160px; accent-color: var(--green); }
+    .timeline-shell { padding: 0 0 14px; }
+    .timeline-scroll { overflow-x: auto; overflow-y: hidden; padding: 0 16px 12px; }
+    .timeline { position: relative; min-height: 290px; user-select: none; }
+    .ruler { position: absolute; top: 0; left: 0; right: 0; height: 34px; border-bottom: 1px solid var(--line); background: linear-gradient(to bottom, #fff, #fafafa); }
+    .tick { position: absolute; top: 0; height: 34px; border-left: 1px solid #e7e6e0; color: var(--muted); font-size: 10px; padding: 5px 0 0 4px; }
+    .tick.major { border-left-color: #aaa; color: var(--ink); font-weight: 700; }
+    .lane-label { position: absolute; left: 0; transform: translateY(-50%); font-size: 10px; color: var(--muted); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; pointer-events: none; }
+    .lane-bg { position: absolute; left: 0; right: 0; border: 1px solid #eee; border-radius: 10px; background: #fbfbfa; }
+    .scene-lane { top: 54px; height: 86px; }
+    .cue-lane { top: 162px; height: 98px; }
+    .block {
+      position: absolute;
+      border-radius: 9px;
+      overflow: hidden;
+      cursor: grab;
+      touch-action: none;
+      transition: box-shadow .12s, transform .12s;
+    }
+    .block:active { cursor: grabbing; }
+    .block.selected { box-shadow: 0 0 0 3px rgba(131,83,255,.25), 0 8px 20px rgba(21,23,26,.15); z-index: 5; }
+    .scene-block { top: 60px; height: 74px; background: linear-gradient(135deg, #16221d, #235e48); color: white; border: 1px solid rgba(255,255,255,.2); }
+    .scene-block img { width: 50px; height: 100%; object-fit: cover; float: left; opacity: .82; }
+    .scene-copy { padding: 8px 8px 5px 58px; min-width: 0; }
+    .scene-name { font-size: 11px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .scene-time { font-size: 9px; color: rgba(255,255,255,.68); margin-top: 5px; font-variant-numeric: tabular-nums; }
+    .cue-block { top: 170px; height: 80px; background: #eff9f4; border: 1px solid #b9e5d3; color: #064c33; padding: 8px 10px; }
+    .cue-block:nth-of-type(3n) { background: #f5efff; border-color: #d7c5fa; color: #503184; }
+    .cue-id { font-size: 9px; font-weight: 900; opacity: .68; margin-bottom: 4px; }
+    .cue-text { font-size: 10px; line-height: 1.2; font-weight: 700; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
+    .handle { position: absolute; top: 0; bottom: 0; width: 8px; background: rgba(255,255,255,.32); cursor: ew-resize; z-index: 4; }
+    .handle.left { left: 0; }
+    .handle.right { right: 0; }
+    .playhead { position: absolute; top: 0; bottom: 4px; width: 2px; background: #e53d55; z-index: 10; pointer-events: none; }
+    .playhead::before { content: ""; position: absolute; top: 0; left: -5px; width: 12px; height: 12px; border-radius: 50%; background: #e53d55; }
+    .inspector { position: sticky; top: 18px; align-self: start; }
+    .inspector-body { padding: 16px; display: grid; gap: 14px; }
+    .field { display: grid; gap: 6px; }
+    .field label { color: var(--muted); font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
+    .field input, .field textarea, .field select { width: 100%; border: 1px solid var(--line); border-radius: 9px; padding: 9px 10px; background: white; color: var(--ink); }
+    .field textarea { min-height: 92px; resize: vertical; line-height: 1.35; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .selected-kind { display: inline-flex; width: max-content; border-radius: 999px; padding: 5px 8px; background: #f1efff; color: #594197; font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: .08em; }
+    .empty-inspector { color: var(--muted); font-size: 13px; line-height: 1.55; }
+    .screen-bank { padding: 14px; display: grid; grid-template-columns: repeat(6, minmax(90px, 1fr)); gap: 10px; max-height: 360px; overflow-y: auto; }
+    .screen-card { border: 1px solid var(--line); background: white; border-radius: 10px; padding: 6px; text-align: left; }
+    .screen-card:hover { border-color: var(--green); }
+    .screen-card img { width: 100%; aspect-ratio: 9 / 12; object-fit: cover; object-position: top; border-radius: 6px; background: #eee; display: block; }
+    .screen-card span { display: block; margin-top: 5px; font-size: 9px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .status { position: fixed; left: 50%; bottom: 20px; transform: translate(-50%, 20px); opacity: 0; background: var(--ink); color: white; padding: 10px 14px; border-radius: 999px; font-size: 12px; font-weight: 700; transition: .2s; z-index: 30; pointer-events: none; }
+    .status.show { opacity: 1; transform: translate(-50%, 0); }
+    .kbd { padding: 2px 5px; border: 1px solid #ccc; border-bottom-width: 2px; border-radius: 5px; background: white; font-size: 10px; color: #555; }
+    @media (max-width: 980px) {
+      .layout { grid-template-columns: 1fr; }
+      .inspector { position: static; }
+      .preview-wrap { grid-template-columns: 1fr; }
+      .phone-stage { border-right: 0; border-bottom: 1px solid #ecebe6; }
+      .screen-bank { grid-template-columns: repeat(3, 1fr); }
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div>
+      <h1>Minara App 2.0 · Storyboard timeline</h1>
+      <div class="sub">Based on <strong>app2.0 video script.srt</strong>. Drag caption or storyboard blocks to change timing, and drag the handles to change duration.</div>
+      <div class="badges">
+        <span class="badge">73.3 seconds</span>
+        <span class="badge">30 captions</span>
+        <span class="badge">8 storyboard sections</span>
+        <span class="badge warning">Minerva in the original SRT has been corrected to Minara</span>
+      </div>
+    </div>
+    <div class="toolbar">
+      <button class="btn" id="resetBtn">Restore draft</button>
+      <button class="btn" id="exportJsonBtn">Export JSON</button>
+      <button class="btn green" id="exportSrtBtn">Export revised SRT</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="stack">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title">Current frame</div>
+          <div class="hint">Click the timeline to seek · <span class="kbd">Space</span> Play / pause</div>
+        </div>
+        <div class="preview-wrap">
+          <div class="phone-stage">
+            <div class="phone">
+              <img id="previewImage" alt="Storyboard preview">
+              <div class="empty" id="previewEmpty">No frame assigned at this time</div>
+              <div class="caption-overlay" id="captionOverlay">No caption</div>
+            </div>
+          </div>
+          <div class="preview-info">
+            <div class="eyebrow" id="activeSceneLabel">Opening</div>
+            <div class="timecode" id="timecode">00:00.0</div>
+            <div class="active-copy" id="activeCopy">Meet the new Minara app.</div>
+            <div class="active-meta" id="activeMeta">c01 · 0.0–1.8s</div>
+            <div class="transport">
+              <button class="btn primary" id="playBtn">▶</button>
+              <button class="btn" data-nudge="-1">−1s</button>
+              <button class="btn" data-nudge="-0.1">−0.1s</button>
+              <button class="btn" data-nudge="0.1">+0.1s</button>
+              <button class="btn" data-nudge="1">+1s</button>
+              <label class="hint">Zoom <input id="zoomRange" type="range" min="8" max="28" step="1" value="14"></label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card timeline-shell">
+        <div class="card-head">
+          <div class="card-title">Editable timeline</div>
+          <div class="hint">Upper track: storyboard sections · lower track: captions · saved automatically in the browser</div>
+        </div>
+        <div class="timeline-scroll" id="timelineScroll">
+          <div class="timeline" id="timeline">
+            <div class="ruler" id="ruler"></div>
+            <div class="lane-bg scene-lane"></div>
+            <div class="lane-bg cue-lane"></div>
+            <div class="lane-label" style="top:48px">Storyboard</div>
+            <div class="lane-label" style="top:156px">Subtitles</div>
+            <div id="sceneBlocks"></div>
+            <div id="cueBlocks"></div>
+            <div class="playhead" id="playhead"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title">Frame library</div>
+          <div class="hint">Select a caption or storyboard block, then click an image to assign it</div>
+        </div>
+        <div class="screen-bank" id="screenBank"></div>
+      </div>
+    </section>
+
+    <aside class="card inspector">
+      <div class="card-head">
+        <div class="card-title">Property editor</div>
+        <div class="hint">Precision: 0.1 seconds</div>
+      </div>
+      <div class="inspector-body" id="inspectorBody">
+        <div class="empty-inspector">Click any caption or storyboard block to edit text, start and end times, and the reference screenshot.</div>
+      </div>
+    </aside>
+  </main>
+</div>
+<div class="status" id="status"></div>
+
+<script>
+(() => {
+  const STORAGE_KEY = 'minara-app2-storyboard-timeline-v01';
+  const images = [
+    'IMG_7027.PNG','IMG_7028.PNG','IMG_7029.PNG','IMG_7030.PNG','IMG_7031.PNG','IMG_7032.PNG','IMG_7033.PNG','IMG_7034.PNG','IMG_7035.PNG','IMG_7036.PNG','IMG_7037.PNG','IMG_7038.PNG','IMG_7039.PNG','IMG_7040.jpg','IMG_7041.jpg','IMG_7042.PNG','IMG_7043.jpg','IMG_7044.PNG','IMG_7045.PNG','IMG_7046.PNG','IMG_7047.PNG','IMG_7048.PNG','IMG_7049.PNG','IMG_7050.PNG','IMG_7051.PNG','IMG_7052.PNG','IMG_7053.PNG','IMG_7054.JPG','IMG_7055.PNG','IMG_7056.jpg'
+  ];
+  const imagePath = name => `../source/screenshots/${name}`;
+  const initial = {
+    duration: 73.3,
+    zoom: 14,
+    scenes: [
+      {id:'s01',start:0,end:5.866,label:'Opening · App positioning',image:'IMG_7054.JPG'},
+      {id:'s02',start:5.866,end:15.533,label:'Agent Chat · Pocket advisor',image:'IMG_7028.PNG'},
+      {id:'s03',start:15.533,end:27.233,label:'Markets & Research · Trade everything, charts and data',image:'IMG_7044.PNG'},
+      {id:'s05',start:27.233,end:35.1,label:'Trading · Spot and perps',image:'IMG_7034.PNG'},
+      {id:'s06',start:35.1,end:44.566,label:'Strategy Marketplace · Run',image:'IMG_7049.PNG'},
+      {id:'s07',start:44.566,end:58.433,label:'Autopilot · Monitor and switch',image:'IMG_7047.PNG'},
+      {id:'s08',start:58.433,end:73.3,label:'Closing · Research, trade, automate',image:'IMG_7054.JPG'}
+    ],
+    cues: [
+      {id:'c01',start:0,end:1.8,text:'Meet the new Minara app.',image:'IMG_7054.JPG'},
+      {id:'c02',start:1.8,end:5.866,text:'Your ultimate financial agent on your phone.',image:'IMG_7054.JPG'},
+      {id:'c03',start:5.866,end:7.833,text:'Ask Minara anything.',image:'IMG_7028.PNG'},
+      {id:'c04',start:7.833,end:11.633,text:'Get clear market insights in seconds.',image:'IMG_7028.PNG'},
+      {id:'c05',start:11.633,end:15.533,text:'Your pocket financial advisor wherever you go.',image:'IMG_7027.PNG'},
+      {id:'c06',start:15.533,end:19.433,text:'Stocks, commodities, crypto. One app to trade everything.',image:'IMG_7044.PNG'},
+      {id:'c07',start:19.433,end:21.333,text:'Check charts.',image:'IMG_7029.PNG'},
+      {id:'c08',start:21.333,end:23.433,text:'Earnings.',image:'IMG_7031.PNG'},
+      {id:'c09',start:23.433,end:25.3,text:'Analyst data.',image:'IMG_7032.PNG'},
+      {id:'c10',start:25.3,end:27.233,text:'And news.',image:'IMG_7033.PNG'},
+      {id:'c11',start:27.233,end:29.033,text:'Trade stocks on spot.',image:'IMG_7034.PNG'},
+      {id:'c12',start:29.033,end:31.166,text:'Powered by Ondo Network.',image:'IMG_7035.PNG'},
+      {id:'c13',start:31.166,end:35.1,text:'Or go long and short with perps.',image:'IMG_7041.jpg'},
+      {id:'c14',start:35.1,end:36.833,text:'Want to automate your trades?',image:'IMG_7048.PNG'},
+      {id:'c15',start:36.833,end:38.933,text:'Explore the Strategy Marketplace.',image:'IMG_7048.PNG'},
+      {id:'c16',start:38.933,end:40.9,text:'Compare.',image:'IMG_7048.PNG'},
+      {id:'c17',start:40.9,end:42.866,text:'Choose.',image:'IMG_7049.PNG'},
+      {id:'c18',start:42.866,end:44.566,text:'Then tap Run.',image:'IMG_7049.PNG'},
+      {id:'c19',start:44.566,end:50.666,text:'Autopilot monitors and executes the strategy 24/7.',image:'IMG_7047.PNG'},
+      {id:'c20',start:50.666,end:51.7,text:'Pause.',image:'IMG_7047.PNG'},
+      {id:'c21',start:51.7,end:52.933,text:'Or switch.',image:'IMG_7050.PNG'},
+      {id:'c22',start:52.933,end:55.233,text:'Anytime. Anywhere.',image:'IMG_7051.PNG'},
+      {id:'c23',start:55.233,end:58.433,text:'Straight from your phone.',image:'IMG_7052.PNG'},
+      {id:'c24',start:58.433,end:60.4,text:'Research.',image:'IMG_7028.PNG'},
+      {id:'c25',start:60.4,end:62.366,text:'Trade.',image:'IMG_7035.PNG'},
+      {id:'c26',start:62.366,end:64.3,text:'Automate.',image:'IMG_7049.PNG'},
+      {id:'c27',start:64.3,end:66.266,text:'Stay in control.',image:'IMG_7050.PNG'},
+      {id:'c28',start:66.266,end:68.3,text:'Minara App 2.0.',image:'IMG_7054.JPG'},
+      {id:'c29',start:68.3,end:70.333,text:'Your financial intelligence.',image:'IMG_7054.JPG'},
+      {id:'c30',start:70.333,end:73.3,text:'Your agent in one app.',image:'IMG_7054.JPG'}
+    ]
+  };
+
+  const clone = value => JSON.parse(JSON.stringify(value));
+  let state = (() => {
+    try { return Object.assign(clone(initial), JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null') || {}); }
+    catch { return clone(initial); }
+  })();
+  const marketsScene = state.scenes.find(scene => scene.id === 's03');
+  const researchScene = state.scenes.find(scene => scene.id === 's04');
+  if (marketsScene && researchScene) {
+    marketsScene.end = researchScene.end;
+    marketsScene.label = 'Markets & Research · Trade everything, charts and data';
+    state.scenes = state.scenes.filter(scene => scene.id !== 's04');
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({duration:state.duration,zoom:state.zoom,scenes:state.scenes,cues:state.cues}));
+  }
+  let selected = null;
+  let playheadTime = 0;
+  let playing = false;
+  let raf = null;
+  let playStartedAt = 0;
+  let playStartedTime = 0;
+
+  const $ = id => document.getElementById(id);
+  const els = {
+    timeline: $('timeline'), ruler: $('ruler'), sceneBlocks: $('sceneBlocks'), cueBlocks: $('cueBlocks'), playhead: $('playhead'),
+    previewImage: $('previewImage'), previewEmpty: $('previewEmpty'), captionOverlay: $('captionOverlay'), activeSceneLabel: $('activeSceneLabel'),
+    timecode: $('timecode'), activeCopy: $('activeCopy'), activeMeta: $('activeMeta'), playBtn: $('playBtn'), inspector: $('inspectorBody'),
+    screenBank: $('screenBank'), zoomRange: $('zoomRange'), status: $('status')
+  };
+
+  const snap = value => Math.round(value * 10) / 10;
+  const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+  const formatShort = value => `${Number(value).toFixed(1)}s`;
+  const formatClock = value => {
+    const minutes = Math.floor(value / 60);
+    const seconds = value - minutes * 60;
+    return `${String(minutes).padStart(2,'0')}:${seconds.toFixed(1).padStart(4,'0')}`;
+  };
+  const formatSrt = value => {
+    let ms = Math.round(value * 1000);
+    const h = Math.floor(ms / 3600000); ms -= h * 3600000;
+    const m = Math.floor(ms / 60000); ms -= m * 60000;
+    const s = Math.floor(ms / 1000); ms -= s * 1000;
+    return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')},${String(ms).padStart(3,'0')}`;
+  };
+  function toast(message) {
+    els.status.textContent = message; els.status.classList.add('show');
+    clearTimeout(toast.timer); toast.timer = setTimeout(() => els.status.classList.remove('show'), 1600);
+  }
+  function save() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({duration:state.duration,zoom:state.zoom,scenes:state.scenes,cues:state.cues}));
+  }
+  function current(type, time) { return state[type].find(item => time >= item.start && time < item.end) || null; }
+  function findSelected() { return selected ? state[selected.type].find(item => item.id === selected.id) : null; }
+
+  function renderRuler() {
+    els.ruler.innerHTML = '';
+    for (let t = 0; t <= Math.ceil(state.duration); t++) {
+      const tick = document.createElement('div');
+      tick.className = `tick${t % 5 === 0 ? ' major' : ''}`;
+      tick.style.left = `${t * state.zoom}px`;
+      tick.textContent = t % 5 === 0 ? `${t}s` : '';
+      els.ruler.appendChild(tick);
+    }
+  }
+
+  function block(type, item) {
+    const node = document.createElement('div');
+    node.className = `block ${type === 'scenes' ? 'scene-block' : 'cue-block'}${selected?.type === type && selected.id === item.id ? ' selected' : ''}`;
+    node.dataset.type = type; node.dataset.id = item.id;
+    node.style.left = `${item.start * state.zoom}px`;
+    node.style.width = `${Math.max(18, (item.end - item.start) * state.zoom)}px`;
+    if (type === 'scenes') {
+      node.innerHTML = `<img src="${imagePath(item.image)}" alt=""><div class="scene-copy"><div class="scene-name">${escapeHtml(item.label)}</div><div class="scene-time">${formatShort(item.start)}–${formatShort(item.end)}</div></div>`;
+    } else {
+      node.innerHTML = `<div class="cue-id">${item.id} · ${formatShort(item.start)}–${formatShort(item.end)}</div><div class="cue-text">${escapeHtml(item.text)}</div>`;
+    }
+    node.insertAdjacentHTML('beforeend','<span class="handle left"></span><span class="handle right"></span>');
+    node.addEventListener('pointerdown', beginDrag);
+    node.addEventListener('click', event => {
+      event.stopPropagation(); selected = {type,id:item.id}; playheadTime = item.start; render();
+    });
+    return node;
+  }
+
+  function renderBlocks() {
+    els.sceneBlocks.innerHTML = ''; els.cueBlocks.innerHTML = '';
+    state.scenes.forEach(item => els.sceneBlocks.appendChild(block('scenes', item)));
+    state.cues.forEach(item => els.cueBlocks.appendChild(block('cues', item)));
+  }
+
+  function renderPreview() {
+    const scene = current('scenes', playheadTime);
+    const cue = current('cues', playheadTime);
+    const image = cue?.image || scene?.image;
+    els.previewImage.style.display = image ? 'block' : 'none';
+    els.previewEmpty.style.display = image ? 'none' : 'grid';
+    if (image) els.previewImage.src = imagePath(image);
+    els.captionOverlay.style.display = cue ? 'block' : 'none';
+    els.captionOverlay.textContent = cue?.text || '';
+    els.activeSceneLabel.textContent = scene?.label || 'No scene';
+    els.timecode.textContent = formatClock(playheadTime);
+    els.activeCopy.textContent = cue?.text || 'No subtitle at this time.';
+    els.activeMeta.textContent = cue ? `${cue.id} · ${formatShort(cue.start)}–${formatShort(cue.end)} · ${cue.image}` : 'Gap';
+    els.playhead.style.left = `${playheadTime * state.zoom}px`;
+  }
+
+  function renderInspector() {
+    const item = findSelected();
+    if (!item) {
+      els.inspector.innerHTML = '<div class="empty-inspector">Click any caption or storyboard block to edit text, start and end times, and the reference screenshot.</div>';
+      return;
+    }
+    const textKey = selected.type === 'scenes' ? 'label' : 'text';
+    els.inspector.innerHTML = `
+      <span class="selected-kind">${selected.type === 'scenes' ? 'Storyboard' : 'Subtitle'} · ${item.id}</span>
+      <div class="field"><label>${selected.type === 'scenes' ? 'Storyboard name' : 'Caption text'}</label><textarea id="editText">${escapeHtml(item[textKey])}</textarea></div>
+      <div class="field-row">
+        <div class="field"><label>Start</label><input id="editStart" type="number" min="0" step="0.1" value="${item.start.toFixed(1)}"></div>
+        <div class="field"><label>End</label><input id="editEnd" type="number" min="0" step="0.1" value="${item.end.toFixed(1)}"></div>
+      </div>
+      <div class="field"><label>Reference frame</label><select id="editImage">${images.map(name => `<option${name===item.image?' selected':''}>${name}</option>`).join('')}</select></div>
+      <button class="btn green" id="applyEdit">Apply changes</button>
+      <button class="btn" id="jumpSelected">Seek to start</button>`;
+    $('applyEdit').onclick = () => {
+      item[textKey] = $('editText').value.trim() || item[textKey];
+      const start = snap(Number($('editStart').value));
+      const end = snap(Number($('editEnd').value));
+      if (!Number.isFinite(start) || !Number.isFinite(end) || end <= start) return toast('End time must be later than start time');
+      item.start = clamp(start,0,state.duration-.1); item.end = clamp(end,item.start+.1,state.duration); item.image = $('editImage').value;
+      playheadTime = item.start; save(); render(); toast('Applied and saved automatically');
+    };
+    $('jumpSelected').onclick = () => { playheadTime = item.start; renderPreview(); };
+  }
+
+  function renderBank() {
+    els.screenBank.innerHTML = '';
+    images.forEach(name => {
+      const button = document.createElement('button'); button.className = 'screen-card';
+      button.innerHTML = `<img src="${imagePath(name)}" alt="${name}"><span>${name}</span>`;
+      button.onclick = () => {
+        const item = findSelected();
+        if (!item) return toast('Select a caption or storyboard block first');
+        item.image = name; save(); render(); toast(`Assigned ${name}`);
+      };
+      els.screenBank.appendChild(button);
+    });
+  }
+
+  function render() {
+    els.timeline.style.width = `${state.duration * state.zoom}px`;
+    els.zoomRange.value = state.zoom;
+    renderRuler(); renderBlocks(); renderPreview(); renderInspector();
+  }
+
+  function escapeHtml(value) { return String(value).replace(/[&<>"]/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[char])); }
+
+  function beginDrag(event) {
+    if (event.button !== 0) return;
+    event.preventDefault(); event.stopPropagation();
+    const node = event.currentTarget;
+    const type = node.dataset.type, id = node.dataset.id;
+    selected = {type,id};
+    const item = state[type].find(entry => entry.id === id);
+    const original = {start:item.start,end:item.end,x:event.clientX};
+    const mode = event.target.classList.contains('left') ? 'left' : event.target.classList.contains('right') ? 'right' : 'move';
+    const move = e => {
+      const delta = snap((e.clientX - original.x) / state.zoom);
+      if (mode === 'move') {
+        const length = original.end - original.start;
+        item.start = clamp(snap(original.start + delta), 0, state.duration - length);
+        item.end = snap(item.start + length);
+      } else if (mode === 'left') item.start = clamp(snap(original.start + delta), 0, item.end - .2);
+      else item.end = clamp(snap(original.end + delta), item.start + .2, state.duration);
+      playheadTime = item.start; renderBlocks(); renderPreview();
+    };
+    const up = () => {
+      window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up); window.removeEventListener('pointercancel', up);
+      save(); render(); toast(`${id} updated`);
+    };
+    window.addEventListener('pointermove', move); window.addEventListener('pointerup', up); window.addEventListener('pointercancel', up);
+  }
+
+  function seekFromEvent(event) {
+    if (event.target.closest('.block')) return;
+    const rect = els.timeline.getBoundingClientRect();
+    playheadTime = clamp(snap((event.clientX - rect.left) / state.zoom),0,state.duration); renderPreview();
+  }
+  els.timeline.addEventListener('click', seekFromEvent);
+  els.zoomRange.addEventListener('input', event => { state.zoom = Number(event.target.value); save(); render(); });
+  document.querySelectorAll('[data-nudge]').forEach(button => button.onclick = () => { playheadTime = clamp(snap(playheadTime + Number(button.dataset.nudge)),0,state.duration); renderPreview(); });
+
+  function togglePlay() {
+    playing = !playing; els.playBtn.textContent = playing ? 'Ⅱ' : '▶';
+    if (!playing) return cancelAnimationFrame(raf);
+    if (playheadTime >= state.duration) playheadTime = 0;
+    playStartedAt = performance.now(); playStartedTime = playheadTime;
+    const frame = now => {
+      if (!playing) return;
+      playheadTime = playStartedTime + (now - playStartedAt) / 1000;
+      if (playheadTime >= state.duration) { playheadTime = state.duration; playing = false; els.playBtn.textContent = '▶'; }
+      renderPreview();
+      const left = playheadTime * state.zoom;
+      const scroll = $('timelineScroll');
+      if (left > scroll.scrollLeft + scroll.clientWidth - 80) scroll.scrollLeft = left - 80;
+      if (playing) raf = requestAnimationFrame(frame);
+    };
+    raf = requestAnimationFrame(frame);
+  }
+  els.playBtn.onclick = togglePlay;
+  document.addEventListener('keydown', event => {
+    if (event.code === 'Space' && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) { event.preventDefault(); togglePlay(); }
+  });
+
+  function download(name, content, type) {
+    const url = URL.createObjectURL(new Blob([content],{type}));
+    const a = document.createElement('a'); a.href = url; a.download = name; a.click();
+    setTimeout(() => URL.revokeObjectURL(url),500);
+  }
+  $('exportSrtBtn').onclick = () => {
+    const content = [...state.cues].sort((a,b)=>a.start-b.start).map((cue,index) => `${index+1}\n${formatSrt(cue.start)} --> ${formatSrt(cue.end)}\n${cue.text}\n`).join('\n');
+    download('app2.0-video-script-v02-edited.srt',content,'text/plain;charset=utf-8'); toast('Exported revised SRT');
+  };
+  $('exportJsonBtn').onclick = () => {
+    download('app2.0-video-storyboard-timeline-v01.json',JSON.stringify({source:'app2.0 video script.srt',duration:state.duration,scenes:state.scenes,cues:state.cues},null,2),'application/json'); toast('Exported timeline JSON');
+  };
+  $('resetBtn').onclick = () => {
+    if (!confirm('Restore the initial storyboard and caption timing? Browser edits will be cleared.')) return;
+    state = clone(initial); selected = null; playheadTime = 0; save(); render(); toast('Restored draft');
+  };
+
+  renderBank(); render();
+})();
+</script>
+</body>
+</html>

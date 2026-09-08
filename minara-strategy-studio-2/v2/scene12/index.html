@@ -1,0 +1,112 @@
+<!doctype html><html><head><meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#F9F9F9}
+#root,[data-composition-id="root"]{position:relative;width:1920px;height:1080px;overflow:hidden;
+  background:#F9F9F9;font-family:'Geist',system-ui,-apple-system,sans-serif;color:#141416}
+
+/* tweet wall — real X card proportions, straight grid, fully in-frame (no text clipped at edges) */
+.wall{position:absolute;left:24px;top:51px;width:1872px;height:978px;
+  display:grid;grid-template-columns:repeat(4,450px);grid-template-rows:repeat(3,310px);gap:24px}
+.tw{background:#fff;border:1px solid #ECECEC;border-radius:22px;box-shadow:0 30px 70px -36px rgba(0,0,0,.28);
+  padding:24px 26px;opacity:0;transform-origin:50% 50%;display:flex;flex-direction:column;gap:10px;overflow:hidden}
+
+.thead{display:flex;align-items:center;gap:14px}
+.tav{width:52px;height:52px;border-radius:50%;flex:0 0 auto;display:block;background:#F2F2F2}
+.tid{display:flex;align-items:center;gap:5px;flex-wrap:wrap;min-width:0}
+.tname{font-size:24px;font-weight:800;line-height:1.2;white-space:nowrap}
+.tverif{flex:0 0 auto;display:flex}
+.thandle{font-size:19px;font-weight:500;color:#8a8a8a;white-space:nowrap}
+
+.tbody{font-size:24px;font-weight:600;line-height:1.36;color:#141416}
+.tret{color:#07B56A;font-weight:800}
+
+.tmeta{font-size:17px;font-weight:600;color:#9a9a9a}
+
+.tfoot{display:flex;align-items:center;gap:30px;margin-top:auto;color:#9a9a9a;font-size:18px;font-weight:700;
+  font-variant-numeric:tabular-nums}
+.tfoot span{display:flex;align-items:center;gap:7px}
+.hicon{display:inline-flex;align-items:center;justify-content:center;transform-origin:50% 50%}
+.hpath{transition:none}
+</style></head>
+<body>
+<div id="root" data-composition-id="root" data-width="1920" data-height="1080" data-start="0" data-duration="3.37">
+  <div class="wall" id="wall"></div>
+</div>
+<script src="lib/gsap.min.js"></script><script src="lib/CustomEase.min.js"></script>
+<script>
+gsap.registerPlugin(CustomEase);
+const SNAP=CustomEase.create("snap","M0,0 C0.95,0.03 0,0.98 1,1");
+
+const REPLY='<svg viewBox="0 0 24 24" width="19" height="19"><path d="M2 12c0-4.97 4.48-9 10-9s10 4.03 10 9-4.48 9-10 9c-1.13 0-2.21-.17-3.22-.48L3 22l1.5-4.5C3.02 16.03 2 14.13 2 12z" fill="none" stroke="#9a9a9a" stroke-width="1.6"/></svg>';
+const RETWEET='<svg viewBox="0 0 24 24" width="19" height="19"><path d="M6 3v9a3 3 0 0 0 3 3h9M18 12l3 4-3 4M18 21V12a3 3 0 0 0-3-3H6M6 3L3 7l3 4" fill="none" stroke="#9a9a9a" stroke-width="1.6"/></svg>';
+const BOOKMARK='<svg viewBox="0 0 24 24" width="19" height="19"><path d="M6 4.5A1.5 1.5 0 0 1 7.5 3h9A1.5 1.5 0 0 1 18 4.5V21l-6-4.2L6 21V4.5z" fill="none" stroke="#9a9a9a" stroke-width="1.6"/></svg>';
+const SHARE='<svg viewBox="0 0 24 24" width="19" height="19"><path d="M12 16V4M7 9l5-5 5 5M5 14v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4" fill="none" stroke="#9a9a9a" stroke-width="1.6"/></svg>';
+const HEART='<svg class="hicon" viewBox="0 0 24 24" width="21" height="21"><path class="hpath" d="M12.001 4.529c2.349-2.109 5.979-1.938 8.209.399 2.23 2.336 2.401 6.021.375 8.545l-7.617 7.618a1.5 1.5 0 0 1-2.121 0l-7.618-7.618c-2.026-2.524-1.854-6.209.375-8.545 2.23-2.337 5.86-2.508 8.21-.399z" fill="none" stroke="#9a9a9a" stroke-width="1.8"/></svg>';
+const VERIFIED='<svg class="tverif" viewBox="0 0 22 22" width="19" height="19"><path d="M11 1.5l2.35 1.32 2.66-.36 1.03 2.51 2.51 1.03-.36 2.66L20.5 11l-1.32 2.35.36 2.66-2.51 1.03-1.03 2.51-2.66-.36L11 20.5l-2.35-1.32-2.66.36-1.03-2.51-2.51-1.03.36-2.66L1.5 11l1.32-2.35-.36-2.66 2.51-1.03 1.03-2.51 2.66.36L11 1.5z" fill="#1D9BF0"/><path d="M7.8 11.2l2.1 2.1 4.3-4.6" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+// 12 real-feeling posts sharing a Minara win — fixed content, no randomness
+const ITEMS=[
+ {name:'tabman',seed:'tabman',handle:'@tabman_x',verified:false,body:'<span class="tret">+142%</span> on my Minara strategy 🚀',meta:'2h · 48.2K Views',repl:12,rt:34,ls:220,le:262},
+ {name:'Dr. Alpha',seed:'dralpha',handle:'@dr_alpha_q',verified:true,body:'Just allocated — <span class="tret">+88%</span> live, real money 🔥',meta:'3h · 31.6K Views',repl:9,rt:21,ls:158,le:196},
+ {name:'Amber',seed:'amberq',handle:'@amberquant',verified:false,body:'Pool filled in minutes. <span class="tret">+61%</span> and climbing 📈',meta:'5h · 19.8K Views',repl:7,rt:15,ls:96,le:129},
+ {name:'Kenji',seed:'kenjidefi',handle:'@kenji_defi',verified:true,body:'Allocated $10k, already <span class="tret">+204%</span> up. Insane.',meta:'1h · 62.4K Views',repl:15,rt:40,ls:301,le:355},
+ {name:'Priya',seed:'priyat',handle:'@priya_trades',verified:false,body:"Minara found the edge I couldn't. <span class=\"tret\">+97%</span> in 3 weeks",meta:'6h · 14.1K Views',repl:6,rt:12,ls:74,le:101},
+ {name:'Marcus',seed:'marcusoc',handle:'@marcus_onchain',verified:false,body:'Sharpe 1.8, drawdown under 12%. Allocating more.',meta:'8h · 9.7K Views',repl:5,rt:9,ls:58,le:80},
+ {name:'Yuki',seed:'yukialpha',handle:'@yuki_alpha',verified:true,body:'<span class="tret">+318%</span> since launch. Screenshotting this.',meta:'40m · 71.9K Views',repl:18,rt:52,ls:410,le:471},
+ {name:'Chen',seed:'chencap',handle:'@chen_capital',verified:false,body:'Real yield, real numbers. <span class="tret">+76%</span> and still open',meta:'4h · 22.3K Views',repl:8,rt:17,ls:112,le:141},
+ {name:'Sara',seed:'saraq',handle:'@sara_quant',verified:false,body:'Filled my allocation in under 2 min. <span class="tret">+55%</span> already',meta:'7h · 12.5K Views',repl:6,rt:11,ls:69,le:93},
+ {name:'Leo',seed:'leosig',handle:'@leo_signals',verified:true,body:'This strategy just hit <span class="tret">+429%</span>. Wild.',meta:'25m · 88.4K Views',repl:22,rt:61,ls:520,le:588},
+ {name:'Nadia',seed:'nadiaf',handle:'@nadia_finance',verified:false,body:'Allocators are eating right now. <span class="tret">+150%</span> unrealized',meta:'3h · 27.6K Views',repl:10,rt:24,ls:187,le:224},
+ {name:'Omar',seed:'omart',handle:'@omar_trades',verified:false,body:'<span class="tret">+63%</span> this week alone. Minara just works',meta:'9h · 8.9K Views',repl:7,rt:14,ls:88,le:118},
+];
+
+const wall=document.getElementById('wall');
+const cardEls=ITEMS.map(it=>{
+  const d=document.createElement('div');d.className='tw';
+  d.innerHTML=`<div class="thead"><img class="tav" src="assets/avatars/${it.seed}.svg" width="56" height="56">
+    <div class="tid"><span class="tname">${it.name}</span>${it.verified?VERIFIED:''}<span class="thandle">${it.handle}</span></div></div>
+    <div class="tbody">${it.body}</div>
+    <div class="tmeta">${it.meta}</div>
+    <div class="tfoot">
+      <span>${REPLY}${it.repl}</span>
+      <span>${RETWEET}${it.rt}</span>
+      <span>${HEART}<span class="hcount">${it.ls}</span></span>
+      <span>${BOOKMARK}</span>
+      <span>${SHARE}</span>
+    </div>`;
+  wall.appendChild(d);return d;
+});
+
+gsap.set(cardEls,{opacity:0,y:30,scale:.92,rotation:0});
+
+const tl=gsap.timeline({paused:true});
+
+// entrance staggered across the full 0s -> 3s window (last card lands at t=3.0)
+const ENTRY_SPAN=3.0, ENTRY_DUR=0.5;
+const entryStagger=ENTRY_SPAN/(ITEMS.length-1);
+tl.to(cardEls,{opacity:1,y:0,scale:1,duration:ENTRY_DUR,ease:SNAP,stagger:entryStagger},0);
+
+// per-card: like fires the moment its own card lands — heart pops + pulses (finite yoyo), count ticks
+cardEls.forEach((card,i)=>{
+  const it=ITEMS[i];
+  const heart=card.querySelector('.hicon');
+  const hpath=card.querySelector('.hpath');
+  const hcount=card.querySelector('.hcount');
+  const cnt={v:it.ls};
+  const appearEnd=i*entryStagger+ENTRY_DUR;
+  const t0=appearEnd+0.05;
+
+  tl.set(hpath,{attr:{fill:'#F91880',stroke:'#F91880'}},t0);
+  tl.set(hcount,{color:'#F91880'},t0);
+  tl.to(heart,{scale:1.35,duration:.12,ease:'back.out(3)'},t0);
+  tl.to(heart,{scale:1,duration:.14,ease:SNAP},t0+.12);
+  tl.to(heart,{scale:1.15,duration:.09,ease:'sine.inOut',yoyo:true,repeat:2},t0+.26);
+  tl.to(cnt,{v:it.le,duration:.45,ease:'power1.out',onUpdate(){hcount.textContent=Math.round(cnt.v);}},t0);
+});
+
+window.__timelines=window.__timelines||{};
+/* fit to reference-narration timeline (subtitle video) */var __T=3.37;(function(){var c=tl.duration();tl.timeScale(1);if(c>__T+0.01){var f=__T/c;tl.getChildren(false,true,true).forEach(function(ch){ch.startTime(ch.startTime()*f);if(ch.duration)ch.duration(Math.max(0.001,ch.duration()*f));});}else if(c<__T-0.01){tl.to({_p:0},{_p:1,duration:__T-c});}})();
+window.__timelines["root"]=tl;
+</script></body></html>

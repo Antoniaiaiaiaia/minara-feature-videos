@@ -1,0 +1,53 @@
+<!doctype html><html><head><meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#F9F9F9}
+#root,[data-composition-id="root"]{position:relative;width:1920px;height:1080px;overflow:hidden;
+  background:#F9F9F9;font-family:'Geist',system-ui,sans-serif;color:#141416;text-align:center}
+#bgScroll{position:absolute;left:0;top:0;width:1920px;height:auto;z-index:0}
+#bgDim{position:absolute;inset:0;background:#FFFFFF;opacity:.8;z-index:1}
+.stack{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2}
+.logo{width:150px;height:150px;border-radius:50%;overflow:hidden;background:#fff;margin-bottom:42px;
+  box-shadow:0 14px 34px -12px rgba(0,0,0,.28);opacity:0}
+.logo img{width:100%;height:100%;object-fit:cover}
+.title{font-weight:300;font-size:114px;letter-spacing:-.01em;opacity:0}
+.title .g{background:linear-gradient(120deg,#EB53FF,#FF538E 48%,#FF9A32);-webkit-background-clip:text;background-clip:text;color:transparent}
+.subtitle{margin-top:24px;font-size:48px;font-weight:300;color:#555;white-space:nowrap;opacity:0}
+.url{margin-top:126px;font-size:60px;font-weight:300;
+  background:linear-gradient(120deg,#EB53FF,#FF538E 48%,#FF9A32);-webkit-background-clip:text;background-clip:text;color:transparent;opacity:0}
+</style></head>
+<body>
+<div id="root" data-composition-id="root" data-width="1920" data-height="1080" data-start="0" data-duration="9.5">
+  <!-- background: real Minara Strategy Studio page, slowly scrolling up, under an 80% gray coat -->
+  <img id="bgScroll" src="assets/minara-bg.png" alt="">
+  <div id="bgDim"></div>
+  <!-- brand CTA -->
+  <div class="stack" id="s2">
+    <div class="logo" id="logo"><img src="assets/avatar.png" alt=""></div>
+    <div class="title" id="title">Strategy Studio <span class="g">2.0</span></div>
+    <div class="subtitle" id="sub1">Built by creators.</div>
+    <div class="subtitle" id="sub2" style="margin-top:8px">Open to everyone.</div>
+    <div class="url" id="url">strategy.minara.ai</div>
+  </div>
+</div>
+<script src="lib/gsap.min.js"></script><script src="lib/CustomEase.min.js"></script>
+<script>
+gsap.registerPlugin(CustomEase);
+const SNAP=CustomEase.create("snap","M0,0 C0.95,0.03 0,0.98 1,1");
+const tl=gsap.timeline({paused:true});
+// background Minara page scrolls slowly up for the whole scene (0 -> 9.5s), steady
+tl.fromTo('#bgScroll',{y:0},{y:-1885,duration:9.5,ease:'none'},0);
+// text beats synced to the narration: title @0.10, "Built by creators" @1.93,
+// "Open to everyone" @3.06, url ("only on Minara") @4.13
+tl.fromTo('#logo',{opacity:0,scale:0},{opacity:1,scale:1,duration:.5,ease:'back.out(1.7)'},0.0);
+tl.fromTo('#title',{opacity:0,y:24},{opacity:1,y:0,duration:.5,ease:SNAP},0.10);
+tl.fromTo('#sub1',{opacity:0,y:16},{opacity:1,y:0,duration:.5,ease:SNAP},1.93);
+tl.fromTo('#sub2',{opacity:0,y:16},{opacity:1,y:0,duration:.5,ease:SNAP},3.06);
+tl.fromTo('#url',{opacity:0,y:12},{opacity:1,y:0,duration:.55,ease:SNAP},4.13);
+window.__timelines=window.__timelines||{};
+/* fit to reference-narration timeline (subtitle video) */var __T=9.5;(function(){var c=tl.duration();tl.timeScale(1);if(c>__T+0.01){var f=__T/c;tl.getChildren(false,true,true).forEach(function(ch){ch.startTime(ch.startTime()*f);if(ch.duration)ch.duration(Math.max(0.001,ch.duration()*f));});}else if(c<__T-0.01){tl.to({_p:0},{_p:1,duration:__T-c});}})();
+window.__timelines["root"]=tl;
+</script></body></html>
+</content>
+</invoke>

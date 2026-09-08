@@ -1,0 +1,255 @@
+<!doctype html><html><head><meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#16181d}
+/* scene10-only dark override (spec §3: whole-scene bg override permitted per-scene) */
+#root,[data-composition-id="root"]{position:relative;width:1920px;height:1080px;overflow:hidden;
+  background:#16181d;font-family:'Geist',system-ui,-apple-system,sans-serif;color:#141416}
+
+/* ---- Background: faint dark grid (backdrop, behind everything), same look as scene3/scene7 ---- */
+.gridbg{position:absolute;top:-120px;left:-400px;right:-400px;bottom:-120px;z-index:0;
+  background-image:
+    repeating-linear-gradient(90deg, rgba(255,255,255,.065) 0 1px, transparent 1px 80px),
+    repeating-linear-gradient(0deg, rgba(255,255,255,.065) 0 1px, transparent 1px 80px);
+  background-position:0px 0px}
+
+/* ---- Beat A: market grid ---- */
+#hdr{position:absolute;left:0;top:0;width:1920px;height:84px;z-index:3;
+  background:rgba(249,249,249,.97);border-bottom:1px solid #ECECEC;
+  display:flex;align-items:center;justify-content:space-between;padding:0 72px}
+.hdrL{display:flex;align-items:center;gap:14px}
+.hdrDot{width:12px;height:12px;border-radius:50%;background:#07B56A}
+.hdrTitle{font-size:26px;font-weight:800;letter-spacing:1px}
+.hdrR{font-size:20px;font-weight:600;color:#9a9a9a}
+#matrixWrap{position:absolute;left:72px;top:-30px;width:1776px;z-index:1}
+.card{position:absolute;background:#fff;border:1px solid #ECECEC;border-radius:22px;
+  box-shadow:0 30px 70px -42px rgba(0,0,0,.28);display:flex;flex-direction:column;justify-content:space-between;
+  padding:30px}
+.chead{display:flex;align-items:center;gap:16px}
+.av{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  color:#fff;font-weight:800;font-size:25px;flex:none}
+.who{min-width:0}
+.fname{font-size:32px;font-weight:700;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.au{font-size:18px;color:#9a9a9a;font-weight:600;margin-top:3px}
+.statRow{display:flex;align-items:center;gap:22px}
+.pct{font-size:42px;color:#07B56A;font-weight:800;font-variant-numeric:tabular-nums;flex:none;width:172px}
+.spark{flex:1;min-width:0;display:block;height:72px}
+.allocSlot{position:relative;width:100%;height:56px}
+.allocBtn,.allocDone{position:absolute;inset:0;border-radius:999px;display:flex;align-items:center;justify-content:center;
+  font-size:24px;font-weight:700}
+.allocBtn{background:#141416;color:#fff}
+.allocDone{background:#07B56A;color:#fff;opacity:0}
+.ripple{position:absolute;left:50%;top:50%;width:56px;height:56px;margin:-28px 0 0 -28px;
+  border-radius:999px;background:rgba(7,181,106,.22);opacity:0}
+
+/* ---- Beat B: proof ring ---- */
+#dimOverlay{position:absolute;inset:0;background:#16181d;opacity:0;z-index:5}
+#ringWrap{position:absolute;left:960px;top:540px;width:864px;height:864px;
+  transform:translate(-50%,-50%);opacity:0;z-index:6}
+#ringCenter{position:absolute;left:0;top:0;width:100%;height:100%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.runLabel{font-size:28px;font-weight:700;letter-spacing:5px;color:#b8bcc4}
+#runVal{font-size:132px;font-weight:800;color:#fff;font-variant-numeric:tabular-nums;line-height:1.06;margin-top:6px}
+#provenPill{margin-top:26px;padding:14px 30px;border-radius:999px;background:#E7F8EF;
+  display:flex;align-items:center;gap:12px;opacity:0}
+#provenPill .chk{width:30px;height:30px;border-radius:50%;background:#07B56A;color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;flex:none}
+#provenPill span{font-size:26px;font-weight:700;color:#0a7a4c}
+</style></head>
+<body>
+<div id="root" data-composition-id="root" data-width="1920" data-height="1080" data-start="0" data-duration="4.63">
+  <div class="gridbg" id="gridbg"></div>
+  <div id="hdr">
+    <div class="hdrL"><div class="hdrDot"></div><div class="hdrTitle">STRATEGY MARKET</div></div>
+    <div class="hdrR">2,148 live strategies · sorted by 30d return</div>
+  </div>
+  <div id="matrixWrap"></div>
+  <div id="dimOverlay"></div>
+
+  <div id="ringWrap">
+    <svg width="864" height="864" viewBox="0 0 864 864">
+      <circle cx="432" cy="432" r="418" fill="none" stroke="#ECECEC" stroke-width="28"/>
+      <circle id="ringFill" cx="432" cy="432" r="418" fill="none" stroke="#07B56A" stroke-width="28"
+        stroke-linecap="round" transform="rotate(-90 432 432)"/>
+    </svg>
+    <div id="ringCenter">
+      <div class="runLabel">RUNNING</div>
+      <div id="runVal">1 day</div>
+    </div>
+  </div>
+</div>
+<script src="lib/gsap.min.js"></script><script src="lib/CustomEase.min.js"></script>
+<script>
+gsap.registerPlugin(CustomEase);
+const SNAP=CustomEase.create("snap","M0,0 C0.95,0.03 0,0.98 1,1");
+
+// mulberry32 fixed-seed RNG (no Math.random anywhere)
+function mk(s){return()=>{s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+const rnd=mk(11);
+
+function sparkPts(seed,w,h,n){const r=mk(seed);let v=0.22,p=[];
+  for(let i=0;i<n;i++){v+=0.05+(r()-0.4)*0.09;v=Math.min(0.94,Math.max(0.06,v));p.push((i/(n-1)*w).toFixed(1)+','+(h-v*h).toFixed(1));}
+  return p.join(' ');}
+
+// ---------------------------------------------------------------
+// Beat A: neat matrix of strategy cards (3 cols x 8 rows, aligned grid)
+// ---------------------------------------------------------------
+const STRATS=[
+ ['Momentum Alpha','tabman','+212%'],
+ ['BTC Trend Rider','0xNova','+88%'],
+ ['Multi-Factor L/S','MrTokenAI','+156%'],
+ ['ETH Vol Harvest','Mira','+47%'],
+ ['Coin30 Breakout','Dr.Alpha','+301%'],
+ ['Mean Reversion Pro','Sable','+93%'],
+ ['NASDAQ Swing','Quill','+64%'],
+ ['SOL Liquidity Sweep','QuantPilot','+178%'],
+ ['Gold Hedge Grid','Rune','+22%'],
+ ['Quant Value Long','Amber','+410%'],
+ ['Crypto Carry Basis','Halcyon','+59%'],
+ ['S&P Overlay','Vesper','+134%'],
+ ['Volatility Arb','Juno','+76%'],
+ ['AI Factor Zero-Vol','Kade','+19%'],
+ ['Delta Neutral Yield','Nyx','+38%'],
+ ['Breakout Hunter','Orin','+142%'],
+ ['Macro Trend Fund','Elowen','+67%'],
+ ['Stablecoin Arb','Faro','+15%'],
+ ['Options Skew Play','Zephyr','+203%'],
+ ['Index Rotation','Talia','+54%'],
+ ['Perp Funding Farm','Corvin','+81%'],
+ ['Grid Bot Classic','Wren','+29%'],
+ ['Momentum Squeeze','Iris','+167%'],
+ ['Basis Trade Pro','Soren','+45%'],
+];
+STRATS.push(...STRATS.slice()); // double the wall (Antonia: 卡片数量再增加一倍)
+const AVC=['#EB53FF','#FF538E','#FF9A32','#07B56A','#2f7ff0','#5b63e6','#E7830f','#14F195'];
+
+const COLS=3,ROWS=16,CARD_W=560,CARD_H=248,GAP_X=48,GAP_Y=40;
+const SPARK_W=CARD_W-60-172-22; // interior width minus pct box minus statRow gap — exact match to .spark's real flex width
+const matrixWrap=document.getElementById('matrixWrap');
+const cardData=[];
+STRATS.forEach((s,i)=>{
+  const col=i%COLS, row=Math.floor(i/COLS);
+  const left=col*(CARD_W+GAP_X), top=row*(CARD_H+GAP_Y);
+  const avColor=AVC[i%AVC.length];
+  const initial=s[1][0].toUpperCase();
+  const el=document.createElement('div');
+  el.className='card';
+  el.style.left=left+'px'; el.style.top=top+'px';
+  el.style.width=CARD_W+'px'; el.style.height=CARD_H+'px';
+  el.innerHTML=`
+    <div class="chead">
+      <div class="av" style="background:${avColor}">${initial}</div>
+      <div class="who">
+        <div class="fname">${s[0]}</div>
+        <div class="au">${s[1]}</div>
+      </div>
+    </div>
+    <div class="statRow">
+      <div class="pct">${s[2]}</div>
+      <svg class="spark" viewBox="0 0 ${SPARK_W} 72" preserveAspectRatio="none">
+        <polyline fill="none" stroke="#07B56A" stroke-width="4" points="${sparkPts(30+i,SPARK_W,72,7)}"/>
+      </svg>
+    </div>
+    <div class="allocSlot">
+      <div class="allocBtn">Allocate</div>
+      <div class="ripple"></div>
+      <div class="allocDone">Allocated &#10003;</div>
+    </div>`;
+  matrixWrap.appendChild(el);
+  cardData.push({el,doneEl:el.querySelector('.allocDone'),rippleEl:el.querySelector('.ripple')});
+});
+cardData.forEach(c=>gsap.set([c.doneEl],{opacity:0,scale:.85}));
+cardData.forEach(c=>gsap.set(c.rippleEl,{opacity:0,scale:.6}));
+
+// deterministic "someone is allocating right now" flips: shuffle indices, pick 9, spread across scroll window
+const order=[...Array(cardData.length).keys()];
+for(let i=order.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[order[i],order[j]]=[order[j],order[i]];}
+const FLIP_N=9, FLIP_START=0.85, FLIP_SPAN=2.95;
+const flips=order.slice(0,FLIP_N).map((idx,i)=>({
+  idx, t: FLIP_START + i*(FLIP_SPAN/FLIP_N) + rnd()*0.16
+}));
+
+const GRID_H=ROWS*CARD_H+(ROWS-1)*GAP_Y;          // 2264
+const SCROLL_DELTA=GRID_H-1080;                    // 1184
+matrixWrap.style.height=GRID_H+'px';
+
+// ---------------------------------------------------------------
+// Beat B: proof ring — runtime counter paced by absolute scene time.
+// days(1-30) is the longest phase, months follow, years only start at
+// absolute t=8s and then keep climbing (never freezes) to scene end.
+// ---------------------------------------------------------------
+const RING_R=418, RING_C=2*Math.PI*RING_R;
+const ringFill=document.getElementById('ringFill');
+const runVal=document.getElementById('runVal');
+ringFill.setAttribute('stroke-dasharray',RING_C.toFixed(2));
+ringFill.setAttribute('stroke-dashoffset',RING_C.toFixed(2));
+
+function fmtRuntime(days){
+  days=Math.max(1,Math.round(days));
+  if(days<30) return days+(days===1?' day':' days');
+  if(days<365){const m=Math.max(1,Math.round(days/30.4)); return m+(m===1?' month':' months');}
+  const y=Math.floor(days/365); return y+(y===1?' year':' years');
+}
+
+const RUN_T0=4.2, RUN_END=11.1;              // absolute scene seconds the counter tween spans
+const RUN_DUR=RUN_END-RUN_T0;                // 6.9s
+const P_DAYS_END=3.4/RUN_DUR;                // days 1->30 phase — the longest of the three (3.4s)
+const P_YEARS_START=3.8/RUN_DUR;             // = (8.0-RUN_T0)/RUN_DUR -> years start exactly at t=8s
+// piecewise-linear day-count breakpoints: [tweenFraction, days]
+const RUN_BREAKS=[[0,1],[P_DAYS_END,30],[P_YEARS_START,365],[1,1500]];
+function daysFromP(p){
+  p=Math.min(1,Math.max(0,p));
+  for(let i=0;i<RUN_BREAKS.length-1;i++){
+    const [p0,v0]=RUN_BREAKS[i], [p1,v1]=RUN_BREAKS[i+1];
+    if(p<=p1){const f=(p1===p0)?0:(p-p0)/(p1-p0); return v0+(v1-v0)*f;}
+  }
+  return RUN_BREAKS[RUN_BREAKS.length-1][1];
+}
+const runtimeProxy={p:0};
+function updateRuntime(){
+  const days=daysFromP(runtimeProxy.p);
+  runVal.textContent=fmtRuntime(days);
+  ringFill.setAttribute('stroke-dashoffset',(RING_C*(1-runtimeProxy.p)).toFixed(2));
+}
+updateRuntime(); // paint correct initial state before the tween ever plays
+
+// ---------------------------------------------------------------
+// Timeline
+// ---------------------------------------------------------------
+const tl=gsap.timeline({paused:true});
+const DUR=11.6;
+
+// ambient dark grid slides left->right for the whole scene (single finite tween, ease:'none',
+// per spec's documented exception for continuous ambient sweep motion — not repeat:-1)
+tl.to('#gridbg',{backgroundPosition:'640px 0px',duration:DUR,ease:'none'},0);
+
+// grid + header pop in
+gsap.set('#hdr',{opacity:0,y:-16});
+gsap.set('#matrixWrap',{opacity:0,scale:.94,y:16});
+tl.to('#matrixWrap',{opacity:1,scale:1,y:0,duration:.5,ease:'back.out(1.4)'},0);
+tl.to('#hdr',{opacity:1,y:0,duration:.4,ease:SNAP},0.08);
+
+// continuous steady upward scroll for the WHOLE scene — keeps scrolling behind the ring too
+tl.to('#matrixWrap',{y:0-SCROLL_DELTA,duration:10.0,ease:'none'},0.55);
+
+// deterministic "live" Allocate clicks
+flips.forEach(f=>{
+  const c=cardData[f.idx];
+  tl.to(c.rippleEl,{opacity:.5,scale:1.5,duration:.4,ease:'power2.out'},f.t-0.03);
+  tl.to(c.doneEl,{opacity:1,scale:1,duration:.32,ease:'back.out(1.7)'},f.t);
+});
+
+// Beat A -> Beat B: cards DON'T disappear — the whole market dims 80% and keeps scrolling
+// behind the ring (per Antonia)
+tl.to('#dimOverlay',{opacity:.8,duration:.5,ease:'power2.out'},4.15);
+tl.fromTo('#ringWrap',{opacity:0,scale:.86,y:20},{opacity:1,scale:1,y:0,duration:.5,ease:'back.out(1.5)'},4.2);
+
+// proof ring fills as runtime climbs — linear on the tween, all pacing lives in
+// daysFromP()/RUN_BREAKS above (days slow+longest, years gated to t>=8s, never freezes)
+tl.to(runtimeProxy,{p:1,duration:RUN_DUR,ease:'none',onUpdate:updateRuntime},RUN_T0);
+
+window.__timelines=window.__timelines||{};
+/* fit to reference-narration timeline (subtitle video) */var __T=4.63;(function(){var c=tl.duration();tl.timeScale(1);if(c>__T+0.01){var f=__T/c;tl.getChildren(false,true,true).forEach(function(ch){ch.startTime(ch.startTime()*f);if(ch.duration)ch.duration(Math.max(0.001,ch.duration()*f));});}else if(c<__T-0.01){tl.to({_p:0},{_p:1,duration:__T-c});}})();
+window.__timelines["root"]=tl;
+</script></body></html>

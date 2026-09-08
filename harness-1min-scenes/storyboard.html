@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Minara Harness · Scene progressboard</title>
+<style>
+:root{--paper:#fff;--paper2:#f5f5f7;--ink:#0a0a0b;--ink2:#3a3a40;--mute:#7a7a82;--line:#e6e6ea;--line2:#d4d4da;--ok:#0ab56a;--ok-soft:#e6f7ef;--no:#f75d5f;--no-soft:#feecec;--wait:#fac800;--wait-soft:#fff7d6;--shadow:0 14px 40px rgba(20,20,30,.06)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Figtree","Geist","Avenir Next","PingFang SC",-apple-system,sans-serif;font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+button,textarea{font:inherit}
+.shell{width:min(1560px,calc(100% - 48px));margin:0 auto;padding:44px 0 90px}
+header{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
+.eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);margin-bottom:12px}
+h1{margin:0;font-size:40px;line-height:1.05;letter-spacing:-.03em;font-weight:600}
+.subtitle{color:var(--ink2);max-width:820px;margin:14px 0 0;font-size:14.5px}
+.subtitle b{color:var(--ink)}
+.master{text-align:right;color:var(--mute);font-size:13px}
+.master strong{display:block;font-size:30px;color:var(--ink);letter-spacing:-.02em;font-variant-numeric:tabular-nums;font-weight:600}
+.rules{margin-top:22px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.rule{border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:13px;color:var(--ink2);background:var(--paper2)}
+.rule b{display:block;color:var(--ink);margin-bottom:3px}
+.rule a{color:var(--ink)}
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:16px;margin:26px 0 12px;flex-wrap:wrap;position:sticky;top:0;background:rgba(255,255,255,.9);backdrop-filter:blur(14px);padding:10px 0;z-index:5;border-bottom:1px solid var(--line)}
+.stats{display:flex;gap:8px;flex-wrap:wrap}
+.stat{border:1px solid var(--line2);border-radius:999px;padding:5px 12px;font-size:13px;color:var(--ink2);background:#fff}
+.stat b{color:var(--ink);font-weight:600;margin-left:4px}
+.filters{display:flex;gap:6px;flex-wrap:wrap}
+.filter,.copy{border:1px solid var(--line2);background:#fff;border-radius:8px;padding:6px 12px;font-size:13px;cursor:pointer;color:var(--ink2)}
+.filter.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.copy{background:var(--ink);color:#fff;border-color:var(--ink)}
+.copy:hover,.filter:hover{opacity:.85}
+.table-head{display:grid;grid-template-columns:70px 150px 300px 1fr 150px 200px 128px;gap:14px;padding:8px 16px;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.board{display:flex;flex-direction:column;gap:8px}
+.scene{--tone:#dcdce2;--tone-soft:#fff;--tone-ink:var(--mute);
+  display:grid;grid-template-columns:70px 150px 300px 1fr 150px 200px 128px;gap:14px;align-items:start;
+  border:1px solid var(--tone);border-radius:14px;padding:14px 16px 14px 20px;background:var(--tone-soft);
+  box-shadow:inset 5px 0 0 var(--tone);transition:box-shadow .15s,background .15s,border-color .15s}
+.scene:hover{box-shadow:inset 5px 0 0 var(--tone),var(--shadow)}
+.scene.hidden{display:none}
+/* Status： + base +  */
+.scene.s0{--tone:#dcdce2;--tone-soft:#fff;--tone-ink:#7a7a82}
+.scene.s1{--tone:#9096a8;--tone-soft:#f4f5f9;--tone-ink:#474d5e}
+.scene.s2{--tone:#007be5;--tone-soft:#eef5ff;--tone-ink:#004c94}
+.scene.s3{--tone:#fac800;--tone-soft:#fff9e3;--tone-ink:#7a5a00}
+.scene.s4{--tone:#0ab56a;--tone-soft:#ecfaf3;--tone-ink:#056a3f}
+.scene.s5{--tone:#f75d5f;--tone-soft:#fef0f0;--tone-ink:#9b2a2b}
+/* ，base */
+.scene.s1 .desc textarea,.scene.s2 .desc textarea,.scene.s3 .desc textarea,.scene.s4 .desc textarea,.scene.s5 .desc textarea{background:rgba(255,255,255,.72);border-color:rgba(255,255,255,.9)}
+.scene .desc textarea:focus{background:#fff;border-color:var(--tone)}
+.scene .status select{border-color:var(--tone)}
+.scene .files a,.scene .files span{background:rgba(255,255,255,.75)}
+.sid{font-weight:600;font-size:18px;letter-spacing:-.02em}
+.sid small{display:block;font-size:11px;color:var(--mute);letter-spacing:.08em;margin-top:4px;font-weight:600}
+.sid small.TITLE{color:#3a3a40}.sid small.PRODUCT{color:#0a0a0b}.sid small.BRAND{color:#7a7a82}
+.tc{font-variant-numeric:tabular-nums;color:var(--ink2);font-size:13px;line-height:1.55}
+.tc strong{display:block;color:var(--ink);font-weight:600}
+.tc .bar{display:block;height:4px;border-radius:2px;background:var(--line);margin-top:8px;position:relative;overflow:hidden}
+.tc .bar i{position:absolute;top:0;bottom:0;background:var(--ink);border-radius:2px}
+.thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.thumbs img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:6px;border:1px solid var(--line);background:#000;display:block}
+.thumbs span{display:block;font-size:10.5px;color:var(--mute);text-align:center;margin-top:3px;font-variant-numeric:tabular-nums}
+.desc{font-size:14px;color:var(--ink)}
+.desc .txt{font-weight:600;letter-spacing:-.01em;display:block;margin-bottom:6px}
+.desc textarea{width:100%;min-height:74px;resize:vertical;border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:13px;color:var(--ink2);background:var(--paper2);line-height:1.45}
+.desc textarea:focus{outline:none;border-color:var(--ink);background:#fff}
+.desc .hint{font-size:11.5px;color:var(--mute);margin-top:4px}
+.status select{width:100%;border:1px solid var(--line2);border-radius:10px;padding:8px 10px;font-size:13px;background:#fff;color:var(--ink);font-weight:600}
+.status .pill{display:inline-block;margin-top:8px;font-size:11.5px;padding:3px 9px;border-radius:999px;border:1px solid var(--tone);background:#fff;color:var(--tone-ink);font-weight:600}
+.review{display:flex;gap:8px}
+.review button{flex:1;height:56px;border-radius:12px;border:1px solid var(--line2);background:#fff;font-size:26px;cursor:pointer;transition:transform .1s}
+.review button:hover{transform:translateY(-1px)}
+.review button.yes.on{background:var(--ok-soft);border-color:var(--ok)}
+.review button.no.on{background:var(--no-soft);border-color:var(--no)}
+.files{display:flex;flex-direction:column;gap:6px}
+.files a,.files span{display:block;font-size:12px;border:1px solid var(--line2);border-radius:8px;padding:6px 8px;color:var(--ink2);text-decoration:none;text-align:center;background:#fff}
+.files a:hover{border-color:var(--ink);color:var(--ink)}
+.files span.dis{color:var(--line2);border-style:dashed}
+.empty{display:none;text-align:center;color:var(--mute);padding:40px 0}
+.empty.show{display:block}
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;font-size:13px;opacity:0;transition:.2s;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%)}
+@media (max-width:1200px){.table-head{display:none}.scene{grid-template-columns:1fr 1fr}.thumbs{grid-column:1/-1}.desc{grid-column:1/-1}}
+</style>
+</head>
+<body>
+<main class="shell">
+  <header>
+    <div>
+      <div class="eyebrow">Scene progress board · Minara Harness launch film · 1 min</div>
+      <h1>Harness 1-min<br>Scene progress</h1>
+      <p class="subtitle">timeline and title cards the project owner draft <b>reference/draft-timeline.mp4</b>（77.25 s，22  scene，by，<b></b>）。：the project owner <b>one scene one scene</b>promptreference → AI one scene → shehere ✅ / 🙅。 AI session started <b>AGENT.md</b>  <b>STYLE.md</b>。</p>
+    </div>
+    <div class="master"><strong>01:17.250</strong><span>22 scenes · 11 Title · 9 product animation · 2 brand ending</span><br><span id="savedAt">Not saved yet</span></div>
+  </header>
+
+  <div class="rules">
+    <div class="rule"><b></b> = draft。scene Duration ±0.1 s ，。Title。</div>
+    <div class="rule"><b> scene </b>prompt scene 。same asone scene "Generating"。</div>
+    <div class="rule"><b>Color</b> <a href="STYLE.md">STYLE.md §1</a>：#0AB56A / #F75D5F / #FAC800  UI ；； cream /  / 。</div>
+    <div class="rule"><b> session </b>Statuspromptlocal machine；AI same as <code>scenes/sNN/brief.md</code>。"Copy progress"export the text for the AI。</div>
+  </div>
+
+  <div class="toolbar">
+    <div class="stats" aria-live="polite">
+      <span class="stat">Awaiting prompt<b id="c0">0</b></span><span class="stat">prompt received<b id="c1">0</b></span><span class="stat">Generating<b id="c2">0</b></span><span class="stat">pending review<b id="c3">0</b></span><span class="stat">✅<b id="c4">0</b></span><span class="stat">🙅<b id="c5">0</b></span>
+    </div>
+    <div class="filters">
+      <button class="filter active" data-f="all">All</button><button class="filter" data-f="TITLE">Title</button><button class="filter" data-f="PRODUCT">product animation</button><button class="filter" data-f="BRAND">Brand</button><button class="filter" data-f="active">Active</button><button class="filter" data-f="4">✅</button><button class="filter" data-f="5">🙅</button>
+      <button class="copy" id="copyBtn">Copy progress</button>
+    </div>
+  </div>
+
+  <div class="table-head"><span>Scene</span><span>Draft time / duration</span><span>Draft frames (start / middle / end)</span><span>Title / content · the project owner’s prompt and references</span><span>Status</span><span>Review</span><span>Local files</span></div>
+  <section class="board" id="board"></section>
+  <div class="empty" id="empty">No scenes match this filter。</div>
+</main>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const SCENES=[
+["S01",0.000,1.733,"TITLE","Introducing"],
+["S02",1.733,3.667,"TITLE","Minara Harness"],
+["S03",3.667,7.633,"PRODUCT","product reveal（draft）"],
+["S04",7.633,9.467,"TITLE","Every asset. One intelligence."],
+["S05",9.467,15.400,"PRODUCT","product animation（draft）· full-asset analysis / opportunity"],
+["S06",15.400,17.233,"TITLE","From opportunity to execution."],
+["S07",17.233,22.833,"PRODUCT","product animation（draft）· intent →  → execution"],
+["S08",22.833,24.667,"TITLE","Strategy Studio"],
+["S09",24.667,30.533,"PRODUCT","product animation（draft）· Strategy Studio"],
+["S10",30.533,32.367,"TITLE","Pick a strategy\nAutopilot it."],
+["S11",32.367,38.233,"PRODUCT","product animation（draft）· Marketplace → Autopilot"],
+["S12",38.233,40.067,"TITLE","Portfolio management,\nmulti-agented."],
+["S13",40.067,45.933,"PRODUCT","product animation（draft）· Portfolio multi-agent"],
+["S14",45.933,47.767,"TITLE","Learns from your trades.\nWins. Losses. Lessons."],
+["S15",47.767,53.633,"PRODUCT","product animation（draft）· trade history → lessons"],
+["S16",53.633,55.467,"TITLE","Beyond finance."],
+["S17",55.467,61.333,"PRODUCT","product animation（draft）· general capability"],
+["S18",61.333,63.167,"TITLE","Your models. One workspace."],
+["S19",63.167,69.033,"PRODUCT","product animation（draft）· multi-model switching"],
+["S20",69.033,72.933,"BRAND","Minara Harness\nYour agent now earns for you"],
+["S21",72.933,74.750,"BRAND","Minara（logo + names）"],
+["S22",74.750,77.250,"BRAND","minara.ai"]
+];
+const TOTAL=77.25;
+const STATUS=["Awaiting prompt","prompt received","Generating","pending review","✅ approved","🙅 Reject"];
+const KEY="harness-1min-scenes-v1";
+const fmt=t=>{const m=Math.floor(t/60),s=t-m*60;return `${String(m).padStart(2,"0")}:${s.toFixed(3).padStart(6,"0")}`};
+const st=JSON.parse(localStorage.getItem(KEY)||"{}");
+// S14/S15 share the new Codex Portfolio preview; retain existing review decisions.
+for(const id of ["S14","S15"]) if(!st[id] || st[id].status < 3) st[id]={...st[id],status:3,prompt:st[id]?.prompt || "S14 + S15 work together：18 /assets、spotperpetualsperformance cards3，stack and fade into Portfolio。 Spot / Perps / Strategies，five-digit or larger mockdata，， DOM/SVG，GSAP/Minara ， @snapcn/text-swap。codex/scenes/s14-s15/_test.html；test page render。"};
+// S08/S09 share a Codex preview; preserve any explicit approval or rejection.
+for(const id of ["S08","S09"]) if(!st[id] || st[id].status < 3) st[id]={...st[id],status:3,prompt:st[id]?.prompt || "S08 + S09：；agent-steps →  → assets →  →  → Run / 。、 UI 、GSAP / Minara ，text text-swap。 codex/；test page， render。"};
+// S03 export is available; preserve any existing review decision or prompt.
+if(st.S03?.previewRevision!=="continuous-v4") st.S03={...st.S03,previousReview:{status:st.S03?.status,prompt:st.S03?.prompt},status:3,previewRevision:"continuous-v4",prompt:"S03 v4: Office → agent → Strategies，，completed。10.6s；codex/scenes/s03-v4/_test-v4.html，previewpending review。"};
+if(!st.S03 || st.S03.status < 3) st.S03={...st.S03,status:3,prompt:st.S03?.prompt || "followtab，right to left。reference：references/s03-desktop.png、s03-entry.png、s03-framing.png"};
+// S06/S07 share a test page; preserve prior review decisions. No video yet.
+for(const id of ["S06","S07"]) if(!st[id] || st[id].status < 3) st[id]={...st[id],status:3,prompt:st[id]?.prompt || "S06 + S07 work together。natural-language intent → structured order → required confirmation → execution result → position update；answer-stream reference，、DOM/SVG 、GSAP/Minara 。test page，after approval render。 7.433s original version 13.2s proposal。"};
+// S12/S13 share a Codex test page; preserve prior review decisions. No video yet.
+for(const id of ["S12","S13"]) if(!st[id] || st[id].status < 3) st[id]={...st[id],status:3,prompt:st[id]?.prompt || "S12 + S13 work together。Autopilot / Where your profits flow.  Autopilot board，； wallet Strategies board，strategy cards；，mockdata，All； Run 、。Background， UI ，GSAP / Minara ，title @snapcn/text-swap。test page， render。"};
+// S16/S17: new Beyond finance version; retain the prior review and original timecodes.
+for(const id of ["S16","S17"]) if(st[id]?.previewRevision!=="computer-use-v2") st[id]={...st[id],previousReview:{status:st[id]?.status,prompt:st[id]?.prompt},status:3,previewRevision:"computer-use-v2",prompt:"S16 + S17: Beyond finance. File-card click → PPT → spreadsheet → charts, stacked left/down. All three leave left together. Chrome-style browser → scanning light → one form → six cursors filling six forms. GSAP/Minara motion; actual installed TextSwap and AnswerStream. New 19.1s proposal, old MP4 preserved. codex/scenes/s16-s17-computer-use/_test.html. Await test-page review."};
+for(const id of ["S16","S17"]) if(st[id]?.renderRevision!=="everyday-assistant-beyond-finance-11.5-v2") st[id]={...st[id],status:4,renderRevision:"everyday-assistant-beyond-finance-11.5-v2",prompt:"S16 + S17 approved and rendered: active coding task → source editor / test terminal → coding goals → six equal browser windows → app preview and collected results. Beyond finance opening restored; no other narration cards. 11.5s / 345 frames. codex/output2/s16-s17-everyday-assistant.mp4"};
+// S18/S19 light wheel now flows directly into the ending; review before export.
+for(const id of ["S18","S19"]) if(st[id]?.previewRevision!=="minara-direct-logo-gfi-export-v13") st[id]={...st[id],previousReview:{status:st[id]?.status,prompt:st[id]?.prompt},status:4,previewRevision:"minara-direct-logo-gfi-export-v13",prompt:"S18 + S19 → Ending: light Apple wheel using complete supplied Minara logo file. Click and enlarge the same image directly to center, continuously opaque. No intermediate Geist identity or Harness. Lift, reveal 56px General Financial Intelligence, hold two seconds, sequential fades to minara.ai. 11.80s / 354 frames. Approved MP4: codex/output2/s18-s19-minara-direct-logo-gfi-ending.mp4."};
+const save=()=>{localStorage.setItem(KEY,JSON.stringify(st));document.getElementById("savedAt").textContent="Saved locally "+new Date().toLocaleTimeString("zh-CN",{hour12:false});};
+let filter="all";
+const board=document.getElementById("board");
+for(const id of ["S10","S11","S12","S13"]) if(st[id]?.previewRevision!=="merged-autopilot-proven-ones-v5-exported") st[id]={...st[id],status:4,previewRevision:"merged-autopilot-proven-ones-v5-exported",prompt:" S10–S13 15：Or Autopilot proven ones →  → // → Run → Portfolio/。v5approved15MP4，。"};
+const previewHref=(id,slug)=>{
+  if(id==="S03") return "codex/scenes/s03-v7/_test-v7.html";
+  if(["S21","S22"].includes(id)) return "codex/output/s21-s22-soft-brand-v2.mp4";
+  if(["S18","S19"].includes(id)) return "codex/scenes/s18-s19/_test.html";
+  if(["S14","S15"].includes(id)) return "codex/scenes/s14-s15/_test.html";
+  if(["S16","S17"].includes(id)) return "codex/output2/s16-s17-everyday-assistant/_test.html";
+  if(["S08","S09"].includes(id)) return "codex/s08/_test.html";
+  if(["S06","S07"].includes(id)) return `codex/scenes/${slug}/_test.html`;
+  if(["S10","S11","S12","S13"].includes(id)) return "codex/scenes/s10-s13-v5/_test-v5.html";
+  return `scenes/${slug}/_test.html`;
+};
+const previewNote=id=>["S10","S11","S12","S13"].includes(id)?'<a href="codex/output2/s10-s13-autopilot-proven-ones-v5.mp4">MP4 · v5 · 15.00s</a>':["S16","S17"].includes(id)?'<a href="codex/output2/s16-s17-everyday-assistant.mp4">MP4 · 11.500s</a>':["S18","S19"].includes(id)?'<a href="codex/output2/s18-s19-minara-direct-logo-gfi-ending.mp4">MP4 · 11.800s</a>':["S06","S07","S08","S09","S12","S13","S14","S15","S16","S17"].includes(id)?'<span class="dis">test pageawaiting confirmation · not rendered</span>':'<a href="output/">output/</a>';
+function render(){
+  board.innerHTML=SCENES.map(([id,t0,t1,kind,txt])=>{
+    const s=st[id]||{status:0,prompt:""};const sIdx=s.status||0;
+    const hidden=!(filter==="all"||filter===kind||(filter==="active"&&sIdx>=1&&sIdx<=3)||(filter==="4"&&sIdx===4)||(filter==="5"&&sIdx===5));
+    const slug=id.toLowerCase();
+    return `<article class="scene ${kind.toLowerCase()} s${sIdx} ${hidden?"hidden":""}" data-id="${id}">
+      <div class="sid">${id}<small class="${kind}">${kind}</small></div>
+      <div class="tc"><strong>${fmt(t0)}</strong>→ ${fmt(t1)}<br>${(t1-t0).toFixed(3)} s<span class="bar"><i style="left:${(t0/TOTAL*100).toFixed(2)}%;width:${((t1-t0)/TOTAL*100).toFixed(2)}%"></i></span></div>
+      <div class="thumbs">${["a","m","z"].map((k,i)=>`<div><img src="frames/${id}${k}.jpg" alt="${id} ${k}" loading="lazy"><span>${[t0+0.15,(t0+t1)/2,t1-0.15][i].toFixed(2)} s</span></div>`).join("")}</div>
+      <div class="desc"><span class="txt">${txt.replace(/\n/g," / ")}</span>
+        <textarea data-prompt="${id}" placeholder="the project owner prompt + reference（AI receivedoriginal wording scenes/${slug}/brief.md）">${s.prompt||""}</textarea>
+        <div class="hint">brief：<code>scenes/${slug}/brief.md</code></div></div>
+      <div class="status"><select data-status="${id}">${STATUS.map((n,i)=>`<option value="${i}" ${i===sIdx?"selected":""}>${n}</option>`).join("")}</select><span class="pill s${sIdx}">${STATUS[sIdx]}</span></div>
+      <div class="review"><button class="yes ${sIdx===4?"on":""}" data-yes="${id}" title="approved">✅</button><button class="no ${sIdx===5?"on":""}" data-no="${id}" title="Reject">🙅</button></div>
+      <div class="files"><a href="${["S10","S11","S12","S13"].includes(id)?"codex/scenes/s10-s13-v5/brief.md":["S18","S19"].includes(id)?"codex/scenes/s18-s19/brief.md":`scenes/${slug}/brief.md`}">brief.md</a>${s.status>=3?`<a href="${previewHref(id,slug)}">preview</a>${previewNote(id)}`:`<span class="dis">preview（）</span>`}</div>
+    </article>`;}).join("");
+  const counts=[0,0,0,0,0,0];SCENES.forEach(([id])=>counts[(st[id]||{}).status||0]++);counts.forEach((c,i)=>document.getElementById("c"+i).textContent=c);
+  document.getElementById("empty").classList.toggle("show",![...board.children].some(a=>!a.classList.contains("hidden")));
+}
+board.addEventListener("change",e=>{const id=e.target.dataset.status;if(id){st[id]=st[id]||{};st[id].status=+e.target.value;save();render();}});
+board.addEventListener("input",e=>{const id=e.target.dataset.prompt;if(id){st[id]=st[id]||{};st[id].prompt=e.target.value;if((st[id].status||0)===0&&e.target.value.trim())st[id].status=1;save();}});
+board.addEventListener("focusout",e=>{if(e.target.dataset.prompt)render();});
+board.addEventListener("click",e=>{const y=e.target.dataset.yes,n=e.target.dataset.no;if(y){st[y]=st[y]||{};st[y].status=st[y].status===4?3:4;save();render();toast(`${y} ${st[y].status===4?"✅ approved":"Cancel approval → pending review"}`);}if(n){st[n]=st[n]||{};st[n].status=st[n].status===5?2:5;save();render();toast(`${n} ${st[n].status===5?"🙅 Reject":"Reject → Generating"}`);}});
+document.querySelectorAll(".filter").forEach(b=>b.onclick=()=>{document.querySelectorAll(".filter").forEach(x=>x.classList.remove("active"));b.classList.add("active");filter=b.dataset.f;render();});
+document.getElementById("copyBtn").onclick=()=>{const lines=SCENES.map(([id,t0,t1,k,txt])=>{const s=st[id]||{};return `${id} · ${fmt(t0)}–${fmt(t1)} · ${k} · ${STATUS[s.status||0]}${s.prompt?`\n    prompt：${s.prompt.replace(/\n/g," ")}`:""}`;});const text=`Harness 1-min · scene progress · ${new Date().toLocaleString("zh-CN",{hour12:false})}\n`+lines.join("\n");navigator.clipboard.writeText(text).then(()=>toast("progress， AI"),()=>{prompt("content：",text);});};
+function toast(m){const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove("show"),1800);}
+render();if(Object.keys(st).length)document.getElementById("savedAt").textContent="Restored the previous local progress";
+</script>
+</body>
+</html>

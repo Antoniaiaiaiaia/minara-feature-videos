@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Shot 26 — Automate</title>
+  <style>
+    @font-face{font-family:Geist;src:url('./assets/fonts/Geist-Regular.woff2') format('woff2');font-weight:400}
+    @font-face{font-family:Geist;src:url('./assets/fonts/Geist-SemiBold.woff2') format('woff2');font-weight:600}
+    *{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#eceeed;font-family:Geist,Arial,sans-serif}body{display:grid;place-items:center}
+    #viewport{position:relative;width:min(100vw,177.7778vh);aspect-ratio:16/9;overflow:hidden;background:#eceeed}
+    #shot{position:absolute;inset:0;width:1920px;height:1080px;overflow:hidden;transform-origin:0 0;color:#151718;background:radial-gradient(circle at 50% 47%,#fff 0,#f1f2f1 43%,#e2e5e3 100%)}
+    .grid{position:absolute;inset:0;opacity:.32;background-image:linear-gradient(rgba(20,22,22,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(20,22,22,.03) 1px,transparent 1px);background-size:42px 42px}.floor-grid{position:absolute;z-index:1;left:-5%;bottom:-90px;width:110%;height:560px;opacity:.5;background-image:linear-gradient(rgba(86,92,89,.16) 2px,transparent 2px),linear-gradient(90deg,rgba(86,92,89,.16) 2px,transparent 2px);background-size:70px 70px;mask-image:linear-gradient(to bottom,transparent 0,#000 35%,#000 100%);-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 35%,#000 100%)}
+    .market{position:absolute;z-index:2;inset:0;width:100%;height:100%}.area{fill:url(#areaFill)}.trend{fill:none;stroke:#1ab173;stroke-width:9;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 7px 12px rgba(26,177,115,.2))}.guide{fill:none;stroke:rgba(26,177,115,.2);stroke-width:2;stroke-dasharray:8 12}
+    .clock{position:absolute;z-index:5;left:528px;top:108px;width:864px;height:864px;border-radius:50%;background:rgba(255,255,255,.79);border:1px solid rgba(74,80,77,.17);box-shadow:0 42px 90px rgba(34,39,36,.16),inset 0 0 0 18px rgba(255,255,255,.46);backdrop-filter:blur(7px);transform-origin:50% 50%}
+    .dial{position:absolute;inset:0;width:100%;height:100%}.face-ring{fill:none;stroke:#d4d8d6;stroke-width:7}.tick{stroke:#555b58;stroke-width:5;stroke-linecap:round}.tick.minor{stroke:#aeb4b1;stroke-width:2.5}
+    .signal{position:absolute;z-index:8;padding:11px 16px;border-radius:15px;box-shadow:0 12px 30px rgba(33,38,35,.15);color:#fff;font-size:20px;font-weight:600;letter-spacing:.01em}.signal.buy{background:#1ab173}.signal.sell{background:#e45d64}.signal i{display:inline-grid;width:26px;height:26px;margin-right:8px;border-radius:9px;place-items:center;font-style:normal;background:rgba(255,255,255,.2)}.signal:after{content:"";position:absolute;left:50%;bottom:-21px;width:16px;height:16px;border-radius:50%;transform:translateX(-50%);background:#1ab173;box-shadow:0 0 0 5px rgba(26,177,115,.18)}.signal.sell:after{background:#e45d64;box-shadow:0 0 0 5px rgba(228,93,100,.18)}.signal.s3:after,.signal.s5:after{top:-21px;bottom:auto}.s1{left:150px;top:776px}.s2{left:346px;top:646px}.s3{left:544px;top:701px}.s4{left:733px;top:532px}.s5{left:950px;top:564px}.s6{left:1130px;top:365px}.s7{left:1332px;top:418px}.s8{left:1515px;top:238px}.s9{left:1660px;top:170px}
+    .title-wrap{position:absolute;z-index:20;inset:0;display:grid;place-items:center;pointer-events:none}.title-halo{position:absolute;width:1120px;height:480px;border-radius:50%;background:radial-gradient(ellipse,rgba(255,255,255,.68) 0,rgba(247,248,247,.5) 38%,rgba(247,248,247,0) 72%);filter:blur(20px)}.title{position:relative;margin:0;color:#151718;font-size:226px;font-weight:600;line-height:.85;letter-spacing:-.05em;text-shadow:0 16px 42px rgba(30,34,32,.16)}.title span{display:inline-block;white-space:pre;backface-visibility:hidden;transform-origin:50% 55%}
+  </style>
+</head>
+<body>
+  <div id="viewport" data-composition-id="minara-shot-26" data-width="1920" data-height="1080" data-start="0" data-duration="1.9666666666666666" data-fps="60" data-root="true">
+    <main id="shot">
+      <div class="grid"></div><div class="floor-grid"></div>
+      <svg class="market" viewBox="0 0 1920 1080" preserveAspectRatio="none">
+        <defs><linearGradient id="areaFill" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#1ab173" stop-opacity=".02"/><stop offset="1" stop-color="#1ab173" stop-opacity=".14"/></linearGradient></defs>
+        <path class="guide" d="M-40 920 C110 835 180 870 300 750 S480 795 610 665 S805 715 930 565 S1120 615 1245 445 S1435 505 1570 322 S1760 335 1960 105"/>
+        <path class="area" d="M-40 920 C110 835 180 870 300 750 S480 795 610 665 S805 715 930 565 S1120 615 1245 445 S1435 505 1570 322 S1760 335 1960 105 L1960 1080 L-40 1080Z"/>
+        <path class="trend" d="M-40 920 C110 835 180 870 300 750 S480 795 610 665 S805 715 930 565 S1120 615 1245 445 S1435 505 1570 322 S1760 335 1960 105"/>
+      </svg>
+      <div class="clock">
+        <svg class="dial" viewBox="0 0 800 800"><circle class="face-ring" cx="400" cy="400" r="365"/><g class="ticks"></g></svg>
+      </div>
+      <span class="signal buy s1"><i>↑</i>BUY</span><span class="signal sell s2"><i>↓</i>SELL</span><span class="signal buy s3"><i>↑</i>BUY</span><span class="signal buy s4"><i>↑</i>BUY</span><span class="signal sell s5"><i>↓</i>SELL</span><span class="signal buy s6"><i>↑</i>BUY</span><span class="signal sell s7"><i>↓</i>SELL</span><span class="signal buy s8"><i>↑</i>BUY</span><span class="signal buy s9"><i>↑</i>BUY</span>
+      <div class="title-wrap"><i class="title-halo"></i><h1 class="title">Automate</h1></div>
+    </main>
+  </div>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <script>
+    const ticks=document.querySelector('.ticks');for(let i=0;i<60;i++){const major=i%5===0,y1=major?58:68,y2=major?91:84;ticks.insertAdjacentHTML('beforeend',`<line class="tick ${major?'':'minor'}" x1="400" y1="${y1}" x2="400" y2="${y2}" transform="rotate(${i*6} 400 400)"/>`)}
+    document.querySelector('.title').innerHTML=Array.from('Automate').map(char=>`<span>${char}</span>`).join('');
+    const shot=document.querySelector('#shot');const fit=()=>{const v=document.querySelector('#viewport');shot.style.transform=`scale(${v.clientWidth/1920})`};addEventListener('resize',fit);fit();
+    const trend=document.querySelector('.trend'),trendLength=trend.getTotalLength();const tl=gsap.timeline({paused:true});gsap.set(trend,{strokeDasharray:trendLength,strokeDashoffset:trendLength});gsap.set('.area',{opacity:0});gsap.set('.signal',{opacity:0,scale:.62,y:18});gsap.set('.title span',{opacity:0,y:16,filter:'blur(12px)'});gsap.set('.title-halo',{opacity:0});
+    tl.fromTo('.clock',{scale:1.35},{scale:1,duration:1.9666666666666666,ease:'power2.inOut'},0)
+      .to('.trend',{strokeDashoffset:0,duration:1.9666666666666666,ease:'none'},0)
+      .fromTo('.floor-grid',{backgroundPosition:'0px 0px'},{backgroundPosition:'140px -70px',duration:1.9666666666666666,ease:'none'},0)
+      .to('.area',{opacity:1,duration:.55,ease:'power2.out'},.1)
+      .to('.title span',{y:0,duration:.3,stagger:.0333333333,ease:'power3.out'},0)
+      .to('.title span',{opacity:1,filter:'blur(0px)',duration:.9,stagger:.0333333333,ease:'power3.out'},0)
+      .to('.title-halo',{opacity:1,duration:.28},0)
+      .to('.signal',{opacity:1,scale:1,y:0,duration:.22,stagger:{amount:1.3,from:'start'},ease:'back.out(1.9)'},.2);
+    window.__timelines=window.__timelines||{};window.__timelines['minara-shot-26']=tl;const previewTime=Number(new URLSearchParams(location.search).get('t'));if(Number.isFinite(previewTime))tl.time(previewTime);
+  </script>
+</body>
+</html>

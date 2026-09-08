@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Shot 25 — Trade</title>
+  <style>
+    @font-face{font-family:Geist;src:url('./assets/fonts/Geist-Regular.woff2') format('woff2');font-weight:400}
+    @font-face{font-family:Geist;src:url('./assets/fonts/Geist-SemiBold.woff2') format('woff2');font-weight:600}
+    *{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#eceeed;font-family:Geist,Arial,sans-serif}body{display:grid;place-items:center}
+    #viewport{position:relative;width:min(100vw,177.7778vh);aspect-ratio:16/9;overflow:hidden;background:#eceeed}
+    #shot{position:absolute;inset:0;width:1920px;height:1080px;overflow:hidden;transform-origin:0 0;color:#151718;background:radial-gradient(circle at 50% 46%,#fff 0,#f1f2f1 42%,#e3e5e4 100%)}
+    .grid{position:absolute;inset:0;opacity:.48;background-image:linear-gradient(rgba(20,22,22,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(20,22,22,.035) 1px,transparent 1px);background-size:42px 42px}
+    .wall{position:absolute;inset:-24px 0;overflow:hidden}.row{position:absolute;left:0;width:100%;height:318px;overflow:hidden}.r1{top:0}.r2{top:366px}.r3{top:732px}.track{position:absolute;display:flex;gap:22px;width:max-content;will-change:transform}.r1 .track{left:-360px}.r2 .track{left:-690px}.r3 .track{left:-470px}
+    .trade-card{position:relative;width:402px;height:292px;padding:22px;border-radius:26px;background:linear-gradient(155deg,#fff,#f6f7f6);border:1px solid #d9dddb;box-shadow:0 20px 44px rgba(27,31,29,.11);overflow:hidden;color:#151718}
+    .top{display:flex;align-items:center;gap:10px}.coin{width:36px;height:36px;border-radius:12px;background:#e3e6e4;display:grid;place-items:center;font-size:12px;font-weight:600;color:#303432}.pair{font-size:18px;font-weight:600}.lev{margin-left:auto;padding:6px 9px;border-radius:9px;background:#e7e9e8;color:#686e6b;font-size:11px}.price{margin-top:15px;font-size:36px;font-weight:600;letter-spacing:-.045em}.delta{margin-left:7px;color:#159867;font-size:14px}.meta{margin-top:4px;color:#777d7a;font-size:11px}.chart{display:block;width:100%;height:70px;margin-top:8px}.area{fill:rgba(21,151,102,.05)}.line{fill:none;stroke:#4c514f;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round}.actions{position:absolute;left:20px;right:20px;bottom:18px;display:grid;grid-template-columns:1fr 1fr;gap:12px}.btn{position:relative;height:48px;border-radius:14px;display:grid;place-items:center;font-size:17px;font-weight:600;background:#ecefed;color:#4b504e}.btn.long{background:#edf6f1;color:#178d63}.btn.short{background:#f7eeee;color:#bd5057}
+    .pointer{position:absolute;z-index:4;width:38px;height:38px;border-radius:50%;background:rgba(76,81,79,.28);box-shadow:0 7px 18px rgba(35,38,37,.16),inset 0 0 0 7px rgba(255,255,255,.42);pointer-events:none}.profit{position:absolute;z-index:5;right:22px;bottom:57px;padding:9px 13px;border-radius:13px;background:rgba(248,255,251,.96);box-shadow:0 10px 24px rgba(31,82,61,.15);color:#12865d;font-size:25px;font-weight:600;letter-spacing:-.03em;white-space:nowrap}
+    .title-wrap{position:absolute;z-index:20;inset:0;display:grid;place-items:center;pointer-events:none}.title-halo{position:absolute;width:1080px;height:500px;border-radius:50%;background:radial-gradient(ellipse,rgba(255,255,255,.99) 0,rgba(247,248,247,.92) 38%,rgba(247,248,247,0) 72%);filter:blur(20px)}.title{position:relative;margin:0;color:#151718;font-size:226px;font-weight:600;line-height:.85;letter-spacing:-.05em;text-shadow:0 16px 42px rgba(30,34,32,.16)}.title span{display:inline-block;white-space:pre;backface-visibility:hidden;transform-origin:50% 55%}
+  </style>
+</head>
+<body>
+  <div id="viewport" data-composition-id="minara-shot-25" data-width="1920" data-height="1080" data-start="0" data-duration="1.9666666666666666" data-fps="60" data-root="true">
+    <main id="shot"><div class="grid"></div><div class="wall"><div class="row r1"><div class="track"></div></div><div class="row r2"><div class="track"></div></div><div class="row r3"><div class="track"></div></div></div><div class="title-wrap"><i class="title-halo"></i><h1 class="title">Trade</h1></div></main>
+  </div>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <script>
+    const assets=[
+      ['BTC / USD','$68,442','+2.31%','M0 46 C28 40 45 54 72 37 S118 22 145 43 S197 25 226 33 S283 14 316 27 S354 10 380 14'],
+      ['ETH / USD','$3,684','+1.84%','M0 56 C31 31 62 65 91 42 S139 27 168 49 S216 22 253 37 S309 17 344 26 S365 18 380 21'],
+      ['SOL / USD','$172.60','+4.08%','M0 66 C32 60 51 70 78 52 S125 58 154 38 S202 49 231 27 S281 37 312 17 S357 22 380 8'],
+      ['HYPE / USD','$56.66','+3.05%','M0 31 C35 42 62 23 88 45 S141 58 169 34 S219 42 252 21 S309 34 337 16 S363 20 380 10'],
+      ['XRP / USD','$2.47','+0.92%','M0 54 C26 51 48 63 75 43 S121 29 151 50 S204 34 237 42 S288 19 321 29 S354 15 380 19'],
+      ['SUI / USD','$3.76','+5.12%','M0 68 C31 53 55 71 83 49 S134 57 166 35 S213 45 245 25 S299 32 329 13 S361 19 380 6']
+    ];
+    const gains=['+$704','+$18,240','+$93,680','+$1,250','+$48,216','+$99,934','+$638','+$27,105','+$74,260','+$315','+$56,482','+$8,840'];
+    const card=(item,i)=>{const side=i%3===1?'short':'long';return `<article class="trade-card"><div class="top"><i class="coin">${item[0].slice(0,2)}</i><b class="pair">${item[0]}</b><span class="lev">${3+i%5}×</span></div><div class="price">${item[1]}<em class="delta">${item[2]}</em></div><div class="meta">Perpetual · cross margin · live execution</div><svg class="chart" viewBox="0 0 380 70" preserveAspectRatio="none"><path class="area" d="${item[3]} L380 70 L0 70Z"/><path class="line" d="${item[3]}"/></svg><div class="actions"><span class="btn long">Long${side==='long'?'<i class="pointer"></i>':''}</span><span class="btn short">Short${side==='short'?'<i class="pointer"></i>':''}</span></div><span class="profit">${gains[i%gains.length]}</span></article>`};
+    document.querySelectorAll('.track').forEach((track,row)=>{const items=assets.map((a,i)=>card(a,i+row*4));track.innerHTML=items.join('')+items.join('')});
+    document.querySelector('.title').innerHTML=Array.from('Trade').map(char=>`<span>${char}</span>`).join('');
+    const shot=document.querySelector('#shot');const fit=()=>{const v=document.querySelector('#viewport');shot.style.transform=`scale(${v.clientWidth/1920})`};addEventListener('resize',fit);fit();
+    const tl=gsap.timeline({paused:true});gsap.set('.trade-card',{opacity:.84,scale:.98});gsap.set('.title span',{opacity:0,y:16,filter:'blur(12px)'});gsap.set('.title-halo',{opacity:0});gsap.set('.pointer',{opacity:0,scale:.62});gsap.set('.profit',{opacity:0,y:12,scale:.76});
+    tl.to('.title span',{y:0,duration:.3,stagger:.0333333333,ease:'power3.out'},0)
+      .to('.title span',{opacity:1,filter:'blur(0px)',duration:.9,stagger:.0333333333,ease:'power3.out'},0)
+      .to('.title-halo',{opacity:1,duration:.28},0)
+      .to('.trade-card',{opacity:1,scale:1,duration:.4,stagger:{amount:.3,from:'center'},ease:'power2.out'},.06)
+      .fromTo('.r1 .track',{x:0},{x:-710,duration:1.9666666666666666,ease:'none'},0)
+      .fromTo('.r2 .track',{x:-350},{x:350,duration:1.9666666666666666,ease:'none'},0)
+      .fromTo('.r3 .track',{x:0},{x:-810,duration:1.9666666666666666,ease:'none'},0);
+    document.querySelectorAll('.pointer').forEach((dot,i)=>{const card=dot.closest('.trade-card'),profit=card.querySelector('.profit'),at=.16+(i%6)*.235;tl.to(dot,{opacity:.62,scale:1,duration:.12,ease:'power2.out'},at).to(dot,{opacity:0,scale:1.42,duration:.18,ease:'power2.in'},at+.12).to(profit,{opacity:1,y:-19,scale:1,duration:.2,ease:'back.out(1.8)'},at+.1).to(profit,{opacity:0,y:-48,duration:.25,ease:'power1.in'},at+.38)});
+    window.__timelines=window.__timelines||{};window.__timelines['minara-shot-25']=tl;const previewTime=Number(new URLSearchParams(location.search).get('t'));if(Number.isFinite(previewTime))tl.time(previewTime);
+  </script>
+</body>
+</html>

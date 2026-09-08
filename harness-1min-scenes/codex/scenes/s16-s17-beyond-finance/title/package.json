@@ -1,0 +1,21 @@
+{
+  "name": "s16-s17-title-preview",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "dependencies": {
+    "@remotion/google-fonts": "^4.0.521",
+    "@remotion/player": "4.0.484",
+    "class-variance-authority": "^0.7.1",
+    "cn": "^0.2.6",
+    "culori": "^4.0.2",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "remotion": "4.0.484"
+  },
+  "devDependencies": {
+    "@types/culori": "^4.0.1"
+  }
+}

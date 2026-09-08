@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <link rel="icon" href="data:," />
+    <title>Minara Agent Chat — Scenes 03–04 Test</title>
+    <script src="assets/vendor/gsap.min.js"></script>
+    <style>
+      @font-face {
+        font-family: "Geist";
+        src: url("assets/fonts/Geist-Regular.woff2") format("woff2");
+        font-weight: 400;
+        font-style: normal;
+        font-display: block;
+      }
+
+      @font-face {
+        font-family: "Geist";
+        src: url("assets/fonts/Geist-SemiBold.woff2") format("woff2");
+        font-weight: 600;
+        font-style: normal;
+        font-display: block;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html,
+      body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #f7f7f7;
+        font-family: "Geist", sans-serif;
+      }
+
+      #agent-chat,
+      #agent-chat-clip {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #f7f7f7;
+      }
+
+      #phone-anchor {
+        position: absolute;
+        z-index: 4;
+        left: 50%;
+        top: 50%;
+        width: 0;
+        height: 0;
+      }
+
+      #phone-rig {
+        position: absolute;
+        left: -234px;
+        top: -492.5px;
+        width: 468px;
+        height: 985px;
+        padding: 12px;
+        border-radius: 70px;
+        background: #050505;
+        transform-origin: 50% 50%;
+        will-change: transform, filter, opacity;
+      }
+
+      #phone-rig {
+        z-index: 3;
+      }
+
+      .phone-screen {
+        position: relative;
+        width: 444px;
+        height: 961px;
+        overflow: hidden;
+        border-radius: 58px;
+        background: #ffffff;
+      }
+
+      #english-answer {
+        position: absolute;
+        z-index: 8;
+        color: #141416;
+        background: #ffffff;
+      }
+
+      .status-bar {
+        position: absolute;
+        left: 24px;
+        right: 24px;
+        top: 17px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: #050505;
+        font-size: 15px;
+        font-weight: 600;
+      }
+
+      .status-icons {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 13px;
+      }
+
+      .battery {
+        padding: 2px 6px;
+        border-radius: 5px;
+        color: #ffffff;
+        background: #141416;
+      }
+
+      .app-topbar {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 51px;
+        height: 62px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 0 20px;
+        border-bottom: 1px solid #e5e5e5;
+        background: #ffffff;
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .menu-icon {
+        color: #717171;
+        font-size: 22px;
+      }
+
+      .upgrade {
+        margin-left: auto;
+        padding: 9px 17px;
+        border-radius: 999px;
+        color: #ffffff;
+        background: #141416;
+        font-size: 13px;
+      }
+
+      #english-query {
+        position: absolute;
+        z-index: 8;
+        left: 44px;
+        top: 132px;
+        width: 356px;
+        min-height: 66px;
+        display: flex;
+        align-items: center;
+        padding: 15px 17px;
+        border-radius: 15px;
+        color: #141416;
+        background: #f7f7f7;
+        font-size: 14px;
+        line-height: 1.25;
+        letter-spacing: -0.02em;
+      }
+
+      .query-meta {
+        position: absolute;
+        right: 26px;
+        top: 210px;
+        color: #717171;
+        font-size: 11px;
+      }
+
+      .brand-row {
+        position: absolute;
+        left: 20px;
+        top: 238px;
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        color: #141416;
+        font-size: 21px;
+        font-weight: 600;
+        letter-spacing: -0.04em;
+      }
+
+      .brand-mark {
+        display: grid;
+        place-items: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        color: #ffffff;
+        background: #141416;
+        font-size: 14px;
+      }
+
+      .answer-meta {
+        position: absolute;
+        left: 20px;
+        top: 284px;
+        display: flex;
+        gap: 9px;
+      }
+
+      .mini-chip {
+        padding: 6px 10px;
+        border: 1px solid #e5e5e5;
+        border-radius: 999px;
+        color: #717171;
+        background: #ffffff;
+        font-size: 10px;
+      }
+
+      #english-answer {
+        left: 8px;
+        top: 316px;
+        width: 428px;
+        height: 460px;
+        padding: 14px 10px 0;
+      }
+
+      #english-answer h2 {
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 1.28;
+        letter-spacing: -0.025em;
+      }
+
+      #english-answer p {
+        margin-top: 14px;
+        font-size: 13px;
+        font-weight: 400;
+        line-height: 1.38;
+        letter-spacing: -0.02em;
+      }
+
+      .phone-source-table {
+        margin-top: 16px;
+        overflow: hidden;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        font-size: 12px;
+      }
+
+      .phone-source-row {
+        display: grid;
+        grid-template-columns: 66px 1fr 92px;
+        gap: 8px;
+        align-items: center;
+        min-height: 40px;
+        padding: 8px 10px;
+        border-top: 1px solid #e5e5e5;
+      }
+
+      .phone-source-row:first-child {
+        min-height: 34px;
+        border-top: 0;
+        background: #f7f7f7;
+        font-weight: 600;
+      }
+
+      .watchlist {
+        color: #3a78c4;
+      }
+
+      .phone-answer-section {
+        will-change: transform, opacity;
+      }
+
+      .ticker-row {
+        position: absolute;
+        z-index: 9;
+        left: 18px;
+        right: 18px;
+        top: 752px;
+        display: flex;
+        gap: 7px;
+        overflow: hidden;
+      }
+
+      .ticker {
+        flex: 0 0 auto;
+        padding: 7px 10px;
+        border: 1px solid #e5e5e5;
+        border-radius: 999px;
+        color: #141416;
+        background: #ffffff;
+        font-size: 11px;
+      }
+
+      .bottom-nav {
+        position: absolute;
+        z-index: 9;
+        left: 0;
+        right: 0;
+        bottom: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        color: #141416;
+        font-size: 24px;
+      }
+
+      .nav-avatar {
+        display: grid;
+        place-items: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        color: #ffffff;
+        background: #141416;
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .dynamic-island {
+        position: absolute;
+        z-index: 13;
+        left: 50%;
+        top: 14px;
+        width: 104px;
+        height: 30px;
+        margin-left: -52px;
+        border-radius: 999px;
+        background: #000000;
+        pointer-events: none;
+      }
+
+      #input-ui {
+        position: absolute;
+        z-index: 12;
+        left: 18.6px;
+        top: 789px;
+        width: 407px;
+        height: 52px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 5px 7px 5px 8px;
+        overflow: hidden;
+        border-radius: 28px;
+        background: #f7f7f7;
+      }
+
+      .input-plus,
+      .input-send {
+        position: relative;
+        flex: 0 0 42px;
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+      }
+
+      .input-plus {
+        background: #ffffff;
+      }
+
+      .input-plus::before,
+      .input-plus::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 17px;
+        height: 2px;
+        background: #141416;
+        transform: translate(-50%, -50%);
+      }
+
+      .input-plus::after {
+        transform: translate(-50%, -50%) rotate(90deg);
+      }
+
+      .input-send {
+        margin-left: auto;
+        background: #141416;
+      }
+
+      .input-send::before,
+      .input-send::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        background: #ffffff;
+        transform: translateX(-50%);
+      }
+
+      .input-send::before {
+        top: 11px;
+        width: 2px;
+        height: 20px;
+      }
+
+      .input-send::after {
+        top: 10px;
+        width: 9px;
+        height: 9px;
+        border-left: 2px solid #ffffff;
+        border-top: 2px solid #ffffff;
+        background: transparent;
+        transform: translateX(-50%) rotate(45deg);
+      }
+
+      #typed-line {
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        color: #141416;
+        font-size: 17px;
+        font-weight: 400;
+        letter-spacing: -0.02em;
+        line-height: 1;
+        white-space: nowrap;
+      }
+
+      #cursor {
+        display: inline-block;
+        width: 2px;
+        height: 20px;
+        margin-left: 2px;
+        flex: 0 0 2px;
+        background: #ffffff;
+        mix-blend-mode: difference;
+      }
+
+      .answer-cover {
+        position: absolute;
+        z-index: 10;
+        left: 8px;
+        width: 428px;
+        background: #ffffff;
+        opacity: 0;
+        transform-origin: 50% 100%;
+      }
+
+      #cover-conclusion { top: 264px; height: 158px; }
+      #cover-data { top: 414px; height: 195px; }
+      #cover-sources { top: 594px; height: 176px; }
+
+      #evidence-card {
+        position: absolute;
+        z-index: 3;
+        left: 900px;
+        top: 250px;
+        width: 830px;
+        height: 520px;
+        overflow: hidden;
+        border: 1px solid #2f2f2f;
+        border-radius: 8px;
+        background: #ffffff;
+        opacity: 0;
+        transform-origin: 0 50%;
+        will-change: transform, opacity;
+      }
+
+      #evidence-content {
+        position: absolute;
+        inset: 0;
+        padding: 26px 34px;
+        color: #141416;
+        background: #ffffff;
+      }
+
+      .evidence-meta {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 22px;
+      }
+
+      .evidence-chip {
+        padding: 7px 14px;
+        border: 1px solid #d9d9d9;
+        border-radius: 999px;
+        color: #717171;
+        font-size: 17px;
+        line-height: 1;
+      }
+
+      .evidence-section {
+        opacity: 0;
+        will-change: transform, opacity;
+      }
+
+      #evidence-conclusion {
+        font-size: 31px;
+        font-weight: 600;
+        line-height: 1.22;
+        letter-spacing: -0.035em;
+      }
+
+      #evidence-data {
+        margin-top: 22px;
+        max-width: 740px;
+        font-size: 24px;
+        font-weight: 400;
+        line-height: 1.42;
+        letter-spacing: -0.025em;
+      }
+
+      #evidence-sources {
+        display: grid;
+        grid-template-columns: 105px 1fr 170px;
+        gap: 14px;
+        align-items: center;
+        margin-top: 24px;
+        padding: 15px 18px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        color: #717171;
+        font-size: 19px;
+      }
+
+      #evidence-sources strong {
+        color: #141416;
+        font-weight: 600;
+      }
+
+      #evidence-sources .watchlist {
+        text-align: right;
+      }
+
+      #progress-dot {
+        position: absolute;
+        z-index: 6;
+        left: 24px;
+        top: 116px;
+        width: 11px;
+        height: 11px;
+        border-radius: 50%;
+        background: #ffffff;
+        mix-blend-mode: difference;
+        will-change: transform;
+      }
+
+      #cause-line {
+        position: absolute;
+        z-index: 2;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+        pointer-events: none;
+      }
+
+      #cause-path {
+        fill: none;
+        stroke: #717171;
+        stroke-width: 1;
+        stroke-dasharray: 310;
+        stroke-dashoffset: 310;
+      }
+
+      #scanlines {
+        position: absolute;
+        z-index: 20;
+        inset: 0;
+        pointer-events: none;
+        background: repeating-linear-gradient(
+          180deg,
+          rgba(0, 0, 0, 0.38) 0,
+          rgba(0, 0, 0, 0.38) 1px,
+          transparent 1px,
+          transparent 7px
+        );
+        opacity: 0;
+      }
+
+    </style>
+  </head>
+  <body>
+    <main
+      id="agent-chat"
+      data-composition-id="agent-chat-scenes-03-04"
+      data-width="1920"
+      data-height="1080"
+      data-start="0"
+      data-duration="5.767"
+      data-fps="60"
+      data-root="true"
+    >
+      <section id="agent-chat-clip" class="clip" data-start="0" data-duration="5.767">
+        <div id="phone-anchor">
+          <div id="phone-rig" data-layout-allow-overflow>
+            <div class="phone-screen">
+              <div class="dynamic-island"></div>
+              <div class="status-bar">
+                <span>9:41</span>
+                <span class="status-icons"><span>▮▮▮</span><span>⌁</span><span class="battery">100</span></span>
+              </div>
+              <div class="app-topbar">
+                <span class="menu-icon">≡</span>
+                <span>Weekly Market Brief</span>
+                <span class="upgrade">Upgrade</span>
+              </div>
+              <div id="english-query">Which AI stocks could offer the best opportunities this week?</div>
+              <div class="query-meta">Aug 10, 2026 · 5:40 PM</div>
+              <div class="brand-row"><span class="brand-mark">M</span><span>MINARA</span></div>
+              <div class="answer-meta">
+                <span class="mini-chip">● Completed in 4m 1s</span>
+                <span class="mini-chip">3 sources</span>
+              </div>
+              <article id="english-answer">
+                <div id="phone-conclusion" class="phone-answer-section">
+                  <h2>Conclusion: Favor rate-sensitive AI infrastructure and event-driven setups this week.</h2>
+                </div>
+                <div id="phone-data" class="phone-answer-section">
+                  <p>SPY, QQQ, IWM, and DIA remain above their 20-day averages. CPI, PPI, and retail sales are the key catalysts, so disciplined entries matter more than chasing momentum.</p>
+                </div>
+                <div id="phone-sources" class="phone-answer-section phone-source-table">
+                  <div class="phone-source-row"><span>Priority</span><span>Theme</span><span>Watchlist</span></div>
+                  <div class="phone-source-row"><span>1</span><span>AI networks & semis</span><span class="watchlist">CSCO · AMD</span></div>
+                </div>
+              </article>
+              <div class="ticker-row">
+                <span class="ticker">CSCO</span><span class="ticker">AMD</span><span class="ticker">CAT</span><span class="ticker">XOM</span><span class="ticker">CRWV</span>
+              </div>
+              <div id="input-ui">
+                <span class="input-plus"></span>
+                <span id="typed-line"><span id="typed-copy"></span><span id="cursor"></span></span>
+                <span class="input-send"></span>
+              </div>
+              <div class="bottom-nav"><span class="nav-avatar">M</span><span>◇</span><span>▥</span><span>▱</span></div>
+            </div>
+          </div>
+        </div>
+
+        <svg id="cause-line" viewBox="0 0 1920 1080" aria-hidden="true">
+          <path id="cause-path" d="M610 526 C720 526 796 508 900 508" />
+        </svg>
+
+        <div id="evidence-card" data-layout-allow-overlap data-layout-allow-overflow>
+          <div id="evidence-content">
+            <div class="evidence-meta">
+              <span class="evidence-chip">Completed in 4m 1s</span>
+              <span class="evidence-chip">3 sources</span>
+            </div>
+            <div id="evidence-conclusion" class="evidence-section">Conclusion: Favor rate-sensitive AI infrastructure and event-driven setups this week.</div>
+            <div id="evidence-data" class="evidence-section">SPY, QQQ, IWM, and DIA remain above their 20-day averages. CPI, PPI, and retail sales are the key catalysts, so disciplined entries matter more than chasing momentum.</div>
+            <div id="evidence-sources" class="evidence-section"><strong>Priority 1</strong><span>AI networks & semiconductors</span><span class="watchlist">CSCO · AMD</span></div>
+          </div>
+          <span id="progress-dot"></span>
+        </div>
+
+        <div id="scanlines"></div>
+      </section>
+
+      <script>
+        (function () {
+          "use strict";
+
+          var question = "What could move AI stocks this week?";
+          var typing = { count: 0 };
+          var typedCopy = document.getElementById("typed-copy");
+
+          function renderTyping() {
+            typedCopy.textContent = question.slice(0, Math.floor(typing.count));
+          }
+
+          var tl = gsap.timeline({ paused: true });
+
+          tl.set("#phone-rig", { x: 0, y: 0, scale: 0.96 })
+            .to("#phone-rig", { x: 0, y: -756, scale: 2.25, duration: 0.78, ease: "power3.inOut" }, 0.28)
+            .to(typing, { count: question.length, duration: 0.92, ease: "none", onUpdate: renderTyping }, 0.58)
+            .to("#phone-rig", { x: 7, filter: "grayscale(1) contrast(2.7)", duration: 0.04, ease: "steps(1)" }, 1.66)
+            .to("#phone-rig", { x: -6, duration: 0.04, ease: "steps(1)" }, 1.70)
+            .to("#phone-rig", { x: 4, duration: 0.04, ease: "steps(1)" }, 1.74)
+            .to("#phone-rig", { x: 0, filter: "none", duration: 0.02, ease: "steps(1)" }, 1.78)
+            .to("#scanlines", { opacity: 0.52, duration: 0.02, ease: "steps(1)" }, 1.66)
+            .to("#scanlines", { opacity: 0, duration: 0.02, ease: "steps(1)" }, 1.78)
+            .set([".phone-answer-section", ".evidence-section"], { opacity: 0, y: 12 }, 1.80)
+            .to("#input-ui", { opacity: 0, duration: 0.1 }, 1.80)
+            .to("#phone-rig", { x: -570, y: 0, scale: 0.95, duration: 0.46, ease: "power3.inOut" }, 1.82)
+            .fromTo(
+              "#evidence-card",
+              { opacity: 0, x: 52 },
+              { opacity: 1, x: 0, duration: 0.42, ease: "power3.out" },
+              1.92,
+            )
+            .to("#cause-path", { strokeDashoffset: 0, duration: 0.46, ease: "power2.inOut" }, 2.00)
+            .to(["#phone-conclusion", "#evidence-conclusion"], { opacity: 1, y: 0, duration: 0.42, ease: "power3.out" }, 2.18)
+            .to(["#phone-data", "#evidence-data"], { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 2.82)
+            .to(["#phone-sources", "#evidence-sources"], { opacity: 1, y: 0, duration: 0.46, ease: "power3.out" }, 3.54)
+            .fromTo("#progress-dot", { y: 0 }, { y: 292, duration: 1.72, ease: "none" }, 2.30)
+            .to("#evidence-card", {
+              x: -520,
+              y: 238,
+              scale: 0.16,
+              opacity: 0,
+              duration: 0.56,
+              ease: "power3.inOut",
+            }, 4.48)
+            .to("#cause-path", { opacity: 0, duration: 0.2 }, 4.50)
+            .to("#phone-rig", { x: 1920, duration: 0.60, ease: "power3.in" }, 5.12);
+
+          renderTyping();
+          window.__timelines = window.__timelines || {};
+          window.__timelines["agent-chat-scenes-03-04"] = tl;
+        })();
+      </script>
+    </main>
+  </body>
+</html>

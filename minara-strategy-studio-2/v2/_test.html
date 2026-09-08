@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>SS2 v2 — preview</title>
+<style>
+  html,body{margin:0;height:100%;background:#1c1c1e;font-family:system-ui,sans-serif;overflow:hidden;color:#eee;}
+  .bar{height:52px;display:flex;align-items:center;gap:10px;padding:0 16px;background:#2a2a2c;font-size:14px;}
+  .bar button,.bar select{background:#3a3a3c;color:#fff;border:0;border-radius:8px;padding:8px 12px;font-size:14px;cursor:pointer;}
+  .bar button:hover{background:#4a4a4c;}
+  .bar select{padding:8px 10px;}
+  .bar .mono{font-variant-numeric:tabular-nums;font-family:ui-monospace,Menlo,monospace;font-size:13px;color:#9aa;min-width:200px;}
+  .scrub{height:44px;display:flex;align-items:center;gap:12px;padding:0 16px;background:#242426;border-top:1px solid #333;}
+  .scrub input[type=range]{flex:1;height:6px;-webkit-appearance:none;appearance:none;background:#444;border-radius:3px;outline:none;}
+  .scrub input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:#07B56A;cursor:pointer;border:2px solid #fff;}
+  .scrub .step{background:#3a3a3c;color:#fff;border:0;border-radius:6px;padding:6px 10px;font-size:13px;cursor:pointer;}
+  .wrap{position:absolute;top:96px;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;}
+  .scaler{width:1920px;height:1080px;transform-origin:center center;box-shadow:0 20px 80px rgba(0,0,0,.5);}
+  iframe{width:1920px;height:1080px;border:0;display:block;background:#F9F9F9;}
+</style>
+</head>
+<body>
+  <div class="bar">
+    <select id="scene" onchange="loadScene()"></select>
+    <button onclick="play()">▶</button>
+    <button onclick="pause()">⏸</button>
+    <button onclick="reset()">↺</button>
+    <span class="mono" id="stat">loading…</span>
+    <span style="flex:1"></span>
+    <span style="color:#778;font-size:12px" id="desc">拖时间轴定帧 · @30fps</span>
+  </div>
+  <div class="scrub">
+    <button class="step" onclick="step(-1)">◀帧</button>
+    <input type="range" id="seek" min="0" max="1000" value="0">
+    <button class="step" onclick="step(1)">帧▶</button>
+  </div>
+  <div class="wrap"><div class="scaler" id="scaler"><iframe id="fr"></iframe></div></div>
+<script>
+  var SCENES=[
+    [1,"1 · Opening 大字弹出"],[2,"2 · 三卡→dashboard 升起"],[3,"3 · 因子→回测 dashboard"],
+    [4,"4 · 资产环→Deploy→费率 (合并 4+5)"],[6,"6 · 河流→庄园 family office"],
+    [7,"7 · 保守/激进 + 链上验证"],[8,"8 · 黑盒破碎 3D"],[9,"9 · switch→地球→Minara AI"],
+    [10,"10 · 随机卡墙 市场"],[11,"11 · publish 资金池 佣金"],[12,"12 · 卡池 + twitter 卡"],
+    [13,"13 · logo + 监控面板"],[14,"14 · 结尾 CTA"]
+  ];
+  var FPS=30, DUR=8, dragging=false;
+  var sel=document.getElementById('scene');
+  SCENES.forEach(function(s){var o=document.createElement('option');o.value=s[0];o.textContent=s[1];sel.appendChild(o);});
+  function fit(){var s=document.getElementById('scaler');var w=window.innerWidth,h=window.innerHeight-96;var k=Math.min(w/1920,h/1080);s.style.transform='scale('+k+')';}
+  window.addEventListener('resize',fit);fit();
+  function tlObj(){try{return document.getElementById('fr').contentWindow.__timelines.root;}catch(e){return null;}}
+  var seek=document.getElementById('seek'),stat=document.getElementById('stat');
+  function fmt(t){var frame=Math.round(t*FPS);var mm=String(Math.floor(t/60)).padStart(2,'0');var ss=String(Math.floor(t%60)).padStart(2,'0');var ff=String(frame%FPS).padStart(2,'0');return mm+':'+ss+':'+ff+'  ·  '+t.toFixed(2)+'s  ·  f'+frame;}
+  var raf;
+  function refresh(){var t=tlObj();if(t){var cur=t.time();if(!dragging)seek.value=Math.round(cur/DUR*1000);stat.textContent=fmt(cur);}raf=requestAnimationFrame(refresh);}
+  function play(){var t=tlObj();if(t){if(t.time()>=DUR-0.01)t.time(0);t.play();}}
+  function pause(){var t=tlObj();if(t)t.pause();}
+  function reset(){var t=tlObj();if(t){t.pause(0);}seek.value=0;}
+  function step(d){var t=tlObj();if(!t)return;t.pause();var nt=Math.min(DUR,Math.max(0,t.time()+d/FPS));t.time(nt);seek.value=Math.round(nt/DUR*1000);stat.textContent=fmt(nt);}
+  seek.addEventListener('input',function(){var t=tlObj();if(!t)return;t.pause();var nt=seek.value/1000*DUR;t.time(nt);stat.textContent=fmt(nt);});
+  seek.addEventListener('mousedown',function(){dragging=true;});
+  window.addEventListener('mouseup',function(){dragging=false;});
+  function loadScene(){
+    if(raf)cancelAnimationFrame(raf);
+    stat.textContent='loading…';seek.value=0;
+    document.getElementById('fr').src='scene'+sel.value+'/index.html?v='+(performance.now()|0);
+    var tries=0;var iv=setInterval(function(){tries++;var t=tlObj();if(t){clearInterval(iv);DUR=t.duration()||8;t.pause(0);refresh();}else if(tries>80){clearInterval(iv);stat.textContent='scene'+sel.value+' timeline not found (未生成?)';}},200);
+  }
+  loadScene();
+</script>
+</body>
+</html>

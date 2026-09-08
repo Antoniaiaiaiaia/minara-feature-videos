@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Shot 10 — News in motion</title>
+  <style>
+    @font-face{font-family:Geist;src:url('./assets/fonts/Geist-Regular.woff2') format('woff2');font-weight:400}
+    @font-face{font-family:Geist;src:url('./assets/fonts/Geist-SemiBold.woff2') format('woff2');font-weight:600}
+    *{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#f7f7f5;font-family:Geist,Arial,sans-serif;color:#101113}body{display:grid;place-items:center}
+    #viewport{position:relative;width:min(100vw,177.7778vh);aspect-ratio:16/9;overflow:hidden;background:#f7f7f5}
+    #shot{position:absolute;inset:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;background:radial-gradient(circle at 50% 82%,#fff 0 28%,#f7f7f5 72%)}
+    .floor{position:absolute;left:70px;right:70px;bottom:-105px;height:280px;border-radius:50%;background:rgba(0,0,0,.08);filter:blur(64px)}
+    .phone{position:absolute;top:86px;width:500px;height:1010px;border-radius:38px 38px 0 0;background:#050505;color:#f5f5f5;overflow:hidden;border:1px solid #282828;box-shadow:0 28px 85px rgba(0,0,0,.25)}
+    .phone:nth-of-type(1){left:100px}.phone:nth-of-type(2){left:710px}.phone:nth-of-type(3){left:1320px}
+    .status{height:46px;padding:13px 22px 0;display:flex;align-items:flex-start;font-size:19px;font-weight:600}.signal{margin-left:auto;letter-spacing:2px}.battery{margin-left:8px;padding:0 6px;border-radius:6px;background:#31c25c;color:#fff;font-size:16px}
+    .asset-head{height:105px;padding:17px 22px 10px;display:flex;align-items:center;gap:14px}.back{font-size:44px;font-weight:300;color:#ddd}.logo{width:62px;height:62px;flex:0 0 62px;border-radius:50%;display:grid;place-items:center;background:#f3f3f1;overflow:hidden}.logo img{width:76%;height:76%;display:block;object-fit:contain}.asset-copy{min-width:0}.ticker{font-size:35px;line-height:1;font-weight:500}.name{font-size:23px;color:#a2a2a2;margin-top:9px}.market-tag{font-size:17px;color:#ffad31;background:#382300;padding:4px 9px;border-radius:8px;margin-left:7px;vertical-align:5px}
+    .tabs{height:61px;padding:2px 18px 7px;display:flex;align-items:center;justify-content:space-between;color:#999;font-size:25px;white-space:nowrap;border-bottom:1px solid #171717}.tab{padding:9px 8px;border-radius:12px}.tab.active{background:#252525;color:#fff;font-weight:600}
+    .feed{padding:8px 18px 28px;display:grid;gap:15px}
+    .news-card{position:relative;height:235px;border-radius:23px;overflow:hidden;background:#171717;color:#fff;border:1px solid #252525;box-shadow:0 10px 26px rgba(0,0,0,.22);transform-origin:50% 100%}.news-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.08) 15%,rgba(0,0,0,.18) 38%,rgba(0,0,0,.96) 100%)}
+    .news-copy{position:absolute;left:19px;right:19px;bottom:16px}.headline{font-size:28px;line-height:1.12;font-weight:600;letter-spacing:-.35px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}.meta{font-size:18px;color:rgba(255,255,255,.7);margin-top:9px}.ticker-pill{position:absolute;right:14px;top:14px;padding:6px 10px;border-radius:11px;background:rgba(255,255,255,.88);color:#111;font-size:16px;font-weight:600;backdrop-filter:blur(8px)}
+  </style>
+</head>
+<body>
+  <div id="viewport" data-composition-id="minara-shot-10" data-width="1920" data-height="1080" data-start="0" data-duration="1.933" data-fps="60">
+    <main id="shot"><div class="floor"></div></main>
+  </div>
+  <script src="./assets/vendor/gsap.min.js"></script>
+  <script>
+    const shot=document.querySelector('#shot');const fit=()=>{const v=document.querySelector('#viewport');shot.style.transform=`scale(${v.clientWidth/1920})`};addEventListener('resize',fit);fit();
+    const companies=[
+      {ticker:'$XOM',name:'ExxonMobil',logo:'./assets/logos/exxonmobil.png',tag:'Energy',news:[['./assets/news/xom-1.jpg','Yellowtail Begins Production in Guyana Ahead of Schedule','ExxonMobil · Aug 8, 2025'],['./assets/news/xom-2.jpg','ExxonMobil Announces 2025 Results and Record Upstream Output','ExxonMobil · Jan 30, 2026'],['./assets/news/xom-3.jpg','2030 Plan Targets Higher Earnings and Stronger Cash Flow','ExxonMobil · Dec 9, 2025']]},
+      {ticker:'$NVDA',name:'NVIDIA',logo:'./assets/logos/nvidia.svg',tag:'Technology',news:[['./assets/news/nvda-1.jpg','NVIDIA Launches Cosmos 3 for the Next Wave of Physical AI','NVIDIA Newsroom · May 31, 2026'],['./assets/news/nvda-2.jpg','Enterprise Software Leaders Build AI Agents With NVIDIA','NVIDIA Newsroom · May 31, 2026'],['./assets/news/nvda-3.jpg','New Open AI Models Accelerate Useful Quantum Computing','NVIDIA Newsroom · Apr 14, 2026']]},
+      {ticker:'$TSLA',name:'Tesla',logo:'./assets/logos/tesla.svg',tag:'Automotive',news:[['./assets/news/tsla-1.png','Tesla Robotaxi Moves From Pilot Toward Wider Deployment','Tesla · 2025'],['./assets/news/tsla-2.jpg','Cybercab Validation Fleet Grows at Giga Texas','TESMAG · 2026'],['./assets/news/tsla-3.jpg','Q2 Update Marks Tesla’s Shift Toward AI and Robotics','Tesla Investor Relations · 2025']]}
+    ];
+    const card=(item,ticker)=>`<article class="news-card" data-grow><img src="${item[0]}" alt=""><div class="shade"></div><span class="ticker-pill">${ticker}</span><div class="news-copy"><div class="headline">${item[1]}</div><div class="meta">${item[2]}</div></div></article>`;
+    const phone=(c,i)=>`<section class="phone" data-phone="${i}"><div class="status" data-grow><span>14:42 ◐</span><span class="signal">▮▮▮ ◇</span><span class="battery">100</span></div><div class="asset-head" data-grow><span class="back">‹</span><span class="logo"><img src="${c.logo}" alt="${c.name} logo"></span><div class="asset-copy"><div class="ticker">${c.ticker}<span class="market-tag">${c.tag}</span></div><div class="name">${c.name}</div></div></div><nav class="tabs" data-grow><span class="tab">Overview</span><span class="tab">Stats</span><span class="tab">Earnings</span><span class="tab">Analyst</span><span class="tab active">News</span></nav><div class="feed">${c.news.map(n=>card(n,c.ticker)).join('')}</div></section>`;
+    companies.forEach((c,i)=>shot.insertAdjacentHTML('beforeend',phone(c,i)));
+    const phones=[...shot.querySelectorAll('.phone')];gsap.set(phones,{y:1080});phones.forEach(p=>{gsap.set(p.querySelectorAll('[data-grow]'),{opacity:0,y:24,scale:.965});gsap.set(p.querySelectorAll('.news-card img'),{scale:1.14,clipPath:'inset(100% 0 0 0)'})});
+    const tl=gsap.timeline({paused:true});phones.forEach((p,i)=>{const s=i*.14;tl.to(p,{y:0,duration:.72,ease:'power3.out'},s).to(p.querySelectorAll('[data-grow]'),{opacity:1,y:0,scale:1,duration:.34,stagger:.045,ease:'back.out(1.55)'},s+.001).to(p.querySelectorAll('.news-card img'),{scale:1,clipPath:'inset(0% 0 0 0)',duration:.58,stagger:.06,ease:'power3.out'},s+.001)});tl.duration(1.933);window.__timelines=window.__timelines||{};window.__timelines['minara-shot-10']=tl;
+  </script>
+</body>
+</html>

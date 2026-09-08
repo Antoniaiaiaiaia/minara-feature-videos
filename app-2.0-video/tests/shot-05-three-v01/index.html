@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1920,height=1080">
+  <title>Shot 05 — Three.js Phone Mockup</title>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    *{box-sizing:border-box}html,body{width:1920px;height:1080px;margin:0;overflow:hidden;background:#e8e9e9}
+    #stage{position:relative;width:1920px;height:1080px;overflow:hidden;background:radial-gradient(ellipse at 47% 38%,#fff 0%,#f4f4f3 45%,#dfe1e1 100%)}
+    #stage:after{content:"";position:absolute;left:50%;bottom:112px;width:560px;height:80px;transform:translateX(-50%);border-radius:50%;background:rgba(25,28,30,.16);filter:blur(35px);pointer-events:none}
+    canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+  </style>
+</head>
+<body>
+  <main id="stage" data-composition-id="minara-shot-05-three" data-width="1920" data-height="1080" data-start="0" data-duration="4" data-fps="60" data-root="true"></main>
+  <script>window.addEventListener('error',e=>{document.body.dataset.error=e.message;console.error(e.error||e.message)})</script>
+  <script type="module">
+    import * as THREE from './assets/vendor/three.module.js';
+    import {GLTFLoader} from './assets/vendor/GLTFLoader.js';
+
+    const DURATION=4;
+    const stage=document.querySelector('#stage');
+    const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'high-performance'});
+    renderer.setSize(1920,1080,false);
+    renderer.setPixelRatio(1);
+    renderer.outputColorSpace=THREE.SRGBColorSpace;
+    renderer.shadowMap.enabled=true;
+    renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+    stage.prepend(renderer.domElement);
+
+    const scene=new THREE.Scene();
+    const camera=new THREE.PerspectiveCamera(31,1920/1080,.1,100);
+    camera.position.set(0,.2,15.5);
+    camera.lookAt(0,0,0);
+
+    scene.add(new THREE.HemisphereLight(0xffffff,0x9ca2a6,2.25));
+    const key=new THREE.DirectionalLight(0xffffff,4.2);
+    key.position.set(-4.5,6,7);key.castShadow=true;scene.add(key);
+    const rim=new THREE.DirectionalLight(0xb9d7ea,2.1);
+    rim.position.set(5,1,4);scene.add(rim);
+
+    function roundRect(ctx,x,y,w,h,r,fill){
+      ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fillStyle=fill;ctx.fill();
+    }
+
+    function clamp01(v){return Math.max(0,Math.min(1,v))}
+    function wrapText(x,text,left,top,width,lineHeight,maxLines=99){
+      const words=text.split(' ');let line='',y=top,lines=0;
+      for(const word of words){const test=line?line+' '+word:word;if(x.measureText(test).width>width&&line){x.fillText(line,left,y);line=word;y+=lineHeight;if(++lines>=maxLines)return y}else line=test}
+      if(line&&lines<maxLines){x.fillText(line,left,y);y+=lineHeight}return y;
+    }
+    function makeScreen(){
+      const canvas=document.createElement('canvas');canvas.width=900;canvas.height=1824;
+      const texture=new THREE.CanvasTexture(canvas);texture.colorSpace=THREE.SRGBColorSpace;texture.anisotropy=renderer.capabilities.getMaxAnisotropy();
+      return{canvas,texture,ctx:canvas.getContext('2d')};
+    }
+    const screenView=makeScreen();
+    function drawScreen(time){
+      const x=screenView.ctx,w=900,h=1824;x.clearRect(0,0,w,h);x.save();x.beginPath();x.roundRect(0,0,w,h,110);x.clip();x.fillStyle='#fff';x.fillRect(0,0,w,h);x.textBaseline='middle';x.lineJoin='round';
+      x.fillStyle='#111315';x.font='600 31px Arial';x.fillText('23:03',58,54);x.fillText('5G  100%',700,54);roundRect(x,342,27,216,60,32,'#08090a');
+      x.strokeStyle='#151719';x.lineWidth=6;x.beginPath();x.moveTo(42,178);x.lineTo(86,178);x.moveTo(42,212);x.lineTo(86,212);x.stroke();
+      x.fillStyle='#18191b';x.font='40px Arial';x.fillText('Five solid US stocks to buy now',120,196);roundRect(x,688,142,174,100,52,'#171719');x.fillStyle='#fff';x.font='36px Arial';x.fillText('Upgrade',718,194);x.fillStyle='#e2e4e4';x.fillRect(0,276,900,2);
+
+      const question='Any US stocks worth buying right now? Give me 5 solid picks.';
+      const sent=clamp01((time-.72)/.22),typing=clamp01(time/.68),typed=question.slice(0,Math.floor(question.length*typing));
+      if(sent>0){x.globalAlpha=sent;roundRect(x,40,320,820,190,45,'#f3f3f3');x.fillStyle='#171719';x.font='40px Arial';wrapText(x,question,78,372,740,55,2);x.globalAlpha=1}
+
+      const response=clamp01((time-1.02)/.32);
+      if(response>0){x.globalAlpha=response;roundRect(x,44,548,74,74,37,'#161819');x.fillStyle='#fff';x.font='700 38px Arial';x.textAlign='center';x.fillText('M',81,586);x.textAlign='left';x.fillStyle='#151719';x.font='700 48px Arial';x.fillText('MINARA',138,588);roundRect(x,40,650,420,72,38,'#fff');x.strokeStyle='#dedfdf';x.lineWidth=2;x.stroke();x.fillStyle='#141617';x.font='30px Arial';x.fillText('●  Researching markets',68,687);roundRect(x,480,650,250,72,38,'#fff');x.stroke();x.fillText('3 sources',520,687);x.globalAlpha=1}
+
+      const answer='5 US Stock Picks — Today\nNVIDIA — AI infrastructure demand remains strong.\nMicrosoft — Azure and Copilot support durable growth.\nAlphabet — Search cash flow funds AI investment.\nTSMC — Essential manufacturing for advanced chips.\nJPMorgan — Scale and balance-sheet strength stand out.';
+      const chars=Math.floor(answer.length*clamp01((time-1.3)/2.55)),visible=answer.slice(0,chars),lines=visible.split('\n');
+      if(chars){let y=792;x.fillStyle='#151719';lines.forEach((line,i)=>{x.font=i===0?'700 49px Arial':'35px Arial';if(i===0){y=wrapText(x,line,40,y,820,62,2)+28}else{const split=line.split(' — ');if(split.length>1){x.font='700 35px Arial';x.fillText(split[0],40,y);const offset=x.measureText(split[0]).width;x.font='35px Arial';y=wrapText(x,'— '+split[1],52+offset,y,790-offset,49,2)+20}else y=wrapText(x,line,40,y,820,49,2)+20}});if(time<3.85){x.fillStyle='#1ab173';x.fillRect(42,y-15,5,44)}}
+
+      const composerY=1584;roundRect(x,38,composerY,824,126,64,'#f5f5f5');roundRect(x,54,composerY+18,90,90,45,'#fff');x.fillStyle='#151719';x.font='52px Arial';x.fillText('+',82,composerY+65);
+      x.font='34px Arial';x.fillStyle='#777b7e';x.fillText(sent?'Ask about crypto and stocks':typed,166,composerY+64);roundRect(x,762,composerY+20,82,86,43,'#151719');x.fillStyle='#fff';x.textAlign='center';x.font='42px Arial';x.fillText(sent?'■':'↑',803,composerY+65);x.textAlign='left';
+      if(time>.58&&time<.88){x.globalAlpha=.24*(1-Math.abs(time-.73)/.15);x.beginPath();x.arc(803,composerY+64,76,0,Math.PI*2);x.fillStyle='#666';x.fill();x.globalAlpha=1}
+      x.fillStyle='#151719';x.font='700 44px Arial';x.fillText('M',74,1768);x.fillText('◈',300,1768);x.fillText('▥',542,1768);x.fillText('▱',768,1768);
+      x.restore();screenView.texture.needsUpdate=true;
+    }
+
+    const phone=new THREE.Group();scene.add(phone);
+    phone.rotation.set(-.055,-.255,-.018);phone.position.set(0,.05,0);
+    const state={t:0};
+    function renderAt(time){
+      state.t=Math.max(0,Math.min(DURATION,time));
+      const phase=state.t/DURATION*Math.PI*2;
+      phone.position.y=.08+Math.sin(phase)*.10;
+      phone.rotation.x=-.055+Math.sin(phase*.72)*.012;
+      phone.rotation.y=-.255+Math.sin(phase*.58)*.028;
+      phone.rotation.z=-.018+Math.sin(phase*.46)*.009;
+      drawScreen(state.t);
+      renderer.render(scene,camera);
+    }
+    new GLTFLoader().load('./assets/models/iphone-15-pro-max.glb',gltf=>{
+      const model=gltf.scene;
+      model.traverse(node=>{
+        if(!node.isMesh)return;
+        node.castShadow=true;node.receiveShadow=true;
+        if(node.name==='xXDHkMplTIDAXLN')node.material=new THREE.MeshBasicMaterial({map:screenView.texture});
+      });
+      const box=new THREE.Box3().setFromObject(model),center=box.getCenter(new THREE.Vector3()),size=box.getSize(new THREE.Vector3());
+      model.position.copy(center).multiplyScalar(-1);
+      model.scale.setScalar(6.15/size.y);
+      phone.add(model);
+      const tl=gsap.timeline({paused:true}).to(state,{t:DURATION,duration:DURATION,ease:'none',onUpdate:()=>renderAt(state.t)},0);
+      window.__timelines=window.__timelines||{};window.__timelines['minara-shot-05-three']=tl;
+      window.addEventListener('hf-seek',e=>renderAt(Number(e.detail.time)||0));
+      const preview=Number(new URLSearchParams(location.search).get('t'));
+      if(Number.isFinite(preview))tl.time(preview);else renderAt(0);
+    },undefined,error=>{throw error});
+  </script>
+</body>
+</html>

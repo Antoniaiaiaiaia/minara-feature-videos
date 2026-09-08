@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Shot 12 — Ondo stretch reveal</title>
+  <style>
+    @font-face{font-family:Geist;src:url('./assets/fonts/Geist-Regular.woff2') format('woff2');font-weight:400}
+    @font-face{font-family:Geist;src:url('./assets/fonts/Geist-SemiBold.woff2') format('woff2');font-weight:600}
+    *{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#050505;font-family:Geist,Arial,sans-serif}body{display:grid;place-items:center}
+    #viewport{position:relative;width:min(100vw,177.7778vh);aspect-ratio:16/9;overflow:hidden;background:#050505}
+    #shot{position:absolute;inset:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;background:#050505}
+    .logo-svg,.word-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;transform:translateX(384px) scale(.6);transform-origin:0 50%}.word-svg text{font-family:Arial,Helvetica,sans-serif;font-weight:700;font-size:510px;fill:#fff;letter-spacing:-20px}
+  </style>
+</head>
+<body>
+  <div id="viewport" data-composition-id="minara-shot-12" data-width="1920" data-height="1080" data-start="0" data-duration="2.133" data-fps="60">
+    <main id="shot">
+      <svg class="logo-svg" viewBox="0 0 1920 1080" aria-label="Ondo icon">
+        <defs>
+          <clipPath id="ondo-grow" clipPathUnits="userSpaceOnUse"><rect id="logo-reveal" x="44.8" y="0" width="0" height="44.8"/></clipPath>
+        </defs>
+        <g transform="translate(26 329) scale(8.65)" fill="#fff" clip-path="url(#ondo-grow)">
+          <path d="M22.4 3.2C11.8 3.2 3.2 11.8 3.2 22.4s8.6 19.2 19.2 19.2h11.5c-3.4 2-7.3 3.2-11.5 3.2C10 44.8 0 34.7 0 22.4S10 0 22.4 0s22.4 10 22.4 22.4c0 1.1-.1 2.2-.2 3.2h-3.2c.2-1 .3-2.1.3-3.2 0-10.6-8.6-19.2-19.3-19.2Z"/>
+          <path d="M40.8 35.2c-.8 1.1-1.8 2.2-2.8 3.2H22.4c-8.8 0-16-7.2-16-16s7.2-16 16-16 16 7.2 16 16c0 1.1-.1 2.2-.3 3.2h-3.3c.3-1 .4-2.1.4-3.2 0-7.1-5.7-12.8-12.8-12.8S9.6 15.3 9.6 22.4s5.7 12.8 12.8 12.8h18.4Z"/>
+          <path d="M42.6 32c.5-1 .9-2.1 1.2-3.2H22.3a6.4 6.4 0 1 1 5.5-3.2h3.5c.4-1 .5-2.1.5-3.2a9.6 9.6 0 1 0-9.6 9.6h20.4Z"/>
+        </g>
+      </svg>
+      <svg class="word-svg" viewBox="0 0 1920 1080" aria-label="ONDO"><defs id="slice-defs"></defs><g id="letters"></g></svg>
+    </main>
+  </div>
+  <script src="./assets/vendor/gsap.min.js"></script>
+  <script>
+    const shot=document.querySelector('#shot');const fit=()=>{const viewport=document.querySelector('#viewport');shot.style.transform=`scale(${viewport.clientWidth/1920})`};addEventListener('resize',fit);fit();
+    const ns='http://www.w3.org/2000/svg',defs=document.querySelector('#slice-defs'),lettersRoot=document.querySelector('#letters');const chars=['O','N','D','O'],xPos=[420,790,1168,1530],sliceCount=8,letterWidth=390,slices=[];
+    chars.forEach((char,charIndex)=>{for(let sliceIndex=0;sliceIndex<sliceCount;sliceIndex++){const clip=document.createElementNS(ns,'clipPath');clip.id=`clip-${charIndex}-${sliceIndex}`;clip.setAttribute('clipPathUnits','userSpaceOnUse');const rect=document.createElementNS(ns,'rect');rect.setAttribute('x',xPos[charIndex]+sliceIndex*(letterWidth/sliceCount)-3);rect.setAttribute('y','245');rect.setAttribute('width',letterWidth/sliceCount+7);rect.setAttribute('height','590');clip.appendChild(rect);defs.appendChild(clip);const group=document.createElementNS(ns,'g');group.classList.add('letter-slice');group.dataset.letter=charIndex;group.setAttribute('clip-path',`url(#clip-${charIndex}-${sliceIndex})`);const text=document.createElementNS(ns,'text');text.setAttribute('x',xPos[charIndex]);text.setAttribute('y','718');text.textContent=char;group.appendChild(text);lettersRoot.appendChild(group);slices.push(group)}});
+    const logoReveal=document.querySelector('#logo-reveal');gsap.set(slices,{x:1500,scaleX:1.8,transformOrigin:'left center'});
+    const tl=gsap.timeline({paused:true});tl.to(logoReveal,{attr:{x:0,width:44.8},duration:1.38,ease:'power2.inOut'},.04);chars.forEach((char,charIndex)=>{slices.filter(slice=>Number(slice.dataset.letter)===charIndex).forEach((slice,sliceIndex)=>tl.to(slice,{x:0,scaleX:1,duration:1.1,ease:'power4.out'},.16+charIndex*.1+sliceIndex*(3.5/30/sliceCount)))});tl.duration(2.133);window.__timelines=window.__timelines||{};window.__timelines['minara-shot-12']=tl;
+  </script>
+</body>
+</html>

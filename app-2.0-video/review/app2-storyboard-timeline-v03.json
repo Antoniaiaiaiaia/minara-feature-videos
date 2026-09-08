@@ -1,0 +1,237 @@
+{
+  "version": "v03",
+  "source": "../source/video/app2-draft-v01.mp4",
+  "format": { "width": 1920, "height": 1080, "fps": 30, "duration": 73.351837 },
+  "rules": {
+    "background": "#F7F7F7 unless explicitly overridden",
+    "font": "Geist",
+    "ui": "English-only, rebuilt Silicon Valley mobile product UI",
+    "references": "Draft frames and screenshots are direction only; never reuse them as final pixels",
+    "cameraZoom": "Whole phone rig: scale 0.96 to 2.25, y 0 to -756, x 0, 0.78s, power3.inOut",
+    "textEntrance": "opacity 0→1, y 24→0, scale .94→1, blur 12px→0, 0.58s, power3.out, phrase stagger 0.18s"
+  },
+  "chapters": [
+    { "id": "opening", "label": "Opening", "start": 0, "end": 5.866 },
+    { "id": "agent", "label": "Ask / Pocket", "start": 5.866, "end": 15.533 },
+    { "id": "markets", "label": "Markets / Research", "start": 15.533, "end": 27.233 },
+    { "id": "trade", "label": "Spot / Perps", "start": 27.233, "end": 35.1 },
+    { "id": "automate", "label": "Automate / Marketplace", "start": 35.1, "end": 44.566 },
+    { "id": "autopilot", "label": "Autopilot / Control", "start": 44.566, "end": 52.933 },
+    { "id": "anywhere", "label": "Anywhere / Phone", "start": 52.933, "end": 58.433 },
+    { "id": "close", "label": "Recap / Brand Close", "start": 58.433, "end": 73.351837 }
+  ],
+  "shots": [
+    {
+      "id": "01", "chapter": "opening", "start": 0, "end": 1.8,
+      "voiceover": "Meet the new Minara app.", "title": "Minara App 2.0",
+      "visual": "Centered title on #F7F7F7. Match the draft's restrained type-to-canvas ratio; “2.0” uses #EB53FF → #FF538F → #FF9A32 gradient.",
+      "motion": "Default phrase blur-pop. “Minara App” lands first, “2.0” follows by 0.18s.",
+      "transition": "Title holds, then the gradient numerals become the visual energy that releases the logo field."
+    },
+    {
+      "id": "02", "chapter": "opening", "start": 1.8, "end": 5.866,
+      "voiceover": "Your ultimate financial agent on your phone.", "title": "The market converges on one phone",
+      "visual": "A dense circular field of trading, brokerage and quant product logos rotates around a clean centered phone silhouette; the field expands past frame, revealing the phone in use.",
+      "motion": "18 square logo tiles rotate on a tilted reverse loop, then accelerate outward. Flat phone remains the anchor; no Three.js.",
+      "transition": "Flying tiles resolve into multiple mobile input bars entering the next shot."
+    },
+    {
+      "id": "03", "chapter": "agent", "start": 5.866, "end": 7.833,
+      "voiceover": "Ask Minara anything.", "title": "One question",
+      "visual": "Oversized iPhone 17 frame. Several input bars fly past; the central bar resolves to “What could move AI stocks this week?”",
+      "motion": "Use the approved whole-rig camera zoom into the input area, then type the question with a monochrome caret.",
+      "transition": "Direct cut on submit; no white stretch card, threshold flash, scan lines or afterimage."
+    },
+    {
+      "id": "04", "chapter": "agent", "start": 7.833, "end": 11.633,
+      "voiceover": "Get clear market insights in seconds.", "title": "Answer becomes product structure",
+      "visual": "The input view immediately becomes an English answer screen. Clean conclusion, supporting data and source chips assemble inside the phone; cropped evidence cards align outside the frame.",
+      "motion": "Conclusion → data → sources enter with short vertical growth. Components detach and settle into their actual Minara app positions.",
+      "transition": "Answer components align into a complete mobile page, then the phone recenters."
+    },
+    {
+      "id": "05", "chapter": "agent", "start": 11.633, "end": 15.533,
+      "voiceover": "Your pocket financial advisor, wherever you go.", "title": "From interface to pocket",
+      "visual": "The completed phone stays legible while the environment changes to a real walking pocket shot supplied externally by the user.",
+      "motion": "UI motion slows; subtle handheld translation belongs to the external plate, not to the phone UI.",
+      "transition": "Phone pulls out of the environment and returns to #F7F7F7 as asset icons enter orbit."
+    },
+    {
+      "id": "06", "chapter": "markets", "start": 15.533, "end": 19.433,
+      "voiceover": "Stocks, commodities, crypto—one app to trade everything.", "title": "Every market, one center",
+      "visual": "BTC, major US equities, commodities and futures symbols orbit one centered mobile product surface.",
+      "motion": "Three depth bands rotate at different constant speeds; selected icons magnetically dock into market tabs.",
+      "transition": "Docked assets flatten into a wall of chart panels."
+    },
+    {
+      "id": "07", "chapter": "markets", "start": 19.433, "end": 21.333,
+      "voiceover": "Check charts.", "title": "Charts",
+      "visual": "A gapless TradingView-inspired wall of five grayscale market charts, rebuilt as original UI.",
+      "motion": "Panels rise in two rows; price paths draw left to right with restrained green only for gains.",
+      "transition": "Chart cells compress into earnings modules."
+    },
+    {
+      "id": "08", "chapter": "markets", "start": 21.333, "end": 23.433,
+      "voiceover": "Earnings.", "title": "Earnings intelligence",
+      "visual": "Earnings summary modules: estimate, actual, surprise and transcript takeaway.",
+      "motion": "Modules grow from baselines with elastic but controlled scale; metrics count once.",
+      "transition": "Metric blocks reorganize into analyst visualizations."
+    },
+    {
+      "id": "09", "chapter": "markets", "start": 23.433, "end": 25.3,
+      "voiceover": "Analyst data.", "title": "Many views, one decision",
+      "visual": "Five analysis types fill the frame: treemap, ring, distribution bars, consensus ladder and risk matrix.",
+      "motion": "Each view enters in a 0.12s stagger and animates only its meaningful data dimension.",
+      "transition": "Columns extend vertically and become news feeds."
+    },
+    {
+      "id": "10", "chapter": "markets", "start": 25.3, "end": 27.233,
+      "voiceover": "And news.", "title": "News in motion",
+      "visual": "Three dense columns of English market-news cards with source, timestamp, ticker and one-line headline.",
+      "motion": "Left and right columns scroll upward; center scrolls downward at a slightly slower rate.",
+      "transition": "One stock card expands into a trading ticket."
+    },
+    {
+      "id": "11", "chapter": "trade", "start": 27.233, "end": 29.033,
+      "voiceover": "Trade stocks on spot.", "title": "Spot order",
+      "visual": "A clean English spot ticket grows into place with quantity, price, Long, Short and Buy controls; camera favors the Buy action.",
+      "motion": "Ticket assembles with spring-like height expansion. Cursor moves to Buy using one deliberate arc.",
+      "transition": "Click becomes a centered network mark."
+    },
+    {
+      "id": "12", "chapter": "trade", "start": 29.033, "end": 31.166,
+      "voiceover": "Powered by Ondo Network.", "title": "Ondo settlement",
+      "visual": "Ondo Network logo centered on a dark graphite field with a concise “Generating” system line.",
+      "motion": "Logo blur-pops in; a #FAFAFA shimmer sweeps over #3F3F46 text at speed 1.",
+      "transition": "The shimmer extends into two parallel price traces."
+    },
+    {
+      "id": "13", "chapter": "trade", "start": 31.166, "end": 35.1,
+      "voiceover": "Or go long and short with perps.", "title": "Long and short, simultaneously",
+      "visual": "Split screen: Long on the left, Short on the right. Each side has a large action button and its own chart.",
+      "motion": "Both 3-second actions run in parallel: Long bends upward while Short bends downward. Buttons and charts grow elastically from their anchors.",
+      "transition": "The two chart paths straighten into production lines."
+    },
+    {
+      "id": "14", "chapter": "automate", "start": 35.1, "end": 36.833,
+      "voiceover": "Want to automate your trades?", "title": "Automation begins",
+      "visual": "Five parallel workflow lines carry small order boxes between rule nodes.",
+      "motion": "Boxes hop slowly from node to node; only active nodes illuminate.",
+      "transition": "Camera pulls back to reveal full conveyor lanes."
+    },
+    {
+      "id": "15", "chapter": "automate", "start": 36.833, "end": 38.933,
+      "voiceover": "Explore the strategy marketplace.", "title": "Strategy throughput",
+      "visual": "Five fast parallel conveyor lanes end at acceptance ports. Each accepted box emits green light and a seeded profit value.",
+      "motion": "Conveyors accelerate; receipts appear once per accepted box using deterministic values, never runtime randomness.",
+      "transition": "Three accepted boxes rise and become three phones."
+    },
+    {
+      "id": "16", "chapter": "automate", "start": 38.933, "end": 40.9,
+      "voiceover": "Compare.", "title": "Compare strategies",
+      "visual": "Three iPhones rise from the bottom, cropped at mid-body. Each contains one distinct strategy card.",
+      "motion": "Phones spring upward one by one with consistent 0.16s stagger and no idle wobble.",
+      "transition": "Cards expand into creator profiles."
+    },
+    {
+      "id": "17", "chapter": "automate", "start": 40.9, "end": 42.866,
+      "voiceover": "Choose.", "title": "Choose the operator",
+      "visual": "Strategy-author cards show avatar, trading experience, AUM and recent return in concise English.",
+      "motion": "Profiles slide horizontally under a fixed comparison rule; strongest metrics receive one contrast pulse.",
+      "transition": "The selected center phone scales forward."
+    },
+    {
+      "id": "18", "chapter": "automate", "start": 42.866, "end": 44.566,
+      "voiceover": "Then tap Run.", "title": "Run",
+      "visual": "Camera closes on the center phone's luminous strategy card and wide rounded Run button.",
+      "motion": "Cursor enters, clicks once; Run changes to Running with a left-to-right state fill.",
+      "transition": "Running state expands into the autopilot control surface."
+    },
+    {
+      "id": "19", "chapter": "autopilot", "start": 44.566, "end": 50.666,
+      "voiceover": "Autopilot monitors and executes the strategy 24/7.", "title": "Two cycles on autopilot",
+      "visual": "Phone on the right shows Minara monitoring trades and P&L. A sun and moon rotate around the screen center; background shifts gray → deep navy → gray.",
+      "motion": "Exactly two day/night cycles. System events and P&L entries continue while the environment changes.",
+      "transition": "Second daylight state settles on the control bar."
+    },
+    {
+      "id": "20", "chapter": "autopilot", "start": 50.666, "end": 51.7,
+      "voiceover": "Pause.", "title": "Pause instantly",
+      "visual": "Whole phone remains visible as the camera zooms to the Stop/Pause control.",
+      "motion": "Approved camera zoom, then a single cursor click changes Running to Paused.",
+      "transition": "Content scroll starts immediately from the paused state."
+    },
+    {
+      "id": "21", "chapter": "autopilot", "start": 51.7, "end": 52.933,
+      "voiceover": "Or switch.", "title": "Switch strategy",
+      "visual": "The same phone scrolls upward to reveal the next strategy card.",
+      "motion": "One upward content scroll; cursor clicks Run and the label becomes Running.",
+      "transition": "Phone detaches cleanly from #F7F7F7 for environment plates."
+    },
+    {
+      "id": "22", "chapter": "anywhere", "start": 52.933, "end": 55.233,
+      "voiceover": "Anytime, anywhere.", "title": "Environment sequence",
+      "visual": "Beach, office, home and grass environments supplied/generated externally by the user. Phone remains the consistent focal object.",
+      "motion": "Environment match-cuts; no internal UI rebuild required for the plates.",
+      "transition": "Last environment holds while the phone comes forward.",
+      "ownership": "external-user-media"
+    },
+    {
+      "id": "23", "chapter": "anywhere", "start": 55.233, "end": 58.433,
+      "voiceover": "Straight from your phone.", "title": "The phone stays with you",
+      "visual": "One persistent phone crosses the same four externally generated places, reinforcing continuity rather than showing new features.",
+      "motion": "Phone scale and screen orientation remain consistent across match cuts.",
+      "transition": "Environment drops to #F7F7F7; the word Research appears.",
+      "ownership": "external-user-media"
+    },
+    {
+      "id": "24", "chapter": "close", "start": 58.433, "end": 60.4,
+      "voiceover": "Research.", "title": "Research",
+      "visual": "Large Research typography over a dense field of rebuilt US equity and futures analysis cards.",
+      "motion": "Default blur-pop title; cards reveal in low-contrast waves behind it.",
+      "transition": "Research word shifts out as the card field becomes executable tickets."
+    },
+    {
+      "id": "25", "chapter": "close", "start": 60.4, "end": 62.366,
+      "voiceover": "Trade.", "title": "Trade",
+      "visual": "Large Trade typography over many order cards. Multiple cursors press Long or Short; profit receipts range from $100 to $100,000.",
+      "motion": "Deterministic seeded clicks and receipts; each number appears once near its originating card.",
+      "transition": "Receipts orbit inward and form clock ticks."
+    },
+    {
+      "id": "26", "chapter": "close", "start": 62.366, "end": 64.3,
+      "voiceover": "Automate.", "title": "Automate",
+      "visual": "A clock begins at 80% of frame height, then contracts by 50%. Behind it, a large P&L curve climbs from lower left to upper right with real volatility.",
+      "motion": "Clock hands run continuously; curve advances slowly; Buy and Sell markers appear along the path.",
+      "transition": "Clock contracts into the center of a phone screen."
+    },
+    {
+      "id": "27", "chapter": "close", "start": 64.3, "end": 66.266,
+      "voiceover": "Stay in control.", "title": "One controlled system",
+      "visual": "Phone rises from below and settles at center with a subtle breathing scale. Official Minara square logomark installs into the screen; concentric gradient rings converge behind it.",
+      "motion": "Phone spring-up, one restrained breath, logo blur-pop, rings move inward.",
+      "transition": "Rings collapse to a quiet brand field."
+    },
+    {
+      "id": "28", "chapter": "close", "start": 66.266, "end": 68.3,
+      "voiceover": "Minara App 2.0.", "title": "Brand lockup",
+      "visual": "Official Minara logo with “Minara App 2.0” centered on #F7F7F7.",
+      "motion": "Logo and phrase enter with the default blur-pop, then hold.",
+      "transition": "Lockup shifts slightly upward to make room for the promise."
+    },
+    {
+      "id": "29", "chapter": "close", "start": 68.3, "end": 70.333,
+      "voiceover": "Your financial intelligence.", "title": "Promise",
+      "visual": "Brand lockup remains. “Your financial intelligence.” appears beneath it with generous spacing.",
+      "motion": "Single phrase blur-pop; no extra graphic movement.",
+      "transition": "Final phrase replaces the promise on the same baseline."
+    },
+    {
+      "id": "30", "chapter": "close", "start": 70.333, "end": 73.351837,
+      "voiceover": "Your agent. In one app.", "title": "Final resolve",
+      "visual": "Final centered stack: official Minara logo, Minara App 2.0, “Your agent.” and “In one app.” Black, white and gray with the approved 2.0 gradient as the only color accent.",
+      "motion": "Two phrase groups blur-pop 0.18s apart. Hold the final composition through the 0.052s source tail.",
+      "transition": "End on a clean static hold."
+    }
+  ]
+}

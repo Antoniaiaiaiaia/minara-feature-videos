@@ -1,0 +1,26 @@
+@font-face{font-family:Geist;src:url(assets/fonts/Geist-Regular.woff2);font-weight:400;font-display:block}
+@font-face{font-family:Geist;src:url(assets/fonts/Geist-SemiBold.woff2);font-weight:600;font-display:block}
+*{box-sizing:border-box}body{margin:0;background:#f6f6f4;color:#15171a;font:14px Geist,sans-serif;-webkit-font-smoothing:antialiased}button,input,select{font:inherit}button,select{cursor:pointer}button{color:inherit;border:0}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #e7e7ea;outline-offset:5px}
+.review{height:66px;padding:0 32px;display:flex;justify-content:space-between;align-items:center}.review strong{font-weight:600}.review strong span{font-weight:400;color:#8a8a92;margin-left:20px}.review>span{font-size:11px;letter-spacing:.08em;color:#8a8a92}
+#viewport{position:relative;max-width:1600px;width:calc(100% - 64px);aspect-ratio:16/9;margin:0 auto;overflow:hidden;background:#fafaf9}
+#stage{position:absolute;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;background:#fafaf9}
+#flow,.background-shade{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}#flow{filter:grayscale(1);opacity:.2}.background-shade{background:linear-gradient(#ffffff60,#ffffff90)}
+#headline-root{position:absolute;inset:0;pointer-events:none;letter-spacing:-.04em}
+#providers{position:absolute;inset:0}
+#provider-list{position:absolute;left:0;right:0;top:220px;height:720px;overflow:hidden;mask-image:linear-gradient(to bottom,transparent,#000 16%,#000 84%,transparent)}
+#reel-track{position:absolute;inset:0;perspective:1000px;perspective-origin:50% 50%}
+.provider{position:absolute;left:0;top:0;width:586px;height:100px;border-radius:16px;overflow:hidden;background:transparent;color:#15171a;text-align:left;padding:0;transform-origin:center;backface-visibility:hidden;isolation:isolate}
+.row-content{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:0 23px;gap:23px;z-index:2;pointer-events:none}
+.provider-icon{display:grid;place-items:center;flex:0 0 57px;height:57px;border-radius:14px;overflow:hidden;background:transparent}
+.provider-icon img{display:block;width:43px;height:43px;object-fit:contain}.provider-icon.minara img{width:57px;height:57px;object-fit:cover}.provider-icon.openrouter{background:#060b05;border:1px solid #363c34}.provider-icon.openrouter img{width:47px;height:47px}
+.provider-name{font-size:30px;font-weight:400;letter-spacing:-.65px;white-space:nowrap;line-height:1.1}.in-use{font-size:21px;font-weight:400;color:#0ab56a;background:#1e3428;line-height:1;padding:10px 14px;border-radius:8px;white-space:nowrap;opacity:0}
+#cursor{position:absolute;left:0;top:0;z-index:10;fill:#262725;stroke:#fff;stroke-width:2.5;stroke-linejoin:round;filter:drop-shadow(0 2px 3px #0002);pointer-events:none;transform-origin:5px 6px}
+.click-ring{position:absolute;left:1022px;top:560px;width:42px;height:42px;border:1px solid #61766a;border-radius:50%;background:radial-gradient(circle,#93b4a010,transparent 70%);z-index:9;pointer-events:none}
+.controls{max-width:1600px;margin:auto;padding:20px 32px 24px}.transport{display:flex;align-items:center;gap:12px}.transport button,.chapters button{padding:9px 15px;border:1px solid #d5d5d5;border-radius:7px;background:#fff;color:#15171a}.transport button:first-child{background:#15171a;color:#fff;min-width:75px}.transport input{flex:1;accent-color:#b1b1b6}.transport output{min-width:106px;color:#a4a4aa;font-size:12px;font-variant-numeric:tabular-nums}.transport select{padding:8px;border:1px solid #d5d5d5;border-radius:7px;color:#15171a;background:#fff}.chapters{display:flex;gap:8px;margin-top:14px}.chapters button{font-size:12px;background:transparent;color:#62646a}.chapters button:last-child{margin-left:auto;border-color:#777}.chapters button.active{background:#e5e5e5;color:#15171a}#note{font-size:12px;line-height:1.5;color:#8a8a92;margin:16px 0 0}
+@media(max-width:850px){.review{padding:0 18px}.review>span{display:none}.review strong span{font-size:12px;margin-left:10px}#viewport{width:calc(100% - 28px)}.controls{padding:16px}.transport{gap:7px}.transport button{padding:8px 10px}.transport output{min-width:91px}.chapters{flex-wrap:wrap}.chapters button{padding:8px 10px}}
+
+.minara-wordmark{display:block;width:260px;height:auto}
+#brand-logo{position:absolute;left:50%;top:50%;width:720px;aspect-ratio:1072/320;pointer-events:none}
+#official-logo{position:absolute;left:50%;top:50%;width:720px;height:auto;transform:translate(-50%,-50%)}
+#ending-root{position:absolute;inset:0;pointer-events:none}
+#tagline{position:absolute;top:600px;left:0;width:100%;line-height:60px;text-align:center;font:400 56px/60px Geist,sans-serif;color:#55575b;letter-spacing:-.02em;pointer-events:none}

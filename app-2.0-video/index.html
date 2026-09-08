@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <link rel="icon" href="data:," />
+    <title>Minara App 2.0 — Shot 01</title>
+    <script src="assets/vendor/gsap.min.js"></script>
+    <style>
+      @font-face {
+        font-family: "Geist";
+        src: url("assets/fonts/Geist-Regular.woff2") format("woff2");
+        font-weight: 400;
+        font-style: normal;
+        font-display: block;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html,
+      body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #f7f7f7;
+        font-family: "Geist", sans-serif;
+      }
+
+      #shot-01,
+      #shot-01-clip {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #f7f7f7;
+      }
+
+      #title {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        display: flex;
+        align-items: baseline;
+        gap: 0.235em;
+        color: #000000;
+        font-size: 120px;
+        font-weight: 400;
+        line-height: 1;
+        letter-spacing: 0;
+        white-space: nowrap;
+        transform: translate(-50%, -50%);
+      }
+
+      .word {
+        display: inline-block;
+        opacity: 0;
+        filter: blur(12px);
+        will-change: transform, opacity, filter;
+      }
+
+      #word-version {
+        color: transparent;
+        background: linear-gradient(90deg, #eb53ff 0%, #ff538e 50%, #ff9a32 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+    </style>
+  </head>
+  <body>
+    <main
+      id="shot-01"
+      data-composition-id="app2-opening-shot-01"
+      data-width="1920"
+      data-height="1080"
+      data-start="0"
+      data-duration="1.8"
+      data-fps="25"
+      data-root="true"
+    >
+      <section id="shot-01-clip" class="clip" data-start="0" data-duration="1.8">
+        <h1 id="title" aria-label="Minara App 2.0">
+          <span id="word-minara" class="word">Minara</span>
+          <span id="word-app" class="word">App</span>
+          <span id="word-version" class="word">2.0</span>
+        </h1>
+      </section>
+
+      <script>
+        (function () {
+          "use strict";
+
+          var tl = gsap.timeline({ paused: true });
+          tl.fromTo(
+            ".word",
+            { opacity: 0, y: 24, scale: 0.94, filter: "blur(12px)" },
+            {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              filter: "blur(0px)",
+              duration: 0.58,
+              ease: "power3.out",
+              stagger: 0.18,
+            },
+            0.2,
+          );
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["app2-opening-shot-01"] = tl;
+        })();
+      </script>
+    </main>
+  </body>
+</html>

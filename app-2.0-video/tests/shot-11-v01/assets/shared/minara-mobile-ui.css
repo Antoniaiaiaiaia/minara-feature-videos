@@ -1,0 +1,14 @@
+.m-status{height:56px;padding:17px 25px 0;display:flex;align-items:flex-start;font-size:22px;font-weight:600}
+.m-status .m-signal{margin-left:auto;letter-spacing:2px}
+.m-status .m-battery{margin-left:9px;padding:1px 7px;border-radius:7px;background:#eee;color:#050505;font-size:18px}
+.m-wallet{height:84px;padding:14px 24px;display:flex;align-items:center;border-bottom:1px solid #202023}
+.m-wallet-avatar{width:48px;height:48px;overflow:hidden;border-radius:14px;background:#fff;flex:none}
+.m-wallet-avatar img,.m-asset-logo img{display:block;width:100%;height:100%;object-fit:cover}
+.m-wallet-name{margin-left:13px;font-size:22px;font-weight:600}
+.m-wallet-balance{margin-left:auto;color:#999;font-size:18px}
+.m-wallet-balance b{margin-left:7px;color:#fff;font-size:23px;font-weight:500}
+.m-asset-row{height:78px;padding:12px 24px;display:flex;align-items:center;border-bottom:1px solid #202023}
+.m-asset-logo{width:47px;height:47px;overflow:hidden;border-radius:50%;background:#fff;flex:none}
+.m-asset-row strong{margin-left:12px;font-size:27px}
+.m-asset-meta{margin-left:auto;color:#aaa;font-size:19px}
+.m-asset-meta b{color:#fff;font-weight:500}

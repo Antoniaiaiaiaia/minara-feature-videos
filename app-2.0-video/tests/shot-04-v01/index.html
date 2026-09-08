@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shot 04 — Market insights assemble</title>
+  <style>
+    @font-face{font-family:Geist;src:url('./assets/fonts/Geist-Regular.woff2') format('woff2');font-weight:400}
+    @font-face{font-family:Geist;src:url('./assets/fonts/Geist-SemiBold.woff2') format('woff2');font-weight:600}
+    :root{--ink:#111315;--muted:#777d84;--line:#e9e9e6;--green:#11b779;--red:#ff5259;--paper:#f7f7f5}
+    *{box-sizing:border-box}
+    html,body{width:100%;height:100%;margin:0;background:#111;overflow:hidden;font-family:Geist,Arial,sans-serif;color:var(--ink)}
+    body{display:grid;place-items:center}
+    #viewport{position:relative;width:min(100vw,177.7778vh);aspect-ratio:16/9;background:var(--paper);overflow:hidden}
+    #shot{position:absolute;inset:0;width:1920px;height:1080px;transform-origin:0 0}
+    .wash{position:absolute;border-radius:999px;filter:blur(60px);pointer-events:none}
+    .wash.a{width:760px;height:500px;left:-170px;top:500px;background:rgba(144,200,255,.24)}
+    .wash.b{width:760px;height:440px;right:-150px;top:60px;background:rgba(198,221,255,.25)}
+    .wash.c{width:640px;height:380px;left:670px;top:320px;background:rgba(255,255,255,.82)}
+    .screen-shell{position:absolute;top:24px;width:458px;height:1032px;border-radius:34px;background:rgba(255,255,255,.92);border:1px solid rgba(17,19,21,.055);box-shadow:0 20px 70px rgba(41,54,74,.08);transform-origin:50% 50%}
+    .shell-1{left:26px}.shell-2{left:496px}.shell-3{left:966px}.shell-4{left:1436px}
+    .ui{position:absolute;background:#fff;border:1px solid rgba(17,19,21,.055);border-radius:20px;box-shadow:0 12px 30px rgba(37,48,62,.055);transform-origin:50% 50%;overflow:hidden}
+    .header{height:76px;padding:10px 14px;border-radius:24px 24px 14px 14px;display:flex;align-items:center;gap:12px}
+    .brand{width:48px;height:48px;border-radius:50%;background:#f22835;color:#fff;display:grid;place-items:center;font-weight:600;font-size:34px}
+    .ticker{font-size:32px;font-weight:600;line-height:1.05}.company{font-size:20px;color:#969ba1;margin-top:4px}
+    .crypto{color:#d39020;font-size:18px;margin-left:3px}.chev{margin-left:auto;color:#9da1a5;font-size:28px}
+    .tabs{height:38px;padding:5px 9px;display:flex;gap:4px;align-items:center;border-radius:12px;box-shadow:none}
+    .tab{padding:6px 7px;border-radius:7px;font-size:20px;color:#757b81;white-space:nowrap}.tab.active{color:#111;background:#f0f0ee;font-weight:600}
+    .quote{height:110px;padding:12px 18px}.quote-price{font-size:64px;font-weight:600;letter-spacing:-2.4px}.quote-change{font-size:20px;color:var(--red);margin-left:8px}.quote-sub{font-size:18px;color:#999ea3}
+    .range{display:flex;gap:15px;margin-top:8px}.range span{font-size:18px;color:#8b9095}.range .on{background:#111;color:#fff;padding:4px 10px;border-radius:10px;margin-top:-4px}
+    .chart{height:390px;padding:20px 14px 12px}.chart svg{width:100%;height:245px}.chart-footer{display:grid;grid-template-columns:repeat(2,1fr);gap:10px 18px;margin-top:10px}.metric b{display:block;font-size:18px;font-weight:400;color:#81868b}.metric span{font-size:22px}
+    .about{height:260px;padding:17px 18px}.card-title{font-size:28px;font-weight:600;margin-bottom:8px}.body{font-size:22px;line-height:1.35;color:#6f757b}
+    .overview-grid{height:218px;padding:20px 18px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px 12px}.datum label{display:block;font-size:20px;color:#8b9095;margin-bottom:5px}.datum b{font-size:24px;font-weight:500}.datum .up{color:var(--green)}
+    .details{height:580px;padding:18px}.detail-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #f0f0ed;font-size:24px}.detail-row span:first-child{color:#767c82}.detail-row:last-child{border-bottom:0}
+    .estimate{height:235px;padding:18px}.estimate-top{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0 20px}.estimate-top label{display:block;color:#91969b;font-size:18px}.estimate-top b{font-size:22px}.estimate-top .up{color:var(--green)}
+    .mini-curve{height:65px;border-radius:12px;background:linear-gradient(180deg,rgba(17,183,121,.08),transparent);position:relative}.mini-curve svg{position:absolute;inset:7px;width:calc(100% - 14px);height:calc(100% - 14px)}
+    .bars-card{height:300px;padding:18px}.bars{height:205px;display:flex;align-items:end;gap:17px;padding:12px 3px 25px}.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:7px}.bar{width:24px;border-radius:5px 5px 2px 2px;background:var(--green)}.bar.red{background:var(--red)}.bar-wrap small{font-size:16px;color:#8c9196}
+    .news{padding:0;border-radius:19px;background:#151719;color:#fff}.news-art{height:55%;position:relative;overflow:hidden}.news-copy{position:absolute;left:15px;right:15px;bottom:10px}.news h3{font-size:28px;line-height:1.12;margin:0 0 6px;font-weight:500}.news p{margin:0;font-size:18px;color:rgba(255,255,255,.68)}
+    .news-1 .news-art{background:radial-gradient(circle at 74% 42%,#455ec9 0 15%,transparent 16%),radial-gradient(circle at 65% 52%,#e29d35 0 18%,transparent 19%),linear-gradient(135deg,#8cc45c,#637c34 48%,#caa76c)}
+    .news-1 .news-art:after{content:"";position:absolute;width:130px;height:46px;border-radius:24px;background:#15389e;right:30px;top:34px;transform:rotate(15deg);box-shadow:-28px 21px 0 #da9342}
+    .news-2 .news-art{background:linear-gradient(130deg,#8ac2db 0 40%,#222a2e 41% 55%,#775b34 56%)}
+    .news-2 .news-art:after{content:"";position:absolute;width:7px;height:110px;background:#26292c;left:52%;top:10px;box-shadow:18px 10px 0 -2px #151719,-16px 28px 0 -2px #151719}
+    .news-3 .news-art{background:linear-gradient(145deg,#dedede,#f5f5f5)}
+    .news-3 .news-art:after{content:"ExxonMobil";position:absolute;left:16px;bottom:14px;font-size:68px;font-weight:600;color:#ba1721;letter-spacing:-3.6px}
+    .news-4 .news-art{background:linear-gradient(145deg,#2b8ca7,#6fbdc5 55%,#133b4a)}
+    .news-4 .news-art:after{content:"ENERGY";position:absolute;left:18px;top:18px;font-size:56px;font-weight:600;color:rgba(255,255,255,.75)}
+    .s1{left:40px;width:430px}.s2{left:510px;width:430px}.s3{left:980px;width:430px}.s4{left:1450px;width:430px}
+    .header{top:39px}.tabs{top:116px}.quote{top:160px}.chart{top:282px}.about{top:684px}
+    .overview-grid{top:160px}.details{top:384px}
+    .estimate{top:160px}.institutions{top:401px}.insiders{top:707px;height:257px}.insiders .bars{height:165px}
+    .news-1{top:160px;height:215px}.news-2{top:387px;height:215px}.news-3{top:614px;height:200px}.news-4{top:826px;height:138px}
+  </style>
+</head>
+<body>
+  <div id="viewport" data-composition-id="minara-shot-04" data-width="1920" data-height="1080" data-start="0" data-duration="4" data-fps="60">
+    <main id="shot">
+      <div class="wash a"></div><div class="wash b"></div><div class="wash c"></div>
+      <div class="screen-shell shell-1" data-bx="-74" data-by="410" data-bs=".78" data-br="-2"></div>
+      <div class="screen-shell shell-2" data-bx="548" data-by="-136" data-bs=".7" data-br="2"></div>
+      <div class="screen-shell shell-3" data-bx="972" data-by="332" data-bs=".73" data-br="-1.5"></div>
+      <div class="screen-shell shell-4" data-bx="1506" data-by="-102" data-bs=".8" data-br="1.5"></div>
+
+      <section class="ui header s1" data-bx="35" data-by="35" data-bs=".78" data-br="0"><div class="brand">X</div><div><div class="ticker">$XOM <span class="crypto">Crypto</span></div><div class="company">ExxonMobil</div></div><div class="chev">⌄</div></section>
+      <nav class="ui tabs s1" data-bx="405" data-by="35" data-bs=".78" data-br="0"><span class="tab active">Overview</span><span class="tab">Stats</span><span class="tab">Earnings</span><span class="tab">Analyst</span><span class="tab">News</span></nav>
+      <section class="ui quote s1" data-bx="1145" data-by="542" data-bs=".78" data-br="0"><div><span class="quote-price">$159.62</span><span class="quote-change">$0.2821 (0.18%)</span> <span class="quote-sub">Past 1 day</span></div><div class="range"><span>1H</span><span>4H</span><span class="on">1D</span><span>1W</span><span>1M</span><span>All</span></div></section>
+      <section class="ui chart s1" data-bx="35" data-by="118" data-bs=".78" data-br="0">
+        <svg viewBox="0 0 400 260" preserveAspectRatio="none"><defs><linearGradient id="area" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff545c" stop-opacity=".12"/><stop offset="1" stop-color="#ff545c" stop-opacity="0"/></linearGradient></defs><path d="M0 71 L13 94 L22 33 L31 126 L44 196 L55 83 L66 112 L76 184 L88 142 L101 148 L114 114 L126 126 L139 91 L151 118 L164 86 L176 97 L189 55 L201 103 L215 90 L228 58 L241 78 L253 42 L266 94 L279 107 L292 86 L306 97 L320 117 L334 91 L347 105 L360 88 L375 92 L389 70 L400 76 L400 260 L0 260Z" fill="url(#area)"/><path d="M0 71 L13 94 L22 33 L31 126 L44 196 L55 83 L66 112 L76 184 L88 142 L101 148 L114 114 L126 126 L139 91 L151 118 L164 86 L176 97 L189 55 L201 103 L215 90 L228 58 L241 78 L253 42 L266 94 L279 107 L292 86 L306 97 L320 117 L334 91 L347 105 L360 88 L375 92 L389 70 L400 76" fill="none" stroke="#ff5259" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="chart-footer"><div class="metric"><b>Market Cap</b><span>$656.87B</span></div><div class="metric"><b>P/E (TTM)</b><span>20.59</span></div><div class="metric"><b>P/E (Fwd)</b><span>14.98</span></div><div class="metric"><b>Volume</b><span>7.69M</span></div></div>
+      </section>
+      <section class="ui about s1" data-bx="405" data-by="290" data-bs=".78" data-br="0"><div class="card-title">About XOM</div><div class="body">Exxon Mobil Corporation is a global energy firm engaged in exploration, production and distribution. Its portfolio spans upstream, product solutions and low-carbon initiatives.</div></section>
+
+      <section class="ui header s2" data-bx="1145" data-by="35" data-bs=".78" data-br="0"><div class="brand">X</div><div><div class="ticker">$XOM <span class="crypto">Crypto</span></div><div class="company">ExxonMobil</div></div><div class="chev">⌄</div></section>
+      <nav class="ui tabs s2" data-bx="1515" data-by="119" data-bs=".78" data-br="0"><span class="tab">Overview</span><span class="tab active">Stats</span><span class="tab">Earnings</span><span class="tab">Analyst</span><span class="tab">News</span></nav>
+      <section class="ui overview-grid s2" data-bx="405" data-by="92" data-bs=".78" data-br="0"><div class="datum"><label>Open</label><b>$158.55</b></div><div class="datum"><label>Prev Close</label><b>$159.80</b></div><div class="datum"><label>Day High</label><b>$160.23</b></div><div class="datum"><label>Day Low</label><b>$157.56</b></div><div class="datum"><label>52W High</label><b>$176.41</b></div><div class="datum"><label>52W Low</label><b>$105.67</b></div><div class="datum"><label>Volume</label><b>7.69M</b></div><div class="datum"><label>Avg Volume</label><b>16.4M</b></div><div class="datum"><label>Momentum</label><b class="up">+2.8%</b></div></section>
+      <section class="ui details s2" data-bx="1515" data-by="439" data-bs=".7" data-br="0"><div class="card-title">Details</div><div class="detail-row"><span>Market Cap</span><span>$656.87B</span></div><div class="detail-row"><span>P/E (TTM)</span><span>20.59</span></div><div class="detail-row"><span>P/E (Fwd)</span><span>14.98</span></div><div class="detail-row"><span>EPS (TTM)</span><span>$7.76</span></div><div class="detail-row"><span>P/B</span><span>2.53</span></div><div class="detail-row"><span>Beta</span><span>0.173</span></div><div class="detail-row"><span>ROE</span><span>12.58%</span></div><div class="detail-row"><span>Profit Margin</span><span>9.07%</span></div><div class="detail-row"><span>Shares Out</span><span>4.11B</span></div><div class="detail-row"><span>Dividend Yield</span><span>2.58%</span></div></section>
+
+      <section class="ui header s3" data-bx="1515" data-by="35" data-bs=".78" data-br="0"><div class="brand">X</div><div><div class="ticker">$XOM <span class="crypto">Crypto</span></div><div class="company">ExxonMobil</div></div><div class="chev">⌄</div></section>
+      <nav class="ui tabs s3" data-bx="775" data-by="442" data-bs=".78" data-br="0"><span class="tab">Overview</span><span class="tab">Stats</span><span class="tab">Earnings</span><span class="tab active">Analyst</span><span class="tab">News</span></nav>
+      <section class="ui estimate s3" data-bx="775" data-by="231" data-bs=".78" data-br="0"><div class="card-title">Financial Estimates</div><div class="estimate-top"><div><label>Holders</label><b>4,909 <span class="up">+226</span></b></div><div><label>Total Value</label><b>$463.79B</b></div><div><label>Ownership</label><b class="up">65.62%</b></div></div><div class="mini-curve"><svg viewBox="0 0 350 55" preserveAspectRatio="none"><path d="M0 43 C40 37 54 45 86 28 S132 37 162 21 S212 31 244 16 S306 22 350 5" fill="none" stroke="#11b779" stroke-width="3" stroke-linecap="round"/></svg></div></section>
+      <section class="ui bars-card institutions s3" data-bx="1515" data-by="177" data-bs=".78" data-br="0"><div class="card-title">Institutions</div><div class="bars"><div class="bar-wrap"><div class="bar" style="height:54px"></div><small>24Q2</small></div><div class="bar-wrap"><div class="bar" style="height:10px"></div><small>24Q3</small></div><div class="bar-wrap"><div class="bar red" style="height:28px"></div><small>24Q4</small></div><div class="bar-wrap"><div class="bar" style="height:49px"></div><small>25Q1</small></div><div class="bar-wrap"><div class="bar red" style="height:34px"></div><small>25Q2</small></div><div class="bar-wrap"><div class="bar" style="height:18px"></div><small>25Q3</small></div><div class="bar-wrap"><div class="bar" style="height:42px"></div><small>25Q4</small></div><div class="bar-wrap"><div class="bar" style="height:158px"></div><small>26Q1</small></div></div></section>
+      <section class="ui bars-card insiders s3" data-bx="1145" data-by="314" data-bs=".78" data-br="0"><div class="card-title">Insiders</div><div class="bars"><div class="bar-wrap"><div class="bar" style="height:120px"></div><small>24Q4</small></div><div class="bar-wrap"><div class="bar" style="height:12px"></div><small>25Q1</small></div><div class="bar-wrap"><div class="bar red" style="height:4px"></div><small>25Q2</small></div><div class="bar-wrap"><div class="bar" style="height:2px"></div><small>25Q3</small></div><div class="bar-wrap"><div class="bar" style="height:116px"></div><small>25Q4</small></div><div class="bar-wrap"><div class="bar red" style="height:8px"></div><small>26Q1</small></div><div class="bar-wrap"><div class="bar" style="height:14px"></div><small>26Q2</small></div><div class="bar-wrap"><div class="bar" style="height:12px"></div><small>26Q3</small></div></div></section>
+
+      <section class="ui header s4" data-bx="775" data-by="500" data-bs=".78" data-br="0"><div class="brand">X</div><div><div class="ticker">$XOM <span class="crypto">Crypto</span></div><div class="company">ExxonMobil</div></div><div class="chev">⌄</div></section>
+      <nav class="ui tabs s4" data-bx="35" data-by="452" data-bs=".78" data-br="0"><span class="tab">Overview</span><span class="tab">Stats</span><span class="tab">Earnings</span><span class="tab">Analyst</span><span class="tab active">News</span></nav>
+      <article class="ui news news-1 s4" data-bx="775" data-by="35" data-bs=".78" data-br="0"><div class="news-art"></div><div class="news-copy"><h3>The Energy and Pharma Giants Quietly Funding Tomorrow</h3><p>24/7 Wall St · 18 hours ago</p></div></article>
+      <article class="ui news news-2 s4" data-bx="1145" data-by="118" data-bs=".78" data-br="0"><div class="news-art"></div><div class="news-copy"><h3>Better Buy for Passive Income: Chevron vs. ExxonMobil</h3><p>The Motley Fool · 2 days ago</p></div></article>
+      <article class="ui news news-3 s4" data-bx="405" data-by="522" data-bs=".78" data-br="0"><div class="news-art"></div><div class="news-copy"><h3>Exxon Stock Slips as Oil Supply Fears Return</h3><p>GuruFocus · 3 days ago</p></div></article>
+      <article class="ui news news-4 s4" data-bx="35" data-by="512" data-bs=".78" data-br="0"><div class="news-art"></div><div class="news-copy"><h3>Global Energy Outlook</h3><p>Market Brief · Today</p></div></article>
+
+    </main>
+  </div>
+  <script src="./assets/vendor/gsap.min.js"></script>
+  <script>
+    const shot = document.querySelector('#shot');
+    const fit = () => { const v = document.querySelector('#viewport'); shot.style.transform = `scale(${v.clientWidth / 1920})`; };
+    addEventListener('resize', fit); fit();
+
+    const cards = [...shot.querySelectorAll('.ui[data-bx]')];
+    const shells = [...shot.querySelectorAll('.screen-shell')];
+    const orderedCards = [...cards].sort((a, b) => {
+      const aProgress = Number(a.dataset.bx) / 1920 + Number(a.dataset.by) / 1080;
+      const bProgress = Number(b.dataset.bx) / 1920 + Number(b.dataset.by) / 1080;
+      return aProgress - bProgress;
+    });
+    cards.forEach((el) => gsap.set(el, {
+      x: Number(el.dataset.bx) - el.offsetLeft,
+      y: Number(el.dataset.by) - el.offsetTop,
+      scale: Number(el.dataset.bs),
+      rotation: Number(el.dataset.br),
+      force3D: true
+    }));
+
+    gsap.set(cards, { opacity: 0, scale: (index, el) => Number(el.dataset.bs) * .72 });
+    gsap.set(shells, { x: 0, y: 0, scale: 1, rotation: 0, opacity: 0 });
+
+    const tl = gsap.timeline({ paused: true, defaults: { overwrite: 'auto' } });
+    tl.to('[data-composition-id="minara-shot-04"] .wash.a', { x: 220, y: -130, duration: 4, ease: 'sine.inOut' }, 0)
+      .to('[data-composition-id="minara-shot-04"] .wash.b', { x: -180, y: 170, duration: 4, ease: 'sine.inOut' }, 0)
+      .to(orderedCards, { opacity: 1, scale: (index, el) => Number(el.dataset.bs), duration: .38, stagger: .075, ease: 'back.out(1.8)' }, .06)
+      .set(shells, { opacity: 1 }, 2)
+      .to(cards, { x: 0, y: 0, scale: 1, rotation: 0, duration: 1.35, stagger: 0.018, ease: 'power3.inOut' }, 2.04);
+    tl.duration(4);
+    window.__timelines = window.__timelines || {};
+    window.__timelines['minara-shot-04'] = tl;
+
+  </script>
+</body>
+</html>

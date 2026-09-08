@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1920, initial-scale=1" />
+    <title>Text Blur Pop — App 2.0 Motion Example</title>
+    <script src="../../assets/vendor/gsap.min.js"></script>
+    <style>
+      @font-face {
+        font-family: "Geist";
+        src: url("../../assets/fonts/Geist-Regular.woff2") format("woff2");
+        font-weight: 400;
+      }
+      * { box-sizing: border-box; }
+      html, body {
+        width: 1920px;
+        height: 1080px;
+        margin: 0;
+        overflow: hidden;
+        background: #f7f7f7;
+        font-family: "Geist", sans-serif;
+      }
+      #title {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        display: flex;
+        align-items: baseline;
+        gap: 0.235em;
+        color: #000000;
+        font-size: 120px;
+        font-weight: 400;
+        line-height: 1;
+        white-space: nowrap;
+        transform: translate(-50%, -50%);
+      }
+      .text-pop {
+        display: inline-block;
+        opacity: 0;
+        filter: blur(12px);
+        will-change: transform, opacity, filter;
+      }
+      .version {
+        color: transparent;
+        background: linear-gradient(90deg, #eb53ff 0%, #ff538e 50%, #ff9a32 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      button {
+        position: fixed;
+        right: 36px;
+        bottom: 36px;
+        padding: 15px 20px;
+        border: 0;
+        border-radius: 999px;
+        color: #ffffff;
+        background: #141416;
+        font: 400 16px "Geist", sans-serif;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="title" aria-label="Minara App 2.0">
+      <span class="text-pop">Minara</span>
+      <span class="text-pop">App</span>
+      <span class="text-pop version">2.0</span>
+    </h1>
+    <button id="replay" type="button">Replay text pop</button>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+
+      tl.fromTo(
+        ".text-pop",
+        { opacity: 0, y: 24, scale: 0.94, filter: "blur(12px)" },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          filter: "blur(0px)",
+          duration: 0.58,
+          ease: "power3.out",
+          stagger: 0.18,
+        },
+        0.2,
+      );
+
+      document.getElementById("replay").addEventListener("click", () => tl.restart());
+      const previewTime = new URLSearchParams(window.location.search).get("t");
+      if (previewTime === null) tl.play(0);
+      else tl.time(Number(previewTime));
+      window.textBlurPopExample = tl;
+    </script>
+  </body>
+</html>

@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Shots 14–15 — From unstable ideas to automated profit</title>
+  <style>
+    @font-face{font-family:Geist;src:url('../../assets/fonts/Geist-Regular.woff2') format('woff2');font-weight:400}
+    @font-face{font-family:Geist;src:url('../../assets/fonts/Geist-SemiBold.woff2') format('woff2');font-weight:600}
+    *{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#d9dcda;font-family:Geist,Arial,sans-serif}body{display:grid;place-items:center}
+    #viewport{position:relative;width:min(100vw,177.7778vh);aspect-ratio:16/9;overflow:hidden;background:#d9dcda}
+    #shot{position:absolute;inset:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;background:#d9f4e6}
+    #world{position:absolute;inset:0;width:3840px;height:1080px;transform-origin:0 540px;will-change:transform}
+    .scene{position:absolute;top:0;width:1920px;height:1080px;overflow:hidden}.scene-a{left:0;background:#d9dcda}.scene-b{left:1920px;background:#d9f4e6}
+    #belt-lines{position:relative;z-index:2}
+    .route{position:absolute;left:125px;width:1660px;height:12px;border-radius:10px;background:var(--route);box-shadow:0 8px 0 rgba(21,23,26,.08)}
+    .route:before{content:"";position:absolute;inset:-10px 0;border-radius:20px;border:2px dashed color-mix(in srgb,var(--route) 65%,#15171a);opacity:.45}
+    .route-node{position:absolute;width:24px;height:24px;border:5px solid #fff;border-radius:50%;background:var(--route);box-shadow:0 4px 0 rgba(21,23,26,.12);transform:translate(-50%,-6px)}
+    .landing{position:absolute;width:82px;height:28px;border:3px dashed rgba(21,23,26,.28);border-radius:50%;transform:translate(-50%,-8px)}
+    .parcel,.fast-parcel{position:absolute;width:68px;height:56px;border:0;border-radius:8px;background:var(--box);box-shadow:0 15px 0 rgba(21,23,26,.12);z-index:4;will-change:transform}
+    .parcel:before,.fast-parcel:before{content:"";position:absolute;left:10px;right:10px;top:-14px;height:20px;border:0;border-radius:8px 8px 0 0;background:color-mix(in srgb,var(--box) 75%,#fff);transform:skewX(-32deg)}
+    .parcel:after,.fast-parcel:after{content:"";position:absolute;left:31px;top:0;width:7px;height:100%;background:rgba(255,255,255,.65)}
+    .idea-profit{position:absolute;z-index:6;padding:9px 16px;border-radius:22px;background:#fff;border:0;color:#1ab173;font-size:48px;font-weight:600;box-shadow:0 7px 0 rgba(21,23,26,.1);opacity:0}
+    .idea-profit.loss{color:#ff665f}
+    .belt{position:absolute;left:205px;width:1450px;height:72px;border:0;border-radius:18px;background:#2f3850;box-shadow:0 18px 0 rgba(21,23,26,.12);overflow:hidden}
+    .belt-flow{position:absolute;inset:0;width:180%;background:repeating-linear-gradient(90deg,transparent 0 80px,rgba(255,255,255,.2) 80px 98px,transparent 98px 164px);will-change:transform}
+    .belt:after{content:"";position:absolute;left:0;right:0;bottom:10px;height:8px;background:#ffcf5b}
+    .receiver{position:absolute;left:1505px;width:154px;height:116px;border:0;border-radius:24px;background:#8b79e8;box-shadow:0 18px 0 rgba(21,23,26,.13);z-index:7}
+    .receiver:before{content:"";position:absolute;left:18px;top:18px;width:82px;height:72px;border:0;border-radius:16px;background:#15171a}
+    .receiver:after{content:"";position:absolute;right:18px;top:19px;width:18px;height:72px;border-radius:10px;background:#d8cffb}
+    .glow{position:absolute;left:1410px;width:150px;height:105px;border-radius:50%;background:radial-gradient(circle,#68ffb4 0,rgba(26,177,115,.62) 30%,rgba(26,177,115,0) 73%);filter:blur(5px);opacity:0;z-index:8;pointer-events:none}
+    .profit{position:absolute;left:1680px;z-index:10;min-width:190px;padding:8px 14px;border:0;border-radius:22px;background:#d5ffe9;color:#087b51;font-size:58px;font-weight:600;text-align:center;box-shadow:0 8px 0 rgba(21,23,26,.12);opacity:0}
+    .fast-parcel{left:180px;width:62px;height:50px;z-index:9}
+    .speed-line{position:absolute;left:250px;width:1300px;height:5px;border-radius:5px;background:linear-gradient(90deg,transparent,#5bcb9c,transparent);opacity:.55}
+  </style>
+</head>
+<body>
+  <div id="viewport" data-composition-id="minara-shot-14-15" data-width="1920" data-height="1080" data-start="0" data-duration="3.833" data-fps="60">
+    <main id="shot">
+      <div id="world">
+        <section class="scene scene-a"><div id="idea-lines"></div></section>
+        <section class="scene scene-b"><div id="belt-lines"></div></section>
+      </div>
+    </main>
+  </div>
+  <script src="../../assets/vendor/gsap.min.js"></script>
+  <script>
+    const shot=document.querySelector('#shot'),viewport=document.querySelector('#viewport');
+    const fit=()=>shot.style.transform=`scale(${viewport.clientWidth/1920})`;addEventListener('resize',fit);fit();
+    const laneY=[220,380,540,700,860],laneColors=['#ff8b76','#f7bd42','#6cc7f2','#977ee5','#55c991'],boxColors=['#ff8b76','#ffd166','#77d4f4','#ad96f2','#66d6a7'];
+    const ideas=document.querySelector('#idea-lines'),belts=document.querySelector('#belt-lines'),ideaBoxes=[],ideaProfits=[],landings=[],fastBoxes=[],flows=[],glows=[],profits=[];
+    laneY.forEach((y,lane)=>{
+      const route=document.createElement('div');route.className='route';route.style.cssText=`top:${y}px;--route:${laneColors[lane]}`;ideas.appendChild(route);
+      [180,500,820,1140,1460].forEach(x=>{const node=document.createElement('i');node.className='route-node';node.style.left=x+'px';route.appendChild(node)});
+      [410,770,1120,1470].forEach((x,index)=>{const landing=document.createElement('i');landing.className='landing';landing.style.cssText=`left:${x}px;top:${y}px`;ideas.appendChild(landing);landings.push(landing);if(index<3){const box=document.createElement('i');box.className='parcel';box.style.cssText=`left:${x-150-index*35}px;top:${y-48}px;--box:${boxColors[(lane+index)%5]}`;ideas.appendChild(box);ideaBoxes.push({el:box,lane,index})}});
+      const chip=document.createElement('span');chip.className='idea-profit'+(lane===1||lane===4?' loss':'');chip.textContent=['+$18','−$7','+$34','+$11','−$4'][lane];chip.style.cssText=`left:${1180+lane*38}px;top:${y-96}px`;ideas.appendChild(chip);ideaProfits.push(chip);
+
+      const belt=document.createElement('div');belt.className='belt';belt.style.top=(y-36)+'px';const flow=document.createElement('i');flow.className='belt-flow';belt.appendChild(flow);belts.appendChild(belt);flows.push(flow);
+      const receiver=document.createElement('i');receiver.className='receiver';receiver.style.top=(y-58)+'px';belts.appendChild(receiver);
+      const glow=document.createElement('i');glow.className='glow';glow.style.top=(y-53)+'px';belts.appendChild(glow);glows.push(glow);
+      const profit=document.createElement('span');profit.className='profit';profit.textContent=['+$105','+$83','+$246','+$128','+$67'][lane];profit.style.top=(y-26)+'px';belts.appendChild(profit);profits.push(profit);
+      const speed=document.createElement('i');speed.className='speed-line';speed.style.top=(y-2)+'px';belts.appendChild(speed);
+      for(let index=0;index<7;index++){const box=document.createElement('i');box.className='fast-parcel';box.style.cssText=`top:${y-39}px;--box:${boxColors[(lane+index)%5]}`;belts.appendChild(box);fastBoxes.push({el:box,lane,index,start:-80+index*225+(lane%2)*75})}
+    });
+
+    const shaderCanvas=document.querySelector('#pixel-shader'),gl=shaderCanvas?.getContext('webgl2',{alpha:false,preserveDrawingBuffer:true}),shaderState={time:0};let shaderReady=false,shaderProgram;
+    const avatarMask='AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPAAAAAAAAAAAAAAAAAAAB//gAAAAAAAAAAAAAAAAAF+/+AAAAAAAAAAAAAAAAAH/v//wAAAAAAAAAAAAAAA/5////gAAAAAAAAAAAAABcCv/9v4AAAAAAAAAAAAABcE9/vd/wAAAAAAAAAAAAA+H7/xf/8AAAAAAAAAAAAB8H//Dkf/4AAAAAAAAAAAB4P//gFP//AAAAAAAAAAACQf//+gbv/4AAAAAAAAAAAsUv/39CJ7/AAAAAAAAAAAcB3/4bwL//4AAAAAAAAAAOH9/4A/hf//AAAAAAAAAAHJ//3gH4P//wAAAAAAAAADgT/+5kOhf/+AAAAAAAAABwXv4AMjmf//wAAAAAAAAA4j/+ABkfz//+AAAAAAAAAOT/+fgAPfP//gAAAAAAAADl///4AF////8AAAAAAAAB2///+BNe///+AAAAAAAAGpP///gAfv///4AAAAAAADQj/fP8PL/////AAAAAAAAnP4ABfu3/////gAAAAAAADneAAA8+u////6AAAAAAABz/AAAO9t////+AAAAAAACR/gAABr//////0AAAAAAAO/wAAADb/////8AAAAAAADf8AAAA3//////AAAAAAAFHeAAAAev/////6AAAAAAAH/gAAAE//////+AAAAAAAL/wAAAB///////kAAAAAAA/4AAAAf//////5AAAAAAAP+AAAAH///////AAAAAAA//gAAAA///////yAAAAAAP/wAAAAP//////8gAAAAACv8AAAAD///////AAAAAAAz/AAAAA///////4AAAAAAd/+AAAAN//////+AAAAAACf7wAAAB///////gAAAAABn+HAAAAf//////8AAAAAA5/gQAH4H///////AAAAAAEf8CAP/w///////wAAAAADH7QAAAHv//////6AAAAABh3HAAAAP//////+AAAAAAM/4YAAwA///////kAAAAADP/zAD/4D//////9gAAAABzn/8BwHg///////IAAAAAcf+eAwIMD//////wAAAAAHH/HgIJ7h//////8gAAAAAxfxv0F/8P//////MAAAAAGf8f/Ax9h//////xAAAAAAn+HwwY/If/////8IAAAAAF/BcMAO/7//////KAAAAAA34fCAH////////6QAAAAAP8TwwA/8B//////kAAAAACvAIEAP2Afx/n//wgAAAAA/wGDQDfgH4/+//8IAAAAAT8CAQAcYB8f/3//BAAAAAH/BAEACEAeO////wQAAAAB//oBgABAGG////+EAAAAA/4EAIAAgBjz////BAAAAAL/CABAAYAQ8f///8QAAAAEvwAAMAMAALJ///+CAAAAAf8IAB4MAACC////wgAAAAN/AAAAAAAB5f///8IAAAAD/wQAAAAAA+H////iAAAAD/8CAAAAAAeT//f/4gAAAAX/gAAAAAAEB/////IAAAAN/4AAAAAAAA/////yAAAAKf+AAAAAAAAf///+egAAABG/wAAAAAAgf////zwAAAARn8EAAAAAc/////88AAAAMb/BgAAAAP3/////ngAAAHG/4AAAAAD9/////44AAAAxveAAIAAA//////+PAAAAMb/wAAAAAf//////14AAADG98AAAAAf5////v9OAAABgv/ggAAAGOP/////jgAAAMP/4AAAAODn////94eAAADB/+AAAAHh59////+DAAAAIL/wAAAH4Ov/////g4AAAFDn8AAAHkLn/////4EAAAAs//gAAHyA///////BwAAAFP/4AAH5AP/v////wcAAAADP/AAf0gD/3////+HAAAAAz/wA//AA///////gwAAAAP+///9IAP//////8MAAAAD////4CAD3//////DAAAAA/////bAD///////4wAAAAJ///99gDL///////YAAAAHf///uACH///////+AAAAD////4ACDv///////AAAABP3//+ACB////////8AAAAn////wDA////////8AAAYP+///8BAb////////wAABP/P///AAN////////+AAAAfz///xgP/////////wAAAH49//8wG///////+/8AAAD8ff//wO/8////////AAAB2Hn//wP/7//////974AAAJgf//4Hf6///////efAAAOY+//8G/z///////zjwAADsLP/+G/k///////88cAAAzH///Dvv////////PDgAAcx9//h///j//////xw4AAGM3//497xz//////8cEAABhPf/+f3/9///////DhgAAQf3//P//////////44YAAEH9//n/////////8+OGAAAgm//z///////////zhAAAIDv/9///////////c4QAADJ///39/////////3uMAAAcf//////////////7jAAACf///////////////5gAABv//9/////////////gAAP/////7///////////gAAA/////3///////////4AAAA////////////////+AAAAdf///////////////gAAAOf/////3/////////8QAADn////////////////4AAAz////////////////AA=';
+    const compileShader=(type,source)=>{const shader=gl.createShader(type);gl.shaderSource(shader,source);gl.compileShader(shader);return shader};
+    if(gl){
+      const vertex=compileShader(gl.VERTEX_SHADER,`#version 300 es
+        void main(){vec2 p=vec2(float((gl_VertexID<<1)&2),float(gl_VertexID&2));gl_Position=vec4(p*2.0-1.0,0.0,1.0);}`);
+      const fragment=compileShader(gl.FRAGMENT_SHADER,`#version 300 es
+        precision highp float;
+        uniform sampler2D uAvatar;uniform vec2 uResolution;uniform float uTime;out vec4 outColor;
+        void main(){
+          vec2 uv=gl_FragCoord.xy/uResolution;
+          vec2 imageUv=(vec2(uv.x,1.0-uv.y)-0.5)/vec2(0.68,0.98)+0.5;
+          float inside=step(0.0,imageUv.x)*step(imageUv.x,1.0)*step(0.0,imageUv.y)*step(imageUv.y,1.0);
+          vec2 sampled=(floor(imageUv*vec2(138.0))+0.5)/vec2(138.0);
+          float portrait=texture(uAvatar,clamp(sampled,0.0,1.0)).r*inside;
+          vec2 cell=fract(gl_FragCoord.xy/11.0);
+          float square=step(0.16,cell.x)*step(cell.x,0.84)*step(0.16,cell.y)*step(cell.y,0.84);
+          float field=step(0.985,fract(sin(dot(floor(gl_FragCoord.xy/22.0),vec2(12.9898,78.233)))*43758.5453));
+          float pulse=0.72+0.28*sin(uTime*4.2+floor(gl_FragCoord.y/11.0)*0.17);
+          vec3 base=vec3(0.018,0.075,0.056);
+          vec3 dim=vec3(0.035,0.27,0.18)*field*square;
+          vec3 avatar=vec3(0.08,0.95,0.56)*portrait*square*pulse;
+          outColor=vec4(base+dim+avatar,1.0);
+        }`);
+      shaderProgram=gl.createProgram();gl.attachShader(shaderProgram,vertex);gl.attachShader(shaderProgram,fragment);gl.linkProgram(shaderProgram);gl.useProgram(shaderProgram);
+      const texture=gl.createTexture(),packed=atob(avatarMask),pixels=new Uint8Array(128*128);for(let i=0;i<pixels.length;i++)pixels[i]=(packed.charCodeAt(i>>3)>>(7-(i&7))&1)*255;
+      gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,texture);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.NEAREST);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.NEAREST);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);gl.pixelStorei(gl.UNPACK_ALIGNMENT,1);gl.texImage2D(gl.TEXTURE_2D,0,gl.R8,128,128,0,gl.RED,gl.UNSIGNED_BYTE,pixels);
+      gl.uniform1i(gl.getUniformLocation(shaderProgram,'uAvatar'),0);gl.uniform2f(gl.getUniformLocation(shaderProgram,'uResolution'),1920,1080);shaderReady=true;renderShader();
+    }
+    function renderShader(){if(!shaderReady)return;gl.useProgram(shaderProgram);gl.uniform1f(gl.getUniformLocation(shaderProgram,'uTime'),shaderState.time);gl.viewport(0,0,1920,1080);gl.drawArrays(gl.TRIANGLES,0,3)}
+
+    const tl=gsap.timeline({paused:true});
+    ideaBoxes.forEach(({el,lane,index})=>tl.to(el,{duration:1.68,ease:'none',keyframes:[{x:18+index*7,y:-10-(lane%2)*9,rotation:-2},{x:42-index*5,y:5+(index%2)*7,rotation:2},{x:68+lane*4,y:-17+(lane%3)*6,rotation:-1},{x:96+index*9,y:2+(lane%2)*8,rotation:1}]},0));
+    landings.forEach((el,index)=>tl.to(el,{x:(index%3-1)*18,y:(index%2?8:-7),scale:.82+(index%4)*.08,duration:1.65,ease:'sine.inOut'},0));
+    ideaProfits.forEach((el,index)=>tl.fromTo(el,{opacity:0,y:14,rotation:-4},{opacity:1,y:-6,rotation:3,duration:.22,yoyo:true,repeat:3,ease:'sine.inOut'},.12+index*.16));
+    tl.to('#world',{x:-1632,scale:.9,duration:.72,ease:'power3.inOut'},1.62);
+    tl.set('.scene-a',{visibility:'hidden'},2.34);
+    tl.set(fastBoxes.map(item=>item.el),{opacity:1},1.58);
+    fastBoxes.forEach(({el,start})=>{gsap.set(el,{x:start});tl.to(el,{x:start+1620,duration:2.13,ease:'none',modifiers:{x:value=>`${((parseFloat(value)+100)%1540)-100}px`}},1.7)});
+    flows.forEach((el,index)=>tl.fromTo(el,{x:-520},{x:0,duration:2.13,ease:'none'},1.7+index*.015));
+    glows.forEach((el,index)=>tl.fromTo(el,{opacity:0,scale:.65},{opacity:1,scale:1.2,duration:.16,yoyo:true,repeat:5,repeatDelay:.14,ease:'power2.out'},1.78+index*.11));
+    profits.forEach((el,index)=>tl.fromTo(el,{opacity:0,x:-28,scale:.72},{opacity:1,x:0,scale:1,duration:.2,yoyo:true,repeat:3,repeatDelay:.25,ease:'back.out(2)'},1.86+index*.13));
+    tl.duration(3.833);window.__timelines=window.__timelines||{};window.__timelines['minara-shot-14-15']=tl;
+  </script>
+</body>
+</html>

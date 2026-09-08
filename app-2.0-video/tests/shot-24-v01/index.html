@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Shot 24 — Research</title>
+  <style>
+    @font-face{font-family:Geist;src:url('./assets/fonts/Geist-Regular.woff2') format('woff2');font-weight:400}
+    @font-face{font-family:Geist;src:url('./assets/fonts/Geist-SemiBold.woff2') format('woff2');font-weight:600}
+    *{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#eceeed;font-family:Geist,Arial,sans-serif}body{display:grid;place-items:center}
+    #viewport{position:relative;width:min(100vw,177.7778vh);aspect-ratio:16/9;overflow:hidden;background:#eceeed}
+    #shot{position:absolute;inset:0;width:1920px;height:1080px;overflow:hidden;transform-origin:0 0;color:#151718;background:radial-gradient(circle at 50% 46%,#fff 0,#f1f2f1 42%,#e3e5e4 100%)}
+    .grid{position:absolute;inset:0;opacity:.48;background-image:linear-gradient(rgba(20,22,22,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(20,22,22,.035) 1px,transparent 1px);background-size:42px 42px}
+    .wall{position:absolute;inset:-30px 0;overflow:hidden}.row{position:absolute;left:0;width:100%;height:305px;overflow:hidden}.r1{top:8px}.r2{top:362px}.r3{top:716px}.track{position:absolute;display:flex;gap:22px;width:max-content;will-change:transform}.r1 .track{left:-420px}.r2 .track{left:-760px}.r3 .track{left:-520px}
+    .card{position:relative;height:282px;padding:24px;border-radius:26px;background:linear-gradient(155deg,#fff,#f6f7f6);border:1px solid #d9dddb;box-shadow:0 20px 44px rgba(27,31,29,.11);overflow:hidden;color:#151718}.card.wide{width:430px}.card.mid{width:350px}.card.slim{width:280px}.card.accent{background:linear-gradient(150deg,#f4f5f4,#e8eae9);border-color:#d1d5d3}
+    .top{display:flex;align-items:flex-start}.ticker{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:600}.mark{width:34px;height:34px;border-radius:11px;background:#e3e6e4;display:grid;place-items:center;color:#303432;font-size:12px}.tag{margin-left:auto;padding:6px 9px;border-radius:9px;background:#e7e9e8;color:#676d6a;font-size:11px}.label{margin-top:20px;color:#737977;font-size:12px;text-transform:uppercase;letter-spacing:.09em}.big{margin-top:6px;font-size:44px;font-weight:600;line-height:1;letter-spacing:-.045em}.delta{margin-left:9px;color:#149766;font-size:15px;letter-spacing:0}.sub{margin-top:8px;color:#7a807d;font-size:12px}.chart{position:absolute;left:22px;right:22px;bottom:18px;width:calc(100% - 44px);height:91px}.chart .area{fill:rgba(21,151,102,.055)}.chart .line{fill:none;stroke:#149766;stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+    .bars{height:116px;margin-top:28px;display:flex;align-items:flex-end;gap:13px}.bar,.bar:last-child,.bar.red{flex:1;border-radius:7px 7px 2px 2px;background:linear-gradient(#d8dcda,#747a77)}.axis{display:flex;justify-content:space-between;margin-top:10px;color:#747a77;font-size:10px}
+    .table{margin-top:15px}.tr{height:41px;border-top:1px solid #e0e3e1;display:grid;grid-template-columns:1.2fr .8fr .8fr;align-items:center;color:#636967;font-size:12px}.tr b{color:#171918}.green{color:#149766!important}.redtext{color:#c84e55!important}
+    .headline{margin-top:20px;font-size:23px;font-weight:600;line-height:1.15;letter-spacing:-.025em}.source{position:absolute;left:24px;bottom:21px;color:#777d7a;font-size:12px}.thumb{position:absolute;right:-32px;bottom:-22px;width:180px;height:150px;border-radius:60% 0 0 0;background:radial-gradient(circle at 55% 42%,#f3f4f3,#b8bdba 42%,#666c69 70%);opacity:.64}
+    .heat{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:22px}.heat i{height:43px;border-radius:8px;background:#d6dad8}.heat i:nth-child(2n){background:#aeb4b1}.heat i:nth-child(3n){background:#747a77}.heat i:nth-child(5){background:#178c62}.heat i:nth-child(11){background:#bc5056}
+    .score{display:flex;align-items:flex-end;gap:12px;margin-top:24px}.score strong{font-size:68px;letter-spacing:-.06em}.score span{padding-bottom:12px;color:#686e6b;font-size:15px}.meter{height:11px;margin-top:13px;border-radius:99px;background:#d8dcda;overflow:hidden}.meter i{display:block;width:78%;height:100%;border-radius:99px;background:linear-gradient(90deg,#929895,#3d4240)}
+    .title-wrap{position:absolute;z-index:20;inset:0;display:grid;place-items:center;pointer-events:none}.title-halo{position:absolute;width:1080px;height:500px;border-radius:50%;background:radial-gradient(ellipse,rgba(255,255,255,.99) 0,rgba(247,248,247,.92) 38%,rgba(247,248,247,0) 72%);filter:blur(20px)}.title{position:relative;margin:0;color:#151718;font-size:226px;font-weight:600;line-height:.85;letter-spacing:-.05em;text-shadow:0 16px 42px rgba(30,34,32,.16)}.title span{display:inline-block;white-space:pre;backface-visibility:hidden;transform-origin:50% 55%}
+    .corner{position:absolute;z-index:22;left:62px;top:48px;display:flex;align-items:center;gap:11px;color:#676d6a;font-size:13px;font-weight:600;letter-spacing:.08em}.corner:before{content:"";width:10px;height:10px;border-radius:50%;background:#777d7a;box-shadow:0 0 0 7px rgba(60,64,62,.08)}
+  </style>
+</head>
+<body>
+  <div id="viewport" data-composition-id="minara-shot-24" data-width="1920" data-height="1080" data-start="0" data-duration="1.9666666666666666" data-fps="60" data-root="true">
+    <main id="shot"><div class="grid"></div><div class="wall"><div class="row r1"><div class="track"></div></div><div class="row r2"><div class="track"></div></div><div class="row r3"><div class="track"></div></div></div><div class="title-wrap"><i class="title-halo"></i><h1 class="title">Research</h1></div><div class="corner">MINARA INTELLIGENCE</div></main>
+  </div>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <script>
+    const line=(name,value,delta,path,cls='wide')=>`<article class="card ${cls}"><div class="top"><span class="ticker"><i class="mark">${name.slice(0,2)}</i>${name}</span><span class="tag">LIVE</span></div><div class="label">Market snapshot</div><div class="big">${value}<em class="delta">${delta}</em></div><div class="sub">Minara research · updated now</div><svg class="chart" viewBox="0 0 380 91" preserveAspectRatio="none"><path class="area" d="${path} L380 91 L0 91Z"/><path class="line" d="${path}"/></svg></article>`;
+    const bars=(name,vals,cls='mid')=>`<article class="card ${cls}"><div class="top"><span class="ticker"><i class="mark">${name.slice(0,2)}</i>${name}</span><span class="tag">QUARTERLY</span></div><div class="label">Revenue vs. estimate</div><div class="bars">${vals.map((v,i)=>`<i class="bar ${i===2?'red':''}" style="height:${v}%"></i>`).join('')}</div><div class="axis"><span>Q1</span><span>Q2</span><span>Q3</span><span>Q4</span><span>Q1E</span></div></article>`;
+    const table=(name,rows,cls='wide')=>`<article class="card ${cls}"><div class="top"><span class="ticker"><i class="mark">${name.slice(0,2)}</i>${name}</span><span class="tag">FUTURES</span></div><div class="table">${rows.map((r,i)=>`<div class="tr"><b>${r[0]}</b><span>${r[1]}</span><strong class="${name==='Macro calendar'?'':i===2?'redtext':'green'}">${r[2]}</strong></div>`).join('')}</div></article>`;
+    const news=(title,source,cls='mid')=>`<article class="card ${cls} accent"><div class="top"><span class="ticker"><i class="mark">AI</i>Research brief</span><span class="tag">NEW</span></div><div class="headline">${title}</div><span class="source">${source} · 12 min ago</span><i class="thumb"></i></article>`;
+    const heat=(name,cls='slim')=>`<article class="card ${cls}"><div class="top"><span class="ticker"><i class="mark">${name.slice(0,2)}</i>${name}</span><span class="tag">SECTORS</span></div><div class="heat">${'<i></i>'.repeat(16)}</div><div class="sub">Breadth improving · 8 of 11 sectors positive</div></article>`;
+    const score=(name,n,cls='slim')=>`<article class="card ${cls} accent"><div class="top"><span class="ticker"><i class="mark">${name.slice(0,2)}</i>${name}</span><span class="tag">MODEL</span></div><div class="score"><strong>${n}</strong><span>BULLISH</span></div><div class="meter"><i></i></div><div class="sub">Momentum · quality · valuation</div></article>`;
+    const up='M0 74 C28 71 38 60 64 64 S98 48 124 52 S163 31 194 38 S236 24 269 29 S321 11 380 8',wave='M0 52 C25 31 55 70 84 47 S128 30 153 58 S207 28 235 45 S285 17 312 38 S348 23 380 29',down='M0 19 C33 28 59 19 87 34 S127 31 151 48 S205 44 230 62 S278 58 305 73 S348 69 380 84';
+    const rows=[
+      [line('S&P 500','5,624.18','+0.84%',up),bars('NVIDIA',[41,62,55,78,91]),news('AI capex keeps semiconductor demand resilient','Minara Market Desk'),heat('US Equities')],
+      [table('Index futures',[['S&P 500','5,628.25','+0.72%'],['Nasdaq 100','19,842.50','+1.08%'],['Russell 2000','2,087.10','−0.16%'],['VIX','14.28','−5.44%']]),score('Signal score','82'),line('BTC / USD','$68,442','+2.31%',wave,'wide'),news('Treasury yields retreat as inflation expectations cool','Macro Brief')],
+      [heat('Sector pulse'),line('US 10Y','4.18%','−6 bps',down,'mid'),bars('Earnings',[35,49,71,64,86],'wide'),score('Quality rank','91'),table('Macro calendar',[['CPI YoY','3.1%','BEAT'],['Jobless claims','221K','INLINE'],['Retail sales','0.6%','BEAT'],['FOMC','2 days','WATCH']],'mid')]
+    ];
+    document.querySelectorAll('.track').forEach((track,i)=>track.innerHTML=rows[i].join('')+rows[i].join(''));document.querySelector('.title').innerHTML=Array.from('Research').map(char=>`<span>${char}</span>`).join('');
+    const shot=document.querySelector('#shot');const fit=()=>{const v=document.querySelector('#viewport');shot.style.transform=`scale(${v.clientWidth/1920})`};addEventListener('resize',fit);fit();
+    const tl=gsap.timeline({paused:true});gsap.set('.card',{opacity:.82,scale:.98});gsap.set('.title span',{opacity:0,y:16,filter:'blur(12px)'});gsap.set('.title-halo',{opacity:0});
+    tl.to('.title span',{y:0,duration:.3,stagger:.0333333333,ease:'power3.out'},0)
+      .to('.title span',{opacity:1,filter:'blur(0px)',duration:.9,stagger:.0333333333,ease:'power3.out'},0)
+      .to('.title-halo',{opacity:1,duration:.28},0)
+      .to('.card',{opacity:1,scale:1,duration:.4,stagger:{each:.022,from:'center'},ease:'power2.out'},.08)
+      .fromTo('.r1 .track',{x:0},{x:-720,duration:1.9666666666666666,ease:'none'},0)
+      .fromTo('.r2 .track',{x:-360},{x:360,duration:1.9666666666666666,ease:'none'},0)
+      .fromTo('.r3 .track',{x:0},{x:-840,duration:1.9666666666666666,ease:'none'},0)
+      .to('.card',{opacity:.84,duration:.1,stagger:{amount:.3,from:'random'},yoyo:true,repeat:1},1.1);
+    window.__timelines=window.__timelines||{};window.__timelines['minara-shot-24']=tl;const previewTime=Number(new URLSearchParams(location.search).get('t'));if(Number.isFinite(previewTime))tl.time(previewTime);
+  </script>
+</body>
+</html>

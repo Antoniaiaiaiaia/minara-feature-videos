@@ -1,0 +1,10 @@
+{
+  "duration": 1.8,
+  "assertions": [
+    { "kind": "appearsBy", "selector": "#word-minara", "bySec": 0.65 },
+    { "kind": "appearsBy", "selector": "#word-version", "bySec": 1.1 },
+    { "kind": "before", "a": "#word-minara", "b": "#word-app" },
+    { "kind": "before", "a": "#word-app", "b": "#word-version" },
+    { "kind": "staysInFrame", "selector": "#title" }
+  ]
+}

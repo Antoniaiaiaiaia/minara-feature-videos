@@ -1,0 +1,40 @@
+Build an animated marketing scene titled "The same issue, Different channels"
+that visualizes one support issue scattered across multiple channels.
+
+LAYOUT (light theme, cream/white background, subtle soft shadows, rounded cards):
+
+Center headline (mid-screen, large, dark ~#15171a, clean sans-serif):
+  "The same issue, Different channels"
+
+TOP-LEFT — an email/inbox client panel (white rounded card, drop shadow):
+  - Header row: red inbox icon + "Tickets" + count badge "32"
+  - List items below: "Snoozed", "Resolved", "Categories" (folder icon),
+    "More" (chevron-down)
+  - A blue chat-bubble tag labeled "Zory" with a pointer, overlapping the panel's left edge
+
+TOP-RIGHT — a faint chat/message list panel (mostly greyed-out placeholder rows,
+  avatar circles + two grey text lines each):
+  - One row highlighted "Mentioned Ticket / Nemesi left a message..."
+  - A blue chat-bubble tag labeled "Kalum" pointing at that row
+
+BOTTOM-LEFT — a stack of ticket cards (white rounded cards, avatar + title + subtitle):
+  - "Dashboard Ticket / I can't find following features..."
+  - "Login Ticket / Facing login issue while 2FA"
+  - "Order Ticket / (partially cut off at frame bottom)"
+
+BOTTOM-CENTER/RIGHT — a browser/window mock (chrome dots top-left) containing:
+  - A dark pill badge "Unresolved Tickets" with a red "99+" counter
+  - Rows of greyed placeholder blocks (kanban/table columns)
+  - A spinning loading indicator top-right of the window
+  - A small chat bubble bottom-left, faint "Load more" links
+  - A blue chat-bubble tag labeled "Jake" with a pointer near the bottom
+  - Overlapping document/paper sheets behind the window (right side)
+
+STYLE: Modern SaaS product-marketing aesthetic. Real UI panels rendered as clean
+mock cards; most background content is intentionally blurred/greyed as placeholder
+so the eye lands on the highlighted items and the three named blue tags (Zory,
+Kalum, Jake) — the same person's issue surfacing in three different tools.
+
+ANIMATION (if motion): panels fade/slide in from their respective corners, the
+three blue name-tags pop in with a slight bounce, the "99+" and loading spinner
+draw attention to overflow/chaos, headline fades in last.
