@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>DMind — Scene 5 · Evaluating the Agents</title>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html,body { width:100%; height:100%; background:#FFFFFF; font-family:'Manrope',system-ui,sans-serif; color:#111221; overflow:hidden; }
+  #root,[data-composition-id="root"]{ width:2560px; height:1440px; position:relative; overflow:hidden; font-family:'Manrope',system-ui,sans-serif;
+    background: radial-gradient(1100px 1100px at 19% 30%, rgba(47,107,255,0.14), transparent 62%), radial-gradient(1050px 1050px at 84% 75%, rgba(16,196,154,0.145), transparent 62%), radial-gradient(820px 820px at 55% 68%, rgba(61,139,255,0.10), transparent 58%), radial-gradient(1900px 1500px at 20% 22%, rgba(47,107,255,0.06), transparent 60%), radial-gradient(1800px 1450px at 82% 84%, rgba(16,196,154,0.07), transparent 60%), #FFFFFF; }
+  .grid-tex{ position:absolute; inset:0; background-image:radial-gradient(rgba(17,18,33,0.05) 1.5px,transparent 1.6px); background-size:62px 62px; opacity:0.3; }
+  
+  
+  
+  
+  .stage{ position:absolute; inset:0; }
+
+  /* ---- A: one agent → five agents → three shared skills ---- */
+  .wire{ position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:1; }
+  .wire path{ fill:none; stroke-linecap:round; }
+
+  /* hero single agent (phase 1) */
+  .hero{ position:absolute; left:50%; top:470px; transform:translate(-50%,-50%); width:300px; height:300px; border-radius:50%;
+    background:radial-gradient(circle at 38% 32%, #6E8BF2, #375BDC 72%); color:#fff; z-index:5;
+    box-shadow:0 0 0 16px rgba(55,91,220,0.12), 0 26px 70px rgba(17,18,33,0.18);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; }
+  .hero .heroglow{ position:absolute; inset:-60px; border-radius:50%; background:radial-gradient(circle, rgba(55,91,220,0.55), transparent 68%); filter:blur(30px); opacity:0; z-index:-1; }
+  .hero .em{ font-size:108px; line-height:1; } .hero .lb{ font-size:28px; font-weight:800; letter-spacing:0.14em; margin-top:6px; }
+  .lonering{ position:absolute; left:50%; top:470px; transform:translate(-50%,-50%); width:430px; height:430px; border-radius:50%; border:3px dashed rgba(55,91,220,0.45); z-index:4; }
+  .ripple{ position:absolute; left:50%; top:470px; transform:translate(-50%,-50%); width:300px; height:300px; border-radius:50%; border:3px solid rgba(55,91,220,0.5); z-index:3; opacity:0; }
+
+  /* 5 agents row */
+  .agt{ position:absolute; top:170px; width:160px; text-align:center; z-index:3; }
+  .agt .av{ width:140px; height:140px; border-radius:50%; margin:0 auto; font-size:60px;
+    background:radial-gradient(circle at 38% 32%, #6E8BF2, #375BDC 72%); color:#fff;
+    box-shadow:0 0 0 9px rgba(55,91,220,0.10), 0 16px 40px rgba(17,18,33,0.16);
+    display:flex; align-items:center; justify-content:center; }
+  .agt.best .av{ background:radial-gradient(circle at 38% 32%, #34D8A6, #10B981 72%); box-shadow:0 0 0 9px rgba(16,185,129,0.14), 0 16px 44px rgba(16,185,129,0.32); }
+  .agt .nm{ margin-top:16px; font-size:27px; font-weight:800; letter-spacing:-0.01em; }
+  .agt.best .nm{ color:#10B981; }
+  #ag0{left:280px;} #ag1{left:580px;} #ag2{left:880px;} #ag3{left:1180px;} #ag4{left:1480px;}
+
+  /* 3 shared skill cards */
+  .skill{ position:absolute; top:600px; width:520px; height:360px; border-radius:30px; background:#fff; border:1px solid #EDEDED;
+    box-shadow:0 30px 80px rgba(17,18,33,0.12); padding:46px 46px; z-index:3; display:flex; flex-direction:column; }
+  .skill .cd{ width:128px; height:128px; border-radius:30px; display:flex; align-items:center; justify-content:center; font-size:70px; }
+  .skill h3{ font-size:48px; font-weight:800; letter-spacing:-0.015em; margin-top:26px; }
+  .skill p{ font-size:28px; font-weight:500; color:#5A5C6B; margin-top:14px; line-height:1.3; }
+  #sk0{left:130px;} #sk0 .cd{background:#AEDBF5;}
+  #sk1{left:700px;} #sk1 .cd{background:#FFB3BA;}
+  #sk2{left:1270px;} #sk2 .cd{background:#FFD3B6;}
+
+  /* ---- B: security regression (dumbbell) ---- */
+  .bhead{ position:absolute; left:0; right:0; top:70px; text-align:center; z-index:4; }
+  .bhead h2{ font-size:66px; font-weight:800; letter-spacing:-0.025em; }
+  .bhead h2 b{ color:#F0566B; }
+  .bhead p{ font-size:30px; font-weight:600; color:#5A5C6B; margin-top:12px; }
+  .dwrap{ position:absolute; inset:0; } .dwrap svg{ width:100%; height:100%; overflow:visible; }
+  .ag{ font-family:'Manrope'; font-weight:800; font-size:36px; fill:#3a382f; }
+  .ag.best{ fill:#7B6BE6; }
+  .vF{ font-family:'JetBrains Mono',monospace; font-weight:700; font-size:32px; fill:#27B98A; }
+  .vS{ font-family:'JetBrains Mono',monospace; font-weight:700; font-size:32px; fill:#F0566B; }
+  .axlab{ font-family:'JetBrains Mono',monospace; font-weight:700; font-size:24px; letter-spacing:0.12em; }
+  .t80{ font-family:'JetBrains Mono',monospace; font-weight:800; font-size:28px; fill:#111221; }
+  .__scaler{ position:absolute; left:0; top:0; width:1920px; height:1080px; transform:scale(1.3333333); transform-origin:top left; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="root" data-width="2560" data-height="1440" data-start="0" data-duration="25.27">
+<div class="__scaler">
+  <div class="grid-tex"></div>
+  
+
+  <!-- STAGE A -->
+  <div class="stage" id="stA">
+    <svg class="wire" id="wire" viewBox="0 0 1920 1080" preserveAspectRatio="none"><g id="wireg"></g></svg>
+
+    <!-- phase 1: single agent -->
+    <div class="lonering" id="lonering"></div>
+    <div class="ripple" id="rp0"></div><div class="ripple" id="rp1"></div><div class="ripple" id="rp2"></div>
+    <div class="hero" id="hero"><div class="heroglow"></div><div class="em">🤖</div><div class="lb">AI</div></div>
+
+    <!-- phase 2: five agents -->
+    <div class="agt" id="ag0"><div class="av">🤖</div><div class="nm">LC-DS</div></div>
+    <div class="agt" id="ag1"><div class="av">🤖</div><div class="nm">CAMEL-DS</div></div>
+    <div class="agt" id="ag2"><div class="av">🤖</div><div class="nm">LC-CH</div></div>
+    <div class="agt" id="ag3"><div class="av">🤖</div><div class="nm">CAMEL-CH</div></div>
+    <div class="agt best" id="ag4"><div class="av">🤖</div><div class="nm">Manus-1.6</div></div>
+
+    <!-- phase 3: three shared skills -->
+    <div class="skill" id="sk0"><div class="cd">🛠️</div><h3>Blockchain Dev</h3><p>Write &amp; deploy on-chain code</p></div>
+    <div class="skill" id="sk1"><div class="cd">🛡️</div><h3>Contract Security</h3><p>Audit &amp; find exploits</p></div>
+    <div class="skill" id="sk2"><div class="cd">🪙</div><h3>Tokenomics</h3><p>Model token value</p></div>
+  </div>
+
+  <!-- STAGE B -->
+  <div class="stage" id="stB">
+    <div class="bhead"><h2>Even with tools, every agent <b>breaks on Security</b></h2><p>Fundamentals stay above 90 · Security stays below 80</p></div>
+    <div class="dwrap"><svg id="dumb" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid meet"><g id="dgrid"></g></svg></div>
+  </div>
+</div>
+</div>
+
+<script>
+  function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+  const rnd=mulberry32(505);
+  const DUR=24; const tl=gsap.timeline({paused:true, defaults:{ease:'power3.out', duration:0.6}});
+
+  document.querySelectorAll(".orb-static").forEach(o=>{const dx=rnd()*90-45,dy=rnd()*90-45,c=6+rnd()*3;gsap.to(o,{x:dx,y:dy,duration:c,ease:'sine.inOut',yoyo:true,repeat:Math.ceil(DUR/c)});});
+
+  // REAL agent data (KDD 2026, Table 2) — Fundamentals vs Security
+  const ag=[
+    ['LC-DS',      89.8, 65.6, false],
+    ['CAMEL-DS',   90.4, 74.3, false],
+    ['LC-CH',      91.1, 75.6, false],
+    ['CAMEL-CH',   93.4, 76.1, false],
+    ['Manus-1.6',  95.6, 79.5, true ],
+  ];
+  const svgns='http://www.w3.org/2000/svg';
+  const xS=s=>520+(s-60)/40*1100;     // score → x  (60→520, 100→1620), fill ~80%
+  const X80=xS(80);                    // 1070
+  const rowY=i=>360+i*128;
+  const g=document.getElementById('dgrid');
+  function mk(tag,attrs){const e=document.createElementNS(svgns,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);return e;}
+
+  // danger zone (<80) + 80 line + axis labels
+  const zone=mk('rect',{x:xS(60),y:300,width:X80-xS(60),height:640,rx:18,fill:'rgba(240,86,107,0.06)'}); g.appendChild(zone);
+  const line80=mk('line',{id:'line80',x1:X80,y1:308,x2:X80,y2:940,stroke:'#111221','stroke-width':3,'stroke-dasharray':'6 7'}); g.appendChild(line80);
+  const t80=mk('text',{x:X80,y:288,'text-anchor':'middle',class:'t80'}); t80.textContent='80'; g.appendChild(t80);
+  const secLab=mk('text',{x:xS(67),y:288,'text-anchor':'middle',class:'axlab',fill:'#F0566B'}); secLab.textContent='SECURITY ↓ BELOW 80'; g.appendChild(secLab);
+  const funLab=mk('text',{x:xS(93),y:288,'text-anchor':'middle',class:'axlab',fill:'#27B98A'}); funLab.textContent='FUNDAMENTALS'; g.appendChild(funLab);
+
+  const lines=[], fdots=[], sdots=[], fvals=[], svals=[], names=[];
+  ag.forEach((a,i)=>{
+    const y=rowY(i), xf=xS(a[1]), xs=xS(a[2]);
+    const ln=mk('line',{x1:xf,y1:y,x2:xf,y2:y,stroke:'#C9Ccd6','stroke-width':a[3]?7:5,'stroke-linecap':'round'}); g.appendChild(ln); lines.push({el:ln,xf,xs,y});
+    const fd=mk('circle',{cx:xf,cy:y,r:a[3]?18:15,fill:'#27B98A'}); g.appendChild(fd); fdots.push(fd);
+    const sd=mk('circle',{cx:xs,cy:y,r:a[3]?18:15,fill:'#F0566B'}); g.appendChild(sd); sdots.push(sd);
+    const nm=mk('text',{x:480,y:y+12,'text-anchor':'end',class:'ag'+(a[3]?' best':'')}); nm.textContent=a[0]; g.appendChild(nm); names.push(nm);
+    const fv=mk('text',{x:xf+34,y:y+11,'text-anchor':'start',class:'vF'}); fv.textContent=a[1].toFixed(1); g.appendChild(fv); fvals.push(fv);
+    const sv=mk('text',{x:xs-34,y:y+11,'text-anchor':'end',class:'vS'}); sv.textContent=a[2].toFixed(1); g.appendChild(sv); svals.push(sv);
+  });
+
+  /* === build wires: 5 agents → shared bus → 3 skills (from rendered layout) === */
+  const WP=[];
+  (function(){
+    const wg=document.getElementById('wireg');
+    const agts=['ag0','ag1','ag2','ag3','ag4'].map(id=>document.getElementById(id));
+    const sks=['sk0','sk1','sk2'].map(id=>document.getElementById(id));
+    const par=agts[0].offsetParent;
+    document.getElementById('wire').setAttribute('viewBox','0 0 '+par.offsetWidth+' '+par.offsetHeight);
+    const AVH=140;
+    const avC=agts.map(e=>({x:Math.round(e.offsetLeft+e.offsetWidth/2), b:Math.round(e.offsetTop+AVH)}));
+    const skC=sks.map(e=>({x:Math.round(e.offsetLeft+e.offsetWidth/2), t:Math.round(e.offsetTop)}));
+    const avBottom=Math.max.apply(null,avC.map(c=>c.b)), cardTop=Math.min.apply(null,skC.map(c=>c.t));
+    const busY=Math.round(avBottom+(cardTop-avBottom)*0.5);
+    const minX=Math.min.apply(null,avC.map(c=>c.x).concat(skC.map(c=>c.x)));
+    const maxX=Math.max.apply(null,avC.map(c=>c.x).concat(skC.map(c=>c.x)));
+    function P(d,stroke,w,id){const p=document.createElementNS(svgns,'path');p.setAttribute('d',d);p.setAttribute('stroke',stroke);p.setAttribute('stroke-width',w);p.setAttribute('stroke-dasharray','14 20');p.setAttribute('id',id);wg.appendChild(p);WP.push(p);return p;}
+    P('M'+minX+' '+busY+' L'+maxX+' '+busY,'#9DB4F2',5,'wbus');
+    avC.forEach((c,i)=>P('M'+c.x+' '+(c.b-2)+' L'+c.x+' '+busY,i===4?'#34D8A6':'#7FA0F0',i===4?6:4,'spine'+i));
+    skC.forEach((c,i)=>P('M'+c.x+' '+busY+' L'+c.x+' '+(c.t+2),'#9DB4F2',5,'stub'+i));
+  })();
+
+  /* === initial states — STAGE A === */
+  gsap.set('#stB',{autoAlpha:0});
+  gsap.set('#hero',{scale:0,autoAlpha:0});
+  gsap.set('#hero .heroglow',{opacity:0,scale:0.8});
+  gsap.set('#lonering',{autoAlpha:0,scale:0.7});
+  gsap.set('.ripple',{autoAlpha:0,scale:0.5});
+  gsap.set('#ag0',{x:600,scale:0,autoAlpha:0});
+  gsap.set('#ag1',{x:300,scale:0,autoAlpha:0});
+  gsap.set('#ag2',{x:0,scale:0,autoAlpha:0});
+  gsap.set('#ag3',{x:-300,scale:0,autoAlpha:0});
+  gsap.set('#ag4',{x:-600,scale:0,autoAlpha:0});
+  gsap.set('.agt .nm',{autoAlpha:0,y:8});
+  gsap.set('.skill',{autoAlpha:0,scale:0.85,y:34});
+  gsap.set(WP,{autoAlpha:0,strokeDashoffset:0});
+  gsap.set('.bhead',{autoAlpha:0,y:-16});
+  gsap.set([zone,line80,t80,secLab,funLab],{autoAlpha:0});
+  gsap.set(names,{autoAlpha:0,x:-16});
+  gsap.set(fdots,{autoAlpha:0,scale:0,transformOrigin:'50% 50%'});
+  gsap.set(sdots,{autoAlpha:0,scale:0,transformOrigin:'50% 50%'});
+  gsap.set(fvals.concat(svals),{autoAlpha:0});
+
+  /* === STAGE A === */
+  // 0.9 single agent appears
+  tl.to('#hero',{scale:1,autoAlpha:1,duration:0.8,ease:'back.out(1.7)'},0.9);
+  tl.to('#hero .heroglow',{opacity:0.5,scale:1,duration:0.7,ease:'power2.out'},0.9);
+  tl.to('#hero',{scale:1.045,duration:0.9,ease:'sine.inOut',yoyo:true,repeat:2},1.8);
+  // 1.55 "alone" — isolation ring blooms then dissolves
+  tl.fromTo('#lonering',{scale:0.7,autoAlpha:0},{scale:1,autoAlpha:0.85,duration:0.55,ease:'power2.out'},1.55);
+  tl.to('#lonering',{scale:1.28,autoAlpha:0,duration:0.7,ease:'power2.in'},2.25);
+  // 2.55 label morphs AI → AGENT, energy ramps
+  tl.to('#hero .lb',{autoAlpha:0,y:-8,duration:0.2,ease:'power2.in'},2.62);
+  tl.add(()=>{ const lb=document.querySelector('#hero .lb'); if(lb) lb.textContent='AGENT'; },2.84);
+  tl.fromTo('#hero .lb',{autoAlpha:0,scale:0.5,y:8},{autoAlpha:1,scale:1,y:0,duration:0.45,ease:'back.out(2)'},2.86);
+  tl.to('#hero .heroglow',{opacity:0.85,scale:1.12,duration:0.5,ease:'power2.out'},2.7);
+  tl.to('#hero .heroglow',{opacity:0.5,scale:1,duration:0.6,ease:'sine.inOut'},3.3);
+  // 3.6 "calling tools" — ripples pulse outward (agent reaching out)
+  ['#rp0','#rp1','#rp2'].forEach((r,i)=>{
+    tl.fromTo(r,{scale:0.5,autoAlpha:0.7},{scale:1.7,autoAlpha:0,duration:1.0,ease:'power2.out'},3.6+i*0.28);
+  });
+  // 4.75 hero multiplies into five
+  tl.to(['#hero','#hero .heroglow'],{scale:0.42,autoAlpha:0,duration:0.5,ease:'power2.in'},4.75);
+  tl.to('#ag2',{x:0,scale:1,autoAlpha:1,duration:0.7,ease:'back.out(1.6)'},4.9);
+  tl.to(['#ag1','#ag3'],{x:0,scale:1,autoAlpha:1,duration:0.7,ease:'back.out(1.6)'},5.2);
+  tl.to(['#ag0','#ag4'],{x:0,scale:1,autoAlpha:1,duration:0.7,ease:'back.out(1.6)'},5.5);
+  tl.to('.agt .nm',{autoAlpha:1,y:0,duration:0.5,stagger:0.08,ease:'power3.out'},5.9);
+  // agents gentle bob (alive)
+  tl.to('.agt',{y:-12,duration:1.1,ease:'sine.inOut',yoyo:true,repeat:5,stagger:{each:0.12,from:'center'}},6.4);
+  // 6.95 bus + spines draw, marching flow begins
+  tl.to(['#wbus','#spine0','#spine1','#spine2','#spine3','#spine4'],{autoAlpha:0.9,duration:0.5,stagger:0.05,ease:'power2.out'},7.0);
+  tl.to(WP,{strokeDashoffset:-34,duration:0.85,ease:'none',repeat:6},7.6);
+  // three skills pop in one by one, each stub draws (8.9 blockchain · 10.1 security · 11.1 tokenomics)
+  [['#sk0','#stub0',8.9],['#sk1','#stub1',10.1],['#sk2','#stub2',11.1]].forEach(s=>{
+    tl.to(s[1],{autoAlpha:0.9,duration:0.4,ease:'power2.out'},s[2]-0.15);
+    tl.to(s[0],{autoAlpha:1,scale:1,y:0,duration:0.65,ease:'back.out(1.55)'},s[2]);
+    tl.fromTo(s[0]+' .cd',{scale:0.7,rotate:-12},{scale:1,rotate:0,duration:0.55,ease:'back.out(2)'},s[2]+0.05);
+  });
+  // skill icons keep floating
+  tl.to('.skill .cd',{y:-10,duration:1.0,ease:'sine.inOut',yoyo:true,repeat:3,stagger:0.1},11.6);
+
+  /* A → B (≈6.8) */
+  tl.to('#stA',{autoAlpha:0,y:-30,duration:0.5,ease:'power2.in'},12.5);
+
+  /* === STAGE B (7.1 – 24): the security drop === */
+  tl.to('#stB',{autoAlpha:1,duration:0.2},12.7);
+  tl.to('.bhead',{autoAlpha:1,y:0,duration:0.7},12.8);
+  tl.to([secLab,funLab],{autoAlpha:1,duration:0.5},13.0);
+  tl.to(line80,{autoAlpha:1,duration:0.5},13.1);
+  tl.to(t80,{autoAlpha:1,duration:0.5},13.1);
+  tl.to(zone,{autoAlpha:1,duration:0.8,ease:'power2.out'},13.2);
+  // each agent: name in, fund dot pops (high/green), then line DRAWS down to security (the regression), sec dot pops (red)
+  ag.forEach((a,i)=>{
+    const t=13.6+i*1.3, L=lines[i];
+    tl.to(names[i],{autoAlpha:1,x:0,duration:0.4},t);
+    tl.to(fdots[i],{autoAlpha:1,scale:1,duration:0.45,ease:'back.out(2)'},t);
+    tl.to(fvals[i],{autoAlpha:1,duration:0.3},t+0.1);
+    tl.to(L.el,{attr:{x2:L.xs},duration:0.7,ease:'power2.inOut'},t+0.35);   // line slides from fund down-left to security
+    tl.to(sdots[i],{autoAlpha:1,scale:1,duration:0.45,ease:'back.out(2)'},t+0.9);
+    tl.to(svals[i],{autoAlpha:1,duration:0.3},t+1.0);
+  });
+  // emphasis: pulse all security dots (the regression), then Manus callout (best, still <80)
+  tl.to(sdots,{scale:1.25,duration:0.4,ease:'sine.inOut',yoyo:true,repeat:3,transformOrigin:'50% 50%'},20.5);
+  tl.to(line80,{autoAlpha:0.5,duration:0.3,ease:'sine.inOut',yoyo:true,repeat:3},20.5);
+  tl.to(names[4],{scale:1.06,duration:0.4,ease:'back.out(2)',yoyo:true,repeat:1,transformOrigin:'0% 50%'},22.5);
+
+  window.__timelines=window.__timelines||{};
+  window.__timelines["root"]=tl;
+</script>
+</body>
+</html>

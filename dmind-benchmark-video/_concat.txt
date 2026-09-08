@@ -1,0 +1,7 @@
+file 'out-scene1-srt.mp4'
+file 'out-scene2-srt.mp4'
+file 'out-scene3-srt.mp4'
+file 'out-scene4-srt.mp4'
+file 'out-scene5-srt.mp4'
+file 'out-scene6-srt.mp4'
+file 'out-scene7-srt.mp4'

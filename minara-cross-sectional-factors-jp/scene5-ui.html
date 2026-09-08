@@ -1,0 +1,161 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap');
+html,body{margin:0;padding:0;background:#F9F9F9;}
+#root,[data-composition-id="root"]{
+  font-family:'Geist','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic','Noto Sans JP',system-ui,-apple-system,sans-serif;
+  background:#F9F9F9; position:relative; overflow:hidden; width:1920px; height:1080px; color:#141416;
+}
+.screen{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
+.card{width:1200px;background:#FFFFFF;border:1px solid #ECECEC;border-radius:36px;padding:64px 72px;
+  box-shadow:0 26px 80px rgba(20,20,22,0.09);box-sizing:border-box;}
+.k-label{font-size:38px;color:#9A9A9A;font-weight:500;}
+.k-amt{font-size:168px;font-weight:800;letter-spacing:-0.03em;margin:6px 0 42px;font-variant-numeric:tabular-nums;}
+.methods{display:flex;gap:20px;margin-bottom:50px;}
+.m{flex:1;display:flex;align-items:center;gap:20px;border:2px solid #ECECEC;border-radius:20px;padding:30px 34px;font-size:38px;font-weight:600;}
+.m .ic{width:60px;height:60px;border-radius:50%;background:#F0F0F0;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:700;color:#717171;flex:0 0 auto;}
+.m.on{border-color:#07B56A;background:rgba(7,181,106,0.06);}
+.m.on .ic{background:#07B56A;color:#fff;}
+.m .sub{font-size:26px;color:#9A9A9A;font-weight:500;}
+.btn{width:100%;background:#141416;color:#fff;font-size:42px;font-weight:700;text-align:center;
+  padding:34px;border-radius:20px;box-sizing:border-box;}
+.toast{position:absolute;left:50%;top:140px;transform:translateX(-50%);display:flex;align-items:center;gap:24px;
+  background:#FFFFFF;border:1px solid #ECECEC;border-radius:24px;padding:30px 46px;box-shadow:0 18px 56px rgba(20,20,22,0.13);}
+.toast .ck{width:72px;height:72px;border-radius:50%;background:#07B56A;display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+.toast b{font-size:40px;font-weight:700;display:block;}
+.toast span{font-size:28px;color:#9A9A9A;}
+/* deploy */
+.strat .row{display:flex;align-items:center;gap:26px;margin-bottom:16px;}
+.strat .dot{width:68px;height:68px;border-radius:18px;background:rgba(7,181,106,0.12);display:flex;align-items:center;justify-content:center;color:#07B56A;font-size:36px;font-weight:800;flex:0 0 auto;}
+.strat h2{font-size:58px;font-weight:700;margin:0;}
+.strat .meta{font-size:34px;color:#9A9A9A;margin:0 0 6px;}
+.strat .net{font-size:36px;color:#07B56A;font-weight:700;margin:22px 0 46px;}
+.btn.dep{font-size:46px;}
+.live{display:none;align-items:center;justify-content:center;gap:22px;width:100%;
+  background:rgba(7,181,106,0.10);color:#07B56A;font-size:46px;font-weight:700;padding:34px;border-radius:20px;box-sizing:border-box;}
+.live .pulse{width:26px;height:26px;border-radius:50%;background:#07B56A;}
+/* wallet */
+.wgain{font-size:44px;font-weight:700;color:#07B56A;display:flex;align-items:center;gap:14px;}
+.wsub{font-size:30px;color:#9A9A9A;margin-top:10px;}
+.spark{margin-top:30px;width:100%;}
+/* touch dot */
+.touch{position:absolute;width:92px;height:92px;border-radius:50%;background:rgba(20,20,22,0.16);
+  left:0;top:0;transform:translate(-50%,-50%);opacity:0;pointer-events:none;}
+</style>
+</head>
+<body>
+  <div id="root" data-composition-id="root" data-width="1920" data-height="1080" data-start="0" data-duration="7.3">
+
+    <!-- Beat 1: Fund -->
+    <div class="screen clip" id="scrF" data-start="0" data-duration="2.6" data-track-index="1">
+      <div class="card" id="fundCard">
+        <div class="k-label">入金</div>
+        <div class="k-amt">$10,000</div>
+        <div class="methods">
+          <div class="m on" id="mUSDC"><span class="ic">$</span><div>USDC<div class="sub">即時 · オンチェーン</div></div></div>
+          <div class="m" id="mCard"><span class="ic">▭</span><div>カード<div class="sub">Visa · Mastercard</div></div></div>
+        </div>
+        <div class="btn" id="fundBtn">入金を確定</div>
+      </div>
+      <div class="toast" id="toast"><div class="ck"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div><div><b>入金完了</b><span>$10,000 · USDC</span></div></div>
+    </div>
+
+    <!-- Beat 2: Deploy -->
+    <div class="screen clip" id="scrD" data-start="2.5" data-duration="2.9" data-track-index="2">
+      <div class="card strat" id="stratCard">
+        <div class="row"><span class="dot">∑</span><div><p class="meta">戦略 · TradFi 30</p><h2>6ファクター合成戦略</h2></div></div>
+        <p class="net" id="netLine">バックテスト純収益 +1233% · シャープ 1.72 · 12銘柄</p>
+        <div class="btn dep" id="depBtn">ライブ展開</div>
+        <div class="live" id="liveTag"><span class="pulse"></span>稼働中 · $10,000 で運用</div>
+      </div>
+    </div>
+
+    <!-- Beat 3: Wallet balance growing -->
+    <div class="screen clip" id="scrW" data-start="5.3" data-duration="2.0" data-track-index="3">
+      <div class="card" id="walletCard">
+        <div class="k-label">ポートフォリオ評価額</div>
+        <div class="k-amt" id="wbal">$10,000</div>
+        <div class="wgain"><span id="warrow">▲</span><span id="wgain">+$0 · +0.0%</span></div>
+        <div class="wsub">6ファクター合成戦略 · デプロイ後ライブ運用中</div>
+        <svg class="spark" id="spark" height="120" viewBox="0 0 1056 120" preserveAspectRatio="none">
+          <path id="sparkArea" d="" fill="rgba(7,181,106,0.12)"/>
+          <path id="sparkLine" d="" fill="none" stroke="#07B56A" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="touch" id="touch"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+      // build rising sparkline
+      (function(){ const rnd=mulberry32(11), W=1056,H=120,n=46; let pts=[],v=0.2;
+        for(let i=0;i<n;i++){const t=i/(n-1); v+=0.006+t*0.02+(rnd()-0.45)*0.05; pts.push(Math.max(0.02,v));}
+        const mx=Math.max(...pts), X=i=>i/(n-1)*W, Y=p=>H-6-(p/mx)*(H-18);
+        let d='M'+X(0).toFixed(1)+' '+Y(pts[0]).toFixed(1);
+        for(let i=1;i<n;i++) d+=' L'+X(i).toFixed(1)+' '+Y(pts[i]).toFixed(1);
+        document.getElementById('sparkLine').setAttribute('d',d);
+        document.getElementById('sparkArea').setAttribute('d',d+' L'+W+' '+H+' L0 '+H+' Z');
+      })();
+
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused:true });
+      gsap.set('#toast',{opacity:0, y:-30, scale:0.92});
+      gsap.set('#scrD',{opacity:0, y:24});
+      gsap.set('#scrW',{opacity:0, y:24});
+      gsap.set('#liveTag',{display:'none'});
+
+      function tap(x,y,T){
+        tl.set('#touch',{left:x,top:y,opacity:0,scale:1},T);
+        tl.to('#touch',{opacity:1,duration:0.12,ease:'power1.out'},T);
+        tl.to('#touch',{scale:1.5,opacity:0,duration:0.4,ease:'power2.out'},T+0.08);
+      }
+
+      // ===== Beat 1: Fund =====
+      tl.from('#fundCard',{opacity:0,y:34,scale:0.98,duration:0.5,ease:'power3.out'},0.1);
+      tl.from('.k-label, .k-amt, #mUSDC, #mCard, #fundBtn',{opacity:0,y:24,duration:0.45,ease:'power3.out',stagger:0.07},0.35);
+      tap(960,840,1.4);
+      tl.to('#fundBtn',{scale:0.96,duration:0.14,yoyo:true,repeat:1,ease:'power2.inOut'},1.45);
+      tl.to('#toast',{opacity:1,y:0,scale:1,duration:0.5,ease:'back.out(1.6)'},1.7);
+      tl.to('#scrF',{opacity:0,y:-40,duration:0.4,ease:'power2.in'},2.45);
+
+      // ===== Beat 2: Deploy =====
+      tl.to('#scrD',{opacity:1,y:0,duration:0.5,ease:'power3.out'},2.55);
+      tl.from('#stratCard .row, #netLine, #depBtn',{opacity:0,y:24,duration:0.45,ease:'power3.out',stagger:0.1},2.8);
+      tap(960,838,3.9);
+      tl.to('#depBtn',{scale:0.96,duration:0.14,yoyo:true,repeat:1,ease:'power2.inOut'},3.95);
+      tl.to('#depBtn',{opacity:0,scale:0.96,duration:0.25,ease:'power2.in'},4.2);
+      tl.set('#depBtn',{display:'none'},4.45);
+      tl.set('#liveTag',{display:'flex'},4.45);
+      tl.from('#liveTag',{opacity:0,scale:0.94,duration:0.45,ease:'back.out(1.6)'},4.45);
+      tl.to('#scrD',{opacity:0,y:-40,duration:0.4,ease:'power2.in'},5.25);
+
+      // ===== Beat 3: Wallet balance growing =====
+      tl.to('#scrW',{opacity:1,y:0,duration:0.5,ease:'power3.out'},5.35);
+      gsap.set(['#walletCard .k-label','#wbal','#walletCard .wgain','#walletCard .wsub'],{opacity:0,y:24});
+      tl.to('#walletCard .k-label',{opacity:1,y:0,duration:0.4,ease:'power3.out'},5.55);
+      tl.to('#wbal',                {opacity:1,y:0,duration:0.4,ease:'power3.out'},5.62);
+      tl.to('#walletCard .wgain',   {opacity:1,y:0,duration:0.4,ease:'power3.out'},5.69);
+      tl.to('#walletCard .wsub',    {opacity:1,y:0,duration:0.4,ease:'power3.out'},5.76);
+      // balance count up + gain
+      const bal={v:10000}, balEl=document.getElementById('wbal'), gainEl=document.getElementById('wgain');
+      tl.to(bal,{v:11247,duration:1.1,ease:'power2.out',onUpdate:()=>{
+        const x=Math.round(bal.v); balEl.textContent='$'+x.toLocaleString();
+        const g=x-10000; gainEl.textContent='+$'+g.toLocaleString()+' · +'+(g/10000*100).toFixed(1)+'%';
+      }},5.75);
+      // sparkline reveal
+      const sl=document.getElementById('sparkLine'), len=sl.getTotalLength();
+      sl.style.strokeDasharray=len; sl.style.strokeDashoffset=len;
+      gsap.set('#sparkArea',{opacity:0});
+      tl.to(sl,{strokeDashoffset:0,duration:1.1,ease:'power1.inOut'},5.8);
+      tl.to('#sparkArea',{opacity:1,duration:0.5,ease:'power1.out'},6.6);
+
+      window.__timelines["root"] = tl;
+    </script>
+  </div>
+</body>
+</html>

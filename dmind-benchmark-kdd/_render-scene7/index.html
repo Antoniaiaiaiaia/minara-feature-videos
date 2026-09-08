@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>DMind Scene 7 — Impact + Close (light)</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Spline+Sans+Mono:wght@400;500&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:#eef2f4}
+/* light DMind theme — DMind blue + ink text, no Minara colors */
+#root,[data-composition-id="root"]{position:relative;width:2580px;height:1440px;overflow:hidden;
+  font-family:'Poppins',system-ui,sans-serif;color:#15181f;
+  background:linear-gradient(125deg,#e7ecf9 0%,#eef2f3 50%,#e7f4ec 100%);}
+.glow{position:absolute;border-radius:50%;filter:blur(20px);pointer-events:none;z-index:1}
+.blue{color:#3a5bd0}
+
+.slides{position:absolute;inset:0;z-index:3;will-change:transform}
+.slide{position:absolute;top:0;width:2580px;height:1440px}
+#sA{left:0}#sB{left:2580px}#sC{left:5160px}
+
+/* ---- A : HF trending + downloads ---- */
+#ahdr{position:absolute;left:200px;top:200px;font-size:42px;font-weight:600;color:#15181f;display:flex;align-items:center;gap:18px;will-change:opacity}
+#ahdr .hf{font-size:56px}
+#asub{position:absolute;left:202px;top:280px;font-family:'Spline Sans Mono',monospace;font-size:26px;letter-spacing:2px;color:#8a90a0;text-transform:uppercase;will-change:opacity}
+.lbrow{position:absolute;left:200px;width:1180px;height:128px;border-radius:20px;display:flex;align-items:center;gap:30px;padding:0 38px;
+  background:#ffffff;border:1px solid #e4e8f2;box-shadow:0 10px 30px rgba(40,60,120,.07);will-change:transform,opacity}
+.lbrow.dm{background:#eef2fe;border:2px solid #3a5bd0;box-shadow:0 14px 40px rgba(58,91,208,.22)}
+.lbrk{font-family:'Spline Sans Mono',monospace;font-size:42px;font-weight:600;color:#a7adbe;width:80px}
+.lbrow.dm .lbrk{color:#3a5bd0}
+.lbnm{font-size:36px;font-weight:600;color:#3a3f4d}
+.lbrow.dm .lbnm{color:#15181f}
+.lbbar{position:absolute;right:38px;height:18px;border-radius:9px;background:#e4e8f2}
+.lbrow.dm .lbbar{background:linear-gradient(90deg,#3a5bd0,#5f7be6)}
+.badge1{position:absolute;left:1400px;top:402px;padding:14px 28px;border-radius:30px;
+  font-family:'Spline Sans Mono',monospace;font-size:30px;font-weight:600;color:#fff;white-space:nowrap;opacity:0;
+  background:#3a5bd0;box-shadow:0 10px 30px rgba(58,91,208,.4);will-change:opacity,transform}
+#dlwrap{position:absolute;left:1640px;top:560px;width:780px;text-align:center;z-index:5;will-change:opacity}
+#dlicon{font-size:62px}
+#dlnum{font-family:'Spline Sans Mono',monospace;font-size:150px;font-weight:600;color:#3a5bd0;font-variant-numeric:tabular-nums;line-height:1.05}
+#dllbl{font-size:34px;font-weight:500;color:#8a90a0;letter-spacing:1px;margin-top:8px}
+
+/* ---- B : free dataset + toolkit ---- */
+#bhdr{position:absolute;left:0;right:0;top:300px;text-align:center;font-size:78px;font-weight:700;color:#15181f;letter-spacing:-.01em;will-change:opacity,transform}
+.fcard{position:absolute;top:560px;width:760px;height:600px;border-radius:36px;padding:60px;z-index:5;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  background:#ffffff;box-shadow:0 26px 70px rgba(40,60,120,.14);will-change:transform,opacity}
+#fc1{left:480px}#fc2{left:1340px}
+.fcard .isq{width:150px;height:150px;border-radius:34px;display:flex;align-items:center;justify-content:center;font-size:78px;margin-bottom:38px}
+#fc1 .isq{background:#bfe8cf}#fc2 .isq{background:#ffe199}
+.fcard .ft{font-size:52px;font-weight:700;color:#15181f}
+.fcard .fd{font-size:33px;color:#6b7180;margin-top:18px;line-height:1.4}
+
+/* ---- C : brand card + tagline + chips ---- */
+#camC{position:absolute;inset:0;transform-origin:50% 50%;will-change:transform}
+#logo{position:absolute;left:1140px;top:240px;width:300px;height:300px;object-fit:contain;z-index:6;opacity:0;will-change:transform,opacity}
+#wm{position:absolute;left:0;right:0;top:560px;text-align:center;z-index:6;opacity:0;will-change:opacity,transform;
+  font-size:128px;font-weight:800;letter-spacing:-.01em}
+#wm .b{color:#15181f}
+#tag{position:absolute;left:0;right:0;top:760px;z-index:6;text-align:center;opacity:0;padding:0 360px;
+  font-size:56px;font-weight:500;color:#4a5060;line-height:1.34;will-change:opacity,transform}
+#chips{position:absolute;left:0;right:0;top:1010px;z-index:6;display:flex;align-items:center;justify-content:center;gap:30px;will-change:opacity}
+.chip{padding:20px 40px;border-radius:40px;font-family:'Spline Sans Mono',monospace;font-size:32px;font-weight:500;opacity:0;will-change:transform,opacity}
+.chip.dark{background:#15181f;color:#fff}
+.chip.white{background:#fff;color:#15181f;box-shadow:0 8px 24px rgba(40,60,120,.10)}
+.chip.white .u{color:#3a5bd0}
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="root" data-width="2580" data-height="1440" data-start="0" data-duration="18">
+
+  <div class="glow" style="width:680px;height:680px;background:#ffffff;left:74%;top:-12%;opacity:.5"></div>
+  <div class="glow" style="width:560px;height:560px;background:#dbe7ff;left:-8%;top:62%;opacity:.45"></div>
+
+  <div class="slides" id="slides">
+
+    <!-- ===== A : HF trending + downloads ===== -->
+    <div class="slide" id="sA">
+      <div id="ahdr"><span class="hf">🤗</span> Hugging&nbsp;Face &middot; Trending</div>
+      <div id="asub">Open-sourced &middot; April 2025</div>
+      <div id="rows"></div>
+      <div class="badge1" id="badge1">#1 TRENDING</div>
+      <div id="dlwrap"><div id="dlicon">⬇️</div><div id="dlnum">0</div><div id="dllbl">downloads</div></div>
+    </div>
+
+    <!-- ===== B : free dataset + toolkit ===== -->
+    <div class="slide" id="sB">
+      <div id="bhdr">Dataset &amp; tools, <span class="blue">free &amp; open source</span></div>
+      <div class="fcard" id="fc1">
+        <div class="isq">📦</div><div class="ft">Full Dataset</div>
+        <div class="fd">3,543 questions &middot; 9 domains</div>
+      </div>
+      <div class="fcard" id="fc2">
+        <div class="isq">🧰</div><div class="ft">Eval Toolkit</div>
+        <div class="fd">Reproduce every score</div>
+      </div>
+    </div>
+
+    <!-- ===== C : brand + tagline + chips ===== -->
+    <div class="slide" id="sC"><div id="camC">
+      <img id="logo" src="assets/dmind-logo.svg" alt="DMind">
+      <div id="wm"><span class="blue">DMind</span> <span class="b">Benchmark</span></div>
+      <div id="tag">Now you can finally see whether AI can be<br><span class="blue" style="font-weight:600">trusted with your money.</span></div>
+      <div id="chips">
+        <div class="chip dark" id="ch1">KDD 2026</div>
+        <div class="chip white" id="ch2"><span class="u">huggingface.co/DMind</span></div>
+        <div class="chip white" id="ch3">Open Source</div>
+      </div>
+    </div></div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+  (function(){
+    // ---- A : leaderboard ----
+    var GEN=[{nm:'GPT-OSS toolkit',w:560},{nm:'Llama eval set',w:520},{nm:'Open RLHF data',w:600},{nm:'Vision-Bench',w:470}];
+    var rowsG=document.getElementById('rows'), TOP=380, RH=150, genEls=[];
+    GEN.forEach(function(r,i){
+      var d=document.createElement('div'); d.className='lbrow'; d.style.top=(TOP+(i+1)*RH)+'px';
+      d.innerHTML='<div class="lbrk">'+(i+2)+'</div><div class="lbnm">'+r.nm+'</div><div class="lbbar" style="width:'+r.w+'px"></div>';
+      rowsG.appendChild(d); genEls.push(d);
+    });
+    var dm=document.createElement('div'); dm.className='lbrow dm'; dm.id='dmrow'; dm.style.top=TOP+'px';
+    dm.innerHTML='<div class="lbrk">1</div><div class="lbnm">DMind Benchmark</div><div class="lbbar" style="width:520px"></div>';
+    rowsG.appendChild(dm);
+
+    // ============================ TIMELINE ============================
+    var tl=gsap.timeline({paused:true, defaults:{ease:"power3.out"}});
+
+    // --- A (0–9) "open-sourced April 2025 / DMind #1 on HF trending / over 13,000 downloads" ---
+    tl.fromTo('#ahdr',{opacity:0,y:-16},{opacity:1,y:0,duration:.6}, 0.2);
+    tl.fromTo('#asub',{opacity:0},{opacity:1,duration:.5}, 0.5);
+    genEls.forEach(function(el,i){ tl.fromTo(el,{opacity:0,x:-24},{opacity:1,x:0,duration:.5}, 0.8+i*0.14); });
+    // "DMind hit number one" (~3.0) — DMind row rises to #1
+    tl.fromTo('#dmrow',{opacity:0,y:360,scale:.96},{opacity:1,y:0,scale:1,duration:1.0,ease:"power3.out"}, 3.0);
+    tl.fromTo('#badge1',{opacity:0,x:-20,scale:.8},{opacity:1,x:0,scale:1,duration:.5,ease:"back.out(1.7)"}, 3.9);
+    tl.to('#dmrow',{boxShadow:"0 18px 54px rgba(58,91,208,.4)",duration:.5,yoyo:true,repeat:1,ease:"sine.inOut"}, 4.0);
+    // "with over 13,000 downloads" (~6.5)
+    tl.fromTo('#dlwrap',{opacity:0,y:20},{opacity:1,y:0,duration:.6}, 6.4);
+    var o={v:0}; tl.to(o,{v:13000,duration:2.1,ease:"power1.out",
+      onUpdate:function(){var n=document.getElementById('dlnum'); var r=Math.round(o.v); n.textContent = r>=13000 ? '13,000+' : r.toLocaleString('en-US');}}, 6.6);
+
+    // --- transition A->B (0.4s) ---
+    tl.to('#slides',{x:-2580,duration:0.4,ease:"power3.inOut"}, 9.0);
+
+    // --- B (9.2–12.7) "the full dataset and testing tools are free for anyone to use" ---
+    tl.fromTo('#bhdr',{opacity:0,y:-16},{opacity:1,y:0,duration:.5}, 9.3);
+    tl.fromTo('#fc1',{opacity:0,y:44,scale:.94},{opacity:1,y:0,scale:1,duration:.7,ease:"back.out(1.4)"}, 9.6);
+    tl.fromTo('#fc2',{opacity:0,y:44,scale:.94},{opacity:1,y:0,scale:1,duration:.7,ease:"back.out(1.4)"}, 9.9);
+
+    // --- transition B->C (0.4s) ---
+    tl.to('#slides',{x:-5160,duration:0.4,ease:"power3.inOut"}, 12.7);
+
+    // --- C (13.0–18) "DMind Benchmark / now you can finally see whether AI can be trusted with your money" ---
+    tl.set('#camC',{scale:1}, 0);
+    tl.fromTo('#logo',{opacity:0,scale:0.6,y:18},{opacity:1,scale:1,y:0,duration:.8,ease:"back.out(1.7)"}, 13.0);
+    tl.fromTo('#wm',{opacity:0,y:26},{opacity:1,y:0,duration:.7}, 13.3);   // "DMind Benchmark" (12.97–14.53)
+    tl.fromTo('#tag',{opacity:0,y:24},{opacity:1,y:0,duration:.8}, 14.7);  // money tagline (14.6–18.03)
+    ['#ch1','#ch2','#ch3'].forEach(function(s,i){
+      tl.fromTo(s,{opacity:0,y:24,scale:.9},{opacity:1,y:0,scale:1,duration:.5,ease:"back.out(1.5)"}, 15.8+i*0.16);
+    });
+    tl.to('#camC',{scale:1.02,duration:2.4,ease:"sine.inOut"}, 15.6);   // gentle breathing hold
+
+    window.__timelines = window.__timelines || {};
+    window.__timelines["root"] = tl;
+
+    var sp=new URLSearchParams(location.search);
+    if(sp.has('seek')){ tl.pause(); tl.time(parseFloat(sp.get('seek'))); }
+    else if(sp.has('autoplay')){ tl.play(0); }
+  })();
+  </script>
+</div>
+</body>
+</html>

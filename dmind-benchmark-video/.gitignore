@@ -1,0 +1,7 @@
+context.md
+change-log.md
+_shots/
+_shot_*.html
+_shoot.cjs
+node_modules/
+*.mp4

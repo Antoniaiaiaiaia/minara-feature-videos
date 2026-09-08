@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>DMind Scene 2</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:#0C1142}
+#root{position:relative;width:1920px;height:1080px;overflow:hidden;
+  font-family:'Poppins',system-ui,sans-serif;color:#EAF0FF;
+  background:radial-gradient(125% 100% at 50% 34%, #4B4DFE 0%, #2B2E9E 36%, #161B6A 66%, #0C1142 100%);}
+.bokeh{position:absolute;border-radius:50%;filter:blur(12px);pointer-events:none}
+#flare{position:absolute;left:660px;top:160px;width:600px;height:600px;border-radius:50%;z-index:2;
+  background:radial-gradient(circle,rgba(141,205,255,.55),rgba(109,214,204,.18) 40%,transparent 62%);filter:blur(16px);
+  will-change:transform,opacity}
+
+/* ===== Beat A — Introducing + logo mark + wordmark (all white) ===== */
+#intro{position:absolute;left:0;right:0;top:286px;text-align:center;z-index:6;opacity:0;
+  font-size:42px;font-weight:500;letter-spacing:.34em;text-transform:uppercase;color:#AEB7EE;will-change:transform,opacity}
+#logoMark{position:absolute;left:50%;top:344px;width:158px;height:158px;transform:translateX(-50%);z-index:6;opacity:0;
+  will-change:transform,opacity}
+#logoMark img{width:158px;height:158px;display:block;
+  filter:brightness(0) invert(1) drop-shadow(0 0 26px rgba(141,205,255,.45))}
+#wm{position:absolute;left:0;right:0;top:520px;text-align:center;z-index:6;color:#FFFFFF;
+  font-weight:700;font-size:104px;letter-spacing:.005em;will-change:transform,opacity}
+#wm b{font-weight:800}
+#tag{position:absolute;left:0;right:0;top:648px;text-align:center;z-index:6;opacity:0;
+  font-size:34px;font-weight:400;color:#C5CBF5;will-change:transform,opacity}
+
+/* subtitle in header (Beat B) */
+#subt{position:absolute;left:0;right:0;top:150px;text-align:center;z-index:6;opacity:0;
+  font-size:34px;font-weight:400;color:#C5CBF5;will-change:transform,opacity}
+
+/* ===== Beat B — nine domain cards (bottom raised 100px for captions) ===== */
+#grid{position:absolute;left:44px;right:44px;top:232px;bottom:144px;z-index:5;display:grid;
+  grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);gap:24px}
+.dom{position:relative;overflow:hidden;border-radius:30px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;
+  background:linear-gradient(150deg,rgba(63,90,213,.42),rgba(109,214,204,.16));
+  border:1px solid rgba(255,255,255,.22);box-shadow:0 18px 60px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.18);
+  will-change:transform,opacity}
+.dom .hl{position:absolute;inset:0;border-radius:30px;background:#FFFFFF;opacity:0;z-index:0;
+  box-shadow:0 22px 60px rgba(15,169,127,.36);will-change:opacity}
+.dom .ic{position:relative;z-index:1;width:108px;height:108px;display:flex;align-items:center;justify-content:center;
+  filter:drop-shadow(0 0 18px rgba(141,205,255,.45))}
+.dom .ic svg{width:104px;height:104px}
+.dom .nm{position:relative;z-index:1;font-size:38px;font-weight:600;color:#FFFFFF;text-align:center;line-height:1.15;letter-spacing:.01em}
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="root" data-width="1920" data-height="1080" data-start="0" data-duration="13">
+
+  <div class="bokeh" style="width:260px;height:260px;background:#6DD6CC;left:2%;top:60%;opacity:.22"></div>
+  <div class="bokeh" style="width:160px;height:160px;background:#B57AFF;left:87%;top:9%;opacity:.22"></div>
+  <div id="flare"></div>
+
+  <div id="intro">Introducing</div>
+  <div id="logoMark"><img src="assets/dmind-logo.svg" alt="DMind"></div>
+  <div id="wm"><b>DMind</b> Benchmark</div>
+  <div id="tag">The first test of how well AI understands digital assets</div>
+
+  <div id="subt">Nine core areas · one unified scale</div>
+
+  <div id="grid"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+  (function(){
+    var GRN='#0FA97F';
+    var SW='stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" fill="none"';
+    var ICONS={
+      block:'<svg viewBox="0 0 48 48" '+SW+'><rect x="7" y="7" width="15" height="15" rx="3"/><rect x="26" y="26" width="15" height="15" rx="3"/><path d="M22 15h5a6 6 0 0 1 6 6v5"/></svg>',
+      contract:'<svg viewBox="0 0 48 48" '+SW+'><path d="M13 5h15l8 8v30H13z"/><path d="M28 5v8h8"/><path d="M21 25l-4 4 4 4M28 25l4 4-4 4"/></svg>',
+      defi:'<svg viewBox="0 0 48 48" '+SW+'><path d="M24 6 7 16h34z"/><path d="M12 16v19M20 16v19M28 16v19M36 16v19"/><path d="M6 41h36"/></svg>',
+      token:'<svg viewBox="0 0 48 48" '+SW+'><circle cx="24" cy="24" r="17"/><path d="M24 7v17h17"/></svg>',
+      meme:'<svg viewBox="0 0 48 48" '+SW+'><path d="M24 5c7 4 10 12 10 21l-4 4H18l-4-4c0-9 3-17 10-21z"/><circle cx="24" cy="19" r="3.2"/><path d="M18 34l-5 9 9-4M30 34l5 9-9-4"/></svg>',
+      nft:'<svg viewBox="0 0 48 48" '+SW+'><rect x="7" y="7" width="34" height="34" rx="4"/><circle cx="17" cy="17" r="3.4"/><path d="M41 32 29 21 12 39"/></svg>',
+      sec:'<svg viewBox="0 0 48 48" '+SW+'><path d="M24 5 8 11v10c0 10 7 17 16 22 9-5 16-12 16-22V11z"/><path d="M17 24l5 5 9-10"/></svg>',
+      infra:'<svg viewBox="0 0 48 48" '+SW+'><rect x="7" y="8" width="34" height="11" rx="2.5"/><rect x="7" y="22" width="34" height="11" rx="2.5"/><rect x="7" y="36" width="34" height="6" rx="2"/><path d="M13 13.5h.01M13 27.5h.01"/></svg>',
+      gov:'<svg viewBox="0 0 48 48" '+SW+'><path d="M8 23h32v18H8z"/><path d="M19 23 16 9l17-2 3 14"/><path d="M21 31h6"/></svg>'
+    };
+    var DOMS=[
+      [ICONS.block,'Blockchain Basics'],[ICONS.contract,'Smart Contracts'],[ICONS.defi,'DeFi'],
+      [ICONS.token,'Tokenomics'],[ICONS.meme,'Memecoins'],[ICONS.nft,'NFTs'],
+      [ICONS.sec,'Security'],[ICONS.infra,'Infrastructure'],[ICONS.gov,'Governance']
+    ];
+    var grid=document.getElementById('grid');
+    DOMS.forEach(function(d,i){
+      var el=document.createElement('div'); el.className='dom'; el.id='dom'+i;
+      el.innerHTML='<div class="hl"></div><div class="ic">'+d[0]+'</div><div class="nm">'+d[1]+'</div>';
+      grid.appendChild(el);
+    });
+
+    var tl = gsap.timeline({paused:true, defaults:{ease:"power3.out"}});
+
+    // ===== Beat A : Introducing + logo + wordmark (0 - 5.2) =====
+    tl.fromTo('#intro',{opacity:0, y:24, letterSpacing:".5em"},{opacity:1, y:0, letterSpacing:".34em", duration:.8}, 0.2);
+    tl.fromTo('#logoMark',{opacity:0, scale:.6, y:14},{opacity:1, scale:1, y:0, duration:.9, ease:"back.out(1.6)"}, 0.45);
+    tl.fromTo('#wm',{opacity:0, y:48, scale:1.03},{opacity:1, y:0, scale:1, duration:.9}, 0.7);
+    tl.fromTo('#flare',{opacity:0, scale:.7},{opacity:1, scale:1, duration:1.0, ease:"power2.out"}, 0.3);
+    tl.to('#flare',{opacity:.5, duration:1.8, ease:"sine.inOut"}, 1.3);
+    // tagline ("the first test...") lands with its narration (~rel 2.1)
+    tl.fromTo('#tag',{opacity:0, y:18},{opacity:1, y:0, duration:.7}, 2.2);
+
+    // ===== transition A -> B : wordmark shrinks to header, logo+intro+tag leave (5.2 - 5.9) =====
+    tl.to('#intro',{opacity:0, y:-18, duration:.4, ease:"power2.in"}, 5.2);
+    tl.to('#tag',{opacity:0, y:-14, duration:.4, ease:"power2.in"}, 5.2);
+    tl.to('#logoMark',{opacity:0, scale:.7, duration:.5, ease:"power2.in"}, 5.2);
+    tl.to('#flare',{opacity:0, duration:.55, ease:"power2.in"}, 5.2);
+    tl.to('#wm',{top:62, fontSize:"52px", duration:.75, ease:"power3.inOut"}, 5.2);
+    tl.fromTo('#subt',{opacity:0, y:18},{opacity:1, y:0, duration:.55}, 5.85);
+
+    // ===== Beat B : nine domain cards pop in (5.8 - ) =====
+    DOMS.forEach(function(d,i){
+      tl.fromTo('#dom'+i,{opacity:0, scale:.62, y:34},
+        {opacity:1, scale:1, y:0, duration:.55, ease:"back.out(1.6)"}, 5.8 + i*0.11);
+      tl.fromTo('#dom'+i+' .ic',{filter:"drop-shadow(0 0 0 rgba(141,205,255,0))"},
+        {filter:"drop-shadow(0 0 22px rgba(141,205,255,.7))", duration:.4, yoyo:true, repeat:1, ease:"sine.inOut"}, 5.8 + i*0.11 + .1);
+    });
+
+    // ===== domain highlights, synced to SRT (white card + green text), stay lit =====
+    // grid idx: 0 block,1 contract,2 defi,3 token,4 meme,5 nft,6 security,7 infra,8 gov
+    var LIT=[
+      {i:0, t:7.5},   // blockchain basics
+      {i:1, t:8.6},   // smart contracts
+      {i:3, t:9.5},   // tokenomics
+      {i:4, t:10.4},  // memecoins
+      {i:6, t:11.3}   // security
+    ];
+    LIT.forEach(function(h){
+      tl.to('#dom'+h.i+' .hl',{opacity:1, duration:.4, ease:"power2.out"}, h.t);
+      tl.to('#dom'+h.i+' .nm',{color:GRN, duration:.4}, h.t);
+      tl.to('#dom'+h.i+' .ic svg',{stroke:GRN, duration:.4}, h.t);
+      tl.to('#dom'+h.i+' .ic',{filter:"drop-shadow(0 0 16px rgba(15,169,127,.5))", duration:.4}, h.t);
+      // brief settle pop
+      tl.to('#dom'+h.i,{scale:1.05, duration:.22, ease:"back.out(2.4)"}, h.t);
+      tl.to('#dom'+h.i,{scale:1, duration:.45, ease:"power2.out"}, h.t+.22);
+    });
+    // (no exit at end — editor cuts to Scene 3)
+
+    window.__timelines = window.__timelines || {};
+    window.__timelines["root"] = tl;
+
+    var sp=new URLSearchParams(location.search);
+    if(sp.has('seek')){ tl.pause(); tl.time(parseFloat(sp.get('seek'))); }
+    else if(sp.has('autoplay')){ tl.play(0); }
+  })();
+  </script>
+</div>
+</body>
+</html>

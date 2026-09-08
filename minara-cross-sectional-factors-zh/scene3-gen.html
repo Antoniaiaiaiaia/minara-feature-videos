@@ -1,0 +1,174 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap');
+html,body{margin:0;padding:0;background:#F9F9F9;}
+#root,[data-composition-id="root"]{
+  font-family:'Geist','PingFang SC','Hiragino Sans GB','Noto Sans SC',system-ui,-apple-system,sans-serif;
+  background:#F9F9F9; position:relative; overflow:hidden; width:1920px; height:1080px;
+  color:#141416;
+}
+.screen{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
+.col{width:1240px;}
+.col.big{width:1700px;}   /* 结果屏放大填到红框范围 */
+
+/* ---- Screen A: composer ---- */
+.composer{background:#FFFFFF;border:1px solid #ECECEC;border-radius:28px;padding:40px 44px;
+  box-shadow:0 10px 40px rgba(20,20,22,0.06);}
+.cmp-text{font-size:38px;line-height:1.5;color:#141416;min-height:180px;font-weight:400;}
+.caret{display:inline-block;width:3px;height:40px;background:#07B56A;margin-left:4px;transform:translateY(7px);}
+.cmp-bar{display:flex;align-items:center;gap:14px;margin-top:30px;}
+.seg{display:inline-flex;gap:6px;background:#F2F2F2;border-radius:14px;padding:6px;}
+.seg span{font-size:26px;font-weight:600;color:#9A9A9A;padding:12px 26px;border-radius:10px;white-space:nowrap;background:rgba(255,255,255,0);}
+.seg span.act{color:#141416;background:#FFFFFF;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.send{margin-left:auto;width:72px;height:72px;border-radius:50%;background:#141416;color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:38px;}
+
+/* ---- Screen B: response ---- */
+.usr{align-self:flex-end;max-width:900px;margin-left:auto;background:#141416;color:#fff;
+  font-size:30px;line-height:1.45;padding:22px 28px;border-radius:22px 22px 6px 22px;}
+.mina-head{display:flex;align-items:center;gap:16px;margin:34px 0 22px;}
+.mina-head img{width:60px;height:60px;border-radius:50%;}
+.mina-head b{font-size:36px;font-weight:800;letter-spacing:0.04em;}
+.mina-line{font-size:32px;line-height:1.5;color:#141416;max-width:1080px;}
+.pill-upd{display:inline-flex;align-items:center;gap:10px;margin-top:22px;background:#FFFFFF;
+  border:1px solid #ECECEC;border-radius:12px;padding:16px 22px;font-size:27px;color:#717171;}
+.pill-upd::before{content:"";width:14px;height:14px;border-radius:50%;background:#07B56A;}
+.code-card{margin-top:26px;background:#FFFFFF;border:1px solid #ECECEC;border-radius:20px;padding:30px 34px;
+  box-shadow:0 6px 24px rgba(20,20,22,0.05);}
+.code-card .tag{display:inline-block;font-size:22px;font-weight:600;color:#717171;background:#F2F2F2;border-radius:7px;padding:5px 12px;margin-bottom:16px;}
+.code-card h3{margin:0 0 12px;font-size:36px;font-weight:700;color:#141416;}
+.code-card p{margin:0;font-size:27px;line-height:1.5;color:#717171;}
+
+/* ---- Screen C: results ---- */
+.res-head{font-size:40px;font-weight:600;color:#717171;margin-bottom:30px;}
+.res-head b{color:#141416;font-weight:800;}
+.res-head .v3{background:rgba(7,181,106,0.12);color:#07B56A;border-radius:9px;padding:5px 15px;margin-left:12px;font-size:34px;}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:26px;margin-bottom:40px;}
+.mc{background:#FFFFFF;border:1px solid #ECECEC;border-radius:20px;padding:34px 36px;box-shadow:0 4px 18px rgba(20,20,22,0.04);}
+.mc .l{font-size:31px;color:#717171;font-weight:500;}
+.mc .v{font-size:72px;font-weight:700;margin-top:10px;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}
+.mc .s{font-size:28px;color:#9A9A9A;margin-top:6px;}
+.mc .v.up{color:#07B56A;} .mc .v.dn{color:#F75D5F;} .mc .v.nu{color:#141416;}
+.eq{background:#FFFFFF;border:1px solid #ECECEC;border-radius:22px;padding:34px 38px 24px;box-shadow:0 4px 18px rgba(20,20,22,0.04);}
+.eq .t{font-size:36px;font-weight:700;margin-bottom:14px;}
+#eqArea{opacity:0;}
+</style>
+</head>
+<body>
+  <div id="root" data-composition-id="root" data-width="1920" data-height="1080" data-start="0" data-duration="5.77">
+
+    <!-- Screen A — composer -->
+    <div class="screen clip" id="scrA" data-start="0" data-duration="2.1" data-track-index="1">
+      <div class="col">
+        <div class="composer">
+          <div class="cmp-text"><span id="ptext"></span><span class="caret" id="caret"></span></div>
+          <div class="cmp-bar">
+            <div class="seg" id="seg"><span class="act" id="segS">时间序列</span><span id="segM">截面</span></div>
+            <div class="send" id="send">↑</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen B — MINARA response -->
+    <div class="screen clip" id="scrB" data-start="1.95" data-duration="1.75" data-track-index="2">
+      <div class="col">
+        <div class="usr" id="bUsr">在 TradFi 30 上构建一个截面多因子策略——融合六个高信号因子，做多排名靠前的标的，按月调仓。</div>
+        <div class="mina-head" id="bHead"><img src="assets/minara-avatar.png" crossorigin="anonymous"><b>MINARA</b></div>
+        <div class="mina-line" id="bLine">正在应用：信号加权 + 通过构建配置取前 12 名。把评分转成干净的截面排名，让引擎按信心度分配仓位。</div>
+        <div><span class="pill-upd" id="bPill">回测配置已更新</span></div>
+        <div class="code-card" id="bCode">
+          <span class="tag">草稿 · 1777 字节</span>
+          <h3>6 因子综合 · 做多 TradFi 30 · 前 12 名 · 每月</h3>
+          <p>MACD + 三重平滑对数收益、SUE 盈利惊喜、EPS 预期修正动量、低三年负债增速、低下行波动率——合成一个综合评分，叠加 200 日趋势过滤。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen C — backtest results -->
+    <div class="screen clip" id="scrC" data-start="3.6" data-duration="2.17" data-track-index="3">
+      <div class="col big">
+        <div class="res-head" id="cHead">回测 · <b>TradFi 30</b> <span class="v3">V3</span></div>
+        <div class="metrics">
+          <div class="mc r"><div class="l">总收益</div><div class="v up">+1233%</div><div class="s">$133,307</div></div>
+          <div class="mc r"><div class="l">年化收益</div><div class="v up">+91.08%</div><div class="s">年化</div></div>
+          <div class="mc r"><div class="l">夏普比率</div><div class="v nu">1.72</div><div class="s">风险调整后</div></div>
+          <div class="mc r"><div class="l">超额收益 (vs 标普500)</div><div class="v up">+38.34%</div><div class="s">年化</div></div>
+        </div>
+        <div class="eq" id="cEq">
+          <div class="t">策略净值</div>
+          <svg width="1624" height="400" viewBox="0 0 1624 400" id="eqsvg" style="width:100%;height:auto;">
+            <path id="eqArea" d="" fill="rgba(7,181,106,0.12)" stroke="none"/>
+            <path id="eqLine" d="" fill="none" stroke="#07B56A" stroke-width="10" stroke-linejoin="round" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      // ---- deterministic rising equity curve ----
+      function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+      (function(){
+        const rnd=mulberry32(7), W=1624,H=400, n=130; let pts=[], v=0.12;
+        for(let i=0;i<n;i++){ const t=i/(n-1);
+          // 上升趋势 + 更强锯齿抖动
+          v += 0.003 + t*0.022 + (rnd()-0.45)*0.085;
+          pts.push(Math.max(0.02,v)); }
+        const mx=Math.max(...pts); const X=i=>i/(n-1)*W; const Y=p=>H-10-(p/mx)*(H-36);
+        let d='M'+X(0).toFixed(1)+' '+Y(pts[0]).toFixed(1);
+        for(let i=1;i<n;i++) d+=' L'+X(i).toFixed(1)+' '+Y(pts[i]).toFixed(1);
+        document.getElementById('eqLine').setAttribute('d',d);
+        document.getElementById('eqArea').setAttribute('d', d+' L'+W+' '+H+' L0 '+H+' Z');
+      })();
+
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused:true });
+
+      // ===== Screen A: composer =====
+      const PROMPT="在 TradFi 30 上构建一个截面多因子策略——把六个高信号因子合成一个综合评分，做多排名靠前的标的，按月调仓。";
+      const pt=document.getElementById('ptext');
+      tl.from('#scrA .composer', { opacity:0, y:30, scale:0.98, duration:0.5, ease:'power3.out' }, 0.1);
+      // 先演示 tab 从 Time-Series 切到 Cross-Sectional (高亮自适应文字宽度，始终居中对齐)
+      tl.to('#segS', { backgroundColor:'rgba(255,255,255,0)', color:'#9A9A9A', duration:0.3, ease:'power2.inOut' }, 0.3);
+      tl.set('#segS', { boxShadow:'0 0 0 rgba(0,0,0,0)' }, 0.3);
+      tl.to('#segM', { backgroundColor:'#FFFFFF', color:'#141416', duration:0.3, ease:'power2.inOut' }, 0.3);
+      tl.fromTo('#segM', { scale:0.96 }, { scale:1, duration:0.32, ease:'back.out(2)' }, 0.3);
+      tl.set('#segM', { boxShadow:'0 2px 8px rgba(0,0,0,0.06)' }, 0.45);
+      // 切换完成后才开始打字 (0.7s)
+      const tw={n:0};
+      tl.to(tw, { n:PROMPT.length, duration:1.1, ease:'none',
+        onUpdate:()=>{ pt.textContent = PROMPT.slice(0, Math.round(tw.n)); } }, 0.7);
+      tl.to('#caret', { opacity:0.2, duration:0.4, repeat:2, yoyo:true, ease:'power1.inOut' }, 0.7);
+      // send press
+      tl.fromTo('#send', {scale:1}, {scale:0.82, duration:0.16, yoyo:true, repeat:1, ease:'power2.inOut'}, 1.82);
+      // A out
+      tl.to('#scrA .col', { y:-50, opacity:0, duration:0.4, ease:'power2.in' }, 1.95);
+
+      // ===== Screen B: response =====
+      tl.from('#bUsr',  { opacity:0, y:30, duration:0.45, ease:'power3.out' }, 2.05);
+      tl.from('#bHead', { opacity:0, y:24, duration:0.4,  ease:'power3.out' }, 2.35);
+      tl.from('#bLine', { opacity:0, y:24, duration:0.45, ease:'power3.out' }, 2.55);
+      tl.from('#bPill', { opacity:0, y:20, scale:0.96, duration:0.4, ease:'back.out(1.5)' }, 2.85);
+      tl.from('#bCode', { opacity:0, y:30, scale:0.98, duration:0.5, ease:'power3.out' }, 3.05);
+      // B out
+      tl.to('#scrB .col', { y:-50, opacity:0, duration:0.4, ease:'power2.in' }, 3.6);
+
+      // ===== Screen C: results =====
+      tl.from('#cHead', { opacity:0, y:24, duration:0.4, ease:'power3.out' }, 3.7);
+      tl.from('#scrC .mc', { opacity:0, y:34, scale:0.96, duration:0.5, ease:'back.out(1.5)', stagger:0.1 }, 3.8);
+      tl.from('#cEq', { opacity:0, y:34, duration:0.45, ease:'power3.out' }, 4.05);
+      // PnL 线先描完，绿色剪影再淡入
+      const line=document.getElementById('eqLine'); const len=line.getTotalLength();
+      line.style.strokeDasharray=len; line.style.strokeDashoffset=len;
+      tl.to(line, { strokeDashoffset:0, duration:0.95, ease:'power1.inOut' }, 4.4);
+      tl.to('#eqArea', { opacity:1, duration:0.4, ease:'power1.out' }, 5.35);
+
+      window.__timelines["root"] = tl;
+    </script>
+  </div>
+</body>
+</html>

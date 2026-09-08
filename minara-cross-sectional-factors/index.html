@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap');
+html,body{margin:0;padding:0;background:#F9F9F9;}
+#root,[data-composition-id="root"]{
+  font-family:'Geist',system-ui,-apple-system,sans-serif;
+  background:#F9F9F9; position:relative; overflow:hidden; width:1920px; height:1080px; color:#141416;
+}
+.bg-video{position:absolute;inset:0;width:1920px;height:1080px;object-fit:cover;}
+.frost{position:absolute;inset:0;background:radial-gradient(ellipse 64% 64% at 50% 50%, rgba(249,249,249,0.92), rgba(249,249,249,0.55) 72%);}
+.wrap{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
+.avatar{width:152px;height:152px;border-radius:50%;border:6px solid #fff;box-shadow:0 12px 40px rgba(20,20,22,0.12);overflow:hidden;margin-bottom:48px;}
+.avatar img{width:100%;height:100%;object-fit:cover;}
+.l1{font-size:98px;font-weight:400;color:#141416;letter-spacing:-0.03em;line-height:1.08;margin:0;white-space:nowrap;}
+.l2{font-size:98px;font-weight:800;color:#141416;letter-spacing:-0.03em;line-height:1.08;margin:8px 0 0;white-space:nowrap;}
+.cta{margin-top:52px;font-size:42px;font-weight:600;color:#141416;letter-spacing:-0.01em;}
+</style>
+</head>
+<body>
+  <div id="root" data-composition-id="root" data-width="1920" data-height="1080" data-start="0" data-duration="6">
+    <video class="bg-video" src="assets/title-bg.mp4" muted playsinline crossorigin="anonymous"
+           data-start="0" data-duration="6" data-media-start="2" data-track-index="0"></video>
+    <div class="frost"></div>
+    <div class="wrap clip" data-start="0" data-duration="6" data-track-index="1">
+      <div class="avatar" id="av"><img src="assets/minara-avatar.png" crossorigin="anonymous"></div>
+      <h1 class="l1" id="l1">Minara Strategy Studio</h1>
+      <h1 class="l2" id="l2">Where Finance Plays Fair</h1>
+      <div class="cta" id="cta">minara.ai</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused:true });
+      tl.from('#av', { opacity:0, scale:0.7, y:20, duration:0.55, ease:'back.out(1.7)' }, 0);
+      tl.from('#l1', { opacity:0, y:40, duration:0.7, ease:'power3.out' }, 0.13);   // 00:31:12
+      tl.from('#l2', { opacity:0, y:44, duration:0.7, ease:'power3.out' }, 1.87);   // 00:33:04
+      tl.from('#cta',{ opacity:0, duration:0.6, ease:'power2.out' }, 3.60);         // 00:34:26
+      window.__timelines["root"] = tl;
+    </script>
+  </div>
+</body>
+</html>

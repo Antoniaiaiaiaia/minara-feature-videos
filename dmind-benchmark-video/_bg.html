@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{width:100%;height:100%;background:#fff;overflow:hidden;}
+  /* unified background — ENTIRELY in #root background (no DOM orbs) → identical in every scene */
+  #root{ width:2560px; height:1440px; position:relative; overflow:hidden;
+    background:
+      radial-gradient(1100px 1100px at 19% 30%, rgba(47,107,255,0.14), transparent 62%),
+      radial-gradient(1050px 1050px at 84% 75%, rgba(16,196,154,0.145), transparent 62%),
+      radial-gradient(820px 820px at 55% 68%, rgba(61,139,255,0.10), transparent 58%),
+      radial-gradient(1900px 1500px at 20% 22%, rgba(47,107,255,0.06), transparent 60%),
+      radial-gradient(1800px 1450px at 82% 84%, rgba(16,196,154,0.07), transparent 60%),
+      #FFFFFF; }
+  .grid-tex{ position:absolute; inset:0; background-image:radial-gradient(rgba(17,18,33,0.05) 1.5px,transparent 1.6px); background-size:62px 62px; opacity:0.3; }
+</style></head>
+<body>
+<div id="root"><div class="grid-tex"></div></div>
+</body></html>

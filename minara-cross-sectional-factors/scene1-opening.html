@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap');
+html,body{margin:0;padding:0;background:#F9F9F9;}
+#root,[data-composition-id="root"]{
+  font-family:'Geist',system-ui,-apple-system,sans-serif;
+  background:#F9F9F9; position:relative; overflow:hidden;
+  width:1920px; height:1080px;
+}
+.bg-video{position:absolute;inset:0;width:1920px;height:1080px;object-fit:cover;}
+.txt{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;}
+#introducing{
+  font-size:268px; font-weight:700; color:#141416;
+  letter-spacing:-0.025em; line-height:1; white-space:nowrap;
+}
+.title-wrap{display:flex;flex-direction:column;align-items:center;gap:6px;}
+.title-line{
+  font-size:132px; font-weight:800; color:#141416;
+  letter-spacing:-0.025em; line-height:1.04; white-space:nowrap;
+}
+.title-line.small{ font-size:106px; }   /* In Minara Studio, reduced by 20% */
+.subtitle{
+  position:absolute; left:0; right:0; top:706px; text-align:center;
+  font-family:'Geist',system-ui,-apple-system,sans-serif;
+  font-size:44px; font-weight:500; color:#141416;
+  letter-spacing:-0.01em; white-space:nowrap;
+}
+</style>
+</head>
+<body>
+  <div id="root" data-composition-id="root" data-width="1920" data-height="1080" data-start="0" data-duration="5.167">
+    <video class="bg-video" src="assets/title-bg.mp4" muted playsinline crossorigin="anonymous"
+           data-start="0" data-duration="5.167" data-track-index="0"></video>
+
+    <div id="introducing" class="txt clip" data-start="0" data-duration="1.6" data-track-index="1">Introducing</div>
+
+    <div id="title" class="txt clip" data-start="1.83" data-duration="3.337" data-track-index="1">
+      <div class="title-wrap">
+        <div class="title-line l1">Cross-Sectional Factors</div>
+        <div class="title-line small l2">In Minara Studio</div>
+      </div>
+    </div>
+
+    <div id="subtitle" class="subtitle clip" data-start="3.267" data-duration="1.9" data-track-index="2">Hundreds of high-signal factors are now live</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      // Beat 1 — Introducing large title fades in (1s ease-in), then exits before 1.83s
+      tl.from('#introducing', { opacity:0, scale:0.94, duration:1.0,  ease:'power2.out' }, 0);
+      tl.to('#introducing',   { opacity:0, scale:1.05, duration:0.33, ease:'power2.in'  }, 1.50);
+
+      // Beat 2 — Two lines fade in and rise on separate timings
+      tl.from('.l1', { opacity:0, y:46, scale:0.96, duration:0.62, ease:'power3.out' }, 1.833);   // Cross-Sectional Factors @ 1s25f
+      tl.from('.l2', { opacity:0, y:40, scale:0.96, duration:0.55, ease:'power3.out' }, 2.233);   // In Minara Studio @ 2s07f
+
+      // Small subtitle starts at 00:00:03:08 and stays through the opening (5.167s)
+      tl.from('#subtitle', { opacity:0, y:24, duration:0.5, ease:'power2.out' }, 3.267);
+
+      window.__timelines["root"] = tl;
+    </script>
+  </div>
+</body>
+</html>

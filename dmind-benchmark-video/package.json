@@ -1,0 +1,6 @@
+{
+  "name": "dmind-benchmark-video",
+  "private": true,
+  "scripts": { "screenshots": "node _shoot.cjs" },
+  "devDependencies": { "playwright": "^1.58.0", "gsap": "3.12.5" }
+}

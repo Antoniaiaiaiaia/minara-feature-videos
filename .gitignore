@@ -1,0 +1,15 @@
+.DS_Store
+.env
+.env.*
+!.env.example
+credentials*
+context.md
+change-log.md
+node_modules/
+.git/
+.playwright-cli/
+__pycache__/
+*.pyc
+*.log
+.hyperframes/
+.cache/

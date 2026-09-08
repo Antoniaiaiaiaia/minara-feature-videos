@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap');
+html,body{margin:0;padding:0;background:#F9F9F9;}
+#root,[data-composition-id="root"]{
+  font-family:'Geist','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic','Noto Sans JP',system-ui,-apple-system,sans-serif;
+  background:#F9F9F9; position:relative; overflow:hidden;
+  width:1920px; height:1080px;
+}
+.bg-video{position:absolute;inset:0;width:1920px;height:1080px;object-fit:cover;}
+.txt{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;}
+#introducing{
+  font-size:300px; font-weight:700; color:#141416;
+  letter-spacing:0.04em; line-height:1; white-space:nowrap;
+}
+.title-wrap{display:flex;flex-direction:column;align-items:center;gap:22px;}
+.title-line{                       /* 三行同字号（日文片假名较宽，字号下调）*/
+  font-size:96px; font-weight:600; color:#141416;
+  letter-spacing:0.01em; line-height:1.2; white-space:nowrap;
+}
+.title-line.head{ font-weight:800; }   /* AI 戦略生成（headline 加粗，同字号）*/
+</style>
+</head>
+<body>
+  <div id="root" data-composition-id="root" data-width="1920" data-height="1080" data-start="0" data-duration="5.167">
+    <video class="bg-video" src="assets/title-bg.mp4" muted playsinline crossorigin="anonymous"
+           data-start="0" data-duration="5.167" data-track-index="0"></video>
+
+    <div id="introducing" class="txt clip" data-start="0" data-duration="1.6" data-track-index="1">新登場</div>
+
+    <div id="title" class="txt clip" data-start="1.83" data-duration="3.337" data-track-index="1">
+      <div class="title-wrap">
+        <div class="title-line head l1">AI クロスセクション戦略生成</div>
+        <div class="title-line l2">すべては Minara で</div>
+        <div class="title-line l3">数百の優良ファクターが、提供開始</div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      // Beat 1 — Introducing 大字淡入（1s 缓入）→ 1.83s 交棒前退场
+      tl.from('#introducing', { opacity:0, scale:0.94, duration:1.0,  ease:'power2.out' }, 0);
+      tl.to('#introducing',   { opacity:0, scale:1.05, duration:0.33, ease:'power2.in'  }, 1.50);
+
+      // Beat 2 — 三行同字号，依次淡入升起
+      tl.from('.l1', { opacity:0, y:46, scale:0.96, duration:0.62, ease:'power3.out' }, 1.833);   // AI 截面策略生成
+      tl.from('.l2', { opacity:0, y:40, scale:0.96, duration:0.55, ease:'power3.out' }, 2.233);   // 尽在 Minara
+      tl.from('.l3', { opacity:0, y:36, scale:0.96, duration:0.55, ease:'power3.out' }, 3.267);   // 数百个优质因子已上线
+
+      window.__timelines["root"] = tl;
+    </script>
+  </div>
+</body>
+</html>

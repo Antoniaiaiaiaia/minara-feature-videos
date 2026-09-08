@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>DMind Scene 3</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:#0C1142}
+/* video size: 2580x1440, centre (1290,720) */
+#root,[data-composition-id="root"]{position:relative;width:2580px;height:1440px;overflow:hidden;
+  font-family:'Poppins',system-ui,sans-serif;color:#EAF0FF;
+  background:radial-gradient(125% 100% at 50% 36%, #4B4DFE 0%, #2B2E9E 36%, #161B6A 66%, #0C1142 100%);}
+.bokeh{position:absolute;border-radius:50%;filter:blur(18px);pointer-events:none;z-index:1}
+
+/* ---- camera: outer world (lines + sphere + experts) ---- */
+.camera{position:absolute;inset:0;z-index:3;transform-origin:1290px 720px;will-change:transform,opacity}
+#lines{position:absolute;left:-1290px;top:-720px;width:5160px;height:2880px}
+
+/* glass sphere at centre (1290,720) */
+.sphere{position:absolute;left:890px;top:320px;width:800px;height:800px;border-radius:50%;z-index:4}
+.sphere .ring{position:absolute;inset:0;border-radius:50%;border:2px solid rgba(141,205,255,.55);
+  box-shadow:0 0 80px rgba(109,214,204,.35), inset 0 0 66px rgba(141,205,255,.18);
+  background:radial-gradient(circle at 38% 32%, rgba(141,205,255,.10), rgba(63,90,213,.05) 70%, transparent);}
+.sphere .fill{position:absolute;inset:0;border-radius:50%;opacity:0;
+  background:radial-gradient(circle at 42% 36%, #13FBFE 0%, #6DD6CC 42%, rgba(63,90,213,.55) 78%, transparent 100%);
+  box-shadow:0 0 120px rgba(109,214,204,.6);will-change:opacity,transform}
+
+/* expert orbit */
+.orbit{position:absolute;left:1290px;top:720px;width:0;height:0;z-index:5;will-change:transform}
+.exp{position:absolute;left:-140px;top:-140px;width:280px;height:280px;border-radius:50%;opacity:0;
+  background:linear-gradient(150deg,rgba(63,90,213,.55),rgba(109,214,204,.30));
+  border:1px solid rgba(255,255,255,.40);box-shadow:0 0 46px rgba(109,214,204,.45);
+  display:flex;align-items:center;justify-content:center;will-change:transform,opacity}
+.exp .ic{width:150px;height:150px;display:flex;align-items:center;justify-content:center;will-change:transform}
+.exp .ic svg{width:100%;height:100%}
+
+/* ---- inside the sphere: floating question-bank cards ---- */
+.inside{position:absolute;inset:0;z-index:6;opacity:0;perspective:1400px;perspective-origin:50% 50%;will-change:transform,opacity,filter}
+.qc{position:absolute;border-radius:18px;overflow:hidden;padding:18px 20px;
+  background:linear-gradient(150deg,rgba(132,172,245,.50),rgba(54,76,178,.64));
+  border:1px solid rgba(255,255,255,.42);
+  box-shadow:0 14px 52px rgba(8,12,40,.50);will-change:transform,opacity;
+  font-family:'SF Mono',ui-monospace,Menlo,monospace;color:rgba(224,234,255,.92);
+  line-height:1.55;white-space:pre;letter-spacing:.04em}
+
+/* ---- HUD (screen-space, outside camera) ---- */
+#hud{position:absolute;inset:0;z-index:9;pointer-events:none}
+.hudLabel{position:absolute;left:0;right:0;text-align:center;opacity:0;will-change:opacity,transform}
+.hudLabel .big{font-size:96px;font-weight:800;color:#fff;letter-spacing:.005em;
+  text-shadow:0 2px 6px rgba(8,12,40,.55),0 0 44px rgba(8,12,40,.6);font-variant-numeric:tabular-nums}
+.hudLabel .sub{font-size:46px;font-weight:500;color:#D6DEFF;margin-top:8px;letter-spacing:.02em;
+  text-shadow:0 2px 6px rgba(8,12,40,.6)}
+/* all HUD text in the TOP band — bottom is reserved for burned-in subtitles */
+#hudSrc{top:120px}
+#hudExp{top:120px}
+
+#qcount{position:absolute;left:0;right:0;top:96px;text-align:center;opacity:0;z-index:9;will-change:opacity,transform}
+#qcount .num{font-size:150px;font-weight:800;color:#fff;font-variant-numeric:tabular-nums;line-height:1;
+  text-shadow:0 2px 8px rgba(8,12,40,.6),0 0 56px rgba(8,12,40,.55)}
+#qcount .lbl{font-size:50px;font-weight:500;color:#D6DEFF;letter-spacing:.14em;text-transform:uppercase;margin-top:14px;
+  text-shadow:0 2px 6px rgba(8,12,40,.6)}
+
+#scan{position:absolute;left:0;right:0;top:0;height:12px;z-index:8;opacity:0;
+  background:linear-gradient(90deg,transparent,rgba(141,205,255,.95),transparent);
+  box-shadow:0 0 70px 26px rgba(141,205,255,.45);will-change:transform,opacity}
+
+#chips{position:absolute;left:0;right:0;top:150px;z-index:9;display:flex;justify-content:center;gap:46px}
+.chip{display:flex;align-items:center;gap:24px;padding:30px 52px;border-radius:999px;opacity:0;
+  background:rgba(18,28,70,.66);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,.30);box-shadow:0 16px 50px rgba(0,0,0,.42);will-change:transform,opacity}
+.chip .em{font-size:64px;line-height:1}
+.chip .ct{font-size:52px;font-weight:600;color:#EAF6FF;white-space:nowrap}
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="root" data-width="2580" data-height="1440" data-start="0" data-duration="17.8">
+
+  <div class="bokeh" style="width:380px;height:380px;background:#6DD6CC;left:4%;top:60%;opacity:.16"></div>
+  <div class="bokeh" style="width:240px;height:240px;background:#B57AFF;left:84%;top:8%;opacity:.16"></div>
+
+  <div class="camera" id="cam">
+    <svg id="lines" viewBox="0 0 5160 2880" fill="none">
+      <defs>
+        <radialGradient id="rg0" gradientUnits="userSpaceOnUse" cx="2580" cy="1440" r="2400"><stop offset="0" stop-color="#FFFFFF"/><stop offset="0.16" stop-color="#EAFFF6"/><stop offset="1" stop-color="#34CB66"/></radialGradient>
+        <radialGradient id="rg1" gradientUnits="userSpaceOnUse" cx="2580" cy="1440" r="2400"><stop offset="0" stop-color="#FFFFFF"/><stop offset="0.16" stop-color="#EAFFFB"/><stop offset="1" stop-color="#6DD6CC"/></radialGradient>
+        <radialGradient id="rg2" gradientUnits="userSpaceOnUse" cx="2580" cy="1440" r="2400"><stop offset="0" stop-color="#FFFFFF"/><stop offset="0.16" stop-color="#EAF4FF"/><stop offset="1" stop-color="#8DCDFF"/></radialGradient>
+        <radialGradient id="rg3" gradientUnits="userSpaceOnUse" cx="2580" cy="1440" r="2400"><stop offset="0" stop-color="#FFFFFF"/><stop offset="0.16" stop-color="#F3EEFF"/><stop offset="1" stop-color="#B57AFF"/></radialGradient>
+        <radialGradient id="rg4" gradientUnits="userSpaceOnUse" cx="2580" cy="1440" r="2400"><stop offset="0" stop-color="#FFFFFF"/><stop offset="0.16" stop-color="#E6FFFA"/><stop offset="1" stop-color="#38E1C0"/></radialGradient>
+      </defs>
+      <g id="lineG"></g>
+    </svg>
+
+    <div class="sphere" id="sphere">
+      <div class="ring"></div>
+      <div class="fill" id="fill"></div>
+    </div>
+
+    <div class="orbit" id="orbit"></div>
+  </div>
+
+  <div class="inside" id="inside"></div>
+
+  <div id="hud">
+    <div id="hudSrc" class="hudLabel"><div class="big">6.1 GB of data</div><div class="sub">from 39 trusted sources</div></div>
+    <div id="hudExp" class="hudLabel"><div class="big">5 experts</div><div class="sub">8 years in the field, each</div></div>
+    <div id="qcount"><div class="num" id="qnum">0</div><div class="lbl">expert-written questions</div></div>
+    <div id="scan"></div>
+    <div id="chips">
+      <div class="chip" id="chip0"><span class="em">🔗</span><span class="ct">Traceable</span></div>
+      <div class="chip" id="chip1"><span class="em">🛡️</span><span class="ct">Leak-checked</span></div>
+      <div class="chip" id="chip2"><span class="em">🔀</span><span class="ct">Can’t be gamed</span></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+  (function(){
+    var NS='http://www.w3.org/2000/svg';
+    var LCX=2580, LCY=1440;
+
+    function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);
+      t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+    var rnd=mulberry32(20260625);
+
+    // ---------- source lines stream in from ALL directions ----------
+    var lineG=document.getElementById('lineG');
+    var N=26, linePaths=[];
+    var COLG=['rg0','rg1','rg2','rg3','rg4'];
+    var colBag=[0,0,0,1,1,1,1,2,2,3,4];
+    for(var i=0;i<N;i++){
+      var ang=(i/N)*Math.PI*2 + (rnd()-0.5)*0.55;
+      var rad=2000 + rnd()*800;
+      var sx=LCX+Math.cos(ang)*rad, sy=LCY+Math.sin(ang)*rad;
+      var dx=LCX-sx, dy=LCY-sy, len=Math.sqrt(dx*dx+dy*dy);
+      var px=-dy/len, py=dx/len, bow=(rnd()-0.5)*420;
+      var c1x=sx+dx*0.32+px*bow,     c1y=sy+dy*0.32+py*bow;
+      var c2x=sx+dx*0.72+px*bow*0.4, c2y=sy+dy*0.72+py*bow*0.4;
+      var d='M '+sx.toFixed(1)+' '+sy.toFixed(1)+' C '+c1x.toFixed(1)+' '+c1y.toFixed(1)+', '
+            +c2x.toFixed(1)+' '+c2y.toFixed(1)+', '+LCX+' '+LCY;
+      var p=document.createElementNS(NS,'path');
+      var col=colBag[Math.floor(rnd()*colBag.length)];
+      p.setAttribute('d',d);p.setAttribute('stroke','url(#'+COLG[col]+')');p.setAttribute('stroke-width','20');
+      p.setAttribute('fill','none');p.setAttribute('stroke-linecap','round');
+      lineG.appendChild(p);linePaths.push(p);
+    }
+
+    // ---------- 5 expert circles on an orbit ring ----------
+    var PERSON='<svg viewBox="0 0 48 48" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" fill="none"><circle cx="24" cy="16" r="8"/><path d="M9 41c0-8 7-13 15-13s15 5 15 13"/></svg>';
+    var orbit=document.getElementById('orbit'), EXP=[], ICS=[], R=630, NE=5;
+    for(var e=0;e<NE;e++){
+      var a=-90 + e*(360/NE);
+      var c=document.createElement('div'); c.className='exp';
+      c.style.transform='rotate('+a+'deg) translateY(-'+R+'px) rotate('+(-a)+'deg)';
+      var ic=document.createElement('div'); ic.className='ic'; ic.innerHTML=PERSON;
+      c.appendChild(ic); orbit.appendChild(c); EXP.push(c); ICS.push(ic);
+    }
+
+    // ---------- floating glass cards (question bank, true-3D fly-through) ----------
+    var CHARS='ABCDEF0123456789xY#@%$★◆▲qWzKpL';
+    function gib(w,h){
+      var cols=Math.max(6,Math.floor(w/18)), rows=Math.max(2,Math.floor((h-36)/34)), out=[];
+      for(var r=0;r<rows;r++){var s='';for(var k=0;k<cols;k++){
+        s+= rnd()<0.12 ? ' ' : CHARS[Math.floor(rnd()*CHARS.length)];}out.push(s);}
+      return out.join('\n');
+    }
+    var inside=document.getElementById('inside'), cards=[], NC=70;
+    for(var ci=0; ci<NC; ci++){
+      var w=Math.round(250+rnd()*210), h=Math.round(150+rnd()*120);
+      var d=document.createElement('div'); d.className='qc';
+      d.style.left=(1290-w/2)+'px'; d.style.top=(720-h/2)+'px';
+      d.style.width=w+'px'; d.style.height=h+'px';
+      d.style.fontSize=Math.round(17+rnd()*8)+'px';
+      d.textContent=gib(w,h);
+      inside.appendChild(d);
+      cards.push({el:d,
+        ox:(rnd()-0.5)*1500, oy:(rnd()-0.5)*820,
+        zf:-(2300+rnd()*900), zn:700+rnd()*480,
+        rotY:(rnd()-0.5)*24, rotX:(rnd()-0.5)*16,
+        op:Math.min(1,0.6+rnd()*0.4),
+        t0:8.0+ci*0.085, life:2.8+rnd()*1.4});
+    }
+
+    // ============================ TIMELINE (aligned to voice SRT, ~17.6s) ============================
+    var tl=gsap.timeline({paused:true, defaults:{ease:"power3.out"}});
+    tl.set('#cam',{scale:1.45}, 0);
+
+    /* ===== A (0–4.4) "We pulled 6.1 GB from 39 trusted sources" ===== */
+    linePaths.forEach(function(p,i){
+      var L=p.getTotalLength();
+      gsap.set(p,{strokeDasharray:L, strokeDashoffset:L, opacity:0});
+      var st = 0.2 + rnd()*2.2;
+      var du = 0.5 + rnd()*0.7;
+      tl.to(p,{opacity:(0.72+rnd()*0.26), duration:.3}, st);
+      tl.to(p,{strokeDashoffset:0, duration:du, ease:"power2.out"}, st);
+    });
+    tl.fromTo('#fill',{opacity:0,scale:0.4},{opacity:1,scale:1,duration:2.8,ease:"power2.out"}, 0.8);
+    tl.to('#cam',{scale:0.8, duration:2.2, ease:"power2.inOut"}, 2.4);   // pull back to reveal sphere
+    tl.to('#sphere',{scale:1.05,duration:.5,yoyo:true,repeat:1,ease:"sine.inOut"}, 3.4);
+    linePaths.forEach(function(p,i){ tl.to(p,{opacity:0, duration:.9, ease:"power2.in"}, 3.6+(i%6)*0.1); });
+    // HUD A
+    tl.fromTo('#hudSrc',{opacity:0,y:24},{opacity:1,y:0,duration:.7}, 1.4);
+    tl.to('#hudSrc',{opacity:0,y:-20,duration:.4,ease:"power2.in"}, 4.2);
+
+    /* ===== B (4.4–7.4) "Five experts, each with eight years in the field" ===== */
+    EXP.forEach(function(c,i){ tl.fromTo(c,{opacity:0,scale:.4},{opacity:1,scale:1,duration:.55,ease:"back.out(1.7)"}, 4.6+i*0.13); });
+    tl.fromTo('#orbit',{rotation:0},{rotation:540,duration:3.0,ease:"power1.inOut"}, 5.0);
+    ICS.forEach(function(ic){ tl.fromTo(ic,{rotation:0},{rotation:-540,duration:3.0,ease:"power1.inOut"}, 5.0); });
+    tl.fromTo('#hudExp',{opacity:0,y:24},{opacity:1,y:0,duration:.6}, 4.9);
+    tl.to('#hudExp',{opacity:0,y:-20,duration:.4,ease:"power2.in"}, 7.3);
+
+    /* ===== C (7.4–11.0) "turned it into 3,543 questions" ===== */
+    tl.to('.exp',{opacity:0,duration:.5,ease:"power2.in"}, 7.4);
+    tl.to('#cam',{scale:2.6, duration:1.5, ease:"power2.inOut"}, 7.4);   // dive into sphere
+    tl.to('#cam',{opacity:0, duration:.6, ease:"power2.in"}, 8.6);
+    tl.fromTo('#inside',{opacity:0,scale:1.25,filter:"blur(16px)"},
+                        {opacity:1,scale:1,filter:"blur(0px)",duration:1.6,ease:"power2.out"}, 7.8);
+    // card tunnel (true-3D forward fly), always generating
+    cards.forEach(function(c){
+      tl.set(c.el,{x:c.ox, y:c.oy, z:c.zf, rotationY:c.rotY, rotationX:c.rotX, opacity:0}, 0);
+      tl.to(c.el,{z:c.zn, duration:c.life, ease:"none"}, c.t0);
+      tl.to(c.el,{opacity:c.op, duration:0.6, ease:"power1.out"}, c.t0);
+      tl.to(c.el,{opacity:0, duration:0.9, ease:"power1.in"}, c.t0+c.life-0.9);
+    });
+    // 3,543 questions counter
+    var q={v:0}, qnum=document.getElementById('qnum');
+    tl.fromTo('#qcount',{opacity:0,scale:.92,y:14},{opacity:1,scale:1,y:0,duration:.6}, 8.3);
+    tl.to(q,{v:3543, duration:2.1, ease:"power1.out", onUpdate:function(){ qnum.textContent=Math.round(q.v).toLocaleString('en-US'); }}, 8.4);
+    tl.to('#qcount .num',{scale:1.08,duration:.2,yoyo:true,repeat:1,ease:"sine.inOut"}, 10.5);
+    tl.to('#qcount',{opacity:0,y:-30,scale:.94,duration:.5,ease:"power2.in"}, 11.0);
+
+    /* ===== D (11.0–13.83) "Every question is traceable and checked for leaks" ===== */
+    tl.fromTo('#scan',{opacity:0,y:60},{opacity:.95,y:60,duration:.3}, 11.0);
+    tl.to('#scan',{y:1380,duration:1.5,ease:"power1.inOut"}, 11.1);
+    tl.to('#scan',{opacity:0,duration:.4}, 12.4);
+    tl.fromTo('#chip0',{opacity:0,y:34,scale:.9},{opacity:1,y:0,scale:1,duration:.55,ease:"back.out(1.6)"}, 11.4);
+    tl.fromTo('#chip1',{opacity:0,y:34,scale:.9},{opacity:1,y:0,scale:1,duration:.55,ease:"back.out(1.6)"}, 12.5);
+
+    /* ===== E (13.83–17.6) "so a model cannot memorize the answers and game its score" ===== */
+    // a jolt of randomization, then the final guard locks in
+    tl.to('#inside',{scale:1.06,duration:.28,yoyo:true,repeat:1,ease:"power2.inOut"}, 14.0);
+    tl.fromTo('#chip2',{opacity:0,y:34,scale:.9},{opacity:1,y:0,scale:1,duration:.6,ease:"back.out(1.7)"}, 14.0);
+    tl.to('#chips',{scale:1.04,duration:.3,yoyo:true,repeat:1,ease:"sine.inOut",transformOrigin:"center center"}, 14.7);
+    // keep tunnel + chips alive to the end (editor cuts to Scene 4)
+
+    window.__timelines = window.__timelines || {};
+    window.__timelines["root"] = tl;
+
+    var sp=new URLSearchParams(location.search);
+    if(sp.has('seek')){ tl.pause(); tl.time(parseFloat(sp.get('seek'))); }
+    else if(sp.has('autoplay')){ tl.play(0); }
+  })();
+  </script>
+</div>
+</body>
+</html>

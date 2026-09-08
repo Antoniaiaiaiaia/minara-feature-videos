@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>DMind Scene 2</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:#0C1142}
+#root{position:relative;width:1920px;height:1080px;overflow:hidden;
+  font-family:'Poppins',system-ui,sans-serif;color:#EAF0FF;
+  background:radial-gradient(125% 100% at 50% 34%, #4B4DFE 0%, #2B2E9E 36%, #161B6A 66%, #0C1142 100%);}
+.bokeh{position:absolute;border-radius:50%;filter:blur(12px);pointer-events:none}
+#flare{position:absolute;left:660px;top:240px;width:600px;height:600px;border-radius:50%;z-index:2;
+  background:radial-gradient(circle,rgba(141,205,255,.55),rgba(109,214,204,.18) 40%,transparent 62%);filter:blur(16px);
+  will-change:transform,opacity}
+
+/* wordmark — big center in 2.1, shrinks to top header in 2.2 */
+#wm{position:absolute;left:0;right:0;top:430px;text-align:center;z-index:6;
+  font-weight:700;font-size:124px;letter-spacing:.005em;will-change:transform,opacity}
+#wm .d{color:#6DD6CC}
+/* subtitle — tight under the header (gap reduced) */
+#subt{position:absolute;left:0;right:0;top:160px;text-align:center;z-index:6;opacity:0;
+  font-size:34px;font-weight:400;color:#C5CBF5;will-change:transform,opacity}
+
+/* 2.2 — nine domain cards fill the rest of the frame */
+#grid{position:absolute;left:44px;right:44px;top:232px;bottom:44px;z-index:5;display:grid;
+  grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);gap:24px}
+.dom{border-radius:30px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;
+  background:linear-gradient(150deg,rgba(63,90,213,.42),rgba(109,214,204,.16));
+  border:1px solid rgba(255,255,255,.22);box-shadow:0 18px 60px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.18);
+  will-change:transform,opacity}
+.dom .ic{width:112px;height:112px;display:flex;align-items:center;justify-content:center;
+  filter:drop-shadow(0 0 18px rgba(141,205,255,.45))}
+.dom .ic svg{width:108px;height:108px}
+.dom .nm{font-size:38px;font-weight:600;color:#FFFFFF;text-align:center;line-height:1.15;letter-spacing:.01em}
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="root" data-width="1920" data-height="1080" data-start="0" data-duration="16">
+
+  <div class="bokeh" style="width:260px;height:260px;background:#6DD6CC;left:2%;top:60%;opacity:.22"></div>
+  <div class="bokeh" style="width:160px;height:160px;background:#B57AFF;left:87%;top:9%;opacity:.22"></div>
+  <div id="flare"></div>
+
+  <div id="wm">D<span class="d">Mind</span> Benchmark</div>
+  <div id="subt">Nine core areas · one unified scale</div>
+
+  <div id="grid"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+  (function(){
+    var SW='stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" fill="none"';
+    var ICONS={
+      block:'<svg viewBox="0 0 48 48" '+SW+'><rect x="7" y="7" width="15" height="15" rx="3"/><rect x="26" y="26" width="15" height="15" rx="3"/><path d="M22 15h5a6 6 0 0 1 6 6v5"/></svg>',
+      contract:'<svg viewBox="0 0 48 48" '+SW+'><path d="M13 5h15l8 8v30H13z"/><path d="M28 5v8h8"/><path d="M21 25l-4 4 4 4M28 25l4 4-4 4"/></svg>',
+      defi:'<svg viewBox="0 0 48 48" '+SW+'><path d="M24 6 7 16h34z"/><path d="M12 16v19M20 16v19M28 16v19M36 16v19"/><path d="M6 41h36"/></svg>',
+      token:'<svg viewBox="0 0 48 48" '+SW+'><circle cx="24" cy="24" r="17"/><path d="M24 7v17h17"/></svg>',
+      meme:'<svg viewBox="0 0 48 48" '+SW+'><path d="M24 5c7 4 10 12 10 21l-4 4H18l-4-4c0-9 3-17 10-21z"/><circle cx="24" cy="19" r="3.2"/><path d="M18 34l-5 9 9-4M30 34l5 9-9-4"/></svg>',
+      nft:'<svg viewBox="0 0 48 48" '+SW+'><rect x="7" y="7" width="34" height="34" rx="4"/><circle cx="17" cy="17" r="3.4"/><path d="M41 32 29 21 12 39"/></svg>',
+      sec:'<svg viewBox="0 0 48 48" '+SW+'><path d="M24 5 8 11v10c0 10 7 17 16 22 9-5 16-12 16-22V11z"/><path d="M17 24l5 5 9-10"/></svg>',
+      infra:'<svg viewBox="0 0 48 48" '+SW+'><rect x="7" y="8" width="34" height="11" rx="2.5"/><rect x="7" y="22" width="34" height="11" rx="2.5"/><rect x="7" y="36" width="34" height="6" rx="2"/><path d="M13 13.5h.01M13 27.5h.01"/></svg>',
+      gov:'<svg viewBox="0 0 48 48" '+SW+'><path d="M8 23h32v18H8z"/><path d="M19 23 16 9l17-2 3 14"/><path d="M21 31h6"/></svg>'
+    };
+    var DOMS=[
+      [ICONS.block,'Blockchain Basics'],[ICONS.contract,'Smart Contracts'],[ICONS.defi,'DeFi'],
+      [ICONS.token,'Tokenomics'],[ICONS.meme,'Memecoins'],[ICONS.nft,'NFTs'],
+      [ICONS.sec,'Security'],[ICONS.infra,'Infrastructure'],[ICONS.gov,'Governance']
+    ];
+    var grid=document.getElementById('grid');
+    DOMS.forEach(function(d,i){
+      var el=document.createElement('div'); el.className='dom'; el.id='dom'+i;
+      el.innerHTML='<div class="ic">'+d[0]+'</div><div class="nm">'+d[1]+'</div>';
+      grid.appendChild(el);
+    });
+
+    var tl = gsap.timeline({paused:true, defaults:{ease:"power3.out"}});
+
+    // ===== 2.1 : wordmark reveal (0 - 4.2) =====
+    tl.fromTo('#wm',{opacity:0, y:60, scale:1.04},{opacity:1, y:0, scale:1, duration:1.0}, 0.2);
+    tl.fromTo('#flare',{opacity:0, scale:.7},{opacity:1, scale:1, duration:1.0, ease:"power2.out"}, 0.2);
+    tl.to('#flare',{opacity:.5, duration:1.6, ease:"sine.inOut"}, 1.2);
+
+    // ===== transition 2.1 -> 2.2 : wordmark shrinks to top header (4.2 - 5.0) =====
+    tl.to('#wm',{top:76, fontSize:"54px", duration:.8, ease:"power3.inOut"}, 4.2);
+    tl.to('#flare',{opacity:0, duration:.6, ease:"power2.in"}, 4.2);
+    tl.fromTo('#subt',{opacity:0, y:20},{opacity:1, y:0, duration:.6}, 4.9);
+
+    // ===== 2.2 : nine domain cards pop in, filling the frame (4.9 - 16) =====
+    DOMS.forEach(function(d,i){
+      tl.fromTo('#dom'+i,{opacity:0, scale:.62, y:34},
+        {opacity:1, scale:1, y:0, duration:.6, ease:"back.out(1.6)"}, 5.0 + i*0.15);
+      tl.fromTo('#dom'+i+' .ic',{filter:"drop-shadow(0 0 0 rgba(141,205,255,0))"},
+        {filter:"drop-shadow(0 0 26px rgba(141,205,255,.75))", duration:.45, yoyo:true, repeat:1, ease:"sine.inOut"}, 5.0 + i*0.15 + .12);
+    });
+    // gentle idle breathing to keep it alive
+    tl.to('#grid',{scale:1.012, duration:2.6, yoyo:true, repeat:1, ease:"sine.inOut", transformOrigin:"center center"}, 7.4);
+    // (no exit at t=16 — editor cuts to Scene 3)
+
+    window.__timelines = window.__timelines || {};
+    window.__timelines["root"] = tl;
+
+    var sp=new URLSearchParams(location.search);
+    if(sp.has('seek')){ tl.pause(); tl.time(parseFloat(sp.get('seek'))); }
+    else if(sp.has('autoplay')){ tl.play(0); }
+  })();
+  </script>
+</div>
+</body>
+</html>

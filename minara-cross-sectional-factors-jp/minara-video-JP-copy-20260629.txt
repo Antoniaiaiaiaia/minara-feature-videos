@@ -1,0 +1,275 @@
+════════════════════════════════════════════════════════════════════
+  Minara — Cross-Sectional Factors 発表動画 / 日本語コピー（mod 校正用）
+  生成日: 2026-06-29
+  形式: 各シーンの「画面上テキスト」を EN 原文 → JA 訳 で対照
+════════════════════════════════════════════════════════════════════
+
+【校正のお願い / 用語メモ】
+・fintech（量的取引）プロダクトのローンチ動画です。トーンは「簡潔・先進的・信頼感」。
+・固定で英語のまま残す用語: Minara / Minara Studio / TradFi 30 / USDC / minara.ai / IC / Sharpe(可) / S&P 500 / MACD / SUE / EPS / 各銘柄ティッカー(NVDA, AAPL 等)
+・数値・%・$ はそのまま。
+・自然な日本語かどうか、専門用語(金融/量的取引)が適切かを中心に見てください。
+・⚠ で囲った箇所は特に表現の揺れを確認したいところです。
+
+
+────────────────────────────────────────────────────────────────────
+SCENE 1 — オープニング（タイトル）
+────────────────────────────────────────────────────────────────────
+EN: Introducing
+JA: 新登場
+
+EN: Cross-Sectional Factors
+JA: クロスセクション・ファクター
+
+EN: In Minara Studio
+JA: Minara Studio に
+
+EN（サブ）: Hundreds of high-signal factors are now live
+JA: 数百の高シグナル・ファクターが、いますぐ使える
+
+※ 中国語版では語順を「AI クロスセクション戦略生成 / すべては Minara で / 数百の優良ファクターが提供開始」に再構成しています。日本語も同方針にする場合の代替案 ↓
+  ・AI クロスセクション戦略生成
+  ・すべては Minara で
+  ・数百の優良ファクターが、提供開始
+
+
+────────────────────────────────────────────────────────────────────
+SCENE 2 — ファクターライブラリ（カード一覧）
+────────────────────────────────────────────────────────────────────
+■ タグ（カテゴリ）の訳
+  Liquidity        → 流動性
+  Technical        → テクニカル
+  Quality          → クオリティ
+  Volatility       → ボラティリティ
+  Reversion        → リバーサル（平均回帰）
+  Momentum         → モメンタム
+  Volume           → 出来高
+  Earnings         → 業績
+  Analyst          → アナリスト
+  Crypto · Stock   → 暗号資産 · 株式
+  Stock            → 株式
+  IC=0.086 など    → そのまま（IC は据え置き）
+
+■ ファクター名 ＋ 説明文
+1) EN: Zero-Volume Days (21-Day)
+   JA: ゼロ出来高日数（21日）
+   EN: The share of the last month on which the name had literally no trading volume — a hard illiquidity gauge.
+   JA: 直近1ヶ月で全く取引が成立しなかった日の割合——厳格な流動性枯渇の指標。
+
+2) EN: MACD (Price-Normalized)
+   JA: MACD（価格正規化）
+   JA説明: 古典的な 12/26 EMA モメンタム差を価格で割り、銘柄間で比較可能にしたもの。
+
+3) EN: 3-Year Debt Growth (inverted)
+   JA: 3年負債成長率（反転）
+   JA説明: 3年間で総負債がどれだけ増えたか——急速な借入は警戒シグナルのため反転。
+
+4) EN: Up-Day Volatility
+   JA: 上昇日ボラティリティ
+   JA説明: 銘柄の20日価格ボラティリティ。直近日が上昇で引けた場合のみ計上。
+
+5) EN: Short-Term Reversal
+   JA: 短期リバーサル
+   JA説明: 前日リターンを反転——直近で下げた銘柄は反発しやすい。
+
+6) EN: Open-to-Close Gap
+   JA: 始値・終値ギャップ
+   JA説明: 本日の始値が終値に対しどれだけ上下したか——日中ギャップのシグナル。
+
+7) EN: MACD Histogram
+   JA: MACD ヒストグラム
+   JA説明: MACD オシレーター——短期トレンド線が長期線をどれだけ上回り、加速しているか。
+
+8) EN: Close Position in Daily Range
+   JA: 日中レンジ内の終値位置
+   JA説明: 終値が当日高安レンジのどこで引けたか——強い引けほど高スコア。
+
+9) EN: Daily Return × Volume
+   JA: 日次リターン × 出来高
+   JA説明: 本日の値動きを出来高で増幅——大商いの急騰が最高スコア。
+
+10) EN: Standardized Earnings Surprise
+    JA: 標準化業績サプライズ（SUE）
+    JA説明: 直近決算の上振れ／下振れの異常度を、銘柄自身の履歴を基準に測定。
+
+11) EN: Forward Estimate Revision
+    JA: 予想EPS改定
+    JA説明: 過去1ヶ月でアナリストが予想EPSをどれだけ上方／下方修正したか。
+
+12) EN: Seasonality (Years 2-5)
+    JA: 季節性（2〜5年前）
+    JA説明: 過去2〜5周年の同月平均リターン——繰り返すカレンダー要因を捕捉。
+
+13) EN: Piotroski Financial Health
+    JA: ピオトロスキー財務健全性スコア
+    JA説明: 収益性・キャッシュフロー・レバレッジ・効率性など9項目の基本面チェック。
+
+14) EN: 16-Week Momentum
+    JA: 16週モメンタム
+    JA説明: 直近約4ヶ月の総上昇率——直近の勝者は勝ち続けやすい。
+
+
+────────────────────────────────────────────────────────────────────
+SCENE 3a — タイトル
+────────────────────────────────────────────────────────────────────
+EN: Call any of them
+JA: 自然な言葉で
+
+EN: in plain language.
+JA: そのまま呼び出す。
+
+※ ⚠ 全体で「どのファクターも、普段の言葉で呼び出せる」という意味。別案:「ひとことで」/「どれでも呼び出す」
+
+
+────────────────────────────────────────────────────────────────────
+SCENE 3b — 自然言語で戦略生成（UI デモ）
+────────────────────────────────────────────────────────────────────
+EN（トグル）: Time-Series / Cross-Sectional
+JA: 時系列 / クロスセクション
+
+EN（入力プロンプト）:
+  Build a cross-sectional multi-factor strategy on the TradFi 30 — combine six
+  high-signal factors into one composite score, go long the top names, rebalance monthly.
+JA:
+  TradFi 30 でクロスセクション・マルチファクター戦略を構築——6つの高シグナル・
+  ファクターを1つの合成スコアに統合し、上位銘柄をロング、毎月リバランス。
+
+EN（MINARA 返信）:
+  Applying it: signal-weighting + top 12 via construction config. Converting the score
+  to a clean cross-sectional rank so the engine sizes by conviction.
+JA:
+  適用します：シグナル加重＋上位12銘柄を構築設定で。スコアをクリーンな
+  クロスセクション順位に変換し、確信度に応じてエンジンがポジションサイズを決定します。
+
+EN: Backtest configuration updated
+JA: バックテスト設定を更新しました
+
+EN（コードカード）:
+  Draft · 1777 bytes
+  6-factor composite · long TradFi 30 · top 12 · monthly
+JA:
+  ドラフト · 1777 バイト
+  6ファクター合成 · TradFi 30 ロング · 上位12 · 毎月
+JA（説明文）: MACD ＋ 三重平滑対数リターン、SUE（業績サプライズ）、EPS改定モメンタム、
+  低3年負債成長、低下方ボラティリティ——1つの合成スコアに統合し、200日トレンドフィルター付き。
+
+■ バックテスト結果（指標）
+EN: Backtest · TradFi 30 · V3   → JA: バックテスト · TradFi 30 · V3
+EN: Total Return  +1233%  ($133,307)   → JA: トータルリターン  +1233%  （$133,307）
+EN: CAGR  +91.08%  (annualized)        → JA: 年率成長率（CAGR）  +91.08%  （年率）
+EN: Sharpe  1.72  (risk-adj)           → JA: シャープレシオ  1.72  （リスク調整後）
+EN: Alpha vs S&P 500  +38.34%  (annualized) → JA: 超過収益（対 S&P 500）  +38.34%  （年率）
+EN: Strategy equity                    → JA: 戦略エクイティ（純資産推移）
+
+
+────────────────────────────────────────────────────────────────────
+SCENE 4a — タイトル
+────────────────────────────────────────────────────────────────────
+EN: Top Equities
+JA: トップ株式市場
+
+EN: Programmable Earnings
+JA: プログラマブルな収益
+
+※ ⚠ 「Programmable Earnings」= コードで設計・実行できる収益、の意。別案:「プログラム可能なリターン」
+
+
+────────────────────────────────────────────────────────────────────
+SCENE 4b — 結果パネル（4タブ）
+────────────────────────────────────────────────────────────────────
+■ タブ
+  Overview        → 概要
+  Per-Symbol PnL  → 銘柄別損益
+  Trades          → 約定履歴
+  Code            → コード
+  Deploy（ボタン）→ デプロイ
+
+■ Overview
+EN: Composition
+JA: ポートフォリオ構成
+EN: Trading volume by symbol — $2,332,372 · 28 symbols
+JA: 銘柄別取引高 — 合計 $2,332,372 · 28銘柄
+EN: Gross profit  +$166,295        → JA: 総利益  +$166,295
+EN: Gross profit %  +1662.95%      → JA: 総利益率  +1662.95%
+EN: Profit factor  16.74           → JA: プロフィットファクター  16.74
+EN: Expected payoff  +$5,584       → JA: 期待ペイオフ  +$5,584
+
+■ Per-Symbol PnL
+EN: Per-Symbol Realized PnL        → JA: 銘柄別実現損益
+EN: 22/28 winners · +$105,801      → JA: 28銘柄中22勝 · +$105,801
+
+■ Trades（テーブル見出し）
+  #         → #
+  Time      → 時刻
+  Symbol    → 銘柄
+  Side      → 売買
+  Qty       → 数量
+  Price     → 価格
+  P&L       → 損益
+  Position  → ポジション
+  BUY       → 買い
+  SELL      → 売り
+EN: 609 fills    → JA: 609 約定
+
+■ Code（設定チップ）
+  Universe       → ユニバース（TradFi 30）
+  Leverage 1.0×  → レバレッジ 1.0×
+  Direction: Long Only → 方向：ロングのみ
+  Ratio: 12 symbols    → 比率：12銘柄
+  Weight: equal-weighted → ウェイト：均等加重
+  Run Backtest（ボタン） → バックテスト実行
+  ※ コード本体は英語のまま（コメントのみ日本語化可）
+
+
+────────────────────────────────────────────────────────────────────
+SCENE 5a — タイトル
+────────────────────────────────────────────────────────────────────
+EN: Fund in seconds.
+JA: 数秒で入金。
+
+EN: Trade in seconds.
+JA: 数秒で取引。
+
+
+────────────────────────────────────────────────────────────────────
+SCENE 5b — 入金 → デプロイ → 資産増加（UI デモ）
+────────────────────────────────────────────────────────────────────
+EN: Add funds              → JA: 入金
+EN: $10,000                → そのまま
+EN: USDC — Instant · on-chain   → JA: USDC — 即時 · オンチェーン
+EN: Card — Visa · Mastercard    → JA: カード — Visa · Mastercard
+EN: Confirm deposit        → JA: 入金を確定
+EN: Funded ($10,000 · USDC)→ JA: 入金完了（$10,000 · USDC）
+
+EN: Strategy · TradFi 30   → JA: 戦略 · TradFi 30
+EN: 6-Factor Composite     → JA: 6ファクター合成戦略
+EN: Backtest Net +1233% · Sharpe 1.72 · 12 symbols
+JA: バックテスト純収益 +1233% · シャープ 1.72 · 12銘柄
+EN: Deploy live            → JA: ライブ展開
+EN: Live · running on $10,000   → JA: 稼働中 · $10,000 で運用
+
+EN: Portfolio value        → JA: ポートフォリオ評価額
+EN: $11,247  ▲ +$1,247 · +12.5%   → そのまま（▲＋金額・％）
+EN: 6-Factor Composite · live since deploy
+JA: 6ファクター合成戦略 · デプロイ後ライブ運用中
+
+
+────────────────────────────────────────────────────────────────────
+SCENE 6 — エンディング
+────────────────────────────────────────────────────────────────────
+EN: Minara Strategy Studio
+JA: Minara Strategy Studio   （ブランド名・英語のまま推奨。和文表記する場合は「Minara ストラテジースタジオ」）
+
+EN: Where Finance Plays Fair
+JA: 金融を、もっと公平に。
+
+EN: minara.ai
+JA: minara.ai   （URL・据え置き）
+
+※ ⚠ 「Where Finance Plays Fair」= 金融の機会をすべての人に公平に、というブランドメッセージ。
+   別案:「フェアな金融を、すべての人に。」/「金融は、もっとフェアになる。」
+
+
+════════════════════════════════════════════════════════════════════
+  以上。表現の揺れ・専門用語・敬体/常体の統一など、気づいた点をご指摘ください。
+════════════════════════════════════════════════════════════════════

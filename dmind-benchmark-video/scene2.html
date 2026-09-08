@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>DMind — Scene 2 · Introducing DMind</title>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width:100%; height:100%; background:#FFFFFF; font-family:'Manrope',system-ui,sans-serif; color:#111221; overflow:hidden; }
+  #root, [data-composition-id="root"] {
+    width:2560px; height:1440px; position:relative; overflow:hidden;
+    font-family:'Manrope',system-ui,sans-serif;
+    background: radial-gradient(1100px 1100px at 19% 30%, rgba(47,107,255,0.14), transparent 62%), radial-gradient(1050px 1050px at 84% 75%, rgba(16,196,154,0.145), transparent 62%), radial-gradient(820px 820px at 55% 68%, rgba(61,139,255,0.10), transparent 58%), radial-gradient(1900px 1500px at 20% 22%, rgba(47,107,255,0.06), transparent 60%), radial-gradient(1800px 1450px at 82% 84%, rgba(16,196,154,0.07), transparent 60%), #FFFFFF;
+  }
+  .grid-tex { position:absolute; inset:0; background-image: radial-gradient(rgba(17,18,33,0.05) 1.5px, transparent 1.6px); background-size:46px 46px; opacity:0.55; }
+  .orb { position:absolute; border-radius:50%; filter:blur(50px); opacity:0.5; }
+  
+  
+  
+
+  /* hero reveal */
+  .hero { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); text-align:center; }
+  .hero img { width:150px; height:150px; display:block; margin:0 auto 26px; }
+  .hero h1 { font-size:108px; font-weight:800; letter-spacing:-0.035em; line-height:1; }
+  .hero h1 .b { color:#375BDC; }
+  .sweep { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:760px; height:300px; pointer-events:none;
+    background:linear-gradient(105deg, transparent 38%, rgba(255,255,255,0.85) 50%, transparent 62%); }
+
+  /* domain grid */
+  .grid-title { position:absolute; left:0; right:0; top:120px; text-align:center; }
+  .grid-title h2 { font-size:60px; font-weight:800; letter-spacing:-0.03em; }
+  .grid-title h2 .b { color:#375BDC; }
+  .grid-title h2 .w { display:inline-block; will-change:transform,opacity; }
+  .grid-title p { margin-top:12px; font-size:26px; font-weight:600; color:#5A5C6B; letter-spacing:0.02em; }
+
+  .dgrid { position:absolute; left:50%; top:300px; transform:translateX(-50%);
+    display:grid; grid-template-columns:repeat(3, 380px); grid-template-rows:repeat(3,168px); gap:26px; }
+  .dcard { border-radius:22px; background:#fff; border:1px solid #EDEDED; box-shadow:0 18px 50px rgba(17,18,33,0.08);
+    display:flex; align-items:center; gap:22px; padding:0 30px; }
+  .dcard .ic { width:84px; height:84px; border-radius:20px; display:flex; align-items:center; justify-content:center; font-size:42px; flex:0 0 auto; }
+  .dcard .nm { font-size:30px; font-weight:800; letter-spacing:-0.01em; line-height:1.15; }
+  .dcard.locked { opacity:0.42; filter:grayscale(0.6); }
+  /* macaron tints */
+  .t1{background:#AEDBF5;} .t2{background:#A8E6CF;} .t3{background:#FFD3B6;}
+  .t4{background:#FBC4DD;} .t5{background:#FFB3BA;} .t6{background:#CFC3F5;}
+  .t7{background:#FCE7A0;} .t8{background:#A8E6CF;} .t9{background:#AEDBF5;}
+
+  /* score scale */
+  .scale { position:absolute; left:50%; bottom:78px; transform:translateX(-50%); width:1180px; }
+  .scale .lbl { display:flex; justify-content:space-between; font-size:21px; font-weight:700; letter-spacing:0.14em; color:#5A5C6B; text-transform:uppercase; margin-bottom:14px; }
+  .scale .track { height:18px; border-radius:10px; background:#EDEDED; overflow:hidden; position:relative; }
+  .scale .fill { position:absolute; left:0; top:0; bottom:0; width:100%; transform-origin:left center;
+    background:linear-gradient(90deg, #FFB3BA, #FCE7A0 45%, #A8E6CF 100%); border-radius:10px; }
+  .scale .ticks { display:flex; justify-content:space-between; margin-top:10px; font-size:19px; font-weight:600; color:#9A9AA4; font-variant-numeric:tabular-nums; }
+  .__scaler{ position:absolute; left:0; top:0; width:1920px; height:1080px; transform:scale(1.3333333); transform-origin:top left; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="root" data-width="2560" data-height="1440" data-start="0" data-duration="12.83">
+<div class="__scaler">
+  <div class="grid-tex"></div>
+  
+  
+
+  <!-- hero reveal -->
+  <div class="hero" id="hero">
+    <img src="assets/dmind-logo.svg" alt="DMind"/>
+    <h1><span class="b">DMind</span> Benchmark</h1>
+  </div>
+  <div class="sweep" id="sweep"></div>
+
+  <!-- domains -->
+  <div class="grid-title" id="gtitle">
+    <h2><span class="w">The</span> <span class="w">first</span> <span class="w">test</span> <span class="w">of</span> <span class="w">AI</span> <span class="w">for</span> <span class="w b">digital</span> <span class="w b">assets</span></h2>
+    <p>Nine core domains · one unified scale</p>
+  </div>
+
+  <div class="dgrid" id="dgrid">
+    <div class="dcard locked" id="d1"><div class="ic t1">⛓️</div><div class="nm">Blockchain<br/>Basics</div></div>
+    <div class="dcard locked" id="d2"><div class="ic t2">📜</div><div class="nm">Smart<br/>Contracts</div></div>
+    <div class="dcard locked" id="d3"><div class="ic t3">🪙</div><div class="nm">Tokenomics</div></div>
+    <div class="dcard locked" id="d4"><div class="ic t4">🐸</div><div class="nm">Memecoins</div></div>
+    <div class="dcard locked" id="d5"><div class="ic t5">🛡️</div><div class="nm">Security</div></div>
+    <div class="dcard locked" id="d6"><div class="ic t6">🔄</div><div class="nm">DeFi</div></div>
+    <div class="dcard locked" id="d7"><div class="ic t7">🖼️</div><div class="nm">NFT</div></div>
+    <div class="dcard locked" id="d8"><div class="ic t8">🔬</div><div class="nm">On-chain<br/>Analysis</div></div>
+    <div class="dcard locked" id="d9"><div class="ic t9">🏗️</div><div class="nm">Infrastructure</div></div>
+  </div>
+
+  <!-- score scale -->
+  <div class="scale" id="scale">
+    <div class="lbl"><span>One Unified Scale</span><span>Score 0–100</span></div>
+    <div class="track"><div class="fill" id="scaleFill"></div></div>
+    <div class="ticks"><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div>
+  </div>
+</div>
+</div>
+
+<script>
+  function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+  const rnd=mulberry32(77);
+  const DUR=16; const tl=gsap.timeline({paused:true, defaults:{ease:'power3.out', duration:0.6}});
+
+  document.querySelectorAll(".orb-static").forEach(o=>{const dx=rnd()*100-50,dy=rnd()*100-50,c=6+rnd()*3;
+    gsap.to(o,{x:dx,y:dy,duration:c,ease:'sine.inOut',yoyo:true,repeat:Math.ceil(DUR/c)});});
+
+  gsap.set('#hero img',{scale:0,opacity:0,rotation:-20});
+  gsap.set('#hero h1',{opacity:0,y:40});
+  gsap.set('#sweep',{opacity:0,x:-500});
+  gsap.set('#gtitle',{opacity:1, y:360, scale:1.45, transformOrigin:'50% 50%'});
+  gsap.set('.grid-title h2 .w',{opacity:0, scale:0.4, y:36});
+  gsap.set('.grid-title p',{opacity:0, y:20});
+  gsap.set('#dgrid',{opacity:0});
+  gsap.set('.dcard',{scale:0.6,opacity:0,y:24});
+  gsap.set('#scale',{opacity:0,y:24});
+  gsap.set('#scaleFill',{scaleX:0});
+
+  /* SHOT 4 (0 – 4.0) hero reveal */
+  tl.to('#hero img',{scale:1,opacity:1,rotation:0,duration:0.9,ease:'back.out(1.7)'},0.2);
+  tl.to('#hero h1',{opacity:1,y:0,duration:0.8,ease:'power3.out'},0.5);
+  tl.to('#sweep',{opacity:1,x:0,duration:0.9,ease:'power2.inOut'},0.7);
+  tl.to('#sweep',{opacity:0,x:500,duration:0.7,ease:'power2.in'},1.4);
+  /* SHOT 4 → 5 hero rises out (≈1.85) — "Introducing DMind Benchmark" ends ~1.9 */
+  tl.to('#hero',{opacity:0,y:-70,duration:0.55,ease:'power2.in'},1.85);
+
+  /* title pops in WORD BY WORD, super-large & centered (2.15 → ~4.3)
+     — fills the dead zone under "The first test of how well AI understands digital assets" (18.0–21.7s abs) */
+  const titleWords = gsap.utils.toArray('.grid-title h2 .w');
+  titleWords.forEach((w,i)=>{
+    tl.to(w,{opacity:1, scale:1, y:0, duration:0.5, ease:'back.out(2)'}, 2.15 + i*0.22);
+  });
+  tl.to('.grid-title p',{opacity:1,y:0,duration:0.5,ease:'power3.out'}, 2.15 + titleWords.length*0.22 + 0.05);
+
+  /* whole sentence settles UP to its final title position (4.7 → 5.55), connecting to the grid */
+  tl.to('#gtitle',{y:0, scale:1, duration:0.85, ease:'power3.inOut'}, 4.7);
+
+  /* SHOT 5 (4.4 – 16) nine domains light up */
+  tl.to('#dgrid',{opacity:1,duration:0.2},5.7);
+  // reveal order: snake through grid
+  const order=['#d1','#d2','#d3','#d6','#d5','#d4','#d9','#d8','#d7'];
+  order.forEach((id,i)=>{
+    const t=5.8+i*0.6;
+    tl.to(id,{scale:1,opacity:1,y:0,duration:0.55,ease:'back.out(1.7)'},t);
+    tl.add(()=>{ const el=document.querySelector(id); if(el) el.classList.remove('locked'); }, t+0.1);
+    // little pulse on its icon
+    tl.fromTo(id+' .ic',{scale:0.8},{scale:1,duration:0.5,ease:'back.out(2)'},t);
+  });
+
+  /* score scale sweep fill (after grid lit ≈8.6) */
+  tl.to('#scale',{opacity:1,y:0,duration:0.6,ease:'power3.out'},11.0);
+  tl.to('#scaleFill',{scaleX:1,duration:1.4,ease:'power2.inOut'},11.3);
+  // subtle breathing of whole grid to keep alive
+  tl.to('#dgrid',{scale:1.012,duration:1.4,ease:'sine.inOut',yoyo:true,repeat:2,transformOrigin:'50% 40%'},9.0);
+
+  tl.to({},{duration:0.2},12.65);
+
+  window.__timelines=window.__timelines||{};
+  window.__timelines["root"]=tl;
+</script>
+</body>
+</html>

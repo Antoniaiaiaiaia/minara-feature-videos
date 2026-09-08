@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>DMind Scene 5 — Agentic</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Spline+Sans+Mono:wght@400;500&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:#0C1142}
+#root,[data-composition-id="root"]{position:relative;width:2580px;height:1440px;overflow:hidden;
+  font-family:'Poppins',system-ui,sans-serif;color:#EAF0FF;
+  background:radial-gradient(125% 100% at 50% 42%, #3a3f9e 0%, #232a86 34%, #161B6A 64%, #0C1142 100%);}
+.bokeh{position:absolute;border-radius:50%;filter:blur(20px);pointer-events:none;z-index:1}
+
+.slides{position:absolute;inset:0;z-index:3;will-change:transform}
+.slide{position:absolute;top:0;width:2580px;height:1440px}
+#slideA{left:0}
+#slideB{left:2580px}
+#slideC{left:5160px}
+.cam{position:absolute;inset:0;transform-origin:50% 50%;will-change:transform}
+
+/* ---- A : agent node + tools ---- */
+#wires{position:absolute;inset:0;z-index:2}
+.agent{position:absolute;left:1090px;top:520px;width:400px;height:400px;border-radius:50%;z-index:5;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:radial-gradient(circle at 42% 36%, rgba(63,214,198,.30), rgba(126,138,224,.22) 70%, transparent);
+  border:2px solid rgba(141,205,255,.5);box-shadow:0 0 90px rgba(63,214,198,.45), inset 0 0 60px rgba(141,205,255,.15);
+  will-change:transform,opacity}
+.agent .av{width:152px;height:152px}
+.agent .at{margin-top:14px;font-size:38px;font-weight:600;color:#fff;letter-spacing:.01em}
+.tool{position:absolute;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:30px;
+  width:720px;height:400px;border-radius:44px;padding:40px;
+  background:linear-gradient(150deg,rgba(132,172,245,.16),rgba(54,76,178,.22));
+  border:1px solid rgba(255,255,255,.30);box-shadow:0 22px 70px rgba(8,12,40,.42);
+  will-change:transform,opacity}
+.tool .ti{width:150px;height:150px}
+.tool .tl{font-size:54px;font-weight:500;color:#DDE3FF;text-align:center;line-height:1.2}
+
+/* ---- B : five agents + three skills ---- */
+#bHead{position:absolute;left:0;right:0;top:150px;text-align:center;z-index:6;opacity:0;
+  font-size:46px;font-weight:600;color:#DDE3FF;letter-spacing:.01em}
+#bHead b{color:#6FE6D6;font-weight:700}
+.av5{position:absolute;top:300px;width:200px;height:200px;border-radius:50%;z-index:5;opacity:0;
+  display:flex;align-items:center;justify-content:center;transform:translateX(-50%);
+  background:radial-gradient(circle at 42% 36%, rgba(63,214,198,.26), rgba(126,138,224,.20) 70%, transparent);
+  border:2px solid rgba(141,205,255,.45);box-shadow:0 0 50px rgba(63,214,198,.35);will-change:transform,opacity}
+.av5 svg{width:96px;height:96px}
+.av5lbl{position:absolute;top:520px;width:300px;text-align:center;z-index:5;opacity:0;transform:translateX(-50%);
+  font-size:28px;font-weight:600;color:#EAF0FF}
+#bSkillHead{position:absolute;left:0;right:0;top:660px;text-align:center;z-index:6;opacity:0;
+  font-family:'Spline Sans Mono',monospace;font-size:28px;letter-spacing:3px;color:#9aa3d6;text-transform:uppercase}
+.skill{position:absolute;top:700px;width:420px;height:420px;border-radius:36px;z-index:5;opacity:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:40px;transform:translateX(-50%);
+  background:linear-gradient(150deg,rgba(132,172,245,.16),rgba(54,76,178,.22));
+  border:1px solid rgba(255,255,255,.28);box-shadow:0 18px 56px rgba(8,12,40,.42);will-change:transform,opacity}
+.skill .si{width:118px;height:118px}
+.skill .sl{font-size:38px;font-weight:600;color:#EAF0FF;text-align:center;line-height:1.18;padding:0 20px}
+.skill .hl{position:absolute;inset:0;border-radius:36px;background:#fff;opacity:0;z-index:0;
+  box-shadow:0 18px 56px rgba(15,169,127,.4);will-change:opacity}
+.skill .si,.skill .sl{position:relative;z-index:1}
+
+/* ---- C : agent bars ---- */
+#bkick{position:absolute;left:0;right:0;top:200px;text-align:center;z-index:6;
+  font-family:'Spline Sans Mono',monospace;font-size:30px;letter-spacing:3px;color:#9aa3d6;text-transform:uppercase;will-change:opacity}
+#bkick b{color:#fff;font-weight:500}
+.kmwrap{position:relative;display:inline-block}
+#kmSec{position:absolute;left:0;top:0;opacity:0;white-space:nowrap;will-change:opacity,transform}
+.row{position:absolute;left:0;z-index:5;height:104px;will-change:opacity,transform}
+.rlbl{position:absolute;left:175px;width:500px;text-align:right;top:52px;transform:translateY(-50%);
+  font-size:34px;font-weight:600;color:#EAF0FF;white-space:nowrap;will-change:color}
+.rlbl.lead{color:#fff}
+.track{position:absolute;left:715px;top:30px;width:1200px;height:46px;border-radius:23px;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10)}
+.fill{position:absolute;left:0;top:0;height:100%;border-radius:23px;width:0;
+  background:linear-gradient(90deg,#3FD6C6,#6FE6D6);box-shadow:0 0 28px rgba(63,214,198,.45);will-change:width,background}
+.rval{position:absolute;left:1965px;top:52px;transform:translateY(-50%);
+  font-family:'Spline Sans Mono',monospace;font-size:38px;font-weight:500;color:#9FF0E6;font-variant-numeric:tabular-nums}
+
+#line80{position:absolute;left:1515px;top:360px;width:4px;height:660px;z-index:7;opacity:0;
+  background:linear-gradient(180deg,rgba(169,182,240,0),#A9B6F0 14%,#A9B6F0 86%,rgba(169,182,240,0));
+  box-shadow:0 0 22px rgba(169,182,240,.45);will-change:opacity,box-shadow,transform}
+#line80 .cap{position:absolute;left:50%;top:-54px;transform:translateX(-50%);
+  font-family:'Spline Sans Mono',monospace;font-size:34px;font-weight:600;color:#C5CBF5;letter-spacing:1px;will-change:color}
+
+/* spread callout (right of bars, upper) */
+#spread{position:absolute;left:2150px;top:250px;z-index:7;opacity:0;text-align:center;will-change:opacity,transform}
+#spread .big{font-size:64px;font-weight:800;color:#fff;font-variant-numeric:tabular-nums;line-height:1}
+#spread .sub{font-size:30px;font-weight:500;color:#C9D2FF;margin-top:8px;letter-spacing:.02em}
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="root" data-width="2580" data-height="1440" data-start="0" data-duration="25.5">
+
+  <div class="bokeh" style="width:420px;height:420px;background:#6DD6CC;left:3%;top:60%;opacity:.12"></div>
+  <div class="bokeh" style="width:300px;height:300px;background:#B57AFF;left:86%;top:6%;opacity:.12"></div>
+
+  <div class="slides" id="slides">
+
+    <!-- ===== SLIDE A : agent + tools ===== -->
+    <div class="slide" id="slideA"><div class="cam" id="camA">
+      <svg id="wires" viewBox="0 0 2580 1440" fill="none"><g id="wireG"></g></svg>
+      <div class="agent" id="agent">
+        <svg class="av" viewBox="0 0 48 48" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"><rect x="12" y="16" width="24" height="20" rx="5"/><path d="M24 16V9M24 9a3 3 0 100-6 3 3 0 000 6z"/><path d="M12 24H6M42 24h-6"/><circle cx="19" cy="26" r="2.2"/><circle cx="29" cy="26" r="2.2"/></svg>
+        <div class="at">LLM Agent</div>
+      </div>
+    </div></div>
+
+    <!-- ===== SLIDE B : five agents, three skills ===== -->
+    <div class="slide" id="slideB"><div class="cam" id="camB">
+      <div id="bHead">We tested <b>five AI agents</b></div>
+      <!-- 5 avatars + labels injected -->
+      <!-- 3 skills injected -->
+    </div></div>
+
+    <!-- ===== SLIDE C : agent bars ===== -->
+    <div class="slide" id="slideC"><div class="cam" id="camC">
+      <div id="bkick">DMind score &middot; <span class="kmwrap"><b id="kmOv">Overall</b><b id="kmSec">Security</b></span></div>
+      <div id="bars"></div>
+      <div id="line80"><div class="cap">80</div></div>
+    </div></div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+  (function(){
+    var NS='http://www.w3.org/2000/svg';
+    var AX=1290, AY=720;
+
+    var ROBOT='<svg viewBox="0 0 48 48" stroke="#EAFBFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"><rect x="12" y="16" width="24" height="20" rx="5"/><path d="M24 16V9M24 9a3 3 0 100-6 3 3 0 000 6z"/><path d="M12 24H6M42 24h-6"/><circle cx="19" cy="26" r="2.2"/><circle cx="29" cy="26" r="2.2"/></svg>';
+    var GLOBE='<svg viewBox="0 0 48 48" stroke="#9FF0E6" stroke-width="2.4" fill="none" stroke-linecap="round"><circle cx="24" cy="24" r="17"/><ellipse cx="24" cy="24" rx="8" ry="17"/><path d="M7 24h34M9 16h30M9 32h30"/></svg>';
+    var DEV='<svg viewBox="0 0 48 48" stroke="#9FF0E6" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M18 16 8 24l10 8M30 16l10 8-10 8M26 12l-4 24"/></svg>';
+    var SHIELD='<svg viewBox="0 0 48 48" stroke="#9FF0E6" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M24 5l15 6v11c0 10-6.5 17-15 21-8.5-4-15-11-15-21V11z"/><path d="M17 24l5 5 9-10"/></svg>';
+    var COIN='<svg viewBox="0 0 48 48" stroke="#9FF0E6" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="17"/><path d="M24 14v20M19 19h7a3.5 3.5 0 010 7h-7M19 29h8"/></svg>';
+
+    // ---- A : tools around the agent ----
+    var TOOLS=[
+      {ic:GLOBE, t:'Web Search', x:1290, y:240},
+      {ic:DEV,   t:'Blockchain Developer', x:470, y:720},
+      {ic:SHIELD,t:'Smart Contract Security', x:2110, y:720},
+      {ic:COIN,  t:'Tokenomics Design', x:1290, y:1200}
+    ];
+    var camA=document.getElementById('camA'), wireG=document.getElementById('wireG'), toolEls=[];
+    TOOLS.forEach(function(o){
+      var d=document.createElement('div'); d.className='tool';
+      d.style.left=(o.x-360)+'px'; d.style.top=(o.y-200)+'px';
+      d.innerHTML='<div class="ti">'+o.ic+'</div><div class="tl">'+o.t+'</div>';
+      camA.appendChild(d); toolEls.push(d);
+      var dx=o.x-AX, dy=o.y-AY, len=Math.sqrt(dx*dx+dy*dy), R=205;
+      var sx0=AX+dx/len*R, sy0=AY+dy/len*R;
+      var p=document.createElementNS(NS,'path');
+      p.setAttribute('d','M '+sx0.toFixed(1)+' '+sy0.toFixed(1)+' L '+o.x+' '+o.y);
+      p.setAttribute('stroke','#6DD6CC'); p.setAttribute('stroke-width','15');
+      p.setAttribute('stroke-dasharray','16 52'); p.setAttribute('opacity','0'); p.setAttribute('stroke-linecap','round');
+      wireG.appendChild(p); o.path=p;
+    });
+
+    // ---- B : 5 agent avatars + 3 skill cards ----
+    var camB=document.getElementById('camB');
+    var AGNAMES=['Manus-1.6','CAMEL-CH','LC-CH','CAMEL-DS','LC-DS'];
+    var avX=[430,860,1290,1720,2150];
+    avX.forEach(function(x,i){
+      var a=document.createElement('div'); a.className='av5'; a.id='av'+i; a.style.left=x+'px';
+      a.innerHTML=ROBOT; camB.appendChild(a);
+      var l=document.createElement('div'); l.className='av5lbl'; l.id='avl'+i; l.style.left=x+'px';
+      l.textContent=AGNAMES[i]; camB.appendChild(l);
+    });
+    var SKILLS=[[DEV,'Blockchain Development'],[SHIELD,'Contract Security'],[COIN,'Tokenomics']];
+    var skX=[590,1290,1990];
+    SKILLS.forEach(function(s,i){
+      var d=document.createElement('div'); d.className='skill'; d.id='sk'+i; d.style.left=skX[i]+'px';
+      d.innerHTML='<div class="hl"></div><div class="si">'+s[0]+'</div><div class="sl">'+s[1]+'</div>';
+      camB.appendChild(d);
+    });
+
+    // ---- C : 5 agents (sorted by Overall desc; Manus leads) ----
+    var AG=[
+      {n:'Manus-1.6', ov:84.7, sec:79.5, lead:true},
+      {n:'CAMEL-CH',  ov:82.6, sec:76.1},
+      {n:'LC-CH',     ov:80.9, sec:75.6},
+      {n:'CAMEL-DS',  ov:79.4, sec:74.3},
+      {n:'LC-DS',     ov:77.8, sec:65.6}
+    ];
+    var AXMIN=60, AXMAX=90, TRACKW=1200, TRACKX=715, ROW0=400, ROWH=140;
+    function w(v){ return TRACKW*(v-AXMIN)/(AXMAX-AXMIN); }
+    var barsG=document.getElementById('bars'), rows=[];
+    AG.forEach(function(a,i){
+      var r=document.createElement('div'); r.className='row'; r.style.top=(ROW0+i*ROWH)+'px';
+      r.innerHTML='<div class="rlbl'+(a.lead?' lead':'')+'">'+a.n+'</div>'+
+                  '<div class="track"><div class="fill"></div></div>'+
+                  '<div class="rval">0.0</div>';
+      barsG.appendChild(r);
+      rows.push({el:r, fill:r.querySelector('.fill'), val:r.querySelector('.rval'), lbl:r.querySelector('.rlbl'), a:a});
+    });
+
+    // ============================ TIMELINE (aligned to voice SRT, ~25.3s) ============================
+    var tl=gsap.timeline({paused:true, defaults:{ease:"power3.out"}});
+
+    /* ===== A (0–4.8) "AI rarely works alone — it runs as an agent, calling tools" ===== */
+    tl.set('#camA',{scale:1.4, transformOrigin:'1290px 720px'}, 0);
+    tl.set('.tool',{opacity:0, scale:0.6, transformOrigin:'50% 50%'}, 0);
+    tl.fromTo('#agent',{opacity:0,scale:0.5},{opacity:1,scale:1,duration:.7,ease:"back.out(1.6)"}, 0.3);
+    toolEls.forEach(function(el,i){
+      tl.to(el,{opacity:1,scale:1,duration:.55,ease:"back.out(1.6)"}, 2.6+i*0.4);
+      var p=TOOLS[i].path;
+      gsap.set(p,{strokeDasharray:'10 16'});
+      tl.to(p,{opacity:.85,duration:.4}, 2.6+i*0.4);
+      tl.to(p,{strokeDashoffset:-340, duration:1.4, ease:"none", repeat:3}, 2.7+i*0.4);
+    });
+    tl.to('#camA',{scale:0.92, duration:4.4, ease:"power2.inOut"}, 0.3);
+
+    tl.to('#slides',{x:-2580, duration:0.4, ease:"power3.inOut"}, 4.8);
+
+    /* ===== B (4.8–12.5) "five AI agents, each with three real skills: ..." ===== */
+    tl.fromTo('#bHead',{opacity:0,y:-16},{opacity:1,y:0,duration:.5}, 5.1);
+    avX.forEach(function(x,i){
+      tl.fromTo('#av'+i,{opacity:0,scale:.5,y:18},{opacity:1,scale:1,y:0,duration:.55,ease:"back.out(1.6)"}, 5.4+i*0.28);
+      tl.fromTo('#avl'+i,{opacity:0},{opacity:1,duration:.4}, 5.6+i*0.28);
+    });
+    // "each with three real skills:" (~7.0)
+    [0,1,2].forEach(function(i){
+      tl.fromTo('#sk'+i,{opacity:0,scale:.7,y:30},{opacity:1,scale:1,y:0,duration:.5,ease:"back.out(1.5)"}, 7.2+i*0.3);
+    });
+    // each skill lights up white/green as it is named (blockchain dev 8.9, contract security 10.1, tokenomics 11.1)
+    var GRN='#0FA97F', skT=[8.9,10.1,11.1];
+    [0,1,2].forEach(function(i){
+      tl.to('#sk'+i+' .hl',{opacity:1,duration:.4}, skT[i]);
+      tl.to('#sk'+i+' .sl',{color:GRN,duration:.4}, skT[i]);
+      tl.to('#sk'+i+' .si svg',{stroke:GRN,duration:.4}, skT[i]);
+      tl.to('#sk'+i,{scale:1.05,duration:.22,yoyo:true,repeat:1,ease:"back.out(2.2)"}, skT[i]);
+    });
+
+    tl.to('#slides',{x:-5160, duration:0.4, ease:"power3.inOut"}, 12.5);
+
+    /* ===== C (12.5–25.3) the results ===== */
+    tl.set('#camC',{scale:1.0, transformOrigin:'50% 50%'}, 0);
+    tl.fromTo('#bkick',{opacity:0,y:-16},{opacity:1,y:0,duration:.5}, 12.9);
+    // "But no agent ran away with it" — all five race in, Overall (12.7–14.7)
+    rows.forEach(function(r,i){
+      tl.fromTo(r.el,{opacity:0,x:-30},{opacity:1,x:0,duration:.5,ease:"power3.out"}, 13.0+i*0.12);
+      tl.to(r.fill,{width:w(r.a.ov)+'px', duration:1.4, ease:"power2.out"}, 13.3+i*0.12);
+      var o={v:0};
+      tl.to(o,{v:r.a.ov, duration:1.4, ease:"power2.out", onUpdate:function(){r.val.textContent=o.v.toFixed(1);}}, 13.3+i*0.12);
+    });
+    tl.fromTo('#line80',{opacity:0,scaleY:0.55,transformOrigin:'50% 50%'},{opacity:1,scaleY:1,duration:.7,ease:"power2.out"}, 14.4);
+    tl.to('#camC',{scale:1.04, duration:11.0, ease:"power1.inOut"}, 13.4);
+
+    // "tokenomics and security stayed their weakest spots" (16.9–20.3) — switch to Security
+    tl.to('#kmOv',{opacity:0,y:-10,duration:.35}, 17.1);
+    tl.fromTo('#kmSec',{opacity:0,y:10},{opacity:1,y:0,duration:.4}, 17.25);
+    rows.forEach(function(r,i){
+      tl.to(r.fill,{width:w(r.a.sec)+'px', background:'linear-gradient(90deg,#E455B8,#FF7BD0)',
+        boxShadow:'0 0 28px rgba(228,85,184,.5)', duration:1.4, ease:"power2.inOut"}, 17.5+i*0.1);
+      var o={v:r.a.ov};
+      tl.to(o,{v:r.a.sec, duration:1.4, ease:"power2.inOut", onUpdate:function(){r.val.textContent=o.v.toFixed(1);}}, 17.5+i*0.1);
+      tl.to(r.val,{color:'#FF7BD0',duration:.7}, 17.5+i*0.1);
+    });
+    tl.to('#line80 .cap',{color:'#FF7BD0',duration:.5}, 18.2);
+    tl.to('#line80',{boxShadow:'0 0 30px rgba(228,85,184,.65)',duration:.5}, 18.2);
+
+    // "DMind handles agents on real tasks too, and it still tells the strong from the weak" (20.4–25.3)
+    // keep the Security ranking; mark the clear #1 / #5 by colour (no extra text), dim the middle
+    tl.to('#line80',{opacity:.2,duration:.6,ease:"power2.inOut"}, 20.6);
+    rows.forEach(function(r,i){
+      var strong = i===0, weak = i===rows.length-1;
+      if(strong){
+        tl.to(r.fill,{background:'linear-gradient(90deg,#3FD6C6,#6FE6D6)', boxShadow:'0 0 30px rgba(63,214,198,.55)', duration:.8, ease:"power2.inOut"}, 20.7);
+        tl.to(r.val,{color:'#9FF0E6',duration:.6}, 20.7);
+        tl.to(r.lbl,{color:'#9FF0E6',duration:.6}, 20.7);
+      } else if(weak){
+        tl.to(r.lbl,{color:'#FF7BD0',duration:.6}, 20.7);
+      } else {
+        tl.to(r.el,{opacity:.42,duration:.8,ease:"power2.inOut"}, 20.7);
+      }
+    });
+
+    window.__timelines = window.__timelines || {};
+    window.__timelines["root"] = tl;
+
+    var sp=new URLSearchParams(location.search);
+    if(sp.has('seek')){ tl.pause(); tl.time(parseFloat(sp.get('seek'))); }
+    else if(sp.has('autoplay')){ tl.play(0); }
+  })();
+  </script>
+</div>
+</body>
+</html>

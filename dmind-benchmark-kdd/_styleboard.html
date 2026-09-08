@@ -1,0 +1,122 @@
+<!doctype html><html><head><meta charset="utf-8"><title>DMind Video Styleboard</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Poppins',system-ui,sans-serif;background:#0C1142;color:#fff;padding:0 0 60px}
+.world{position:relative;min-height:100vh;padding:48px 56px;
+  background:radial-gradient(120% 90% at 50% 30%, #4B4DFE 0%, #2B2E9E 38%, #161B6A 68%, #0C1142 100%);
+  overflow:hidden}
+.bokeh{position:absolute;border-radius:50%;filter:blur(8px);opacity:.5;pointer-events:none}
+h1{font-weight:600;font-size:30px;letter-spacing:.01em}
+.muted{color:#C5CBF5;font-weight:400;font-size:14px;margin:6px 0 34px}
+h2{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:#C5CBF5;margin:38px 0 16px;font-weight:600}
+.row{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start}
+.sw{width:120px}
+.chip{height:70px;border-radius:12px;border:1px solid rgba(255,255,255,.15)}
+.nm{font-size:12px;font-weight:600;margin-top:8px}
+.hx{font-size:11px;color:#C5CBF5;font-family:ui-monospace,monospace}
+
+/* energy sphere */
+.sphere{width:130px;height:130px;border-radius:50%;
+  background:radial-gradient(circle at 38% 32%, #EAFFFF 0%, #13FBFE 22%, #6DD6CC 55%, #2BB6C8 100%);
+  box-shadow:0 0 60px 12px rgba(109,214,204,.6), 0 0 120px 30px rgba(19,251,254,.25);}
+
+/* glass cards */
+.cards{position:relative;height:230px}
+.card{position:absolute;border-radius:16px;border:1px solid rgba(255,255,255,.22);
+  background:rgba(255,255,255,.10);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  box-shadow:0 20px 60px rgba(0,0,0,.25);padding:16px}
+.card .ln{height:8px;border-radius:4px;background:rgba(255,255,255,.5);margin:7px 0}
+.c1{width:230px;height:150px;left:0;top:40px}
+.c2{width:180px;height:120px;left:200px;top:0;filter:blur(2px);opacity:.85}
+.c3{width:160px;height:130px;left:420px;top:60px;background:linear-gradient(135deg, rgba(63,90,213,.55), rgba(109,214,204,.35))}
+
+/* capsule bars */
+.bars{display:flex;align-items:flex-end;gap:16px;height:230px;padding:18px;border-radius:14px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
+.bar{width:46px;border-radius:24px 24px 8px 8px;background:linear-gradient(180deg,#6DD6CC,#3F5AD5);
+  box-shadow:0 0 24px rgba(109,214,204,.35)}
+.bar.pink{background:linear-gradient(180deg,#B57AFF,#FF5C7A)}
+
+/* icon ring */
+.ring{position:relative;width:260px;height:260px;margin:10px auto}
+.ico{position:absolute;width:58px;height:58px;border-radius:16px;
+  background:linear-gradient(135deg,#3F5AD5,#6DD6CC);box-shadow:0 0 22px rgba(109,214,204,.4);
+  border:1px solid rgba(255,255,255,.25)}
+
+/* dotted globe hint */
+.globe{width:220px;height:220px;border-radius:50%;margin-top:6px;
+  background:radial-gradient(circle at 40% 35%, #3C58E8, #1B2A8E 70%, #121B6A);
+  position:relative;box-shadow:inset -20px -20px 60px rgba(0,0,0,.4);}
+.globe .o{position:absolute;width:30px;height:30px;border-radius:50%;
+  background:radial-gradient(circle at 40% 35%,#EAFFFF,#6DD6CC 60%,transparent);
+  box-shadow:0 0 18px #6DD6CC}
+
+.title-demo{font-weight:600;font-size:40px;letter-spacing:.01em;margin:8px 0}
+.title-demo .em{color:#6DD6CC}
+.sub-demo{color:#C5CBF5;font-size:18px}
+.tag{display:inline-block;margin-top:8px;font-size:12px;color:#C5CBF5;border:1px dashed rgba(255,255,255,.3);
+  border-radius:20px;padding:6px 14px}
+.note{font-size:12px;color:#C5CBF5;margin-top:10px;line-height:1.5}
+</style></head><body>
+<div class="world">
+  <div class="bokeh" style="width:140px;height:140px;background:#6DD6CC;left:6%;top:70%"></div>
+  <div class="bokeh" style="width:90px;height:90px;background:#8DCDFF;left:88%;top:18%"></div>
+  <div class="bokeh" style="width:60px;height:60px;background:#B57AFF;left:70%;top:80%"></div>
+
+  <h1>DMind Benchmark — Video style board</h1>
+  <div class="muted">Immersive blue 3D space · Mint guide sphere · Glass data cards · Poppins · Eased motion | Amoeboids motion reference + DMind brand blue</div>
+
+  <div class="title-demo">Even the strongest model<br><span class="em">could not break 80</span></div>
+  <div class="sub-demo">Poppins · Medium weight · White with mint accents</div>
+  <div class="tag"># Title example (dark scene)</div>
+
+  <h2>Core colors</h2>
+  <div class="row">
+    <div class="sw"><div class="chip" style="background:#3F5AD5"></div><div class="nm">Brand Blue</div><div class="hx">#3F5AD5</div></div>
+    <div class="sw"><div class="chip" style="background:#4B4DFE"></div><div class="nm">BG bright center</div><div class="hx">#4B4DFE</div></div>
+    <div class="sw"><div class="chip" style="background:#121B6A"></div><div class="nm">BG dark edge</div><div class="hx">#121B6A</div></div>
+    <div class="sw"><div class="chip" style="background:#6DD6CC"></div><div class="nm">Mint energy</div><div class="hx">#6DD6CC</div></div>
+    <div class="sw"><div class="chip" style="background:#13FBFE"></div><div class="nm">Cyan highlight</div><div class="hx">#13FBFE</div></div>
+    <div class="sw"><div class="chip" style="background:#34CB66"></div><div class="nm">Green success</div><div class="hx">#34CB66</div></div>
+    <div class="sw"><div class="chip" style="background:#B57AFF"></div><div class="nm">Lilac secondary accent</div><div class="hx">#B57AFF</div></div>
+    <div class="sw"><div class="chip" style="background:#8DCDFF"></div><div class="nm">Sky light blue</div><div class="hx">#8DCDFF</div></div>
+    <div class="sw"><div class="chip" style="background:#FF5C7A"></div><div class="nm">Danger (proposed)</div><div class="hx">#FF5C7A</div></div>
+    <div class="sw"><div class="chip" style="background:#FFB454"></div><div class="nm">Warning (proposed)</div><div class="hx">#FFB454</div></div>
+  </div>
+
+  <h2>Energy sphere · Glass cards · Capsule bars (built with HyperFrames)</h2>
+  <div class="row" style="gap:40px;align-items:center">
+    <div class="sphere"></div>
+    <div class="cards" style="width:600px">
+      <div class="card c1"><div class="ln" style="width:60%"></div><div class="ln" style="width:90%"></div><div class="ln" style="width:75%"></div></div>
+      <div class="card c2"><div class="ln" style="width:70%"></div><div class="ln" style="width:50%"></div></div>
+      <div class="card c3"></div>
+    </div>
+  </div>
+
+  <h2>Bar charts · Icon arrays · Dotted globe</h2>
+  <div class="row" style="gap:40px;align-items:flex-end">
+    <div class="bars">
+      <div class="bar" style="height:70px"></div>
+      <div class="bar pink" style="height:95px"></div>
+      <div class="bar" style="height:120px"></div>
+      <div class="bar" style="height:150px"></div>
+      <div class="bar" style="height:185px"></div>
+      <div class="bar" style="height:205px"></div>
+    </div>
+    <div class="ring" id="ring"></div>
+    <div class="globe" id="globe"></div>
+  </div>
+  <div class="note">All examples above use CSS/HTML, with no rendered 3D assets. They demonstrate the blue space, glass, glow, capsule bars, dotted globe, and icon arrays achievable in HyperFrames. Use pre-rendered PNGs for stronger reflections on true 3D glass spheres or podiums.</div>
+</div>
+<script>
+// icon ring
+var ring=document.getElementById('ring'),N=9,R=110;
+for(var i=0;i<N;i++){var a=(i/N)*Math.PI*2-Math.PI/2;var d=document.createElement('div');d.className='ico';
+ d.style.left=(130+R*Math.cos(a)-29)+'px';d.style.top=(130+R*Math.sin(a)-29)+'px';ring.appendChild(d);}
+// globe orbs
+var g=document.getElementById('globe');[[20,-6],[120,-14],[180,30],[-8,70],[200,90]].forEach(function(p){
+ var o=document.createElement('div');o.className='o';o.style.left=p[0]+'px';o.style.top=p[1]+'px';g.appendChild(o);});
+</script>
+</body></html>

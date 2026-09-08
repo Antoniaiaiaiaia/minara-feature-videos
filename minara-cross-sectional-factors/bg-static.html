@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  html,body{margin:0;padding:0;background:#F9F9F9;}
+  #stage{width:2560px;height:1440px;position:relative;overflow:hidden;background:#F9F9F9;}
+  canvas{display:block;}
+</style>
+</head>
+<body>
+  <div id="stage">
+    <canvas id="c" width="2560" height="1440"></canvas>
+  </div>
+<script>
+// ---- deterministic PRNG ----
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+
+const W=2560,H=1440;            // 2K (QHD) background asset
+const BG='#F9F9F9';            // Background RGB(249,249,249)
+const DARK10='#E0E0E0';        // 10% darker than background RGB(224,224,224)
+const GRID=DARK10;             // Grid
+const CANDLE=DARK10;           // Candles (single gray, no up/down colors)
+const WICK=DARK10;             // Wicks
+
+const ctx=document.getElementById('c').getContext('2d');
+
+function draw(){
+  ctx.fillStyle=BG;ctx.fillRect(0,0,W,H);
+
+  // ---- Grid: medium rectangular cells (160×120) ----
+  ctx.strokeStyle=GRID;ctx.lineWidth=1;
+  const colStep=160, rowStep=120;
+  ctx.beginPath();
+  for(let x=0;x<=W;x+=colStep){ctx.moveTo(x+0.5,0);ctx.lineTo(x+0.5,H);}
+  for(let y=0;y<=H;y+=rowStep){ctx.moveTo(0,y+0.5);ctx.lineTo(W,y+0.5);}
+  ctx.stroke();
+
+  // ---- candlestick series (deterministic) ----
+  const rnd=mulberry32(20260626);
+  const n=72;
+  const left=80,right=2480;
+  const slot=(right-left)/n;
+  const bw=slot*0.5;
+  const chartTop=200, chartBottom=1280;
+
+  // Continuous OHLC random walk: open = previous close; body height follows volatility
+  let candles=[];
+  let close=0.45;
+  for(let i=0;i<n;i++){
+    const t=i/n;
+    // Trend segments: slow rise → pullback → sharp breakout → continued climb
+    let drift, vol;
+    if(t<0.30){ drift=0.004; vol=0.045; }        // Slow climb from the base
+    else if(t<0.46){ drift=-0.007; vol=0.05; }   // Pullback and consolidation
+    else if(t<0.53){ drift=0.052; vol=0.055; }   // Sharp breakout
+    else{ drift=0.017; vol=0.05; }               // Continued climb
+    const open=close;
+    close = open + drift + (rnd()-0.5)*vol*2;
+    const up = close>=open;
+    const body = Math.abs(close-open);
+    // Wicks: random multiples of the body, with occasional long spikes
+    const base = Math.max(body, vol*0.35);
+    const upW = (rnd()*0.55 + (rnd()>0.88?1.1:0)) * base;
+    const dnW = (rnd()*0.55 + (rnd()>0.88?1.1:0)) * base;
+    const hi = Math.max(open,close)+upW;
+    const lo = Math.min(open,close)-dnW;
+    candles.push({o:open,c:close,hi,lo,up});
+  }
+  let min=1e9,max=-1e9;
+  candles.forEach(k=>{min=Math.min(min,k.lo);max=Math.max(max,k.hi);});
+  const pad=(max-min)*0.06; min-=pad; max+=pad;
+  const Y=v=>chartBottom-((v-min)/(max-min))*(chartBottom-chartTop);
+
+  candles.forEach((k,i)=>{
+    const cx=left+slot*i+slot/2;
+    const yO=Y(k.o),yC=Y(k.c),yH=Y(k.hi),yL=Y(k.lo);
+    const bodyTop=Math.min(yO,yC), bodyH=Math.max(3,Math.abs(yC-yO));
+    // wick
+    ctx.strokeStyle=WICK;ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(cx,yH);ctx.lineTo(cx,yL);ctx.stroke();
+    // Bodies: all solid, single gray
+    ctx.fillStyle=CANDLE;ctx.fillRect(cx-bw/2,bodyTop,bw,bodyH);
+  });
+
+  // faint dotted price line at last close
+  const lastY=Y(candles[n-1].c);
+  ctx.strokeStyle=DARK10;ctx.lineWidth=1.5;ctx.setLineDash([3,6]);
+  ctx.beginPath();ctx.moveTo(0,lastY+0.5);ctx.lineTo(W,lastY+0.5);ctx.stroke();
+  ctx.setLineDash([]);
+}
+draw();
+window.__bgDrawn=true;
+</script>
+</body>
+</html>

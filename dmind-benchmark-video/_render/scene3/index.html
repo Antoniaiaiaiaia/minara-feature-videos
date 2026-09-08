@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>DMind — Scene 3 · How We Built It</title>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html,body { width:100%; height:100%; background:#FFFFFF; font-family:'Manrope',system-ui,sans-serif; color:#111221; overflow:hidden; }
+  #root,[data-composition-id="root"]{ width:2560px; height:1440px; position:relative; overflow:hidden; font-family:'Manrope',system-ui,sans-serif;
+    background: radial-gradient(1100px 1100px at 19% 30%, rgba(47,107,255,0.14), transparent 62%), radial-gradient(1050px 1050px at 84% 75%, rgba(16,196,154,0.145), transparent 62%), radial-gradient(820px 820px at 55% 68%, rgba(61,139,255,0.10), transparent 58%), radial-gradient(1900px 1500px at 20% 22%, rgba(47,107,255,0.06), transparent 60%), radial-gradient(1800px 1450px at 82% 84%, rgba(16,196,154,0.07), transparent 60%), #FFFFFF; }
+  .grid-tex{ position:absolute; inset:0; background-image:radial-gradient(rgba(17,18,33,0.05) 1.5px,transparent 1.6px); background-size:62px 62px; opacity:0.3; }
+  
+  
+  
+  
+
+  /* BIG scene title */
+  .kicker{ position:absolute; left:120px; top:92px; font-size:62px; font-weight:800; letter-spacing:-0.025em; color:#111221; z-index:5; line-height:1; }
+  .kicker span{ color:#375BDC; }
+  .kicker small{ display:block; font-size:24px; font-weight:800; letter-spacing:0.18em; text-transform:uppercase; color:#9A9AA4; margin-top:14px; }
+
+  .stage{ position:absolute; inset:0; }
+
+  /* ---- A: pipeline ---- */
+  .src-panel{ position:absolute; left:150px; top:300px; width:620px; }
+  .src-panel .ttl{ font-size:52px; font-weight:800; letter-spacing:-0.02em; margin-bottom:38px; color:#111221; line-height:1.05; }
+  .src-panel .ttl b{ color:#375BDC; font-size:84px; }
+  .dots{ display:grid; grid-template-columns:repeat(8, 1fr); gap:18px; width:480px; }
+  .dot{ width:34px; height:34px; border-radius:10px; }
+  .cube{ position:absolute; right:300px; top:420px; width:340px; height:300px; border-radius:28px; position:absolute;
+    background:linear-gradient(150deg,#6E8BF2,#375BDC); border:1.5px solid #E1E6F7;
+    box-shadow:0 30px 80px rgba(55,91,220,0.30); display:flex; flex-direction:column; align-items:center; justify-content:center; color:#fff; }
+  .cube .veil{ position:absolute; inset:0; background:#FFFFFF; border-radius:27px; z-index:1; }
+  .cube .big{ font-size:96px; font-weight:800; letter-spacing:-0.03em; font-variant-numeric:tabular-nums; line-height:1; position:relative; z-index:2; }
+  .cube .unit{ font-size:30px; font-weight:700; opacity:0.9; margin-top:6px; letter-spacing:0.08em; position:relative; z-index:2; }
+  .funnel{ position:absolute; inset:0; pointer-events:none; }
+
+  /* ---- B: experts ---- */
+  .exp-row{ position:absolute; left:150px; top:430px; display:flex; gap:34px; }
+  .exp{ width:150px; text-align:center; }
+  .exp .av{ width:150px; height:150px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:74px; position:relative; }
+  .exp .badge{ position:absolute; bottom:-6px; right:-6px; background:#375BDC; color:#fff; font-size:18px; font-weight:800; padding:6px 12px; border-radius:20px; box-shadow:0 8px 20px rgba(55,91,220,0.4); }
+  .exp .nm{ margin-top:16px; font-size:21px; font-weight:700; color:#5A5C6B; }
+  .arrow{ position:absolute; left:1080px; top:500px; font-size:80px; color:#CFC3F5; font-weight:800; }
+  .qcount{ position:absolute; right:170px; top:420px; text-align:right; width:560px; }
+  .qcount .big{ font-size:150px; font-weight:800; color:#375BDC; letter-spacing:-0.04em; font-variant-numeric:tabular-nums; line-height:0.95; }
+  .qcount .cap{ font-size:34px; font-weight:800; color:#111221; margin-top:6px; }
+  .qfly{ position:absolute; width:54px; height:66px; border-radius:8px; background:#fff; border:1px solid #EDEDED; box-shadow:0 10px 24px rgba(17,18,33,0.10); display:flex; align-items:center; justify-content:center; font-size:30px; }
+
+  /* ---- C: question types ---- */
+  .qt{ position:absolute; top:330px; width:760px; border-radius:24px; background:#fff; border:1px solid #EDEDED; box-shadow:0 22px 60px rgba(17,18,33,0.09); padding:38px 42px; overflow:hidden; }
+  .qt .tag{ display:inline-block; font-size:20px; font-weight:800; letter-spacing:0.1em; text-transform:uppercase; padding:7px 16px; border-radius:20px; margin-bottom:24px; }
+  #qtMC{ left:150px; } #qtMC .tag{ background:#AEDBF5; color:#1f6aa0; }
+  #qtOpen{ right:150px; } #qtOpen .tag{ background:#FFD3B6; color:#b5611f; }
+  .qt h3{ font-size:36px; font-weight:800; margin-bottom:24px; letter-spacing:-0.01em; }
+  .opt{ display:flex; align-items:center; gap:18px; padding:18px 22px; border:2px solid #EDEDED; border-radius:14px; margin-bottom:16px; font-size:26px; font-weight:600; color:#5A5C6B; position:relative; }
+  .opt .k{ width:40px; height:40px; border-radius:10px; background:#FAFAFA; display:flex; align-items:center; justify-content:center; font-weight:800; color:#9A9AA4; }
+  .opt.sel{ border-color:#27B98A; background:rgba(168,230,207,0.20); color:#111221; }
+  .opt.sel .k{ background:#27B98A; color:#fff; }
+  .mc-check{ position:absolute; right:20px; width:42px; height:42px; border-radius:50%; background:#27B98A; color:#fff; display:flex; align-items:center; justify-content:center; font-size:24px; font-weight:800; }
+  .ocode{ font-family:'JetBrains Mono',monospace; font-size:23px; line-height:1.85; color:#5A5C6B; white-space:pre; position:relative; }
+  .ocode .ln{ display:block; padding:2px 0; }
+  .ocode .ln.found{ background:rgba(240,86,107,0.12); color:#F0566B; font-weight:700; border-left:4px solid #F0566B; padding-left:14px; margin-left:-14px; }
+  .vuln-tag{ position:absolute; right:0; background:#F0566B; color:#fff; font-family:'Manrope'; font-weight:800; font-size:15px; letter-spacing:0.05em; padding:5px 12px; border-radius:8px; }
+  .scanline{ position:absolute; left:-42px; right:-42px; height:4px; background:linear-gradient(90deg,transparent,#375BDC 30%,#375BDC 70%,transparent); box-shadow:0 0 18px rgba(55,91,220,0.7); }
+
+  /* ---- D: integrity ---- */
+  .integ{ position:absolute; left:50%; top:300px; transform:translateX(-50%); text-align:center; }
+  .shield{ font-size:130px; margin-bottom:24px; }
+  .integ h2{ font-size:48px; font-weight:800; letter-spacing:-0.02em; white-space:nowrap; }
+  .integ h2 b{ color:#375BDC; }
+  .chips{ position:absolute; left:50%; bottom:200px; transform:translateX(-50%); display:flex; gap:30px; }
+  .chip{ display:flex; align-items:center; gap:16px; padding:24px 38px; border-radius:60px; background:#fff; border:1px solid #EDEDED; box-shadow:0 18px 50px rgba(17,18,33,0.08); font-size:30px; font-weight:800; }
+  .chip .cd{ width:46px; height:46px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:26px; }
+  #chip1 .cd{ background:#A8E6CF; } #chip2 .cd{ background:#FBC4DD; } #chip3 .cd{ background:#FCE7A0; }
+  .__scaler{ position:absolute; left:0; top:0; width:1920px; height:1080px; transform:scale(1.3333333); transform-origin:top left; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="root" data-width="2560" data-height="1440" data-start="0" data-duration="17.6">
+<div class="__scaler">
+  <div class="grid-tex"></div>
+  
+
+  <!-- STAGE A -->
+  <div class="stage" id="stA">
+    <div class="src-panel">
+      <div class="ttl"><b id="srcNum">0</b> Trusted Sources</div>
+      <div class="dots" id="dots"></div>
+    </div>
+    <svg class="funnel" id="funnel" viewBox="0 0 1920 1080" preserveAspectRatio="none">
+      <path id="fnl" d="M680 490 L1180 560 M680 630 L1180 560" stroke="#CFC3F5" stroke-width="3" fill="none" stroke-dasharray="6 10"/>
+    </svg>
+    <div class="cube" id="cube"><div class="veil" id="cubeVeil"></div><div class="big"><span id="gbNum">0.0</span></div><div class="unit">GIGABYTES</div></div>
+  </div>
+
+  <!-- STAGE B -->
+  <div class="stage" id="stB">
+    <div class="exp-row" id="expRow">
+      <div class="exp"><div class="av" style="background:#AEDBF5">🧑‍💻<div class="badge">9 yrs</div></div><div class="nm">Expert</div></div>
+      <div class="exp"><div class="av" style="background:#A8E6CF">👩‍🔬<div class="badge">7 yrs</div></div><div class="nm">Expert</div></div>
+      <div class="exp"><div class="av" style="background:#FFD3B6">🧑‍🏫<div class="badge">12 yrs</div></div><div class="nm">Expert</div></div>
+      <div class="exp"><div class="av" style="background:#FBC4DD">👨‍💼<div class="badge">6 yrs</div></div><div class="nm">Expert</div></div>
+      <div class="exp"><div class="av" style="background:#CFC3F5">🧑‍🚀<div class="badge">10 yrs</div></div><div class="nm">Expert</div></div>
+    </div>
+    <div class="arrow" id="arrow">→</div>
+    <div class="qcount"><div class="big" id="qNum">0</div><div class="cap">expert-written questions</div></div>
+    <div class="qfly" id="qfly1">📄</div><div class="qfly" id="qfly2">📄</div><div class="qfly" id="qfly3">📄</div>
+  </div>
+
+  <!-- STAGE C -->
+  <div class="stage" id="stC">
+    <div class="qt" id="qtMC">
+      <span class="tag">Multiple choice</span>
+      <h3>Which pattern is reentrancy-safe?</h3>
+      <div class="opt" id="mcA"><span class="k">A</span> External call before state update</div>
+      <div class="opt" id="mcCorrect"><span class="k">B</span> Checks-effects-interactions<span class="mc-check" id="mcCheck">✓</span></div>
+      <div class="opt" id="mcC"><span class="k">C</span> Unbounded loop on user input</div>
+    </div>
+    <div class="qt" id="qtOpen">
+      <span class="tag">Open-ended</span>
+      <h3>Audit this live contract</h3>
+      <div class="ocode"><span class="ln">function claim() external {</span><span class="ln">  uint r = rewards[msg.sender];</span><span class="ln" id="openVuln">  (bool s,) = msg.sender.call{value:r}("");<span class="vuln-tag" id="vulnTag">⚠ REENTRANCY</span></span><span class="ln">  rewards[msg.sender] = 0;</span><span class="ln">}</span></div>
+      <div class="scanline" id="scanline"></div>
+    </div>
+  </div>
+
+  <!-- STAGE D -->
+  <div class="stage" id="stD">
+    <div class="integ" id="integ">
+      <div class="shield">🛡️</div>
+      <h2>Every question <b>traceable</b> &amp; leak-checked</h2>
+    </div>
+    <div class="chips">
+      <div class="chip" id="chip1"><span class="cd">✓</span>Traceable</div>
+      <div class="chip" id="chip2"><span class="cd">🧪</span>Contamination check</div>
+      <div class="chip" id="chip3"><span class="cd">🔀</span>Option randomization</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+  function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+  const rnd=mulberry32(391);
+  const DUR=21; const tl=gsap.timeline({paused:true, defaults:{ease:'power3.out', duration:0.6}});
+  const tints=['#AEDBF5','#A8E6CF','#FFD3B6','#FBC4DD','#CFC3F5','#FCE7A0'];
+
+  const dotsEl=document.getElementById('dots');
+  for(let i=0;i<39;i++){ const d=document.createElement('div'); d.className='dot'; d.style.background=tints[i%tints.length]; dotsEl.appendChild(d); }
+  const dots=Array.from(document.querySelectorAll('.dot'));
+
+  document.querySelectorAll(".orb-static").forEach(o=>{const dx=rnd()*90-45,dy=rnd()*90-45,c=6+rnd()*3; gsap.to(o,{x:dx,y:dy,duration:c,ease:'sine.inOut',yoyo:true,repeat:Math.ceil(DUR/c)});});
+  gsap.set(['#stB','#stC','#stD'],{opacity:0});
+  gsap.set(dots,{scale:0,opacity:0});
+  gsap.set('#cube',{scale:0.45,opacity:0});
+  gsap.set('#cubeVeil',{opacity:1});
+  gsap.set('#fnl',{opacity:0});
+  gsap.set('.exp',{scale:0.6,opacity:0,y:24});
+  gsap.set('#arrow',{opacity:0,x:-20});
+  gsap.set('.qcount',{opacity:0,x:30});
+  gsap.set(['#qfly1','#qfly2','#qfly3'],{opacity:0});
+  gsap.set(['#qtMC','#qtOpen'],{opacity:0,y:30});
+  gsap.set('.opt',{opacity:0,x:-20});
+  gsap.set('#mcCheck',{scale:0,opacity:0});
+  gsap.set('#vulnTag',{scale:0,opacity:0});
+  gsap.set('#scanline',{autoAlpha:0,top:'120px',y:0});
+  gsap.set('#integ',{opacity:0,y:30});
+  gsap.set('.chip',{scale:0.6,opacity:0,y:24});
+
+  /* === STAGE A (0.2 – 4.8) pipeline: cube fades in EMPTY then grows + fills blue === */
+  tl.to('#cube',{opacity:1,duration:0.5,ease:'power2.out'},0.6);
+  tl.to('#fnl',{opacity:1,duration:0.5,ease:'power2.out'},1.0);
+  tl.to(dots,{scale:1,opacity:1,duration:0.5,ease:'back.out(1.8)',stagger:{each:0.03,from:'random'}},0.9);
+  const srcObj={v:0}, gbObj={v:0};
+  tl.to(srcObj,{v:39,duration:1.3,ease:'power2.out',onUpdate(){document.getElementById('srcNum').textContent=Math.round(srcObj.v);}},1.1);
+  // dots flow into cube
+  dots.forEach((d,i)=>{ tl.to(d,{x:'+=720',y:(rnd()*40-20),scale:0.3,opacity:0,duration:0.7,ease:'power2.in'}, 2.6+(i%8)*0.03); });
+  // cube grows + blue fills in as data accumulates
+  tl.to('#cube',{scale:1,duration:1.9,ease:'power2.out'},2.4);
+  tl.to('#cubeVeil',{opacity:0,duration:1.7,ease:'power2.inOut'},2.7);
+  tl.to(gbObj,{v:6.1,duration:1.6,ease:'power2.out',onUpdate(){document.getElementById('gbNum').textContent=gbObj.v.toFixed(1);}},2.7);
+  tl.to('#cube',{scale:1.05,duration:0.45,ease:'sine.inOut',yoyo:true,repeat:1},4.4);
+
+  /* A → B (≈4.7) */
+  tl.to('#stA',{opacity:0,y:-30,duration:0.5,ease:'power2.in'},4.7);
+
+  /* === STAGE B (5.0 – 9.4) === */
+  tl.to('#stB',{opacity:1,duration:0.2},5.0);
+  tl.to('.exp',{scale:1,opacity:1,y:0,duration:0.55,ease:'back.out(1.7)',stagger:0.13},5.1);
+  tl.to('#arrow',{opacity:1,x:0,duration:0.5,ease:'power3.out'},6.0);
+  tl.to('.qcount',{opacity:1,x:0,duration:0.6,ease:'power3.out'},6.2);
+  const qObj={v:0};
+  tl.to(qObj,{v:3543,duration:1.8,ease:'power2.out',onUpdate(){document.getElementById('qNum').textContent=Math.round(qObj.v).toLocaleString('en-US');}},6.4);
+  // question cards fly from experts → counter (motion feedback)
+  ['#qfly1','#qfly2','#qfly3'].forEach((q,i)=>{
+    gsap.set(q,{left:(260+i*120)+'px',top:'470px',x:0,y:0});
+    tl.to(q,{autoAlpha:1,duration:0.2},6.4+i*0.25);
+    tl.to(q,{x:(1500-(260+i*120)),y:(i*30-30),autoAlpha:0,scale:0.5,duration:1.0,ease:'power2.in'},6.5+i*0.25);
+  });
+  tl.to('.qcount .big',{scale:1.05,duration:0.5,ease:'back.out(2)',yoyo:true,repeat:1},8.3);
+
+  /* B → C (≈9.2) */
+  tl.to('#stB',{opacity:0,y:-30,duration:0.5,ease:'power2.in'},9.0);
+
+  /* === STAGE C (9.5 – 15.4) richer motion === */
+  tl.to('#stC',{opacity:1,duration:0.2},9.2);
+  tl.to('#qtMC',{opacity:1,y:0,duration:0.6,ease:'power3.out'},9.3);
+  tl.to('#qtOpen',{opacity:1,y:0,duration:0.6,ease:'power3.out'},9.55);
+  // MC options stagger in, then B gets SELECTED (green + check)
+  tl.to('#qtMC .opt',{opacity:1,x:0,duration:0.4,ease:'power2.out',stagger:0.18},9.9);
+  tl.add(()=>{document.getElementById('mcCorrect').classList.add('sel');},10.8);
+  tl.fromTo('#mcCorrect',{scale:0.97},{scale:1,duration:0.5,ease:'back.out(2)'},10.8);
+  tl.to('#mcCheck',{scale:1,opacity:1,duration:0.5,ease:'back.out(2.2)'},10.95);
+  // open-ended: scan line sweeps, detects the vuln line
+  tl.to('#qtOpen .ocode .ln',{opacity:1,duration:0.01},9.9); // ensure visible
+  tl.to('#scanline',{autoAlpha:1,duration:0.2,ease:'power2.out'},10.3);
+  tl.to('#scanline',{y:210,duration:1.2,ease:'power1.inOut'},10.4);
+  tl.add(()=>{document.getElementById('openVuln').classList.add('found');},11.4);
+  tl.to('#vulnTag',{scale:1,opacity:1,duration:0.5,ease:'back.out(2)'},11.4);
+  tl.to('#openVuln',{x:6,duration:0.07,ease:'power1.inOut',yoyo:true,repeat:5},11.4);
+  tl.to('#scanline',{opacity:0,duration:0.3,ease:'power2.in'},11.9);
+
+  /* C → D (≈15.2) */
+  tl.to('#stC',{opacity:0,y:-30,duration:0.5,ease:'power2.in'},12.4);
+
+  /* === STAGE D (15.6 – 21) === */
+  tl.to('#stD',{opacity:1,duration:0.2},12.6);
+  tl.to('#integ',{opacity:1,y:0,duration:0.7,ease:'power3.out'},12.7);
+  tl.fromTo('.shield',{scale:0.5,rotation:-12},{scale:1,rotation:0,duration:0.8,ease:'back.out(1.8)'},12.8);
+  tl.to('.chip',{scale:1,opacity:1,y:0,duration:0.6,ease:'back.out(1.7)',stagger:0.16},13.3);
+  tl.to('#chip1 .cd',{scale:1.2,duration:0.4,ease:'back.out(2)',yoyo:true,repeat:1},14.0);
+
+  tl.to({},{duration:0.3},17.4);
+  window.__timelines=window.__timelines||{};
+  window.__timelines["root"]=tl;
+</script>
+</body>
+</html>

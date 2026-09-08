@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate"/>
+<meta http-equiv="Pragma" content="no-cache"/>
+<title>DMind Benchmark Video — Preview</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#0d0e16;font-family:'Manrope',system-ui,sans-serif;color:#fff;height:100vh;overflow:hidden;display:flex;flex-direction:column;}
+  .bar{height:64px;flex:0 0 auto;display:flex;align-items:center;gap:10px;padding:0 22px;background:#15161f;border-bottom:1px solid #262735;}
+  .bar .title{font-weight:800;font-size:17px;margin-right:14px;letter-spacing:-0.01em;}
+  .bar .title b{color:#6E8BF2;}
+  button{font-family:inherit;font-weight:700;font-size:14px;border:none;border-radius:9px;padding:9px 16px;cursor:pointer;background:#262735;color:#cfd0db;transition:all .15s;}
+  button:hover{background:#33344a;color:#fff;}
+  button.act{background:#375BDC;color:#fff;}
+  button.play{background:#27B98A;color:#fff;}
+  .sp{flex:1;}
+  .clock{font-variant-numeric:tabular-nums;color:#8a8b99;font-size:14px;font-weight:600;}
+  .stage-wrap{flex:1;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 40%, #1a1b27, #0d0e16);}
+  .scaler{box-shadow:0 30px 100px rgba(0,0,0,.6);border-radius:6px;overflow:hidden;background:#fff;}
+  iframe{width:2560px;height:1440px;border:none;display:block;transform-origin:top left;}
+</style>
+</head>
+<body>
+  <div class="bar">
+    <span class="title"><b>DMind</b> Benchmark · 2-min video</span>
+    <button class="play" id="playAll">▶ Play All (0:00–2:00)</button>
+    <button id="reset">↺ Reset</button>
+    <span style="width:14px"></span>
+    <button class="sc act" data-i="0">1 · Problem</button>
+    <button class="sc" data-i="1">2 · DMind</button>
+    <button class="sc" data-i="2">3 · Built</button>
+    <button class="sc" data-i="3">4 · Models</button>
+    <button class="sc" data-i="4">5 · Agents</button>
+    <button class="sc" data-i="5">6 · No-cram</button>
+    <button class="sc" data-i="6">7 · Close</button>
+    <span class="sp"></span>
+    <span class="clock" id="clock">— / —</span>
+  </div>
+  <div class="stage-wrap">
+    <div class="scaler" id="scaler"><iframe id="frame" src="scene1.html"></iframe></div>
+  </div>
+
+<script>
+  const scenes=[{f:'scene1.html',d:13},{f:'scene2.html',d:16},{f:'scene3.html',d:21},{f:'scene4.html',d:20},{f:'scene5.html',d:24},{f:'scene6.html',d:12},{f:'scene7.html',d:14}];
+  let cur=0, playingAll=false;
+  const frame=document.getElementById('frame');
+  const clock=document.getElementById('clock');
+  const scaler=document.getElementById('scaler');
+
+  function fit(){
+    const w=window.innerWidth, h=window.innerHeight-64;
+    const s=Math.min(w/2560,h/1440)*0.96;
+    frame.style.transform='scale('+s+')';
+    scaler.style.width=(2560*s)+'px';
+    scaler.style.height=(1440*s)+'px';
+  }
+  window.addEventListener('resize',fit); fit();
+
+  function tlOf(){ try{return frame.contentWindow.__timelines && frame.contentWindow.__timelines.root;}catch(e){return null;} }
+  function waitTl(cb){ let n=0; const iv=setInterval(()=>{const tl=tlOf(); if(tl||n++>60){clearInterval(iv);cb(tl);}},100); }
+
+  let ticker=null;
+  function startClock(tl){
+    clearInterval(ticker);
+    ticker=setInterval(()=>{ if(!tl)return; clock.textContent=tl.time().toFixed(1)+'s / '+scenes[cur].d+'s'; },80);
+  }
+
+  function load(i,then){
+    cur=i;
+    document.querySelectorAll('.sc').forEach((b,j)=>b.classList.toggle('act',j===i));
+    frame.src=scenes[i].f+'?v='+Date.now();
+    frame.onload=()=>waitTl(tl=>{ if(tl){tl.pause();tl.time(0);startClock(tl);} then&&then(tl); });
+  }
+
+  document.querySelectorAll('.sc').forEach(b=>b.onclick=()=>{playingAll=false;load(+b.dataset.i,tl=>tl&&tl.restart());});
+  document.getElementById('reset').onclick=()=>{const tl=tlOf();if(tl){tl.pause();tl.time(0);}playingAll=false;};
+  document.getElementById('playAll').onclick=()=>{
+    playingAll=true;
+    const chain=(i)=>{ if(!playingAll||i>=scenes.length)return; load(i,tl=>{ if(!tl)return; tl.eventCallback('onComplete',()=>{ if(playingAll) chain(i+1); }); tl.restart(); }); };
+    chain(0);
+  };
+  // initial
+  frame.onload=()=>waitTl(tl=>{if(tl){tl.pause();tl.time(0);startClock(tl);tl.restart();}});
+</script>
+</body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>DMind — Scene 1 · The Problem</title>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    width: 100%; height: 100%;
+    background: #FFFFFF;
+    font-family: 'Manrope', system-ui, -apple-system, sans-serif;
+    color: #111221;
+    overflow: hidden;
+  }
+  #root, [data-composition-id="root"] {
+    width:2560px; height:1440px;
+    position: relative;
+    background: radial-gradient(1100px 1100px at 19% 30%, rgba(47,107,255,0.14), transparent 62%), radial-gradient(1050px 1050px at 84% 75%, rgba(16,196,154,0.145), transparent 62%), radial-gradient(820px 820px at 55% 68%, rgba(61,139,255,0.10), transparent 58%), radial-gradient(1900px 1500px at 20% 22%, rgba(47,107,255,0.06), transparent 60%), radial-gradient(1800px 1450px at 82% 84%, rgba(16,196,154,0.07), transparent 60%), #FFFFFF;
+    overflow: hidden;
+    font-family: 'Manrope', system-ui, sans-serif;
+  }
+  .grid-tex { position: absolute; inset: 0; background-image: radial-gradient(rgba(17,18,33,0.05) 1.5px, transparent 1.6px); background-size: 46px 46px; opacity: 0.6; }
+  .orb { position: absolute; border-radius: 50%; filter: blur(46px); opacity: 0.5; }
+  .orb.a { width: 420px; height: 420px; left: -90px; top: -70px; background: #CFC3F5; }
+  .orb.b { width: 520px; height: 520px; right: -120px; top: 40px; background: #AEDBF5; }
+  .orb.c { width: 380px; height: 380px; left: 30%; bottom: -140px; background: #FCE7A0; }
+  .orb.d { width: 300px; height: 300px; right: 24%; bottom: 60px; background: #FBC4DD; }
+  .coral-vignette { position: absolute; inset: 0; pointer-events: none; box-shadow: inset 0 0 240px 40px rgba(240,86,107,0.16); }
+
+  /* ===== SHOT 1 : centered loss + constellation of CODE cards ===== */
+  .stage1 { position:absolute; inset:0; }
+  .loss { position: absolute; left: 50%; top: 410px; transform: translateX(-50%); width: 1180px; text-align: center; z-index: 10; }
+  .loss .num { font-size: 150px; font-weight: 800; color: #F0566B; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; line-height: 1; text-shadow: 0 18px 60px rgba(240,86,107,0.30); }
+  .loss .cap { margin-top: 18px; font-size: 26px; font-weight: 800; letter-spacing: 0.22em; color: #5A5C6B; text-transform: uppercase; }
+
+  .tx-card { position: absolute; left: 80px; top: 120px; width: 470px; height: 560px; background: rgba(255,255,255,0.82); border: 1px solid #EDEDED; border-radius: 22px; box-shadow: 0 24px 70px rgba(17,18,33,0.08); overflow: hidden; backdrop-filter: blur(6px); }
+  .tx-head { padding: 24px 28px 14px; display:flex; align-items:center; gap:12px; }
+  .tx-dot { width: 11px; height: 11px; border-radius: 50%; background: #27B98A; box-shadow: 0 0 0 5px rgba(168,230,207,0.4); }
+  .tx-head .lbl { font-size: 19px; font-weight: 800; letter-spacing: 0.14em; color: #5A5C6B; text-transform: uppercase; }
+  .tx-list-mask { position:absolute; left:0; right:0; top: 80px; bottom:0; overflow:hidden; -webkit-mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 84%, transparent); }
+  .tx-list { position: absolute; left: 28px; right: 28px; top: 0; }
+  .tx-row { display:flex; justify-content:space-between; align-items:center; padding: 16px 0; border-bottom: 1px solid #F2F2F4; font-family: 'JetBrains Mono', monospace; }
+  .tx-hash { font-size: 19px; color: #9A9AA4; font-weight: 500; }
+  .tx-amt { font-size: 20px; font-weight: 700; color: #111221; font-variant-numeric: tabular-nums; }
+  .tx-amt.bad { color: #F0566B; }
+
+  .code-card { position: absolute; left: 1110px; top: 110px; width: 730px; background: #FAFAFA; border: 1px solid #EDEDED; border-radius: 22px; box-shadow: 0 24px 70px rgba(17,18,33,0.08); padding: 28px 0 32px; overflow: hidden; }
+  .code-top { display:flex; gap:9px; padding: 0 30px 20px; }
+  .code-top i { width: 13px; height:13px; border-radius:50%; display:inline-block; }
+  .code-top i:nth-child(1){background:#FFB3BA;} .code-top i:nth-child(2){background:#FCE7A0;} .code-top i:nth-child(3){background:#A8E6CF;}
+  .code-line { font-family: 'JetBrains Mono', monospace; font-size: 25px; line-height: 1.9; padding: 0 32px; white-space: pre; color: #5A5C6B; }
+  .code-line .kw { color: #7B6BE6; font-weight: 700; } .code-line .fn { color: #2E8FD6; } .code-line .num { color: #E5B528; }
+  .code-line.danger { background: rgba(240,86,107,0.12); color: #F0566B; font-weight: 700; border-left: 4px solid #F0566B; position: relative; }
+  .code-line.danger .tag { position: absolute; right: 24px; top: 50%; transform: translateY(-50%); background: #F0566B; color: #fff; font-family:'Manrope'; font-weight:800; font-size: 15px; letter-spacing: 0.06em; padding: 5px 11px; border-radius: 8px; }
+
+  /* mini CODE cards — same window style as the big code card */
+  .mini { position: absolute; width: 432px; background:#FAFAFA; border:1px solid #EDEDED; border-radius:18px; box-shadow:0 20px 56px rgba(17,18,33,0.10); padding: 18px 0 20px; overflow:hidden; }
+  .mini .bar { display:flex; gap:8px; padding:0 22px 14px; }
+  .mini .bar i { width:11px; height:11px; border-radius:50%; }
+  .mini .bar i:nth-child(1){background:#FFB3BA;} .mini .bar i:nth-child(2){background:#FCE7A0;} .mini .bar i:nth-child(3){background:#A8E6CF;}
+  .mini .cl { font-family:'JetBrains Mono',monospace; font-size:18px; line-height:1.74; padding:0 24px; white-space:pre; color:#5A5C6B; }
+  .mini .cl .kw{color:#7B6BE6;font-weight:700;} .mini .cl .fn{color:#2E8FD6;} .mini .cl .num{color:#E5B528;} .mini .cl .cm{color:#bdbdc4;}
+  .mini .cl.bad { background:rgba(240,86,107,0.12); color:#F0566B; font-weight:700; border-left:4px solid #F0566B; position:relative; }
+  .mini .cl.bad .t { position:absolute; right:14px; top:50%; transform:translateY(-50%); background:#F0566B; color:#fff; font-family:'Manrope'; font-weight:800; font-size:11px; letter-spacing:0.04em; padding:3px 8px; border-radius:6px; }
+  #m1 { left: 80px; top: 740px; } #m2 { left: 545px; top: 838px; } #m3 { left: 1010px; top: 842px; }
+  #m4 { left: 1456px; top: 512px; } #m5 { left: 1456px; top: 770px; }
+
+  /* ===== SHOT 2 ===== */
+  .stage2 { position: absolute; inset: 0; }
+  .ai-node { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 230px; height: 230px; border-radius: 50%; background: radial-gradient(circle at 38% 32%, #6E8BF2, #375BDC 70%); box-shadow: 0 0 0 14px rgba(55,91,220,0.10), 0 0 70px rgba(55,91,220,0.45), 0 30px 70px rgba(17,18,33,0.18); display:flex; align-items:center; justify-content:center; }
+  .ai-node .ai-glyph { width: 120px; height: 120px; opacity: 0.97; }
+  .ai-ring { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width: 230px; height:230px; border-radius:50%; border: 2px dashed rgba(55,91,220,0.4); }
+  .connector { position: absolute; inset: 0; pointer-events: none; }
+  .connector path { fill: none; stroke-width: 3; stroke-linecap: round; }
+  .cap-card { position: absolute; width: 320px; border-radius: 20px; padding: 30px 30px 32px; background: #fff; border: 1px solid #EDEDED; box-shadow: 0 22px 60px rgba(17,18,33,0.10); }
+  .cap-card .ic { width: 72px; height: 72px; border-radius: 18px; display:flex; align-items:center; justify-content:center; font-size: 38px; margin-bottom: 20px; }
+  .cap-card h3 { font-size: 33px; font-weight: 800; letter-spacing: -0.01em; color: #111221; }
+  .cap-card p { font-size: 21px; font-weight: 500; color: #5A5C6B; margin-top: 8px; line-height: 1.4; }
+  #cap1 { left: 150px; top: 360px; } #cap1 .ic { background: #AEDBF5; }
+  #cap2 { right: 150px; top: 250px; } #cap2 .ic { background: #A8E6CF; }
+  #cap3 { right: 220px; bottom: 230px; } #cap3 .ic { background: #FFD3B6; }
+
+  /* ===== SHOT 3 : ? + brain + floating asset bubbles ===== */
+  .qmark { position: absolute; left: 50%; top: 30%; transform: translate(-50%,-50%); font-size: 280px; font-weight: 800; line-height: 1; background: linear-gradient(135deg, #375BDC, #7B6BE6); -webkit-background-clip: text; background-clip: text; color: transparent; z-index: 6; }
+  .bub { position:absolute; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:800; color:#fff; box-shadow:0 16px 44px rgba(17,18,33,0.14); letter-spacing:-0.01em; }
+  .__scaler{ position:absolute; left:0; top:0; width:1920px; height:1080px; transform:scale(1.3333333); transform-origin:top left; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="root" data-width="2560" data-height="1440" data-start="0" data-duration="15.63">
+<div class="__scaler">
+  <div class="grid-tex"></div>
+
+  
+  
+  
+
+  <!-- SHOT 1 -->
+  <div class="stage1" id="stage1">
+    <div class="tx-card" id="txCard">
+      <div class="tx-head"><span class="tx-dot"></span><span class="lbl">On-chain Activity</span></div>
+      <div class="tx-list-mask">
+        <div class="tx-list" id="txList">
+          <div class="tx-row"><span class="tx-hash">0x7a3f…b2e1</span><span class="tx-amt">2,140 USDC</span></div>
+          <div class="tx-row"><span class="tx-hash">0x91c4…0d8a</span><span class="tx-amt bad">−9,800,000</span></div>
+          <div class="tx-row"><span class="tx-hash">0x2be8…77fc</span><span class="tx-amt">512 ETH</span></div>
+          <div class="tx-row"><span class="tx-hash">0xf04d…a9b3</span><span class="tx-amt bad">−6,250,000</span></div>
+          <div class="tx-row"><span class="tx-hash">0x5c1a…3e90</span><span class="tx-amt">88,400 USDT</span></div>
+          <div class="tx-row"><span class="tx-hash">0xab77…12c6</span><span class="tx-amt bad">−15,950,000</span></div>
+          <div class="tx-row"><span class="tx-hash">0x6d20…ff41</span><span class="tx-amt">1,024 ETH</span></div>
+          <div class="tx-row"><span class="tx-hash">0x3e9b…8a02</span><span class="tx-amt">47,200 USDC</span></div>
+          <div class="tx-row"><span class="tx-hash">0xc8f1…b6d7</span><span class="tx-amt bad">−3,100,000</span></div>
+          <div class="tx-row"><span class="tx-hash">0x10ae…4f53</span><span class="tx-amt">760 ETH</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="code-card" id="codeCard">
+      <div class="code-top"><i></i><i></i><i></i></div>
+      <div class="code-line"><span class="kw">function</span> <span class="fn">withdraw</span>(<span class="num">uint</span> amount) {</div>
+      <div class="code-line">  <span class="kw">require</span>(balance[msg.sender] >= amount);</div>
+      <div class="code-line danger">  (bool ok,) = msg.sender.<span class="fn">call</span>{value: amount}("");<span class="tag">REENTRANCY</span></div>
+      <div class="code-line">  balance[msg.sender] -= amount;  <span style="color:#bdbdc4">// too late</span></div>
+      <div class="code-line">}</div>
+    </div>
+
+    <div class="mini" id="m1"><div class="bar"><i></i><i></i><i></i></div>
+      <div class="cl"><span class="kw">function</span> <span class="fn">claim</span>() {</div>
+      <div class="cl">  <span class="num">uint</span> r = bal[u];</div>
+      <div class="cl bad">  u.call{value: r}("");<span class="t">REENTRANCY</span></div>
+      <div class="cl">  bal[u] = 0;</div>
+      <div class="cl">}</div></div>
+    <div class="mini" id="m2"><div class="bar"><i></i><i></i><i></i></div>
+      <div class="cl"><span class="kw">function</span> <span class="fn">payout</span>() {</div>
+      <div class="cl bad">  to.call(data);<span class="t">UNCHECKED</span></div>
+      <div class="cl">  <span class="kw">emit</span> Paid();</div>
+      <div class="cl">}</div></div>
+    <div class="mini" id="m3"><div class="bar"><i></i><i></i><i></i></div>
+      <div class="cl"><span class="kw">function</span> <span class="fn">admin</span>() {</div>
+      <div class="cl bad">  require(tx.origin==o)<span class="t">TX.ORIGIN</span></div>
+      <div class="cl">  selfdestruct(o);</div>
+      <div class="cl">}</div></div>
+    <div class="mini" id="m4"><div class="bar"><i></i><i></i><i></i></div>
+      <div class="cl"><span class="kw">function</span> <span class="fn">mint</span>(<span class="num">uint</span> a) {</div>
+      <div class="cl bad">  balance[to] += a;<span class="t">OVERFLOW</span></div>
+      <div class="cl">}</div></div>
+    <div class="mini" id="m5"><div class="bar"><i></i><i></i><i></i></div>
+      <div class="cl"><span class="kw">function</span> <span class="fn">upgrade</span>(t) {</div>
+      <div class="cl bad">  t.delegatecall(d);<span class="t">DELEGATECALL</span></div>
+      <div class="cl">}</div></div>
+
+    <div class="loss" id="loss">
+      <div class="num" id="lossNum">−$0</div>
+      <div class="cap">Drained in one exploit</div>
+    </div>
+  </div>
+
+  <!-- SHOT 2 -->
+  <div class="stage2" id="stage2">
+    <svg class="connector" id="conn" viewBox="0 0 1920 1080" preserveAspectRatio="none">
+      <path id="l1" d="M960 540 C 700 510, 540 470, 380 440" stroke="#2E8FD6"/>
+      <path id="l2" d="M960 540 C 1240 520, 1430 430, 1610 360" stroke="#27B98A"/>
+      <path id="l3" d="M960 540 C 1180 640, 1380 720, 1540 760" stroke="#F0894B"/>
+    </svg>
+    <div class="ai-ring" id="aiRing"></div>
+    <div class="ai-node" id="aiNode"><svg class="ai-glyph" viewBox="0 0 24 24" fill="#fff"><path d="M12 2 C 12.5 7, 17 11.5, 22 12 C 17 12.5, 12.5 17, 12 22 C 11.5 17, 7 12.5, 2 12 C 7 11.5, 11.5 7, 12 2 Z"/><path d="M18.7 13.6 C 18.9 16.1, 20.5 17.3, 22.4 17.5 C 20.5 17.7, 18.9 18.9, 18.7 21.4 C 18.5 18.9, 16.9 17.7, 15 17.5 C 16.9 17.3, 18.5 16.1, 18.7 13.6 Z" opacity="0.8"/></svg></div>
+    <div class="cap-card" id="cap1"><div class="ic">🔍</div><h3>Contract Audit</h3><p>Spot the vulnerability</p></div>
+    <div class="cap-card" id="cap2"><div class="ic">⛓️</div><h3>On-chain Data</h3><p>Read the flows</p></div>
+    <div class="cap-card" id="cap3"><div class="ic">📈</div><h3>DeFi Strategy</h3><p>Allocate the capital</p></div>
+  </div>
+
+  <!-- SHOT 3 -->
+  <div class="qmark" id="qmark">?</div>
+  <div id="assets">
+    <div class="bub" id="b1" style="width:300px;height:300px;left:90px;top:50px;background:#F7931A;font-size:66px;">BTC</div>
+    <div class="bub" id="b2" style="width:270px;height:270px;left:525px;top:40px;background:#627EEA;font-size:60px;">ETH</div>
+    <div class="bub" id="b3" style="width:310px;height:310px;left:95px;top:475px;background:linear-gradient(135deg,#9945FF,#14F195);font-size:68px;">SOL</div>
+    <div class="bub" id="b4" style="width:280px;height:280px;left:1540px;top:460px;background:#07B56A;font-size:54px;">HYPE</div>
+    <div class="bub" id="b5" style="width:290px;height:290px;left:495px;top:785px;background:#2775CA;font-size:58px;">USDC</div>
+    <div class="bub" id="b6" style="width:300px;height:300px;left:1550px;top:810px;background:#E5B528;font-size:66px;">XAU</div>
+    <div class="bub" id="b7" style="width:300px;height:300px;left:1540px;top:60px;background:#F0B90B;font-size:66px;">BNB</div>
+    <div class="bub" id="b8" style="width:270px;height:270px;left:85px;top:825px;background:#375BDC;font-size:44px;">T-BILL</div>
+    <div class="bub" id="b9" style="width:270px;height:270px;left:985px;top:845px;background:#7B6BE6;font-size:52px;">REIT</div>
+  </div>
+
+</div>
+</div>
+
+<script>
+  function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+  const rnd = mulberry32(20260625);
+  const DUR = 13;
+  const tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out', duration: 0.6 } });
+
+  document.querySelectorAll(".orb-static").forEach((o,i)=>{
+    const dx=(rnd()*120-60), dy=(rnd()*120-60), cyc=5+rnd()*3;
+    gsap.to(o,{x:dx,y:dy,duration:cyc,ease:'sine.inOut',yoyo:true,repeat:Math.ceil(DUR/cyc)});
+    gsap.to(o,{scale:1.12,duration:cyc*0.8,ease:'sine.inOut',yoyo:true,repeat:Math.ceil(DUR/(cyc*0.8))});
+  });
+  gsap.fromTo('#vig',{opacity:0.5},{opacity:1,duration:1.6,ease:'sine.inOut',yoyo:true,repeat:Math.ceil(5.5/1.6)});
+
+  const minis = ['#m1','#m2','#m3','#m4','#m5'];
+  const minisRot = {'#m1':-3,'#m2':2,'#m3':-2,'#m4':3,'#m5':-2.5};
+  const bubs = ['#b1','#b2','#b3','#b4','#b5','#b6','#b7','#b8','#b9'];
+
+  gsap.set('#txCard',{opacity:0,y:40,rotation:-2,transformOrigin:'50% 50%'});
+  gsap.set('#codeCard',{opacity:0,y:40,rotation:1.5,transformOrigin:'50% 50%'});
+  minis.forEach(m=>gsap.set(m,{opacity:0,scale:0.6,y:24,rotation:minisRot[m],transformOrigin:'50% 50%'}));
+  gsap.set('#loss',{opacity:0,scale:0.7});
+  gsap.set('.code-line',{opacity:0,x:-14});
+  gsap.set('#stage2',{opacity:0});
+  gsap.set(['#aiNode','#aiRing'],{scale:0,opacity:0});
+  gsap.set(['#cap1','#cap2','#cap3'],{scale:0.7,opacity:0,y:20});
+  gsap.set(['#l1','#l2','#l3'],{opacity:0});
+  gsap.set('#qmark',{scale:0.4,opacity:0});
+  bubs.forEach(b=>gsap.set(b,{scale:0,opacity:0,transformOrigin:'50% 50%'}));
+
+  /* === PART A: exploit wall + loss (0 – 5.85) | "In the digital asset space / one flaw can wipe out tens of millions" === */
+  tl.to('#txCard',{opacity:1,y:0,rotation:-2,duration:0.6,ease:'power3.out'},0.1);
+  tl.to('#codeCard',{opacity:1,y:0,rotation:1.5,duration:0.6,ease:'power3.out'},0.25);
+  tl.to('.code-line',{opacity:1,x:0,duration:0.4,ease:'power2.out',stagger:0.1},0.5);
+  minis.forEach((m,i)=>{ tl.to(m,{opacity:1,scale:1,y:0,duration:0.5,ease:'back.out(1.7)'}, 0.6+i*0.12); });
+  tl.to('#loss',{opacity:1,scale:1,duration:0.7,ease:'back.out(1.6)'},0.9);
+  const lossObj={v:0};
+  tl.to(lossObj,{v:32000000,duration:3.3,ease:'power2.out', onUpdate(){ document.getElementById('lossNum').textContent='−$'+Math.round(lossObj.v).toLocaleString('en-US'); }},1.7);
+  tl.to('#loss .num',{scale:1.05,duration:0.45,ease:'sine.inOut',yoyo:true,repeat:1},5.0);
+  minis.forEach((m,i)=>{ const c=2.4+rnd()*1.2; tl.to(m,{y:'+=10',duration:c,ease:'sine.inOut',yoyo:true,repeat:Math.ceil(5/c)}, 1.5+i*0.1); });
+  tl.fromTo('#txList',{y:0},{y:-360,duration:5.4,ease:'none'},0.9);
+  [2.4,3.0,3.7,4.5,5.2].forEach(t=>{
+    tl.to('.code-line.danger',{x:(rnd()*10-5),duration:0.06,ease:'power1.inOut'},t);
+    tl.to('.code-line.danger',{x:0,duration:0.06,ease:'power1.inOut'},t+0.06);
+  });
+
+  /* A → B (≈5.85) | "Today" */
+  tl.to('#stage1',{opacity:0,y:-30,duration:0.5,ease:'power2.in'},5.85);
+  tl.to('#vig',{opacity:0,duration:0.5,ease:'power2.in'},5.85);
+
+  /* === PART B: AI node + 3 capability cards (5.95 – 12.0) | audit 6.5 · on-chain 9.2 · defi 10.6 === */
+  tl.to('#stage2',{opacity:1,duration:0.2},5.95);
+  tl.to('#aiNode',{scale:1,opacity:1,duration:0.7,ease:'back.out(1.7)'},6.0);
+  tl.to('#aiRing',{scale:1,opacity:1,duration:0.7,ease:'power2.out'},6.1);
+  tl.to('#aiRing',{rotation:180,duration:6,ease:'none',transformOrigin:'50% 50%'},6.1);
+  tl.to('#aiNode',{scale:1.05,duration:1.1,ease:'sine.inOut',yoyo:true,repeat:5},6.8);
+  [['#l1','#cap1',6.5],['#l2','#cap2',9.2],['#l3','#cap3',10.6]].forEach((p)=>{
+    tl.to(p[0],{opacity:1,duration:0.4,ease:'power2.out'},p[2]);
+    tl.to(p[1],{scale:1,opacity:1,y:0,duration:0.55,ease:'back.out(1.7)'},p[2]+0.15);
+  });
+
+  /* B → C (≈12.0) */
+  tl.to(['#cap1','#cap2','#cap3'],{scale:0.82,opacity:0,duration:0.5,ease:'power2.in',stagger:0.05},12.0);
+  tl.to(['#l1','#l2','#l3'],{opacity:0,duration:0.4,ease:'power2.in'},12.0);
+  tl.to('#aiNode',{y:60,duration:0.7,ease:'power3.inOut'},12.05);
+  tl.to('#aiRing',{y:60,opacity:0.3,duration:0.7,ease:'power3.inOut'},12.05);
+
+  /* === PART C: ? + asset bubbles (12.5 – 15.6) | "But do these models really understand digital assets?" === */
+  tl.to('#qmark',{scale:1,opacity:1,duration:0.7,ease:'back.out(1.8)'},12.5);
+  tl.to('#aiNode',{rotation:-7,duration:0.5,ease:'sine.inOut',yoyo:true,repeat:3},12.8);
+  bubs.forEach((b,i)=>{
+    const t=12.65+i*0.15;
+    tl.to(b,{scale:1,opacity:1,duration:0.55,ease:'back.out(1.7)'},t);
+    const c=2+rnd()*1.3; tl.to(b,{y:'+=16',duration:c,ease:'sine.inOut',yoyo:true,repeat:Math.ceil(2.5/c)},t+0.4);
+  });
+
+  tl.to({},{duration:0.2},15.5);
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines["root"] = tl;
+</script>
+</body>
+</html>

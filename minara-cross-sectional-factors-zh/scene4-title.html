@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap');
+html,body{margin:0;padding:0;background:#F9F9F9;}
+#root,[data-composition-id="root"]{
+  font-family:'Geist','PingFang SC','Hiragino Sans GB','Noto Sans SC',system-ui,-apple-system,sans-serif;
+  background:#F9F9F9; position:relative; overflow:hidden; width:1920px; height:1080px;
+}
+/* ---- 背景：横移 logo 墙 ---- */
+.camera{position:absolute;inset:0;transform-origin:0 0;will-change:transform;}
+.wall{position:absolute;left:60px;top:101px;
+  display:grid;grid-template-columns:repeat(6,480px);column-gap:36px;row-gap:32px;}
+.pill{width:480px;height:150px;background:#FFFFFF;border:1px solid #ECECEC;border-radius:18px;
+  display:flex;align-items:center;gap:24px;padding:0 38px;box-sizing:border-box;
+  box-shadow:0 4px 18px rgba(20,20,22,0.04);}
+.logo{width:68px;height:68px;border-radius:50%;object-fit:cover;background:#FFFFFF;
+  border:1px solid #EEEEEE;flex:0 0 auto;}
+.tk{font-size:42px;font-weight:700;color:#141416;letter-spacing:-0.01em;white-space:nowrap;}
+/* ---- 中心柔光（保证文字可读，用底色不引入新颜色）---- */
+.scrim{position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 58% 40% at 50% 50%, rgba(249,249,249,0.86), rgba(249,249,249,0) 72%);}
+/* ---- 标题 ---- */
+.txt{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;}
+.title-wrap{display:flex;flex-direction:column;align-items:center;gap:6px;}
+.title-line{font-size:204px;font-weight:700;color:#141416;letter-spacing:0.04em;line-height:1.1;white-space:nowrap;}
+.wch{display:inline-block;will-change:transform;}
+.l2{color:#07B56A;}   /* 可编程收益 绿色 */
+</style>
+</head>
+<body>
+  <div id="root" data-composition-id="root" data-width="1920" data-height="1080" data-start="0" data-duration="5">
+    <div class="camera"><div class="wall" id="wall"></div></div>
+    <div class="scrim"></div>
+    <div class="txt clip" data-start="0" data-duration="5" data-track-index="1">
+      <div class="title-wrap">
+        <div class="title-line l1">顶级股票</div>
+        <div class="title-line l2">可编程收益</div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      const TICK=["NVDA","MU","MRVL","MSFT","SK Hynix","ORCL","GOOGL","SNDK","INTC","DRAM",
+                  "CBRS","CRCL","META","TSLA","PLTR","AAPL","BB","AMD","CRWV","AMZN",
+                  "TSM","LITE","HOOD","MSTR","Samsung","EWY","HIMS","BABA","RKLB","COIN"];
+      const logoFile=t=>t.replace(/\s+/g,'').toUpperCase()+'.png';
+      const wall=document.getElementById('wall');
+      TICK.forEach(t=>{
+        const d=document.createElement('div');d.className='pill';
+        d.innerHTML='<img class="logo" src="assets/logos/'+logoFile(t)+'" crossorigin="anonymous"><span class="tk">'+t+'</span>';
+        wall.appendChild(d);
+      });
+
+      // 把标题拆成逐字 span（用于波浪跳动）
+      document.querySelectorAll('.title-line').forEach(line=>{
+        const txt=line.textContent; line.textContent='';
+        for(const ch of txt){
+          const s=document.createElement('span'); s.className='wch';
+          s.innerHTML = ch===' ' ? '&nbsp;' : ch; line.appendChild(s);
+        }
+      });
+
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused:true });
+      tl.set('.camera', { transformOrigin:'0px 0px', x:0, y:0, scale:1 }, 0);
+      tl.from('.pill', { opacity:0, y:24, scale:0.96, duration:0.5, ease:'power2.out', stagger:0.018 }, 0.1);
+      tl.to('.camera', { x:-1200, duration:4.0, ease:'power1.inOut' }, 1.0);
+      // 标题淡入升起
+      tl.from('.l1', { opacity:0, y:40, scale:0.97, duration:0.6, ease:'power3.out' }, 0.3);
+      tl.from('.l2', { opacity:0, y:36, scale:0.97, duration:0.6, ease:'power3.out' }, 0.44);
+      // 波浪跳动：每次 0.5s，间隔 1s（1.2s / 2.7s / 4.2s）
+      [1.2, 2.7, 4.2].forEach(T=>{
+        tl.to('.wch', { keyframes:[
+            { y:-30, duration:0.13, ease:'sine.out' },
+            { y:0,   duration:0.15, ease:'sine.in'  } ],
+          stagger:0.006 }, T);
+      });
+      window.__timelines["root"] = tl;
+    </script>
+  </div>
+</body>
+</html>

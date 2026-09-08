@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>DMind Scene 6 — Contamination</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:#0C1142}
+#root,[data-composition-id="root"]{position:relative;width:2580px;height:1440px;overflow:hidden;
+  font-family:'Poppins',system-ui,sans-serif;color:#EAF0FF;
+  background:radial-gradient(125% 100% at 50% 42%, #3a3f9e 0%, #232a86 34%, #161B6A 64%, #0C1142 100%);}
+.bokeh{position:absolute;border-radius:50%;filter:blur(20px);pointer-events:none;z-index:1}
+
+/* ---- A : doubt + cramming the test into a model ---- */
+#sa{position:absolute;inset:0;z-index:4;will-change:opacity,transform}
+#headA{position:absolute;left:0;right:0;top:300px;text-align:center;z-index:6;
+  font-size:72px;font-weight:600;color:#fff;letter-spacing:.005em;will-change:opacity,transform}
+#headA b{background:linear-gradient(120deg,#EB53FF,#FF538E 55%,#FF9A32);-webkit-background-clip:text;background-clip:text;color:transparent}
+.mnode{position:absolute;left:1150px;top:580px;width:280px;height:280px;border-radius:50%;z-index:5;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:radial-gradient(circle at 42% 36%, rgba(63,214,198,.28), rgba(126,138,224,.22) 70%, transparent);
+  border:2px solid rgba(141,205,255,.5);box-shadow:0 0 90px rgba(63,214,198,.4), inset 0 0 60px rgba(141,205,255,.14);
+  will-change:transform}
+.mnode .mi{width:108px;height:108px}
+.mnode .mt{margin-top:6px;font-size:26px;font-weight:600;color:#fff}
+#feedlbl{position:absolute;left:0;right:0;top:1080px;text-align:center;z-index:6;
+  font-family:'Spline Sans Mono',monospace;font-size:34px;letter-spacing:2px;color:#9aa3d6;text-transform:uppercase;will-change:opacity}
+.qcard{position:absolute;border-radius:20px;z-index:5;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(150deg,rgba(132,172,245,.42),rgba(54,76,178,.56));
+  border:1px solid rgba(255,255,255,.36);box-shadow:0 12px 40px rgba(8,12,40,.45);
+  font-size:104px;line-height:1;will-change:transform,opacity}
+
+/* ---- B : flat lines chart ---- */
+#sb{position:absolute;inset:0;z-index:3;opacity:0;will-change:opacity,transform}
+#bkick{position:absolute;left:0;right:0;top:215px;text-align:center;z-index:6;
+  font-family:'Spline Sans Mono',monospace;font-size:32px;letter-spacing:3px;color:#9aa3d6;text-transform:uppercase;will-change:opacity}
+#bkick b{color:#fff;font-weight:500}
+#chart{position:absolute;left:0;top:0}
+#camChart{position:absolute;inset:0;transform-origin:0 0;will-change:transform}
+.glab{position:absolute;font-family:'Spline Sans Mono',monospace;font-size:24px;color:#6b73a6;transform:translateY(-50%)}
+.xlab{position:absolute;font-family:'Spline Sans Mono',monospace;font-size:30px;color:#9aa3d6;transform:translateX(-50%);text-align:center}
+.dlt{position:absolute;font-family:'Spline Sans Mono',monospace;font-size:36px;font-weight:600;transform:translateY(-50%);white-space:nowrap;opacity:0;will-change:opacity}
+.mname{position:absolute;font-size:28px;font-weight:600;transform:translateY(-50%);white-space:nowrap;opacity:0;will-change:opacity}
+#ghostlbl{position:absolute;font-family:'Spline Sans Mono',monospace;font-size:26px;color:#B57AFF;opacity:0;white-space:nowrap;will-change:opacity}
+#cnote{position:absolute;left:0;right:0;top:1130px;text-align:center;z-index:7;opacity:0;
+  font-size:46px;font-weight:600;color:#fff;letter-spacing:.01em;will-change:opacity,transform}
+#cnote b{color:#3FD6C6}
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="root" data-width="2580" data-height="1440" data-start="0" data-duration="11">
+
+  <div class="bokeh" style="width:420px;height:420px;background:#6DD6CC;left:3%;top:60%;opacity:.12"></div>
+  <div class="bokeh" style="width:300px;height:300px;background:#B57AFF;left:86%;top:6%;opacity:.12"></div>
+
+  <!-- ===== A : doubt + cram ===== -->
+  <div id="sa">
+    <div class="mnode" id="mnode">
+      <svg class="mi" viewBox="0 0 48 48" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"><rect x="12" y="16" width="24" height="20" rx="5"/><path d="M24 16V9M24 9a3 3 0 100-6 3 3 0 000 6z"/><path d="M12 24H6M42 24h-6"/><circle cx="19" cy="26" r="2.2"/><circle cx="29" cy="26" r="2.2"/></svg>
+      <div class="mt">Model</div>
+    </div>
+  </div>
+
+  <!-- ===== B : flat lines ===== -->
+  <div id="sb">
+    <div id="bkick">Fine-tuned on the test set &middot; <b>E0 &rarr; E4</b></div>
+    <div id="camChart">
+      <svg id="chart" viewBox="0 0 2580 1440" width="2580" height="1440" fill="none">
+        <g id="grid"></g><g id="ghost"></g><g id="lines"></g><g id="dots"></g>
+      </svg>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+  (function(){
+    var NS='http://www.w3.org/2000/svg';
+    function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);
+      t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+    var rnd=mulberry32(20260626);
+    var CHARS='ABCDEF0123456789xY#@%$qWzKpL';
+    function gib(rows,cols){var out=[];for(var r=0;r<rows;r++){var s='';for(var k=0;k<cols;k++){
+      s+= rnd()<0.12?' ':CHARS[Math.floor(rnd()*CHARS.length)];}out.push(s);}return out.join('\n');}
+
+    // ---- A : draft "test papers" fed into the centred model node ----
+    var EMO=['📝','📄','✏️','🗒️','📋'];
+    var sa=document.getElementById('sa'), NODEX=1290, NODEY=720, cards=[];   // node centred (720)
+    for(var i=0;i<14;i++){
+      var w=300+Math.floor(rnd()*240), h=192+Math.floor(rnd()*140);          // cards x2
+      var ang=(i/14)*Math.PI*2 + (rnd()-0.5)*0.4, rad=720+rnd()*420;
+      var sx=NODEX+Math.cos(ang)*rad, sy=NODEY+Math.sin(ang)*rad*0.58;
+      var d=document.createElement('div'); d.className='qcard';
+      d.style.width=w+'px'; d.style.height=h+'px';
+      d.style.left=(sx-w/2)+'px'; d.style.top=(sy-h/2)+'px';
+      d.textContent=EMO[Math.floor(rnd()*EMO.length)];                       // draft emoji, not gibberish
+      sa.appendChild(d);
+      cards.push({el:d, tx:NODEX-(sx), ty:NODEY-(sy)});   // delta to node centre
+    }
+
+    // ---- B : chart ----
+    var X0=720, XW=1200, NPT=5, Y0=420, YH=540, VMIN=60, VMAX=75;
+    function xAt(i){ return X0 + XW*i/(NPT-1); }
+    function yAt(v){ return Y0+YH - (v-VMIN)/(VMAX-VMIN)*YH; }
+    var SERIES=[
+      {n:'QwQ-32B',            c:'#3FD6C6', v:[65.94,66.56,66.71,66.72,66.85], d:'+0.91', ly:0},
+      {n:'Qwen3-32B',          c:'#8DCDFF', v:[68.89,69.02,69.46,69.53,69.78], d:'+0.89', ly:-24},
+      {n:'DeepSeek-R1-Distill-70B', c:'#6FE0A8', v:[68.33,68.76,68.83,69.07,69.15], d:'+0.82', ly:24}
+    ];
+    var gridG=document.getElementById('grid'), ghostG=document.getElementById('ghost'),
+        linesG=document.getElementById('lines'), dotsG=document.getElementById('dots'),
+        cc=document.getElementById('camChart');
+    // gridlines + y labels
+    [65,70,75].forEach(function(v){
+      var ln=document.createElementNS(NS,'line'); ln.setAttribute('x1',X0); ln.setAttribute('x2',X0+XW);
+      ln.setAttribute('y1',yAt(v)); ln.setAttribute('y2',yAt(v));
+      ln.setAttribute('stroke','rgba(255,255,255,.08)'); ln.setAttribute('stroke-width','2'); gridG.appendChild(ln);
+      var gl=document.createElement('div'); gl.className='glab'; gl.style.left=(X0-58)+'px'; gl.style.top=yAt(v)+'px'; gl.textContent=v; cc.appendChild(gl);
+    });
+    // x labels E0..E4
+    for(var e=0;e<NPT;e++){ var xl=document.createElement('div'); xl.className='xlab';
+      xl.style.left=xAt(e)+'px'; xl.style.top=(Y0+YH+44)+'px'; xl.textContent='E'+e; cc.appendChild(xl); }
+    // series polylines + end dot + dlt + name
+    var linePaths=[], endDots=[];
+    SERIES.forEach(function(s){
+      var dstr='M '; s.v.forEach(function(v,i){ dstr+=(i?' L ':'')+xAt(i)+' '+yAt(v); });
+      var p=document.createElementNS(NS,'path'); p.setAttribute('d',dstr);
+      p.setAttribute('stroke',s.c); p.setAttribute('stroke-width','9'); p.setAttribute('stroke-linecap','round'); p.setAttribute('stroke-linejoin','round');
+      linesG.appendChild(p); linePaths.push(p);
+      var c=document.createElementNS(NS,'circle'); c.setAttribute('cx',xAt(4)); c.setAttribute('cy',yAt(s.v[4]));
+      c.setAttribute('r','11'); c.setAttribute('fill',s.c); c.setAttribute('opacity','0'); dotsG.appendChild(c); endDots.push(c);
+      var dl=document.createElement('div'); dl.className='dlt'; dl.style.color=s.c;
+      dl.style.left=(xAt(4)+40)+'px'; dl.style.top=(yAt(s.v[4])+(s.ly||0))+'px'; dl.textContent=s.d; cc.appendChild(dl); s.dlEl=dl;
+      var nm=document.createElement('div'); nm.className='mname'; nm.style.color=s.c;
+      nm.style.left=(X0-300)+'px'; nm.style.top=(yAt(s.v[0])+(s.ly||0))+'px'; nm.style.width='250px'; nm.style.textAlign='right'; nm.style.transform='translate(0,-50%)';
+      nm.textContent=s.n; cc.appendChild(nm); s.nmEl=nm;
+    });
+    // ============================ TIMELINE ============================
+    var tl=gsap.timeline({paused:true, defaults:{ease:"power3.out"}});
+
+    // --- A (0–4.4) "Could the models just be memorizing? We trained them directly on the questions" ---
+    tl.fromTo('#mnode',{opacity:0,scale:0.6},{opacity:1,scale:1,duration:.7,ease:"back.out(1.6)"}, 0.3);
+    cards.forEach(function(c,i){
+      gsap.set(c.el,{opacity:0});
+      tl.to(c.el,{opacity:1,duration:.35}, 0.5+i*0.13);
+      tl.to(c.el,{x:c.tx,y:c.ty,scale:0.16,opacity:0,duration:1.2,ease:"power2.in"}, 0.7+i*0.13);  // crammed into the model
+    });
+    tl.to('#mnode',{scale:1.12,duration:.32,yoyo:true,repeat:1,ease:"sine.inOut"}, 3.9);            // absorb pulse
+
+    // --- transition A->B : 0.4s ---
+    tl.to('#sa',{opacity:0,scale:0.96,duration:0.4,ease:"power2.in"}, 4.4);
+    tl.fromTo('#sb',{opacity:0,y:40},{opacity:1,y:0,duration:0.4,ease:"power3.out"}, 4.5);
+
+    // --- B (4.5–11) "scores barely moved / can't fake by cramming / rewards real reasoning" — nearly-flat lines E0->E4 ---
+    tl.fromTo('#bkick',{opacity:0,y:-14},{opacity:1,y:0,duration:.5}, 4.7);
+    tl.set('#camChart',{transformOrigin:'0 0', x:0,y:0,scale:1}, 0);
+    tl.to('#camChart',{x:210,y:-315,scale:1.5, duration:.6, ease:"power2.inOut"}, 4.9);   // push in to the start (E0)
+    linePaths.forEach(function(p,i){ var L=p.getTotalLength();
+      gsap.set(p,{strokeDasharray:L, strokeDashoffset:L});
+      tl.fromTo(SERIES[i].nmEl,{opacity:0,x:-16},{opacity:1,x:0,duration:.55}, 5.3+i*0.15);
+      tl.to(p,{strokeDashoffset:0, duration:3.0, ease:"power1.inOut"}, 5.5+i*0.15);
+      tl.to(endDots[i],{opacity:1,duration:.35}, 8.4+i*0.15);
+      tl.to(SERIES[i].dlEl,{opacity:1,duration:.5}, 8.7+i*0.15);
+    });
+    tl.to('#camChart',{x:-1590, duration:3.0, ease:"power1.inOut"}, 5.5);                  // follow the lines E0 -> E4
+
+    // --- C : lines done -> camera returns to the full flat view, hold to 11s ---
+    tl.to('#camChart',{x:0,y:0,scale:1, duration:1.4, ease:"power2.inOut"}, 8.9);
+
+    window.__timelines = window.__timelines || {};
+    window.__timelines["root"] = tl;
+
+    var sp=new URLSearchParams(location.search);
+    if(sp.has('seek')){ tl.pause(); tl.time(parseFloat(sp.get('seek'))); }
+    else if(sp.has('autoplay')){ tl.play(0); }
+  })();
+  </script>
+</div>
+</body>
+</html>

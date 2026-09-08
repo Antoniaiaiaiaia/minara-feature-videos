@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>DMind Scene 4 — Heatmap</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Spline+Sans+Mono:wght@400;500&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:#0C1142}
+#root,[data-composition-id="root"]{position:relative;width:2580px;height:1440px;overflow:hidden;
+  font-family:'Poppins',system-ui,sans-serif;color:#EAF0FF;
+  background:radial-gradient(125% 100% at 50% 40%, #3a3f9e 0%, #232a86 34%, #161B6A 64%, #0C1142 100%);}
+.bokeh{position:absolute;border-radius:50%;filter:blur(20px);pointer-events:none;z-index:1}
+
+.stage{position:absolute;inset:0;z-index:3}
+.plane{position:absolute;inset:0;transform-origin:0 0;will-change:transform}   /* flat (front view) */
+
+.colhdr{position:absolute;text-align:center;font-size:24px;font-weight:600;color:#DDE3FF;
+  letter-spacing:.01em;transform:translateX(-50%);will-change:opacity}
+.rowlbl{position:absolute;text-align:right;font-size:21px;font-weight:500;color:#C5CBF5;
+  white-space:nowrap;transform:translateY(-50%);will-change:opacity}
+.cell{position:absolute;border-radius:6px;display:flex;align-items:center;justify-content:center;
+  font-family:'Spline Sans Mono',monospace;font-size:18px;font-weight:500;color:#fff;
+  text-shadow:0 1px 3px rgba(0,0,0,.35);will-change:transform,opacity;
+  box-shadow:0 2px 10px rgba(8,12,40,.30)}
+.colband{position:absolute;border-radius:14px;z-index:2;pointer-events:none;opacity:0;
+  background:linear-gradient(180deg, rgba(228,85,184,.20), rgba(180,90,220,.10));
+  box-shadow:0 0 70px rgba(228,85,184,.30);will-change:opacity}
+
+/* ===== HUD (screen-space, top band — bottom reserved for subtitles) ===== */
+#hud{position:absolute;inset:0;z-index:9;pointer-events:none}
+.spotLbl{position:absolute;top:26px;transform:translateX(-50%);opacity:0;
+  font-size:44px;font-weight:700;color:#fff;text-shadow:0 2px 10px rgba(8,12,40,.85);white-space:nowrap}
+.spotLbl.bad{color:#FF7BD0}
+#secBadge{position:absolute;left:130px;top:30px;opacity:0;
+  background:rgba(18,28,70,.72);border:1px solid rgba(255,123,208,.55);border-radius:22px;padding:22px 40px;
+  box-shadow:0 18px 54px rgba(0,0,0,.45);backdrop-filter:blur(10px)}
+.sbTop{font-size:30px;color:#C9D2FF;font-weight:500;letter-spacing:.02em}
+.sbNum{font-size:90px;font-weight:800;color:#fff;font-variant-numeric:tabular-nums;line-height:1.04}
+.sbNum span{font-size:42px;color:#9aa3d6;font-weight:600}
+.sbWarn{font-size:36px;color:#FF7BD0;font-weight:700;margin-top:2px}
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="root" data-width="2580" data-height="1440" data-start="0" data-duration="14.5">
+
+  <div class="bokeh" style="width:420px;height:420px;background:#6DD6CC;left:2%;top:58%;opacity:.12"></div>
+  <div class="bokeh" style="width:300px;height:300px;background:#B57AFF;left:88%;top:6%;opacity:.12"></div>
+
+  <div class="stage">
+    <div class="plane" id="plane">
+      <div class="colband" id="band"></div>
+      <div id="cols"></div>
+      <div id="rows"></div>
+      <div id="cells"></div>
+    </div>
+  </div>
+
+  <div id="hud">
+    <div class="spotLbl" id="lblTok">Tokenomics</div>
+    <div class="spotLbl bad" id="lblSec">Security</div>
+    <div id="secBadge">
+      <div class="sbTop">Strongest model in Security</div>
+      <div class="sbNum">70.5<span> / 100</span></div>
+      <div class="sbWarn">still under 80</div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+  (function(){
+    var doms=['Fund.','Infra.','S.C.','DeFi','DAOs','NFTs','Token','Meme','Sec.'];
+    var models=[
+      ['GPT-5 Medium',82.6,83.6,81.0,81.7,70.0,78.9,79.6,65.7,68.6],
+      ['GPT-5 Low',88.0,84.0,80.6,79.9,73.0,78.2,79.9,63.8,68.8],
+      ['GPT-5 High',84.5,81.3,82.4,81.0,73.4,78.7,79.8,65.0,70.0],
+      ['Claude Sonnet 4.5',81.3,84.1,78.7,82.1,71.0,75.8,80.3,66.2,67.0],
+      ['Claude Opus 4',83.3,80.4,80.9,80.6,75.5,73.7,80.1,64.3,66.9],
+      ['Claude Opus 4.1',83.8,80.9,80.6,81.2,71.5,73.9,78.2,65.1,69.0],
+      ['GPT-o3',83.7,81.1,77.8,76.7,71.4,77.4,78.1,64.6,68.6],
+      ['Qwen3-235B-A22B Thinking',82.6,79.8,76.4,79.4,71.1,75.1,77.6,61.2,69.7],
+      ['GPT-OSS-120B',79.3,79.9,78.4,75.7,69.8,77.4,78.4,61.7,70.5],
+      ['Kimi K2 0905',80.5,79.7,75.7,81.4,69.0,74.6,76.2,60.8,68.8],
+      ['Gemini 2.5 Flash',80.3,76.8,75.6,76.7,68.9,68.9,76.6,59.0,65.9],
+      ['GPT-4.1',80.7,78.2,76.7,76.8,68.2,70.7,73.3,60.4,63.8],
+      ['Grok 3',78.2,77.2,70.0,75.3,67.2,71.0,76.7,63.3,64.4],
+      ['Claude 3.7 Sonnet',77.1,76.7,76.1,76.1,68.8,70.3,75.0,59.2,63.0],
+      ['Mistral Medium 3.1',75.3,78.5,72.5,76.5,68.7,69.0,74.0,61.7,62.9],
+      ['GPT o4 Mini High',80.4,70.3,67.9,73.5,69.8,71.2,75.9,62.1,65.7],
+      ['Doubao Seed 1.6',77.0,70.4,72.0,66.6,70.3,74.2,77.0,61.9,64.7],
+      ['Gemini 2.5 Pro',78.6,75.8,74.3,72.3,67.6,66.8,75.3,59.8,58.6],
+      ['Qwen3 32B',79.4,72.8,70.6,68.1,67.5,69.3,76.7,59.1,63.6],
+      ['DeepSeek V3.1',77.4,74.5,69.3,73.3,67.9,67.3,72.3,58.4,65.9],
+      ['GLM-4.5',79.4,71.0,73.0,70.2,65.8,69.8,75.3,60.5,61.9],
+      ['Gemini 2.0 Flash',78.1,74.9,71.4,74.9,66.5,62.5,71.2,61.9,61.1],
+      ['QwQ 32B',73.9,71.9,65.4,70.3,66.4,71.3,74.2,58.5,60.7],
+      ['DeepSeek R1 0528',73.8,71.7,68.4,70.1,64.0,70.4,73.1,53.4,64.5],
+      ['MiniMax M1',69.3,64.7,65.5,68.7,64.6,69.5,68.3,59.4,61.4],
+      ['Qwen3 30B A3B',71.3,66.8,62.0,63.4,62.8,67.6,72.5,56.6,59.0],
+      ['Claude 3.5 Haiku',68.1,68.7,70.3,64.3,63.9,65.6,66.1,51.8,58.7],
+      ['Doubao 1.5 Pro 32k',69.5,70.1,67.7,64.4,63.4,65.7,65.5,55.5,54.5],
+      ['GPT-4o',70.6,68.8,74.4,64.5,60.8,62.4,66.4,54.5,53.6],
+      ['Llama 4 Maverick',70.3,66.0,69.0,64.4,59.6,59.5,62.7,56.8,54.1],
+      ['GLM 4 32B',61.8,60.6,63.7,65.3,54.6,57.8,58.9,49.8,43.7],
+      ['Llama 4 Scout',60.3,59.7,54.9,56.6,54.9,51.0,61.1,51.0,46.5],
+      ['Mixtral 8x22B Instruct',61.1,58.2,52.7,53.7,56.0,50.1,56.7,48.7,50.4]
+    ];
+
+    var COL0=452, COLW=228, ROW0=128, ROWH=36, NR=models.length, NC=doms.length;
+    function lerp(a,b,t){return a+(b-a)*t;}
+    function cellColor(a){
+      var t=Math.max(0,Math.min(1,(a-48)/36)), r,g,b;
+      if(t<0.5){var u=t/0.5; r=lerp(228,126,u); g=lerp(85,138,u); b=lerp(184,224,u);}
+      else{var u=(t-0.5)/0.5; r=lerp(126,63,u); g=lerp(138,214,u); b=lerp(224,198,u);}
+      return 'rgb('+(r|0)+','+(g|0)+','+(b|0)+')';
+    }
+
+    var colsG=document.getElementById('cols'), rowsG=document.getElementById('rows'),
+        cellsG=document.getElementById('cells');
+
+    doms.forEach(function(d,j){
+      var t=document.createElement('div'); t.className='colhdr h'+j;
+      t.style.left=(COL0+COLW*j+COLW/2)+'px'; t.style.top=(ROW0-44)+'px'; t.textContent=d;
+      colsG.appendChild(t);
+    });
+    // band behind the "hard" columns (DAOs..Sec : cols 4..8)
+    var band=document.getElementById('band');
+    band.style.left=(COL0+COLW*4-6)+'px'; band.style.top=(ROW0-8)+'px';
+    band.style.width=(COLW*5+8)+'px'; band.style.height=(ROWH*NR+14)+'px';
+
+    var cells=[], rowEls=[];
+    models.forEach(function(m,i){
+      var lt=document.createElement('div'); lt.className='rowlbl';
+      lt.style.left='40px'; lt.style.width=(COL0-66)+'px'; lt.style.top=(ROW0+ROWH*i+ROWH/2)+'px';
+      lt.textContent=m[0]; rowsG.appendChild(lt); rowEls.push(lt);
+      for(var j=0;j<NC;j++){
+        var a=m[j+1];
+        var c=document.createElement('div'); c.className='cell c'+j;
+        c.style.left=(COL0+COLW*j+3)+'px'; c.style.top=(ROW0+ROWH*i+3)+'px';
+        c.style.width=(COLW-6)+'px'; c.style.height=(ROWH-5)+'px';
+        c.style.background=cellColor(a); c.textContent=a.toFixed(1);
+        cellsG.appendChild(c); cells.push({el:c,row:i,col:j});
+      }
+    });
+
+    // ============================ TIMELINE (aligned to voice SRT, ~14.3s) ============================
+    var tl=gsap.timeline({paused:true, defaults:{ease:"power3.out"}});
+    var P='#plane';
+    function cam(px,py,s,sx,sy){ return {x:sx-s*px, y:sy-s*py, scale:s}; }
+
+    // settle: whole flat table filling the frame (~120px side margins), centred on the table's true centre
+    var SET=cam(1272,700,0.95,1290,700);
+
+    /* ===== A (0–3.2) "First, we tested 31 of the top AI models" — reveal the full grid ===== */
+    tl.set(P, cam(1120,600,1.10,1290,720), 0);                 // start a touch zoomed, upper area
+    tl.set('.cell',{opacity:0,y:16,scale:0.9,transformOrigin:'50% 50%'}, 0);
+    tl.set('.rowlbl',{opacity:0,x:-24}, 0);
+    tl.set('.colhdr',{opacity:0,y:-16}, 0);
+    tl.to(P, Object.assign({},SET,{duration:3.0, ease:"power2.out"}), 0.4);
+
+    var RS=0.5, RSPAN=2.6;
+    document.querySelectorAll('.colhdr').forEach(function(el,j){
+      tl.to(el,{opacity:1,y:0,duration:.45}, RS + ((j/(NC-1))/2)*RSPAN);
+    });
+    rowEls.forEach(function(el,i){
+      tl.to(el,{opacity:1,x:0,duration:.4}, RS + ((i/(NR-1))/2)*RSPAN);
+    });
+    cells.forEach(function(c){
+      var p=(c.row/(NR-1) + c.col/(NC-1))/2;
+      tl.to(c.el,{opacity:1,y:0,scale:1,duration:.4,ease:"power3.out"}, RS + p*RSPAN);
+    });
+
+    // column-emphasis helper: bright cols=1, others dimmed
+    function emph(bright, dimVal, T, dur){
+      for(var j=0;j<NC;j++){
+        var op = bright.indexOf(j)>=0 ? 1 : dimVal;
+        tl.to('.c'+j, {opacity:op, duration:dur, ease:"power2.inOut"}, T);
+        tl.to('.h'+j, {opacity:op<0.5?0.45:1, duration:dur, ease:"power2.inOut"}, T);
+      }
+    }
+
+    /* ===== B (3.2–4.7) "They handle the basics well" — light up the basics columns ===== */
+    emph([0,1,2,3], 0.30, 3.4, 0.6);
+
+    /* ===== C (4.7–6.8) "but all fall down on the harder problems" — flip to the hard columns ===== */
+    emph([4,5,6,7,8], 0.30, 4.9, 0.6);
+    tl.to('#band',{opacity:0.55,duration:.8}, 4.9);
+
+    /* ===== D (6.8–9.6) "like tokenomics and spotting security flaws" — spotlight Token + Security ===== */
+    emph([6,8], 0.16, 6.9, 0.6);
+    tl.to('#band',{opacity:0.18,duration:.6}, 6.9);
+    // screen-space labels over those two columns (settle cam: col6 x≈1646, col8 x≈2001)
+    tl.set('#lblTok',{left:'1919px'},0); tl.set('#lblSec',{left:'2352px'},0);
+    tl.fromTo('#lblTok',{opacity:0,y:-16},{opacity:1,y:0,duration:.5}, 7.1);
+    tl.fromTo('#lblSec',{opacity:0,y:-16},{opacity:1,y:0,duration:.5}, 7.5);
+
+    /* ===== E (9.6–14.3) "Even the strongest model could not break 80 in security" ===== */
+    emph([8], 0.12, 9.7, 0.7);                  // Security only
+    tl.to('#lblTok',{opacity:0,y:-14,duration:.4,ease:"power2.in"}, 9.7);
+    tl.to('.rowlbl',{opacity:0.22,duration:.6}, 9.7);
+    // badge: strongest in security = 70.5, still < 80
+    tl.fromTo('#secBadge',{opacity:0,x:-30,scale:.94},{opacity:1,x:0,scale:1,duration:.7,ease:"back.out(1.5)"}, 10.0);
+    tl.to('#secBadge',{scale:1.03,duration:.3,yoyo:true,repeat:1,ease:"sine.inOut"}, 11.2);
+    // keep Security spotlight to the end (editor cuts to Scene 5)
+
+    window.__timelines = window.__timelines || {};
+    window.__timelines["root"] = tl;
+
+    var sp=new URLSearchParams(location.search);
+    if(sp.has('seek')){ tl.pause(); tl.time(parseFloat(sp.get('seek'))); }
+    else if(sp.has('autoplay')){ tl.play(0); }
+  })();
+  </script>
+</div>
+</body>
+</html>

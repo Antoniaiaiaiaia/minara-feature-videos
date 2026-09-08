@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap');
+html,body{margin:0;padding:0;background:#F9F9F9;}
+#root,[data-composition-id="root"]{
+  font-family:'Geist',system-ui,-apple-system,sans-serif;
+  background:#F9F9F9; position:relative; overflow:hidden;
+  width:1920px; height:1080px;
+}
+.camera{position:absolute;inset:0;transform-origin:0 0;will-change:transform;}
+.wall{position:absolute;left:220px;top:130px;width:1480px;
+  display:grid;grid-template-columns:720px 720px;column-gap:40px;row-gap:36px;}
+.card{position:relative;width:720px;height:240px;background:#FFFFFF;
+  border:1px solid #ECECEC;border-radius:20px;padding:30px 34px;box-sizing:border-box;
+  box-shadow:0 6px 24px rgba(20,20,22,0.05);}
+.c-top{display:flex;align-items:center;gap:14px;}
+.star{width:26px;height:26px;flex:0 0 auto;}
+.c-title{font-size:30px;font-weight:700;color:#141416;letter-spacing:-0.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.c-ic{margin-left:auto;font-size:22px;font-weight:600;color:#07B56A;font-variant-numeric:tabular-nums;flex:0 0 auto;}
+.c-desc{margin-top:16px;font-size:22px;line-height:1.4;color:#717171;max-width:650px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.c-tags{position:absolute;left:34px;bottom:28px;display:flex;gap:10px;}
+.pill{font-size:18px;font-weight:500;padding:7px 14px;border-radius:8px;white-space:nowrap;}
+.pill.cat{background:rgba(7,181,106,0.12);color:#07B56A;}
+.pill.asset{background:#F0F0F0;color:#717171;}
+.c-info{position:absolute;right:30px;bottom:28px;width:30px;height:30px;border:1.5px solid #CBCBCB;
+  border-radius:50%;color:#9A9A9A;font-size:17px;display:flex;align-items:center;justify-content:center;font-style:italic;font-weight:600;}
+.card.other{opacity:0;}
+</style>
+</head>
+<body>
+  <div id="root" data-composition-id="root" data-width="1920" data-height="1080" data-start="0" data-duration="4">
+    <div class="camera">
+      <div class="wall" id="wall"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      // ---- Factor data selected from Minara's existing factor library ----
+      const F=[
+        ["Zero-Volume Days (21-Day)","IC=0.086","The share of the last month on which the name had literally no trading volume — a hard illiquidity gauge.","Liquidity","Crypto · Stock"],
+        ["MACD (Price-Normalized)","IC=0.053","The classic 12/26 EMA momentum spread, divided by price so it's comparable across names.","Technical","Crypto · Stock"],
+        ["3-Year Debt Growth (inverted)","IC=0.053","How fast total debt has grown over three years — rapid borrowing is a warning sign, so it's flipped.","Quality","Stock"],
+        ["Up-Day Volatility","IC=0.050","A name's 20-day price volatility, counted only when its most recent day closed up.","Volatility","Crypto · Stock"],
+        ["Short-Term Reversal","IC=0.041","Yesterday's return flipped — names that just dropped tend to bounce.","Reversion","Crypto · Stock"],
+        ["Open-to-Close Gap","IC=0.041","How far today's open sits above or below today's close — an intraday gap signal.","Reversion","Crypto · Stock"],
+        ["MACD Histogram","IC=0.036","The MACD oscillator — how far the fast trend line sits above the slow one, and accelerating.","Momentum","Crypto · Stock"],
+        ["Close Position in Daily Range","IC=0.036","Where the close landed within the day's high-low range — strong closes score positive.","Reversion","Crypto · Stock"],
+        ["Daily Return × Volume","IC=0.032","Today's one-day price change amplified by volume — strong moves on heavy volume score highest.","Volume","Crypto · Stock"],
+        ["Standardized Earnings Surprise","IC=0.031","How unusual the latest earnings beat or miss is, judged against the name's own history.","Earnings","Stock"],
+        ["Forward Estimate Revision","IC=0.031","How much analysts have lifted or cut their forward EPS estimate over the past month.","Analyst","Stock"],
+        ["Seasonality (Years 2-5)","IC=0.028","Average same-month return across the anniversaries 2 to 5 years back — recurring calendar patterns.","Momentum","Crypto · Stock"],
+        ["Piotroski Financial Health","IC=0.027","A 9-point checklist of fundamental health — profitability, cash flow, leverage and efficiency.","Quality","Stock"],
+        ["16-Week Momentum","IC=0.027","Total price gain over roughly the last four months — recent winners tend to keep winning.","Momentum","Crypto · Stock"],
+      ];
+      const STAR='<svg class="star" viewBox="0 0 24 24" fill="none" stroke="#BFBFBF" stroke-width="2" stroke-linejoin="round"><path d="M12 3l2.7 5.8 6.3.7-4.7 4.3 1.3 6.2L12 17.8 6.1 20.3l1.3-6.2L2.7 9.5l6.3-.7z"/></svg>';
+      const wall=document.getElementById('wall');
+      F.forEach((f,i)=>{
+        const hero = i===0;
+        const he = hero ? ' hero-el' : '';
+        const card=document.createElement('div');
+        card.className='card'+(hero?'':' other');
+        if(hero) card.id='hero';
+        card.innerHTML =
+          '<div class="c-top'+he+'">'+STAR+'<span class="c-title">'+f[0]+'</span><span class="c-ic">'+f[1]+'</span></div>'+
+          '<div class="c-desc'+he+'">'+f[2]+'</div>'+
+          '<div class="c-tags'+he+'"><span class="pill cat">'+f[3]+'</span><span class="pill asset">'+f[4]+'</span></div>'+
+          '<div class="c-info'+he+'">i</div>';
+        wall.appendChild(card);
+      });
+
+      // ---- timeline ----
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused:true });
+
+      // Initial camera: zoom in on the first card (centered hero, ~69% width)
+      tl.set('.camera', { transformOrigin:'0px 0px', x:-113, y:77.5, scale:1.85 }, 0);
+
+      // Phase A — Single card pops in, then its internal elements appear one by one
+      tl.from('#hero', { opacity:0, scale:0.9, duration:0.5, ease:'back.out(1.4)' }, 0.1);
+      tl.from('#hero .hero-el', { opacity:0, y:30, duration:0.5, ease:'back.out(1.6)', stagger:0.13 }, 0.4);
+
+      // Phase B — Camera pulls back (card recedes) while surrounding cards fade into the wall
+      tl.to('.camera', { x:0, y:-60, scale:1, duration:0.75, ease:'power3.inOut' }, 1.5);
+      tl.to('.card.other', { opacity:1, duration:0.5, stagger:0.025, ease:'power2.out' }, 1.62);
+
+      // Phase C — Card wall scrolls slowly from top to bottom
+      tl.to('.camera', { y:-760, duration:1.55, ease:'power1.inOut' }, 2.45);
+
+      window.__timelines["root"] = tl;
+    </script>
+  </div>
+</body>
+</html>

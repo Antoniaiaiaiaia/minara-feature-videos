@@ -1,0 +1,34 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Scene 2 — preview</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#07091f;font-family:'Poppins',system-ui,sans-serif;overflow:hidden}
+#bar{height:46px;display:flex;align-items:center;gap:12px;padding:0 16px;
+  background:#10142e;border-bottom:1px solid #232a55;color:#C5CBF5;font-size:13px}
+button{background:#3F5AD5;color:#fff;border:0;border-radius:8px;padding:8px 16px;font-size:13px;
+  font-weight:600;cursor:pointer;font-family:inherit}
+button.alt{background:#232a55}
+#t{margin-left:auto;font-variant-numeric:tabular-nums;color:#6DD6CC}
+#stage{position:fixed;left:0;top:46px;right:0;bottom:0;display:flex;align-items:center;justify-content:center}
+#scaler{width:1920px;height:1080px;transform-origin:center center}
+iframe{width:1920px;height:1080px;border:0;display:block;background:#0C1142}
+</style></head><body>
+<div id="bar">
+  <button onclick="play()">▶ Play</button>
+  <button class="alt" onclick="reset()">↺ Reset</button>
+  <span>Scene 2 · Introduction, logo, 9 domain cards (5 highlighted with narration) · 13s</span>
+  <span id="t">0.00s</span>
+</div>
+<div id="stage"><div id="scaler"><iframe id="f" src="scene2.html?v=3"></iframe></div></div>
+<script>
+function fit(){var s=document.getElementById('scaler');
+  var k=Math.min((innerWidth)/1920,(innerHeight-46)/1080);s.style.transform='scale('+k+')';}
+addEventListener('resize',fit);fit();
+function tl(){try{return document.getElementById('f').contentWindow.__timelines.root;}catch(e){return null;}}
+var timer;
+function track(){var t=tl();if(t)document.getElementById('t').textContent=t.time().toFixed(2)+'s';}
+function play(){var t=tl();if(t){t.play(0);}}
+function reset(){var t=tl();if(t){t.pause(0);}}
+var tries=0;(function wait(){tries++;var t=tl();if(t){t.play(0);clearInterval(timer);timer=setInterval(track,50);}
+  else if(tries<60){setTimeout(wait,200);}})();
+</script>
+</body></html>

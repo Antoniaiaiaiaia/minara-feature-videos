@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>DMind — Scene 4 · Accuracy Heatmap</title>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html,body { width:100%; height:100%; background:#FFFFFF; font-family:'Manrope',system-ui,sans-serif; color:#111221; overflow:hidden; }
+  #root,[data-composition-id="root"]{ width:2560px; height:1440px; position:relative; overflow:hidden; font-family:'Manrope',system-ui,sans-serif;
+    background: radial-gradient(1100px 1100px at 19% 30%, rgba(47,107,255,0.14), transparent 62%), radial-gradient(1050px 1050px at 84% 75%, rgba(16,196,154,0.145), transparent 62%), radial-gradient(820px 820px at 55% 68%, rgba(61,139,255,0.10), transparent 58%), radial-gradient(1900px 1500px at 20% 22%, rgba(47,107,255,0.06), transparent 60%), radial-gradient(1800px 1450px at 82% 84%, rgba(16,196,154,0.07), transparent 60%), #FFFFFF; }
+  .grid-tex{ position:absolute; inset:0; background-image:radial-gradient(rgba(17,18,33,0.05) 1.5px,transparent 1.6px); background-size:62px 62px; opacity:0.3; }
+  .camera{ position:absolute; inset:0; will-change:transform; z-index:2; }
+  .camera svg{ display:block; width:100%; height:100%; overflow:visible; }
+  .dom{ font-family:'JetBrains Mono',monospace; font-size:21px; font-weight:500; fill:#5A5C6B; }
+  .dom.hard{ fill:#F0566B; font-weight:700; }
+  .model{ font-family:'Manrope'; font-size:22px; font-weight:700; fill:#3a382f; }
+  .cellv{ font-family:'JetBrains Mono',monospace; font-size:19px; font-weight:500; }
+  .__scaler{ position:absolute; left:0; top:0; width:1920px; height:1080px; transform:scale(1.3333333); transform-origin:top left; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="root" data-width="2560" data-height="1440" data-start="0" data-duration="14.27">
+<div class="__scaler">
+  <div class="grid-tex"></div>
+  
+  <div class="camera" id="camera">
+    <svg id="svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid meet">
+      <g id="cols"></g><g id="rows"></g><g id="cells"></g>
+    </svg>
+  </div>
+</div>
+</div>
+
+<script>
+  // REAL DMind Benchmark data (KDD 2026, Figure 4 subset) — [Fund, Infra, S.C., DeFi, DAOs, NFTs, Token, Meme, Sec]
+  const rows=[
+    ['GPT-5 High',        [84.5,81.3,82.4,81.0,73.4,78.7,79.8,65.0,70.0]],
+    ['Claude Sonnet 4.5', [81.3,84.1,78.7,82.1,71.0,75.8,80.3,66.2,67.0]],
+    ['Claude Opus 4.1',   [83.8,80.9,80.6,81.2,71.5,73.9,78.2,65.1,69.0]],
+    ['GPT-o3',            [83.7,81.1,77.8,76.7,71.4,77.4,78.1,64.6,68.6]],
+    ['Qwen3-235B',        [82.6,79.8,76.4,79.4,71.1,75.1,77.6,61.2,69.7]],
+    ['GPT-OSS-120B',      [79.3,79.9,78.4,75.7,69.8,77.4,78.4,61.7,70.5]],
+    ['Kimi K2',           [80.5,79.7,75.7,81.4,69.0,74.6,76.2,60.8,68.8]],
+    ['Gemini 2.5 Pro',    [78.6,75.8,74.3,72.3,67.6,66.8,75.3,59.8,58.6]],
+    ['DeepSeek V3.1',     [77.4,74.5,69.3,73.3,67.9,67.3,72.3,58.4,65.9]],
+    ['GLM-4.5',           [79.4,71.0,73.0,70.2,65.8,69.8,75.3,60.5,61.9]],
+    ['Llama 4 Maverick',  [70.3,66.0,69.0,64.4,59.6,59.5,62.7,56.8,54.1]],
+  ];
+  const doms=['Fund.','Infra','S.C.','DeFi','DAOs','NFTs','Token','Meme','Sec.'];
+  const hardCols={4:1,7:1,8:1};       // red text headers
+  const emphCols={7:1,8:1};           // Meme + Security (emphasized in phase 4)
+  function lerp(a,b,t){return a+(b-a)*t;}
+  function col(acc){
+    let t=Math.max(0,Math.min(1,(acc-50)/38)), r,g,b;
+    if(t<0.5){const u=t/0.5; r=lerp(240,242,u); g=lerp(86,196,u); b=lerp(107,96,u);}
+    else{const u=(t-0.5)/0.5; r=lerp(242,39,u); g=lerp(196,185,u); b=lerp(96,138,u);}
+    r=lerp(r,250,.13); g=lerp(g,250,.13); b=lerp(b,250,.13);
+    return `rgb(${r|0},${g|0},${b|0})`;
+  }
+  // matrix CENTERED in the 1920x1080 frame
+  const cw=150, rh=64, gap=6;
+  const gridW=cw*doms.length;
+  const gridX0=(1920-gridW)/2 + 80;
+  const headerY=210, rowsY0=246;
+  const svgns='http://www.w3.org/2000/svg';
+  const colEls=[], rowEls=[], cellEls=[], hardHeaderEls=[], emphHeaderEls=[], emphCellEls=[], otherCellEls=[];
+
+  doms.forEach((d,j)=>{const t=document.createElementNS(svgns,'text');
+    t.setAttribute('x',gridX0+cw*j+cw/2);t.setAttribute('y',headerY);t.setAttribute('text-anchor','middle');
+    t.setAttribute('class',hardCols[j]?'dom hard':'dom');t.textContent=d;document.getElementById('cols').appendChild(t);
+    colEls.push(t); if(hardCols[j]) hardHeaderEls.push(t); if(emphCols[j]) emphHeaderEls.push(t);});
+
+  rows.forEach((row,i)=>{
+    const lt=document.createElementNS(svgns,'text');lt.setAttribute('x',gridX0-26);lt.setAttribute('y',rowsY0+rh*i+rh/2+7);
+    lt.setAttribute('text-anchor','end');lt.setAttribute('class','model');lt.textContent=row[0];
+    document.getElementById('rows').appendChild(lt); rowEls.push(lt);
+    row[1].forEach((acc,j)=>{
+      const r=document.createElementNS(svgns,'rect');
+      r.setAttribute('x',gridX0+cw*j+gap/2);r.setAttribute('y',rowsY0+rh*i+gap/2);
+      r.setAttribute('width',cw-gap);r.setAttribute('height',rh-gap);r.setAttribute('rx',8);
+      r.setAttribute('fill',col(acc));document.getElementById('cells').appendChild(r);
+      const v=document.createElementNS(svgns,'text');v.setAttribute('x',gridX0+cw*j+cw/2);v.setAttribute('y',rowsY0+rh*i+rh/2+7);
+      v.setAttribute('text-anchor','middle');v.setAttribute('class','cellv');
+      v.setAttribute('fill',acc>72?'#1f7a52':'#9a2b25');v.textContent=acc.toFixed(1);
+      document.getElementById('cells').appendChild(v);
+      cellEls.push(r); cellEls.push(v);
+      if(emphCols[j]){ emphCellEls.push(r,v); } else { otherCellEls.push(r,v); }
+    });
+  });
+
+  const DUR=20;
+  const tl=gsap.timeline({paused:true, defaults:{ease:'power3.out', duration:0.6}});
+
+  gsap.set(colEls,{autoAlpha:0,y:-8});
+  gsap.set(rowEls,{autoAlpha:0,x:-12});
+  gsap.set(cellEls,{autoAlpha:0});
+  gsap.set('#camera',{transformOrigin:'50% 50%', scale:1, x:0, y:0});
+
+  /* === 1) ROW + COLUMN labels fade in together, one by one (0.2 – 1.3) === */
+  tl.to(colEls,{autoAlpha:1,y:0,duration:0.5,stagger:0.09},0.2);
+  tl.to(rowEls,{autoAlpha:1,x:0,duration:0.5,stagger:0.08},0.2);
+
+  /* === 2) all cells wave in (0.7 – 5.4) === */
+  tl.to(cellEls,{autoAlpha:1,duration:0.5,ease:'power2.out',stagger:{each:0.021,from:'start'}},0.7);
+
+  /* === 3) CAMERA diagonal: green(top-left) → red(bottom-right Meme/Sec) (5.4 – 15) === */
+  tl.to('#camera',{scale:1.42, x:600, y:280, duration:1.6, ease:'power2.inOut'},3.3);   // push into green
+  tl.to('#camera',{x:-850, y:-430, duration:4.4, ease:'sine.inOut'},5.0);               // diagonal to red
+
+  /* === 4) Meme + Security emphasis + vertical scan (15 – 18.8) === */
+  tl.to(otherCellEls,{autoAlpha:0.4, duration:0.8, ease:'power2.inOut'},9.6);                                   // dim the rest
+  tl.to(emphHeaderEls,{scale:1.3, duration:0.6, ease:'back.out(1.8)', transformOrigin:'50% 50%'},9.6);          // enlarge Meme/Sec headers
+  tl.to('#camera',{y:300, duration:3.0, ease:'sine.inOut'},9.6);                                                 // vertical scan up the Meme/Sec columns
+  tl.to(emphHeaderEls,{autoAlpha:0.5, duration:0.6, ease:'sine.inOut', yoyo:true, repeat:3},10.0);                // pulse
+
+  /* === 5) camera + frame return to normal (18.8 – 20) === */
+  tl.to('#camera',{scale:1.0, x:0, y:0, duration:0.6, ease:'power2.inOut'},13.6);
+  tl.to(otherCellEls,{autoAlpha:1, duration:0.6, ease:'power2.inOut'},13.6);
+  tl.to(emphHeaderEls,{scale:1, autoAlpha:1, duration:0.6, ease:'power2.inOut'},13.6);
+
+  window.__timelines=window.__timelines||{};
+  window.__timelines["root"]=tl;
+</script>
+</body>
+</html>

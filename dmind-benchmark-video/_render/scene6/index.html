@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>DMind — Scene 6 · Memorization Doesn't Help</title>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html,body { width:100%; height:100%; background:#FFFFFF; font-family:'Manrope',system-ui,sans-serif; color:#111221; overflow:hidden; }
+  #root,[data-composition-id="root"]{ width:2560px; height:1440px; position:relative; overflow:hidden; font-family:'Manrope',system-ui,sans-serif;
+    background: radial-gradient(1100px 1100px at 19% 30%, rgba(47,107,255,0.14), transparent 62%), radial-gradient(1050px 1050px at 84% 75%, rgba(16,196,154,0.145), transparent 62%), radial-gradient(820px 820px at 55% 68%, rgba(61,139,255,0.10), transparent 58%), radial-gradient(1900px 1500px at 20% 22%, rgba(47,107,255,0.06), transparent 60%), radial-gradient(1800px 1450px at 82% 84%, rgba(16,196,154,0.07), transparent 60%), #FFFFFF; }
+  .grid-tex{ position:absolute; inset:0; background-image:radial-gradient(rgba(17,18,33,0.05) 1.5px,transparent 1.6px); background-size:62px 62px; opacity:0.3; }
+  
+  
+  
+  
+  .stage{ position:absolute; inset:0; }
+
+  /* A: docs storm into the model core */
+  .qtitle{ position:absolute; left:50%; top:120px; transform:translateX(-50%); text-align:center; }
+  .qtitle .q{ font-size:120px; font-weight:800; line-height:1; background:linear-gradient(135deg,#375BDC,#E5B528); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .qtitle .t{ font-size:50px; font-weight:800; letter-spacing:-0.02em; margin-top:6px; }
+  .core{ position:absolute; left:50%; top:58%; transform:translate(-50%,-50%); width:260px; height:260px; border-radius:50%;
+    background:radial-gradient(circle at 38% 32%, #6E8BF2, #375BDC 72%); color:#fff;
+    box-shadow:0 0 0 14px rgba(55,91,220,0.10), 0 0 70px rgba(55,91,220,0.45), 0 30px 70px rgba(17,18,33,0.18);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:3; }
+  .core .em{ font-size:84px; line-height:1; }
+  .core .lb{ font-size:23px; font-weight:800; letter-spacing:0.1em; margin-top:4px; }
+  .doc{ position:absolute; border-radius:16px; background:#fff; border:1px solid #EDEDED;
+    box-shadow:0 22px 50px rgba(17,18,33,0.14); display:flex; align-items:center; justify-content:center; z-index:2; }
+
+  /* B: epochs barely move */
+  .ba{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:1680px; text-align:center; }
+  .ba h2{ font-size:80px; font-weight:800; letter-spacing:-0.02em; margin-bottom:10px; }
+  .ba h2 b{ color:#375BDC; }
+  .ba .sub{ font-size:34px; font-weight:600; color:#5A5C6B; margin-bottom:80px; }
+  .frow{ display:grid; grid-template-columns:460px 1fr 240px; align-items:center; gap:46px; height:150px; }
+  .frow .nm{ font-size:46px; font-weight:800; text-align:left; }
+  .frow .track{ height:62px; border-radius:18px; background:#F4F4F6; position:relative; overflow:visible; }
+  .frow .fill{ position:absolute; left:0; top:0; bottom:0; width:100%; border-radius:12px; transform-origin:left center; transform:scaleX(0);
+    background:linear-gradient(90deg,#AEDBF5,#375BDC); }
+  .frow .e0tick{ position:absolute; top:-14px; bottom:-14px; width:4px; background:#111221; opacity:0.5; }
+  .frow .e0lab{ position:absolute; top:-50px; font-size:26px; font-weight:700; color:#9A9AA4; transform:translateX(-50%); white-space:nowrap; }
+  .frow .delta{ font-size:48px; font-weight:800; color:#27B98A; text-align:right; font-variant-numeric:tabular-nums; }
+  .bigD{ margin-top:80px; font-size:42px; font-weight:800; }
+  .bigD b{ color:#375BDC; font-size:58px; }
+  .reason{ margin-top:26px; font-size:54px; font-weight:800; color:#27B98A; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="root" data-width="2560" data-height="1440" data-start="0" data-duration="10.87">
+<div class="__scaler">
+  <div class="grid-tex"></div>
+  
+
+  <!-- STAGE A: doc storm -->
+  <div class="stage" id="stA">
+    <div class="qtitle"><div class="q">?</div><div class="t">Just memorizing the test?</div></div>
+    <div class="core" id="core"><div class="em">🧠</div><div class="lb">FINE-TUNE</div></div>
+    <div id="docs"></div>
+  </div>
+
+  <!-- STAGE B: epochs barely move -->
+  <div class="stage" id="stB">
+    <div class="ba">
+      <h2>Train on the test set, score <b>barely moves</b></h2>
+      <div class="sub">Direct (Question, Answer) fine-tuning · 5 epochs · DMind Benchmark</div>
+      <div id="frows"></div>
+      <div class="bigD">Maximum gain across all models: <b>Δ ≤ 0.91</b></div>
+      <div class="reason" id="reason">It rewards real reasoning, not memorization.</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+  function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+  const rnd=mulberry32(606);
+  const DUR=12; const tl=gsap.timeline({paused:true, defaults:{ease:'power3.out', duration:0.6}});
+
+  document.querySelectorAll(".orb-static").forEach(o=>{const dx=rnd()*90-45,dy=rnd()*90-45,c=6+rnd()*3;gsap.to(o,{x:dx,y:dy,duration:c,ease:'sine.inOut',yoyo:true,repeat:Math.ceil(DUR/c)});});
+
+  // ---- build doc storm (many docs around the frame) ----
+  const CX=960, CY=626; // core center in 1920x1080
+  const docGlyph=['📄','📝','🧾','📃'];
+  const docsEl=document.getElementById('docs'); const docs=[];
+  const N=15;
+  for(let i=0;i<N;i++){
+    const d=document.createElement('div'); d.className='doc'; d.textContent=docGlyph[i%4];
+    const sz=140+rnd()*170;                              // varied size 140..310
+    d.style.width=sz+'px'; d.style.height=(sz*1.26)+'px'; d.style.fontSize=(sz*0.52)+'px';
+    const ang=i*(Math.PI*2/N)+rnd()*0.6, rad=760+rnd()*460;
+    const sx=CX+Math.cos(ang)*rad, sy=CY+Math.sin(ang)*rad*0.58;
+    d.style.left=(sx-sz/2)+'px'; d.style.top=(sy-sz*0.63)+'px';
+    docsEl.appendChild(d); docs.push({el:d,sx,sy,sz});
+  }
+
+  // ---- build fine-tune rows (REAL Table 4 data) ----
+  const fdata=[
+    ['QwQ-32B',          65.94, 66.85, '+0.91'],
+    ['Qwen3-32B',        68.89, 69.78, '+0.89'],
+    ['DeepSeek-R1-70B',  68.33, 69.15, '+0.82'],
+  ];
+  const frows=document.getElementById('frows');
+  fdata.forEach((m,i)=>{ const r=document.createElement('div'); r.className='frow'; r.id='fr'+i;
+    r.innerHTML='<div class="nm">'+m[0]+'</div>'+
+      '<div class="track"><div class="fill" id="ff'+i+'"></div>'+
+      '<div class="e0tick" id="et'+i+'" style="left:'+m[1]+'%"></div>'+
+      '<div class="e0lab" id="el'+i+'" style="left:'+m[1]+'%">E0 '+m[1].toFixed(1)+'</div></div>'+
+      '<div class="delta" id="dl'+i+'">'+m[3]+'</div>'; frows.appendChild(r); });
+
+  gsap.set('#stB',{autoAlpha:0});
+  gsap.set('.qtitle .q',{scale:0.4,autoAlpha:0});
+  gsap.set('.qtitle .t',{autoAlpha:0,y:20});
+  gsap.set('#core',{scale:0,autoAlpha:0});
+  gsap.set(docs.map(d=>d.el),{autoAlpha:0,scale:0.6});
+  gsap.set('.ba h2',{autoAlpha:0,y:20});
+  gsap.set('.ba .sub',{autoAlpha:0,y:14});
+  gsap.set('.frow',{autoAlpha:0,x:-24});
+  fdata.forEach((m,i)=>gsap.set('#ff'+i,{scaleX:0}));
+  gsap.set(['.bigD','#reason'],{autoAlpha:0,y:16});
+
+  /* === STAGE A (0 – 5): docs storm into the model core === */
+  tl.to('.qtitle .q',{scale:1,autoAlpha:1,duration:0.7,ease:'back.out(1.8)'},0.2);
+  tl.to('.qtitle .t',{autoAlpha:1,y:0,duration:0.6},0.6);
+  tl.to('#core',{scale:1,autoAlpha:1,duration:0.7,ease:'back.out(1.6)'},0.7);
+  tl.to('#core',{scale:1.05,duration:0.9,ease:'sine.inOut',yoyo:true,repeat:4},1.6);
+  // each doc appears at its perimeter spot, then flies into the core, shrinking + fading (continuous feed)
+  let dt=0.9;
+  docs.forEach((d,i)=>{
+    const app=0.2+rnd()*0.14, fly=0.5+rnd()*0.55, spin=(rnd()*40-20);
+    tl.fromTo(d.el,{autoAlpha:0,scale:0.5,rotation:spin},{autoAlpha:1,scale:1,rotation:spin*0.4,duration:app,ease:'back.out(1.7)'},dt);
+    tl.to(d.el,{x:(CX-d.sx),y:(CY-d.sy),scale:0.1,autoAlpha:0,rotation:0,duration:fly,ease:'power2.in'},dt+app+0.04);
+    // core absorbs each doc (tiny pulse) — rhythmic
+    tl.to('#core',{scale:1.1,duration:0.1,ease:'power2.out'},dt+app+fly);
+    tl.to('#core',{scale:1.0,duration:0.16,ease:'power2.in'},dt+app+fly+0.1);
+    dt += 0.06 + rnd()*0.16;                              // varied rhythm (not uniform)
+  });
+
+  /* A → B (≈5.0) */
+  tl.to('#stA',{autoAlpha:0,y:-30,duration:0.5,ease:'power2.in'},4.5);
+
+  /* === STAGE B (5.4 – 12): epochs barely move === */
+  tl.to('#stB',{autoAlpha:1,duration:0.2},4.6);
+  tl.to('.ba h2',{autoAlpha:1,y:0},4.7);
+  tl.to('.ba .sub',{autoAlpha:1,y:0,duration:0.5},4.9);
+  tl.to('.frow',{autoAlpha:1,x:0,duration:0.5,stagger:0.16},5.0);
+  // bars grow to E0 quickly, then "try" to grow over epochs but barely move to E4
+  fdata.forEach((m,i)=>{
+    const t=5.3+i*0.2;
+    tl.to('#ff'+i,{scaleX:m[1]/100,duration:0.9,ease:'power3.out'},t);            // to E0
+    tl.to('#ff'+i,{scaleX:m[2]/100,duration:1.4,ease:'power1.inOut'},t+1.0);       // crawl to E4 (tiny)
+    tl.fromTo('#dl'+i,{scale:0.6,autoAlpha:0},{scale:1,autoAlpha:1,duration:0.5,ease:'back.out(2)'},t+1.6);
+  });
+  tl.to('.bigD',{autoAlpha:1,y:0,duration:0.6},8.5);
+  tl.to('#reason',{autoAlpha:1,y:0,duration:0.6},9.6);
+
+  window.__timelines=window.__timelines||{};
+  window.__timelines["root"]=tl;
+</script>
+</body>
+</html>

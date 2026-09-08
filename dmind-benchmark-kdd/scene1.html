@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>DMind Scene 1</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:#0C1142}
+#root{position:relative;width:1920px;height:1080px;overflow:hidden;
+  font-family:'Poppins',system-ui,sans-serif;color:#EAF0FF;
+  background:radial-gradient(125% 100% at 50% 34%, #4B4DFE 0%, #2B2E9E 36%, #161B6A 66%, #0C1142 100%);}
+.bokeh{position:absolute;border-radius:50%;filter:blur(12px);pointer-events:none}
+#txstream{position:absolute;inset:-200px 0;font-family:'JetBrains Mono',monospace;font-size:24px;
+  line-height:2.6;color:rgba(141,205,255,.10);filter:blur(2px);white-space:pre;text-align:center;z-index:1;will-change:transform}
+#sphere{position:absolute;width:90px;height:90px;border-radius:50%;left:200px;top:880px;z-index:2;opacity:.7;
+  background:radial-gradient(circle at 38% 32%,#EAFFFF 0%,#13FBFE 20%,#6DD6CC 54%,#2BB6C8 100%);
+  box-shadow:0 0 50px 10px rgba(109,214,204,.45);will-change:transform}
+
+/* ===== Part A — layered wall of exploit code cards ===== */
+#camera{position:absolute;inset:0;z-index:3;transform-origin:center center;will-change:transform,opacity,filter}
+.exploit{position:absolute;border-radius:18px;border:1px solid rgba(255,255,255,.18);
+  background:rgba(255,255,255,.08);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  box-shadow:0 22px 70px rgba(0,0,0,.30);padding:26px 30px;
+  font-family:'JetBrains Mono',monospace;font-size:23px;line-height:1.95;will-change:transform,opacity}
+.exploit .cm{color:#7E89C9}
+.exploit .ln{color:#AEB7EE;white-space:nowrap}
+.exploit .k{color:#8DCDFF}.exploit .g{color:#6DD6CC}
+.exploit .red{background:rgba(255,92,122,.20);color:#FF9DB0;border-left:3px solid #FF5C7A;
+  padding-left:12px;margin-left:-15px;border-radius:4px}
+
+#loss{position:absolute;left:0;right:0;top:402px;text-align:center;z-index:8;
+  font-weight:700;font-size:92px;color:#FFFFFF;font-variant-numeric:tabular-nums;
+  text-shadow:0 0 0px rgba(255,92,122,0);transform-origin:center center;will-change:transform,color,opacity}
+#lossLbl{position:absolute;left:0;right:0;top:344px;text-align:center;z-index:8;
+  font-size:26px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,157,176,.8);font-weight:600}
+#lossSrc{position:absolute;left:0;right:0;top:540px;text-align:center;z-index:8;opacity:0;
+  font-size:22px;letter-spacing:.04em;color:rgba(197,203,245,.75);font-weight:400}
+
+/* ===== Part B — investors lean on AI ===== */
+#scn{position:absolute;inset:0;z-index:5;opacity:0;will-change:opacity}
+#kicker{position:absolute;left:0;right:0;top:120px;text-align:center;
+  font-size:42px;font-weight:600;letter-spacing:.02em;color:#C9D2FF;opacity:0}
+#kicker b{color:#8DCDFF;font-weight:700}
+
+/* central AI core */
+#core{position:absolute;left:840px;top:170px;width:240px;height:240px;z-index:8;
+  transform-origin:center center;will-change:transform,opacity}
+#coreGlow{position:absolute;inset:-60px;border-radius:50%;
+  background:radial-gradient(circle,rgba(63,214,198,.55) 0%,rgba(63,90,213,.30) 45%,transparent 72%);
+  filter:blur(8px)}
+#coreGlowP{position:absolute;inset:-60px;border-radius:50%;opacity:0;
+  background:radial-gradient(circle,rgba(228,85,184,.60) 0%,rgba(160,60,200,.30) 45%,transparent 72%);
+  filter:blur(8px)}
+#coreBody{position:absolute;inset:30px;border-radius:50%;border:2px solid rgba(255,255,255,.30);
+  background:radial-gradient(circle at 38% 32%,#9FB4FF 0%,#3F5AD5 42%,#2A35A0 100%);
+  box-shadow:0 0 60px 6px rgba(63,90,213,.45), inset 0 0 40px rgba(255,255,255,.18);
+  display:flex;align-items:center;justify-content:center}
+#coreSpark{position:absolute;font-size:96px;line-height:1;color:#EAFBFF;
+  text-shadow:0 0 24px rgba(109,214,204,.9);will-change:opacity,transform}
+#coreQ{position:absolute;font-size:120px;line-height:1;font-weight:800;color:#FFE3F6;opacity:0;
+  text-shadow:0 0 28px rgba(228,85,184,.9);will-change:opacity,transform}
+
+/* 3D card fan */
+#stage3d{position:absolute;left:0;right:0;top:420px;height:520px;z-index:7;
+  perspective:1150px;perspective-origin:50% 46%}
+#fan{position:absolute;left:960px;top:250px;transform-style:preserve-3d;will-change:transform}
+.card3d{position:absolute;left:-270px;top:-175px;width:540px;height:350px;border-radius:28px;
+  transform-style:preserve-3d;transform-origin:center center;backface-visibility:hidden;
+  border:1px solid rgba(255,255,255,.20);
+  background:linear-gradient(155deg, rgba(86,104,200,.30), rgba(255,255,255,.06));
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  box-shadow:0 34px 90px rgba(0,0,0,.42), inset 0 1px 0 rgba(255,255,255,.18);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;
+  will-change:transform,opacity}
+.card3d .ico{font-size:104px;line-height:1;filter:drop-shadow(0 8px 18px rgba(0,0,0,.35))}
+.card3d .lab{font-size:38px;font-weight:600;color:#EEF2FF;text-align:center;letter-spacing:.005em}
+
+/* the doubt question */
+#question{position:absolute;left:50%;top:560px;transform:translateX(-50%);width:1480px;
+  text-align:center;font-size:80px;font-weight:700;line-height:1.18;color:#EEF2FF;opacity:0;z-index:9;
+  will-change:opacity,transform;text-shadow:0 6px 30px rgba(8,10,40,.6)}
+#question em{font-style:normal;color:#E455B8}
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="root" data-width="1920" data-height="1080" data-start="0" data-duration="15.2">
+
+  <div class="bokeh" style="width:240px;height:240px;background:#6DD6CC;left:2%;top:60%;opacity:.30"></div>
+  <div class="bokeh" style="width:150px;height:150px;background:#FF5C7A;left:88%;top:8%;opacity:.30"></div>
+  <div id="txstream"></div>
+  <div id="sphere"></div>
+
+  <div id="camera"></div>
+
+  <div id="lossLbl">Lost to bad code</div>
+  <div id="loss">$0</div>
+  <div id="lossSrc">crypto hacks · 2018–2025 · approx. (Chainalysis)</div>
+
+  <!-- Part B -->
+  <div id="scn">
+    <div id="kicker">Today, investors lean on <b>AI</b> to&nbsp;…</div>
+
+    <div id="core">
+      <div id="coreGlow"></div>
+      <div id="coreGlowP"></div>
+      <div id="coreBody">
+        <span id="coreSpark">✦</span>
+        <span id="coreQ">?</span>
+      </div>
+    </div>
+
+    <div id="stage3d"><div id="fan">
+      <div id="task0" class="card3d"><div class="ico">📄</div><div class="lab">Audit smart contracts</div></div>
+      <div id="task1" class="card3d"><div class="ico">🔗</div><div class="lab">Read on-chain data</div></div>
+      <div id="task2" class="card3d"><div class="ico">📈</div><div class="lab">Run DeFi strategies</div></div>
+    </div></div>
+
+    <div id="question">But do these models <em>really understand</em><br>digital assets?</div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+  (function(){
+    // ambient tx scroll
+    var hex="0x7a3f…b21c   transfer 12.4 ETH   0x9c2e…44af\n0xab19…6d70   swap 8,200 USDC   0x3f5a…d501\n0x88c1…02ee   liquidate -4.1 ETH   0xee45…9a13\n";
+    document.getElementById('txstream').textContent=hex+hex+hex+hex+hex;
+
+    // real-world exploit cases — varied position / opacity / depth / content
+    var DATA=[
+      { t:0.0,  left:70,   top:108, w:660, op:0.88, blur:0, total:1000000,
+        lines:['<span class="cm">// The DAO — reentrancy · 2016</span>',
+               '(bool ok,) = msg.sender.<span class="k">call</span>.value(bal)("");',
+               'balances[msg.sender] = 0; <span class="cm">// updated too late</span>'], red:1 },
+      { t:0.6,  left:1168, top:686, w:680, op:0.60, blur:2, total:200000000,
+        lines:['<span class="cm">// Parity multisig — unprotected init · 2017</span>',
+               '<span class="k">function</span> initWallet(address[] _o) <span class="k">public</span> {',
+               '  m_owners = _o; <span class="cm">// anyone takes ownership</span>','}'], red:1 },
+      { t:1.2,  left:1196, top:120, w:640, op:0.74, blur:0, total:1200000000,
+        lines:['<span class="cm">// BEC Token — integer overflow · 2018</span>',
+               '<span class="g">uint</span> amount = cnt * _value;',
+               'balances[to] += amount; <span class="cm">// wraps to 0</span>'], red:1 },
+      { t:1.8,  left:54,   top:548, w:610, op:0.50, blur:3, total:4500000000,
+        lines:['<span class="cm">// bZx — flash-loan oracle manipulation · 2020</span>',
+               '<span class="g">uint</span> price = dex.getSpotPrice(token);',
+               'collateral = amt * price; <span class="cm">// single source</span>'], red:1 },
+      { t:2.4,  left:150,  top:790, w:660, op:0.84, blur:0, total:9800000000,
+        lines:['<span class="cm">// Lendf.me — ERC777 reentrancy · 2020</span>',
+               'token.transferFrom(user, self, amt);',
+               'supplyOf[user] += amt; <span class="cm">// hook re-enters</span>'], red:1 },
+      { t:3.0,  left:1260, top:452, w:560, op:0.56, blur:2, total:17100000000,
+        lines:['<span class="cm">// Missing access control · Bybit-scale</span>',
+               '<span class="k">function</span> withdrawAll() <span class="k">public</span> {',
+               '  msg.sender.transfer(address(this).balance);','}'], red:1 }
+    ];
+
+    var cam=document.getElementById('camera');
+    DATA.forEach(function(d,i){
+      var el=document.createElement('div'); el.className='exploit'; el.id='ex'+i;
+      el.style.left=d.left+'px'; el.style.top=d.top+'px'; el.style.width=d.w+'px';
+      if(d.blur) el.style.filter='blur('+d.blur+'px)';
+      el.innerHTML=d.lines.map(function(L,li){return '<div class="ln'+(li===d.red?' red':'')+'">'+L+'</div>';}).join('');
+      cam.appendChild(el);
+    });
+
+    var loss={v:0};
+    var lossEl=document.getElementById('loss');
+    function setLoss(){ var v=Math.round(loss.v); lossEl.textContent = v<=0 ? '$0' : '−$'+v.toLocaleString('en-US'); }
+    setLoss();
+
+    var tl = gsap.timeline({paused:true, defaults:{ease:"power3.out"}});
+
+    /* ===== Part A (0–5.2s) — cost of bad code, compressed ===== */
+    tl.to('#txstream',{yPercent:-12, duration:15.2, ease:"none"}, 0);
+    tl.to('#sphere',{x:340, y:-120, duration:5.2, ease:"sine.inOut"}, 0);
+    tl.fromTo('#camera',{scale:1},{scale:1.06, duration:5.2, ease:"none"}, 0);
+
+    tl.fromTo('#loss',{color:"#FFFFFF", textShadow:"0 0 0px rgba(255,92,122,0)"},
+      {color:"#FF6E8A", textShadow:"0 0 50px rgba(255,92,122,.6)", duration:1.0, ease:"power1.inOut"}, 0);
+
+    DATA.forEach(function(d,i){
+      tl.fromTo('#ex'+i,{opacity:0, scale:.86, y:46},
+        {opacity:d.op, scale:1, y:0, duration:.6, ease:"power3.out"}, d.t);
+      tl.fromTo('#ex'+i+' .red',{boxShadow:"0 0 0 rgba(255,92,122,0)"},
+        {boxShadow:"0 0 26px rgba(255,92,122,.55)", duration:.4, yoyo:true, repeat:1, ease:"sine.inOut"}, d.t+.2);
+      if(i===0){
+        tl.to(loss,{v:d.total, duration:.9, ease:"power1.out", onUpdate:setLoss}, 0);
+      } else {
+        tl.to('#loss',{scale:1.2, duration:.14, ease:"back.out(3)"}, d.t);
+        tl.to('#loss',{scale:1, duration:.55, ease:"elastic.out(1,0.5)"}, d.t+.14);
+        tl.to(loss,{v:d.total, duration:.7, ease:"power1.out", onUpdate:setLoss}, d.t);
+      }
+    });
+    tl.to('#lossSrc',{opacity:1, duration:.7, ease:"power2.out"}, 3.9);
+
+    /* ===== A → B transition (4.6–5.2s, 0.5s) ===== */
+    tl.to('#camera',{opacity:0, scale:1.18, filter:'blur(22px)', duration:.55, ease:"power2.in"}, 4.6);
+    tl.to(['#loss','#lossLbl','#lossSrc'],{opacity:0, y:-34, duration:.5, ease:"power2.in"}, 4.6);
+    tl.to('#sphere',{opacity:0, duration:.4, ease:"power2.in"}, 4.6);
+    tl.to('#txstream',{opacity:.05, duration:.5}, 4.6);
+
+    /* ===== Part B (5.2–15.2s) — investors lean on AI ===== */
+    tl.set('#scn',{opacity:1}, 5.2);
+    // AI core pops in
+    tl.fromTo('#core',{opacity:0, scale:.55, y:18},
+      {opacity:1, scale:1, y:0, duration:.8, ease:"back.out(1.6)"}, 5.3);
+    tl.fromTo('#coreGlow',{scale:.7},{scale:1, duration:1.0, ease:"power2.out"}, 5.3);
+    // gentle core breathing
+    tl.to('#core',{scale:1.04, duration:1.4, yoyo:true, repeat:3, ease:"sine.inOut"}, 6.2);
+    // kicker in
+    tl.fromTo('#kicker',{opacity:0, y:24},{opacity:1, y:0, duration:.7, ease:"power3.out"}, 5.6);
+
+    // 3D card fan — rest pose: center forward, flanks angled inward
+    var REST=[
+      {x:-430, ry: 52, z:-40},   // task0 left  — Audit
+      {x:   0, ry:  0, z:150},   // task1 center — Read on-chain (forward, on top)
+      {x: 430, ry:-52, z:-40}    // task2 right — Run DeFi
+    ];
+    // place at rest first (so layout is the ground truth), then spin in via fromTo
+    REST.forEach(function(r,i){
+      gsap.set('#task'+i,{x:r.x, rotationY:r.ry, z:r.z});
+    });
+    // slow fan parallax sway for life
+    tl.fromTo('#fan',{rotationY:-7},{rotationY:7, duration:9.6, ease:"sine.inOut"}, 5.4);
+
+    // each card rotates OUT into the fan, timed to the three named tasks
+    var taskT=[6.9, 8.1, 9.3];
+    REST.forEach(function(r,i){
+      tl.fromTo('#task'+i,
+        {opacity:0, x:r.x*0.34, z:r.z-180, rotationY:r.ry-118, scale:.9},
+        {opacity:1, x:r.x, z:r.z, rotationY:r.ry, scale:1, duration:.95, ease:"back.out(1.25)"}, taskT[i]);
+    });
+    // confident cyan pulse once all three are in
+    tl.fromTo('#coreGlow',{opacity:.9},{opacity:1.0, duration:.5, yoyo:true, repeat:1, ease:"sine.inOut"}, 10.6);
+
+    /* ===== the doubt (11.6–15.2s) ===== */
+    // kicker out
+    tl.to('#kicker',{opacity:0, y:-20, duration:.45, ease:"power2.in"}, 11.4);
+    // core stays top, turns from confident cyan to doubtful pink-purple
+    tl.to('#core',{scale:.92, duration:.9, ease:"power3.inOut"}, 11.6);
+    tl.to('#coreGlow',{opacity:0, duration:.8, ease:"power2.inOut"}, 11.6);
+    tl.to('#coreGlowP',{opacity:1, duration:.8, ease:"power2.inOut"}, 11.6);
+    tl.to('#coreSpark',{opacity:0, scale:.6, duration:.45, ease:"power2.in"}, 11.6);
+    tl.fromTo('#coreQ',{opacity:0, scale:.6},{opacity:1, scale:1, duration:.6, ease:"back.out(1.7)"}, 11.95);
+    // the fan recedes into the background and dims
+    REST.forEach(function(r,i){
+      tl.to('#task'+i,{opacity:.16, z:r.z-260, scale:.92, duration:.8, ease:"power2.inOut"}, 11.6);
+    });
+    tl.to('#stage3d',{filter:'blur(3px)', duration:.8, ease:"power2.inOut"}, 11.6);
+    // the question lands
+    tl.fromTo('#question',{opacity:0, y:36},{opacity:1, y:0, duration:.9, ease:"power3.out"}, 12.2);
+    // soft "?" pulse to hold attention through the end
+    tl.to('#coreQ',{scale:1.08, duration:1.1, yoyo:true, repeat:1, ease:"sine.inOut"}, 13.2);
+
+    window.__timelines = window.__timelines || {};
+    window.__timelines["root"] = tl;
+
+    var sp=new URLSearchParams(location.search);
+    if(sp.has('seek')){ tl.pause(); tl.time(parseFloat(sp.get('seek'))); }
+    else if(sp.has('autoplay')){ tl.play(0); }
+  })();
+  </script>
+</div>
+</body>
+</html>

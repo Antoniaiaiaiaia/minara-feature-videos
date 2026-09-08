@@ -1,0 +1,205 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500&display=swap');
+html,body{margin:0;padding:0;background:#F9F9F9;}
+#root,[data-composition-id="root"]{
+  font-family:'Geist','PingFang SC','Hiragino Sans GB','Noto Sans SC',system-ui,-apple-system,sans-serif;
+  background:#F9F9F9; position:relative; overflow:hidden; width:1920px; height:1080px; color:#141416;
+}
+.panel{position:absolute;left:100px;top:60px;width:1720px;height:960px;background:#FFFFFF;
+  border:1px solid #ECECEC;border-radius:26px;box-shadow:0 20px 60px rgba(20,20,22,0.07);
+  box-sizing:border-box;padding:34px 40px;overflow:hidden;}
+/* header: tabs + deploy */
+.phead{display:flex;align-items:center;gap:14px;}
+.tabs{display:inline-flex;gap:8px;background:#F2F2F2;border-radius:14px;padding:6px;}
+.tabs span{font-size:28px;font-weight:600;color:#9A9A9A;padding:14px 28px;border-radius:10px;white-space:nowrap;background:rgba(255,255,255,0);}
+.tabs span.act{color:#141416;background:#FFFFFF;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.deploy{margin-left:auto;background:#141416;color:#fff;font-size:28px;font-weight:600;padding:16px 36px;border-radius:14px;}
+.body{position:relative;margin-top:34px;height:790px;}
+.view{position:absolute;inset:0;}
+.sec-t{font-size:30px;font-weight:700;margin-bottom:18px;}
+.sec-r{font-size:25px;color:#9A9A9A;float:right;font-weight:500;}
+
+/* Overview treemap */
+.tmrow{display:flex;gap:8px;margin-bottom:8px;}
+.tmrow .b{display:flex;align-items:center;justify-content:center;color:#fff;font-size:26px;font-weight:600;border-radius:8px;min-width:0;overflow:hidden;white-space:nowrap;}
+.r1 .b{height:200px;} .r2 .b{height:150px;} .r3 .b{height:96px;font-size:23px;}
+.rets{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:24px;}
+.rc{background:#F7F7F7;border-radius:16px;padding:24px 26px;}
+.rc .l{font-size:24px;color:#9A9A9A;} .rc .v{font-size:42px;font-weight:700;margin-top:8px;}
+.rc .v.up{color:#07B56A;} .rc .v.nu{color:#141416;}
+
+/* Per-symbol PnL bars */
+.bar{display:flex;align-items:center;gap:20px;margin-bottom:14px;}
+.bar .sym{width:160px;font-size:27px;font-weight:600;text-align:left;}
+.bar .track{flex:1;height:38px;display:flex;align-items:center;}
+.bar .fill{height:38px;background:#07B56A;border-radius:7px;}
+.bar .val{width:180px;text-align:right;font-size:27px;font-weight:700;color:#07B56A;font-variant-numeric:tabular-nums;}
+
+/* Trades table */
+.trow{display:grid;grid-template-columns:70px 220px 200px 130px 150px 200px 220px 1fr;align-items:center;
+  font-size:26px;padding:16px 6px;border-bottom:1px solid #F0F0F0;font-variant-numeric:tabular-nums;}
+.trow.h{color:#9A9A9A;font-size:24px;font-weight:600;border-bottom:1px solid #E6E6E6;}
+.buy{color:#07B56A;font-weight:600;} .sell{color:#F75D5F;font-weight:600;}
+.pos{color:#07B56A;text-align:right;} .pl-up{color:#07B56A;} .pl-dn{color:#F75D5F;} .muted{color:#B0B0B0;}
+.tr-r{text-align:right;} .tr-g{color:#717171;}
+
+/* Code view */
+.cfg{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-bottom:22px;}
+.chip{font-size:24px;border:1px solid #ECECEC;border-radius:11px;padding:12px 20px;color:#141416;background:#FAFAFA;}
+.chip b{color:#717171;font-weight:500;}
+.runbt{margin-left:auto;background:#141416;color:#fff;font-size:24px;padding:13px 26px;border-radius:11px;}
+.code{background:#FBFBFB;border:1px solid #ECECEC;border-radius:16px;padding:26px 30px;
+  font-family:'Geist Mono','SF Mono',monospace;font-size:24px;line-height:1.55;color:#141416;white-space:pre;overflow:hidden;height:520px;}
+.kw{color:#07B56A;} .cm{color:#A0A0A0;} .st{color:#717171;}
+</style>
+</head>
+<body>
+  <div id="root" data-composition-id="root" data-width="1920" data-height="1080" data-start="0" data-duration="5.67">
+    <div class="panel" id="panel">
+      <div class="phead">
+        <div class="tabs" id="tabs">
+          <span class="act" id="tabOv">概览</span>
+          <span id="tabPn">分标的盈亏</span>
+          <span id="tabTr">成交记录</span>
+          <span id="tabCd">代码</span>
+        </div>
+        <div class="deploy">部署</div>
+      </div>
+      <div class="body">
+        <!-- Overview -->
+        <div class="view" id="vOv">
+          <div class="sec-t">持仓构成 <span class="sec-r">按标的成交额 — 共 $2,332,372 · 28 个标的</span></div>
+          <div id="treemap"></div>
+          <div class="rets">
+            <div class="rc"><div class="l">毛利</div><div class="v up">+$166,295</div></div>
+            <div class="rc"><div class="l">毛利率</div><div class="v up">+1662.95%</div></div>
+            <div class="rc"><div class="l">盈亏比</div><div class="v nu">16.74</div></div>
+            <div class="rc"><div class="l">期望收益</div><div class="v up">+$5,584</div></div>
+          </div>
+        </div>
+        <!-- Per-Symbol PnL -->
+        <div class="view" id="vPn">
+          <div class="sec-t">分标的已实现盈亏 <span class="sec-r">22/28 盈利 · +$105,801</span></div>
+          <div id="bars"></div>
+        </div>
+        <!-- Trades -->
+        <div class="view" id="vTr">
+          <div class="sec-t">成交记录 <span class="sec-r">609 笔成交</span></div>
+          <div class="trow h"><div>#</div><div>时间</div><div>标的</div><div>方向</div><div class="tr-r">数量</div><div class="tr-r">价格</div><div class="tr-r">盈亏</div><div class="tr-r">持仓</div></div>
+          <div id="trades"></div>
+        </div>
+        <!-- Code -->
+        <div class="view" id="vCd">
+          <div class="cfg">
+            <span class="chip"><b>股票池</b> TradFi 30</span>
+            <span class="chip"><b>杠杆</b> 1.0×</span>
+            <span class="chip"><b>方向</b> 仅做多</span>
+            <span class="chip"><b>比例</b> 12 个标的</span>
+            <span class="chip"><b>权重</b> 等权重</span>
+            <span class="runbt">▶ 运行回测</span>
+          </div>
+          <div class="code" id="code"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      // ===== build Overview treemap (green scale) =====
+      const TM=[
+        [["Samsung Electronics",13],["SK Hynix",11],["AMZN",10],["AAPL",9],["MRVL",8],["ORCL",8],["MSFT",7],["NVDA",7]],
+        [["MU",6],["EWY",6],["HIMS",5],["TSM",5],["GOOGL",5],["BABA",5],["META",4],["INTC",4],["LITE",4],["PLTR",4],["MSTR",4]],
+        [["AMD",3],["SNDK",3],["TSLA",3],["HOOD",3],["BB",2],["CRWV",2],["RKLB",2],["COIN",2],["DRA…",1]]
+      ];
+      const GREENS=['#0B3D2E','#12614A','#1A8061','#23A074','#3CB489'];
+      const tm=document.getElementById('treemap');
+      TM.forEach((row,ri)=>{
+        const r=document.createElement('div'); r.className='tmrow r'+(ri+1);
+        row.forEach(([name,w])=>{ const b=document.createElement('div'); b.className='b';
+          b.style.flex=w; b.style.background=GREENS[Math.min(ri+ (w>7?0:1),4)]; b.textContent=name; r.appendChild(b); });
+        tm.appendChild(r);
+      });
+      // ===== Per-symbol bars =====
+      const PN=[["LITE",17849],["INTC",13573],["SKHYNIX",11550],["MU",9013],["PLTR",8060],["HIMS",7033],["MRVL",6894],["NVDA",6274],["SNDK",5274],["AMD",4980],["ORCL",4619],["RKLB",3669],["META",2918]];
+      const mxp=PN[0][1], bars=document.getElementById('bars');
+      PN.forEach(([s,v])=>{ const row=document.createElement('div'); row.className='bar';
+        row.innerHTML='<div class="sym">'+s+'</div><div class="track"><div class="fill" style="width:'+(v/mxp*100)+'%"></div></div><div class="val">+$'+v.toLocaleString()+'</div>';
+        bars.appendChild(row); });
+      // ===== Trades =====
+      const TR=[
+        ["609","26/06/01","SAMSUNG","SELL",1,"10.01","$231.61","+$834.47","55.65"],
+        ["608","26/06/01","TSM","BUY",0,"5.10","$434.83","—","29.64"],
+        ["607","26/06/01","AMZN","SELL",1,"36.29","$261.26","-$254.03","0"],
+        ["606","26/06/01","AMD","SELL",1,"27.00","$510.13","+$4,038.93","0"],
+        ["605","26/06/01","BB","SELL",1,"469.92","$9.72","+$2,020.66","1326.13"],
+        ["604","26/06/01","DRAM","SELL",1,"51.34","$68.00","+$1,416.47","189.56"],
+        ["603","26/06/01","SNDK","SELL",1,"0.88","$1,761.43","+$940.46","7.32"],
+        ["602","26/06/01","GOOGL","BUY",0,"9.02","$376.15","—","34.27"],
+        ["601","26/06/01","SKHYNIX","SELL",1,"3.04","$1,568.18","+$2,139.31","8.22"],
+        ["600","26/06/01","MSFT","BUY",0,"27.99","$460.52","—","27.99"]
+      ];
+      const tb=document.getElementById('trades');
+      TR.forEach(r=>{ const [n,t,s,side,buy,price,notion,pl,pos]=r;
+        const plc = pl==='—'?'muted':(pl[0]==='-'?'pl-dn':'pl-up');
+        const d=document.createElement('div'); d.className='trow';
+        d.innerHTML='<div class="tr-g">'+n+'</div><div class="tr-g">'+t+'</div><div>'+s+'</div>'
+          +'<div class="'+(side==='BUY'?'buy':'sell')+'">'+(side==='BUY'?'买入':'卖出')+'</div>'
+          +'<div class="tr-r">'+price.replace("$","")+'</div><div class="tr-r tr-g">'+notion+'</div>'
+          +'<div class="tr-r '+plc+'">'+pl+'</div><div class="tr-r pos">'+pos+'</div>';
+        tb.appendChild(d); });
+      // ===== Code (light syntax) =====
+      const CODE=
+'<span class="kw">from</span> xstrategy <span class="kw">import</span> *\n'+
+'<span class="kw">import</span> numpy <span class="kw">as</span> np\n\n'+
+'<span class="kw">from</span> xstrategy.factors_library.momentum <span class="kw">import</span> a191_macd_close, a191_triple_smooth_log_return\n'+
+'<span class="kw">from</span> xstrategy.factors_library.quality <span class="kw">import</span> jkp_niq_su, jkp_debt_gr3\n'+
+'<span class="kw">from</span> xstrategy.factors_library.analyst <span class="kw">import</span> wq_eps_revision_signal\n'+
+'<span class="kw">from</span> xstrategy.factors_library.volatility <span class="kw">import</span> a191_down_cond_volatility\n\n'+
+'<span class="kw">class</span> Strategy(XStrategy):\n'+
+'    name = <span class="st">"tradfi 6-factor composite"</span>\n\n'+
+'    <span class="kw">def</span> alpha(self, d):\n'+
+'        <span class="cm"># 每月重新排名（盈利/质量类因子更新慢）；其余时间持有</span>\n'+
+'        <span class="kw">if not</span> should_rebalance(d, <span class="st">"monthly"</span>):\n'+
+'            <span class="kw">return None</span>\n\n'+
+'        macd = zscore(a191_macd_close(d))      <span class="cm"># 趋势</span>\n'+
+'        tsm  = zscore(a191_triple_smooth_log_return(d))  <span class="cm"># 动量</span>\n'+
+'        sue  = zscore(jkp_niq_su(d))           <span class="cm"># 盈利惊喜</span>';
+      document.getElementById('code').innerHTML=CODE;
+
+      // ===== timeline: 自动切换 4 个 tab =====
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused:true });
+      gsap.set(['#vPn','#vTr','#vCd'], {opacity:0, y:24});
+      gsap.set('#vOv', {opacity:1, y:0});
+
+      tl.from('#panel', { opacity:0, y:34, scale:0.985, duration:0.5, ease:'power3.out' }, 0);
+      tl.from('#vOv .sec-t, #vOv .tmrow, #vOv .rc', { opacity:0, y:24, duration:0.45, ease:'power3.out', stagger:0.04 }, 0.3);
+
+      function tab(prevView, prevTab, nextView, nextTab, T){
+        // tab highlight
+        tl.to('#'+prevTab, { backgroundColor:'rgba(255,255,255,0)', color:'#9A9A9A', boxShadow:'0 0 0 rgba(0,0,0,0)', duration:0.25 }, T);
+        tl.to('#'+nextTab, { backgroundColor:'#FFFFFF', color:'#141416', duration:0.25 }, T);
+        tl.set('#'+nextTab, { boxShadow:'0 2px 8px rgba(0,0,0,0.06)' }, T+0.12);
+        // content swap
+        tl.to('#'+prevView, { opacity:0, y:-22, duration:0.32, ease:'power2.in' }, T);
+        tl.to('#'+nextView, { opacity:1, y:0, duration:0.42, ease:'power3.out' }, T+0.28);
+      }
+      tab('vOv','tabOv','vPn','tabPn',1.4);
+      // per-symbol bars grow
+      tl.from('#vPn .fill', { scaleX:0, transformOrigin:'left center', duration:0.5, ease:'power3.out', stagger:0.025 }, 1.7);
+      tab('vPn','tabPn','vTr','tabTr',2.75);
+      tl.from('#vTr .trow:not(.h)', { opacity:0, x:-20, duration:0.4, ease:'power2.out', stagger:0.04 }, 3.05);
+      tab('vTr','tabTr','vCd','tabCd',4.1);
+      tl.from('#vCd .chip', { opacity:0, y:18, duration:0.4, ease:'back.out(1.5)', stagger:0.05 }, 4.4);
+      tl.from('#vCd .code', { opacity:0, y:24, duration:0.5, ease:'power3.out' }, 4.7);
+      tl.from('.deploy', { scale:0.9, duration:0.3, ease:'back.out(2)' }, 5.0);
+
+      window.__timelines["root"] = tl;
+    </script>
+  </div>
+</body>
+</html>

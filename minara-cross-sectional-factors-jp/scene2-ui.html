@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap');
+html,body{margin:0;padding:0;background:#F9F9F9;}
+#root,[data-composition-id="root"]{
+  font-family:'Geist','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic','Noto Sans JP',system-ui,-apple-system,sans-serif;
+  background:#F9F9F9; position:relative; overflow:hidden;
+  width:1920px; height:1080px;
+}
+.camera{position:absolute;inset:0;transform-origin:0 0;will-change:transform;}
+.wall{position:absolute;left:220px;top:130px;width:1480px;
+  display:grid;grid-template-columns:720px 720px;column-gap:40px;row-gap:36px;}
+.card{position:relative;width:720px;height:240px;background:#FFFFFF;
+  border:1px solid #ECECEC;border-radius:20px;padding:30px 34px;box-sizing:border-box;
+  box-shadow:0 6px 24px rgba(20,20,22,0.05);}
+.c-top{display:flex;align-items:center;gap:14px;}
+.star{width:26px;height:26px;flex:0 0 auto;}
+.c-title{font-size:30px;font-weight:700;color:#141416;letter-spacing:-0.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.c-ic{margin-left:auto;font-size:22px;font-weight:600;color:#07B56A;font-variant-numeric:tabular-nums;flex:0 0 auto;}
+.c-desc{margin-top:16px;font-size:22px;line-height:1.4;color:#717171;max-width:650px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.c-tags{position:absolute;left:34px;bottom:28px;display:flex;gap:10px;}
+.pill{font-size:18px;font-weight:500;padding:7px 14px;border-radius:8px;white-space:nowrap;}
+.pill.cat{background:rgba(7,181,106,0.12);color:#07B56A;}
+.pill.asset{background:#F0F0F0;color:#717171;}
+.c-info{position:absolute;right:30px;bottom:28px;width:30px;height:30px;border:1.5px solid #CBCBCB;
+  border-radius:50%;color:#9A9A9A;font-size:17px;display:flex;align-items:center;justify-content:center;font-style:italic;font-weight:600;}
+.card.other{opacity:0;}
+</style>
+</head>
+<body>
+  <div id="root" data-composition-id="root" data-width="1920" data-height="1080" data-start="0" data-duration="4">
+    <div class="camera">
+      <div class="wall" id="wall"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      // ---- 因子数据（选自 Minara 现有因子库）----
+      const F=[
+        ["ゼロ出来高日数（21日）","IC=0.086","直近1ヶ月で全く取引が成立しなかった日の割合——厳格な流動性枯渇の指標。","流動性","暗号資産 · 株式"],
+        ["MACD（価格正規化）","IC=0.053","古典的な 12/26 EMA モメンタム差を価格で割り、銘柄間で比較可能にしたもの。","テクニカル","暗号資産 · 株式"],
+        ["3年負債成長率（反転）","IC=0.053","3年間で総負債がどれだけ増えたか——急速な借入は警戒シグナルのため反転。","クオリティ","株式"],
+        ["上昇日ボラティリティ","IC=0.050","銘柄の20日価格ボラティリティ。直近日が上昇で引けた場合のみ計上。","ボラティリティ","暗号資産 · 株式"],
+        ["短期リバーサル","IC=0.041","前日リターンを反転——直近で下げた銘柄は反発しやすい。","リバーサル","暗号資産 · 株式"],
+        ["始値・終値ギャップ","IC=0.041","本日の始値が終値に対しどれだけ上下したか——日中ギャップのシグナル。","リバーサル","暗号資産 · 株式"],
+        ["MACD ヒストグラム","IC=0.036","MACD オシレーター——短期トレンド線が長期線をどれだけ上回り、加速しているか。","モメンタム","暗号資産 · 株式"],
+        ["日中レンジ内の終値位置","IC=0.036","終値が当日高安レンジのどこで引けたか——強い引けほど高スコア。","リバーサル","暗号資産 · 株式"],
+        ["日次リターン × 出来高","IC=0.032","本日の値動きを出来高で増幅——大商いの急騰が最高スコア。","出来高","暗号資産 · 株式"],
+        ["標準化業績サプライズ（SUE）","IC=0.031","直近決算の上振れ／下振れの異常度を、銘柄自身の履歴を基準に測定。","業績","株式"],
+        ["予想EPS改定","IC=0.031","過去1ヶ月でアナリストが予想EPSをどれだけ上方／下方修正したか。","アナリスト","株式"],
+        ["季節性（2〜5年前）","IC=0.028","過去2〜5周年の同月平均リターン——繰り返すカレンダー要因を捕捉。","モメンタム","暗号資産 · 株式"],
+        ["ピオトロスキー財務健全性スコア","IC=0.027","収益性・キャッシュフロー・レバレッジ・効率性など9項目の基本面チェック。","クオリティ","株式"],
+        ["16週モメンタム","IC=0.027","直近約4ヶ月の総上昇率——直近の勝者は勝ち続けやすい。","モメンタム","暗号資産 · 株式"],
+      ];
+      const STAR='<svg class="star" viewBox="0 0 24 24" fill="none" stroke="#BFBFBF" stroke-width="2" stroke-linejoin="round"><path d="M12 3l2.7 5.8 6.3.7-4.7 4.3 1.3 6.2L12 17.8 6.1 20.3l1.3-6.2L2.7 9.5l6.3-.7z"/></svg>';
+      const wall=document.getElementById('wall');
+      F.forEach((f,i)=>{
+        const hero = i===0;
+        const he = hero ? ' hero-el' : '';
+        const card=document.createElement('div');
+        card.className='card'+(hero?'':' other');
+        if(hero) card.id='hero';
+        card.innerHTML =
+          '<div class="c-top'+he+'">'+STAR+'<span class="c-title">'+f[0]+'</span><span class="c-ic">'+f[1]+'</span></div>'+
+          '<div class="c-desc'+he+'">'+f[2]+'</div>'+
+          '<div class="c-tags'+he+'"><span class="pill cat">'+f[3]+'</span><span class="pill asset">'+f[4]+'</span></div>'+
+          '<div class="c-info'+he+'">i</div>';
+        wall.appendChild(card);
+      });
+
+      // ---- timeline ----
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused:true });
+
+      // 镜头初始：放大聚焦在第一张卡（hero 居中、占宽 ~69%）
+      tl.set('.camera', { transformOrigin:'0px 0px', x:-113, y:77.5, scale:1.85 }, 0);
+
+      // Phase A — 单卡弹入 + 内部元素逐个弹出
+      tl.from('#hero', { opacity:0, scale:0.9, duration:0.5, ease:'back.out(1.4)' }, 0.1);
+      tl.from('#hero .hero-el', { opacity:0, y:30, duration:0.5, ease:'back.out(1.6)', stagger:0.13 }, 0.4);
+
+      // Phase B — 镜头拉远（卡片后退） + 周围卡片淡入融入卡片墙
+      tl.to('.camera', { x:0, y:-60, scale:1, duration:0.75, ease:'power3.inOut' }, 1.5);
+      tl.to('.card.other', { opacity:1, duration:0.5, stagger:0.025, ease:'power2.out' }, 1.62);
+
+      // Phase C — 卡片墙由上往下缓缓滚动
+      tl.to('.camera', { y:-760, duration:1.55, ease:'power1.inOut' }, 2.45);
+
+      window.__timelines["root"] = tl;
+    </script>
+  </div>
+</body>
+</html>
